@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="test-compile">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/test/compile" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/test/compile/junit-4.10-src.jar!/" />
+    </SOURCES>
+    <jarDirectory url="file://$PROJECT_DIR$/lib/test/compile" recursive="false" />
+  </library>
+</component>
