@@ -71,7 +71,8 @@ public class IndexPage {
                                 ).withId(id("navigation")),
                                 divTag(
                                         h2Tag(xhtmlText("Introduction")),
-                                        paragraphTag(xhtmlText("Urin is an open source Java library for working with URIs. It exists to address some of the difficulties posed by working with Java's built in URI and URL classes.")),
+                                        paragraphTag(xhtmlText("Urin is an open source Java library for working with URIs. It exists to address some of the difficulties posed by working with Java's built in URI and URL classes. It's " +
+                                                "currently in initial development.")),
                                         paragraphTag(
                                                 xhtmlText("The latest version of Urin available for download is "),
                                                 anchorTag(xhtmlText(version)).withHref(href("https://sourceforge.net/projects/urin/files/latest")),
