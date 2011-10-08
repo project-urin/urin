@@ -185,18 +185,20 @@
         <antcall target="distribute"/>
     </target>
 
-    <target name="distribute-release" description="Does a real release">
+    <target name="distribute-release" description="Does a real release" depends="determine-version">
         <input addproperty="ssh.username" message="SSH username"/>
         <input addproperty="ssh.password" message="SSH password"/>
         <!--TODO get code revision of trunk -->
-        <property name="release.revision" value="${git.info.rev}"/>
-        <echo message="Attempting to release revison ${release.revision}"/>
-        <property name="release.directory" value="${location.build}/release/${release.revision}"/>
-        <delete dir="${location.build}"/>
+        <!--<property name="release.revision" value="${git.info.rev}"/>-->
+        <!--<echo message="Attempting to release revison ${release.revision}"/>-->
+        <!--<property name="release.directory" value="${location.build}/release/${release.revision}"/>-->
+        <property name="release.directory" value="."/>
+        <!--<delete dir="${location.build}"/>-->
+        <antcall target="prepare-release"/>
         <!--TODO export trunk -->
-        <subant target="prepare-release" buildpath="${release.directory}"/>
-        <property file="${release.directory}/version.properties"/>
-        <property name="version" value="${urin.version.major}.${urin.version.minor}"/>
+        <!--<subant target="prepare-release" buildpath="${release.directory}"/>-->
+        <!--<property file="${release.directory}/version.properties"/>-->
+        <!--<property name="version" value="${urin.version.major}.${urin.version.minor}"/>-->
         <!--TODO tag release revision -->
         <sshexec host="shell.sourceforge.net" username="${ssh.username},urin" password="${ssh.password}"
                  command="create" trust="true"/>
