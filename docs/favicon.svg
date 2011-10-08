@@ -75,7 +75,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="13.626241"
      inkscape:cx="26.148732"
-     inkscape:cy="19.184422"
+     inkscape:cy="15.344527"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -96,7 +96,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -107,28 +107,28 @@
      transform="translate(-96.109932,-92.857155)">
     <text
        xml:space="preserve"
-       style="font-size:31.11326981px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#200020;fill-opacity:1;stroke:#200020;stroke-width:0.77783179;stroke-opacity:1;font-family:Sans"
-       x="96.791"
-       y="123.82767"
+       style="font-size:27.64742851px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#200020;fill-opacity:1;stroke:#200020;stroke-width:0.69118595;stroke-opacity:1;font-family:Sans"
+       x="98.449059"
+       y="122.12009"
        id="text2985"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan2987"
-         x="96.791"
-         y="123.82767"
-         style="font-style:italic;fill:#200020;fill-opacity:1;stroke:#200020;stroke-width:0.77783179;stroke-opacity:1">U</tspan></text>
+         x="98.449059"
+         y="122.12009"
+         style="font-style:italic;fill:#200020;fill-opacity:1;stroke:#200020;stroke-width:0.69118595;stroke-opacity:1">U</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:31.11327362px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#200020;fill-opacity:1;stroke:#200020;stroke-width:0.77783179;stroke-opacity:1;font-family:Sans"
-       x="-127.70285"
-       y="-93.976624"
+       style="font-size:27.64743042px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#200020;fill-opacity:1;stroke:#200020;stroke-width:0.69118589;stroke-opacity:1;font-family:Sans"
+       x="-125.91752"
+       y="-95.594261"
        id="text2985-5"
        sodipodi:linespacing="125%"
-       transform="scale(-0.9999999,-1.0000001)"><tspan
+       transform="scale(-1.0000002,-0.99999981)"><tspan
          sodipodi:role="line"
          id="tspan2987-1"
-         x="-127.70285"
-         y="-93.976624"
-         style="font-style:italic;fill:#200020;fill-opacity:1;stroke:#200020;stroke-width:0.77783179;stroke-opacity:1">U</tspan></text>
+         x="-125.91752"
+         y="-95.594261"
+         style="font-style:italic;fill:#200020;fill-opacity:1;stroke:#200020;stroke-width:0.69118589;stroke-opacity:1">U</tspan></text>
   </g>
 </svg>
