@@ -185,7 +185,7 @@
         <antcall target="distribute"/>
     </target>
 
-    <target name="distribute-release" description="Does a real release" depends="determine-version">
+    <target name="distribute-release" description="Does a real release">
         <input addproperty="sourceforge.username" message="Sourceforge username"/>
         <input addproperty="sourceforge.password" message="Sourceforge password"/>
         <!--TODO get code revision of trunk -->
