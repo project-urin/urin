@@ -186,8 +186,8 @@
     </target>
 
     <target name="distribute-release" description="Does a real release" depends="determine-version">
-        <input addproperty="ssh.username" message="SSH username"/>
-        <input addproperty="ssh.password" message="SSH password"/>
+        <input addproperty="sourceforge.username" message="Sourceforge username"/>
+        <input addproperty="sourceforge.password" message="Sourceforge password"/>
         <!--TODO get code revision of trunk -->
         <!--<property name="release.revision" value="${git.info.rev}"/>-->
         <!--<echo message="Attempting to release revison ${release.revision}"/>-->
@@ -200,17 +200,17 @@
         <!--<property file="${release.directory}/version.properties"/>-->
         <!--<property name="version" value="${urin.version.major}.${urin.version.minor}"/>-->
         <!--TODO tag release revision -->
-        <sshexec host="shell.sourceforge.net" username="${ssh.username},urin" password="${ssh.password}"
+        <sshexec host="shell.sourceforge.net" username="${sourceforge.username},urin" password="${sourceforge.password}"
                  command="create" trust="true"/>
-        <scp todir="${ssh.username},urin@web.sourceforge.net:/home/project-web/urin/"
-             password="${ssh.password}" trust="true">
+        <scp todir="${sourceforge.username},urin@web.sourceforge.net:/home/project-web/urin/"
+             password="${sourceforge.password}" trust="true">
             <fileset dir="${release.directory}/build/dist/documentation/"/>
         </scp>
-        <scp todir="${ssh.username},urin@web.sourceforge.net:/home/frs/project/u/ur/urin/"
-             password="${ssh.password}" trust="true">
+        <scp todir="${sourceforge.username},urin@web.sourceforge.net:/home/frs/project/u/ur/urin/"
+             password="${sourceforge.password}" trust="true">
             <fileset dir="${release.directory}/build/dist/binaries/"/>
         </scp>
-        <sshexec host="shell.sourceforge.net" username="${ssh.username},urin" password="${ssh.password}"
+        <sshexec host="shell.sourceforge.net" username="${sourceforge.username},urin" password="${sourceforge.password}"
                  command="rm /home/project-web/urin/htdocs ; ln -s /home/project-web/urin/${version} /home/project-web/urin/htdocs"
                  trust="true"/>
         <propertyfile file="version.properties">
