@@ -186,8 +186,8 @@
     </target>
 
     <target name="distribute-release" description="Does a real release">
-        <property name="release" value="true"/>
-        <antcall target="determine-version"/>
+        <property file="version.properties"/>
+        <property name="version" value="${urin.version.major}.${urin.version.minor}"/>
         <input addproperty="sourceforge.username" message="Sourceforge username"/>
         <input addproperty="sourceforge.password" message="Sourceforge password"/>
         <!--TODO get code revision of trunk -->
