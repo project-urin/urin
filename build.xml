@@ -41,6 +41,12 @@
         </fileset>
     </path>
 
+    <path id="build-libs">
+        <fileset dir="${location.lib}/build">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
     <!--<taskdef resource="org/eclipse/jgit/ant/ant-tasks.properties">-->
     <!--<classpath>-->
     <!--<pathelement location="${location.lib}/build/org.eclipse.jgit-1.1.0.201109151100-r"/>-->
@@ -75,6 +81,7 @@
                includeantruntime="false">
             <src path="${location.src.documentation}"/>
             <classpath location="${location.classes}"/>
+            <classpath refid="build-libs"/>
         </javac>
 
         <javac destdir="${location.testclasses}" debug="on" source="1.6" target="1.6" includeantruntime="false">
@@ -129,11 +136,12 @@
         <copy todir="${location.dist.documentation}">
             <fileset dir="${location.documentation}" excludes="**/*.html"/>
         </copy>
-        <java classname="org.sourceforge.urin.IndexPage" failonerror="true" fork="true">
+        <java classname="net.sourceforge.urin.IndexPage" failonerror="true" fork="true">
             <arg value="${location.dist}/documentation/${version}"/>
             <classpath>
                 <pathelement path="${location.classes}"/>
                 <pathelement path="${location.documentationclasses}"/>
+                <path refid="build-libs"/>
             </classpath>
         </java>
         <mkdir dir="${location.dist.documentation}/javadoc"/>
