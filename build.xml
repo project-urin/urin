@@ -36,19 +36,20 @@
     </path>
 
     <path id="test-compile-libs">
-        <fileset dir="${location.lib}/test/jar">
+        <fileset dir="${location.lib}/test/compile">
             <include name="**/*.jar"/>
         </fileset>
     </path>
 
-    <taskdef resource="org/eclipse/jgit/ant/ant-tasks.properties">
-        <classpath>
-            <pathelement location="${location.lib}/build/org.eclipse.jgit-1.1.0.201109151100-r"/>
-            <!--<pathelement location="${location.lib}/build/org.eclipse.jgit-VERSION.jar"/>-->
-            <pathelement location="${location.lib}/build/jsch-0.1.24.jar"/>
-            <!--<pathelement location="path/to/jsch-0.1.44-1.jar"/>-->
-        </classpath>
-    </taskdef>
+    <!--<taskdef resource="org/eclipse/jgit/ant/ant-tasks.properties">-->
+    <!--<classpath>-->
+    <!--<pathelement location="${location.lib}/build/org.eclipse.jgit-1.1.0.201109151100-r"/>-->
+    <!--<pathelement-->
+    <!--location="${location.lib}/build/org.eclipse.jgit.ant-1.0.99.0.7-UNOFFICIAL-ROBERTO-RELEASE.jar"/>-->
+    <!--&lt;!&ndash;<pathelement location="${location.lib}/build/jsch-0.1.24.jar"/>&ndash;&gt;-->
+    <!--<pathelement location="${location.lib}/build/jsch-0.1.44.jar"/>-->
+    <!--</classpath>-->
+    <!--</taskdef>-->
 
     <target name="compile" description="compiles all classes">
         <echo message="Starting compile"/>
