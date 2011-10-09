@@ -3,6 +3,9 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.HostBuilder.aHost;
+import static net.sourceforge.urin.PortBuilder.aPort;
+import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
 
 public class AuthorityTest {
     @Test
@@ -25,15 +28,4 @@ public class AuthorityTest {
         authority(aUserInfo(), aHost(), aPort());
     }
 
-    private Port aPort() {
-        return new Port();
-    }
-
-    private static UserInfo aUserInfo() {
-        return new UserInfo();
-    }
-
-    private static Host aHost() {
-        return new Host();
-    }
 }
