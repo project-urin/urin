@@ -10,14 +10,14 @@
 
 package net.sourceforge.urin;
 
-public class Path {
-    private final String value;
+import org.junit.Test;
 
-    public Path(final String path) {
-        value = path;
-    }
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
-    public String asString() {
-        return value;
+public class PathRootlessTest {
+    @Test
+    public void asStringReturnsValueProvided() throws Exception {
+        assertThat(new PathRootless("some value").asString(), equalTo("some value"));
     }
 }

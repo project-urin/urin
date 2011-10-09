@@ -10,14 +10,20 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Test;
+public class PathRootless {
+    private final String firstPathSegment;
+    private final String[] pathSegments;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+    public PathRootless(final String firstPathSegment, final String... pathSegments) {
+        this.firstPathSegment = firstPathSegment;
+        this.pathSegments = pathSegments.clone();
+    }
 
-public class PathTest {
-    @Test
-    public void asStringReturnsValueProvided() throws Exception {
-        assertThat(new Path("some value").asString(), equalTo("some value"));
+    public String asString() {
+        StringBuilder result = new StringBuilder(firstPathSegment);
+        for (String pathSegment : pathSegments) {
+            result.append("/").append(pathSegment);
+        }
+        return result.toString();
     }
 }
