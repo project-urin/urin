@@ -1,10 +1,19 @@
+/*
+ * Copyright 2011 Mark Slater
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * 	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+
 package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
-import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.HierarchicalPartBuilder.aHierarchicalPart;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Urin.urin;
@@ -13,42 +22,22 @@ public class UrinTest {
 
     @Test
     public void createsUrinWithAllParts() throws Exception {
-        urin(aScheme(), anAuthority(), aPath(), aQuery(), aFragment());
+        urin(aScheme(), aHierarchicalPart(), aQuery(), aFragment());
     }
 
     @Test
     public void createsUrinWithNoFragment() throws Exception {
-        urin(aScheme(), anAuthority(), aPath(), aQuery());
+        urin(aScheme(), aHierarchicalPart(), aQuery());
     }
 
     @Test
     public void createsUrinWithNoQuery() throws Exception {
-        urin(aScheme(), anAuthority(), aPath(), aFragment());
+        urin(aScheme(), aHierarchicalPart(), aFragment());
     }
 
     @Test
     public void createsUrinWithNoQueryAndNoFragment() throws Exception {
-        urin(aScheme(), anAuthority(), aPath());
-    }
-
-    @Test
-    public void createsUrinWithNoAuthorityNoQueryAndNoFragment() throws Exception {
-        urin(aScheme(), aPath());
-    }
-
-    @Test
-    public void createsUrinWithNoAuthorityAndNoQuery() throws Exception {
-        urin(aScheme(), aPath(), aFragment());
-    }
-
-    @Test
-    public void createsUrinWithNoAuthorityAndNoFragment() throws Exception {
-        urin(aScheme(), aPath(), aQuery());
-    }
-
-    @Test
-    public void createsUrinWithNoAuthority() throws Exception {
-        urin(aScheme(), aPath(), aQuery(), aFragment());
+        urin(aScheme(), aHierarchicalPart());
     }
 
 }

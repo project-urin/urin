@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import java.net.URI;
 
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -33,21 +34,24 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void telExample() throws Exception {
-        Urin urin = urin(new Scheme("tel"), new Path("+1-816-555-1212"));
+        final Path path = new Path("+1-816-555-1212");
+        Urin urin = urin(new Scheme("tel"), hierarchicalPart(path));
         assertThat(urin.asString(), equalTo("tel:+1-816-555-1212"));
         assertThat(urin.asUri(), equalTo(new URI("tel:+1-816-555-1212")));
     }
 
     @Test
     public void newsExample() throws Exception {
-        Urin urin = urin(new Scheme("news"), new Path("comp.infosystems.www.servers.unix"));
+        final Path path = new Path("comp.infosystems.www.servers.unix");
+        Urin urin = urin(new Scheme("news"), hierarchicalPart(path));
         assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
         assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
     }
 
     @Test
     public void urnExample() throws Exception {
-        Urin urin = urin(new Scheme("urn"), new Path("oasis:names:specification:docbook:dtd:xml:4.1.2"));
+        final Path path = new Path("oasis:names:specification:docbook:dtd:xml:4.1.2");
+        Urin urin = urin(new Scheme("urn"), hierarchicalPart(path));
         assertThat(urin.asString(), equalTo("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"));
         assertThat(urin.asUri(), equalTo(new URI("urn:oasis:names:specification:docbook:dtd:xml:4.1.2")));
     }

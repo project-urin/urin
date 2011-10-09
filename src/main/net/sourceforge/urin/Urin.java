@@ -14,55 +14,19 @@ import java.net.URI;
 
 public abstract class Urin {
 
-    public static Urin urin(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
-        return new Urin() {
-            @Override
-            public String asString() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        };
-    }
-
-    public static Urin urin(final Scheme scheme, final Authority authority, final Path path, final Query query) {
-        return new Urin() {
-            @Override
-            public String asString() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        };
-    }
-
-    public static Urin urin(final Scheme scheme, final Authority authority, final Path path, final Fragment fragment) {
-        return new Urin() {
-            @Override
-            public String asString() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        };
-    }
-
-    public static Urin urin(final Scheme scheme, final Authority authority, final Path path) {
-        return new Urin() {
-            @Override
-            public String asString() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
-            }
-        };
-    }
-
-    public static Urin urin(final Scheme scheme, final Path path) {
+    public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
         return new Urin() {
             @Override
             public String asString() {
                 return new StringBuilder(scheme.asString())
                         .append(":")
-                        .append(path.asString())
+                        .append(hierarchicalPart.asString())
                         .toString();
             }
         };
     }
 
-    public static Urin urin(final Scheme scheme, final Path path, final Fragment fragment) {
+    public static Urin urin(final Scheme scheme, final HierarchicalPart path, final Fragment fragment) {
         return new Urin() {
             @Override
             public String asString() {
@@ -71,7 +35,7 @@ public abstract class Urin {
         };
     }
 
-    public static Urin urin(final Scheme scheme, final Path path, final Query query) {
+    public static Urin urin(final Scheme scheme, final HierarchicalPart path, final Query query) {
         return new Urin() {
             @Override
             public String asString() {
@@ -80,7 +44,7 @@ public abstract class Urin {
         };
     }
 
-    public static Urin urin(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+    public static Urin urin(final Scheme scheme, final HierarchicalPart path, final Query query, final Fragment fragment) {
         return new Urin() {
             @Override
             public String asString() {
