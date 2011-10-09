@@ -26,6 +26,16 @@ public class SchemeTest {
     }
 
     @Test
+    public void rejectsNullScheme() throws Exception {
+        try {
+            new Scheme(null);
+            fail("Expected a NullPointerException to be thrown");
+        } catch (NullPointerException e) {
+            // expect to end up here
+        }
+    }
+
+    @Test
     public void rejectsZeroLengthStringScheme() throws Exception {
         try {
             new Scheme("");
