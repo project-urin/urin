@@ -26,6 +26,16 @@ public class SchemeTest {
     }
 
     @Test
+    public void rejectsZeroLengthStringScheme() throws Exception {
+        try {
+            new Scheme("");
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Scheme must contain at least one character"));
+        }
+    }
+
+    @Test
     public void rejectsInvalidSchemeNameFirstChar() throws Exception {
         try {
             new Scheme("+");

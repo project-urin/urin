@@ -5,6 +5,9 @@ public final class Scheme {
     private final String value;
 
     public Scheme(final String name) {
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Scheme must contain at least one character");
+        }
         if (!isAlpha(name.charAt(0))) {
             throw new IllegalArgumentException("First character must be a-z or A-Z in scheme [" + name + "]");
         }
