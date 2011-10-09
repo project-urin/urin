@@ -21,4 +21,34 @@ public class UrinTest {
         urin(aScheme(), anAuthority(), aPath(), aQuery());
     }
 
+    @Test
+    public void createsUrinWithNoQuery() throws Exception {
+        urin(aScheme(), anAuthority(), aPath(), aFragment());
+    }
+
+    @Test
+    public void createsUrinWithNoQueryAndNoFragment() throws Exception {
+        urin(aScheme(), anAuthority(), aPath());
+    }
+
+    @Test
+    public void createsUrinWithNoAuthorityNoQueryAndNoFragment() throws Exception {
+        urin(aScheme(), aPath());
+    }
+
+    @Test
+    public void createsUrinWithNoAuthorityAndNoQuery() throws Exception {
+        urin(aScheme(), aPath(), aFragment());
+    }
+
+    @Test
+    public void createsUrinWithNoAuthorityAndNoFragment() throws Exception {
+        urin(aScheme(), aPath(), aQuery());
+    }
+
+    @Test
+    public void createsUrinWithNoAuthority() throws Exception {
+        urin(aScheme(), aPath(), aQuery(), aFragment());
+    }
+
 }
