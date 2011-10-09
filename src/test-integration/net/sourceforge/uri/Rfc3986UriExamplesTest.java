@@ -26,8 +26,8 @@ public class Rfc3986UriExamplesTest {
 //    http://www.ietf.org/rfc/rfc2396.txt
 //    ldap://[2001:db8::7]/c=GB?objectClass?one
 //    mailto:John.Doe@example.com
-//    news:comp.infosystems.www.servers.unix
-//    tel:+1-816-555-1212
+//     news:comp.infosystems.www.servers.unix
+//     tel:+1-816-555-1212
 //    telnet://192.0.2.16:80/
 //    urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 
@@ -36,5 +36,19 @@ public class Rfc3986UriExamplesTest {
         Urin urin = urin(new Scheme("tel"), new Path("+1-816-555-1212"));
         assertThat(urin.asString(), equalTo("tel:+1-816-555-1212"));
         assertThat(urin.asUri(), equalTo(new URI("tel:+1-816-555-1212")));
+    }
+
+    @Test
+    public void newsExample() throws Exception {
+        Urin urin = urin(new Scheme("news"), new Path("comp.infosystems.www.servers.unix"));
+        assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
+        assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
+    }
+
+    @Test
+    public void urnExample() throws Exception {
+        Urin urin = urin(new Scheme("urn"), new Path("oasis:names:specification:docbook:dtd:xml:4.1.2"));
+        assertThat(urin.asString(), equalTo("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"));
+        assertThat(urin.asUri(), equalTo(new URI("urn:oasis:names:specification:docbook:dtd:xml:4.1.2")));
     }
 }
