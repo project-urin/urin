@@ -12,12 +12,21 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import static net.sourceforge.urin.CharacterSets.SUB_DELIMS;
+import static net.sourceforge.urin.CharacterSets.UNRESERVED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class PathRootlessTest {
+
     @Test
-    public void asStringReturnsValueProvided() throws Exception {
-        assertThat(new PathRootless("some value").asString(), equalTo("some value"));
+    public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
+        String validNonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS + ":" + "@";
+        assertThat(new PathRootless(validNonPercentEncodedCharacters).asString(), equalTo(validNonPercentEncodedCharacters));
+    }
+
+    @Test
+    public void asStringPercentEncodesSlashes() throws Exception {
+        assertThat(new PathRootless("/.?.#.[.]. ").asString(), equalTo("%2F.%3F.%23.%5B.%5D.%20"));
     }
 }

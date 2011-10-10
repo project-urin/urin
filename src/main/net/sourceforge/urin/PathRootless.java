@@ -10,20 +10,64 @@
 
 package net.sourceforge.urin;
 
-public class PathRootless {
-    private final String firstPathSegment;
-    private final String[] pathSegments;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
-    public PathRootless(final String firstPathSegment, final String... pathSegments) {
-        this.firstPathSegment = firstPathSegment;
-        this.pathSegments = pathSegments.clone();
+public class PathRootless {
+    private static final CharacterSetMembershipFunction NON_PERCENT_ENCODED_CHARACTER_SET = or(
+            ALPHA_LOWERCASE,
+            ALPHA_UPPERCASE,
+            DIGIT,
+            singleMemberCharacterSet('-'),
+            singleMemberCharacterSet('.'),
+            singleMemberCharacterSet('_'),
+            singleMemberCharacterSet('~'),
+
+            singleMemberCharacterSet('!'),
+            singleMemberCharacterSet('$'),
+            singleMemberCharacterSet('&'),
+            singleMemberCharacterSet('\''),
+            singleMemberCharacterSet('('),
+            singleMemberCharacterSet(')'),
+            singleMemberCharacterSet('*'),
+            singleMemberCharacterSet('+'),
+            singleMemberCharacterSet(','),
+            singleMemberCharacterSet(';'),
+            singleMemberCharacterSet('='),
+
+
+            singleMemberCharacterSet(':'),
+            singleMemberCharacterSet('@')
+    );
+
+    private final String firstSegment;
+    private final String[] segments;
+
+    public PathRootless(final String firstSegment, final String... segments) {
+        this.firstSegment = firstSegment;
+        this.segments = segments.clone();
     }
 
     public String asString() {
-        StringBuilder result = new StringBuilder(firstPathSegment);
-        for (String pathSegment : pathSegments) {
+        StringBuilder result = new StringBuilder(percentEncode(firstSegment));
+        for (String pathSegment : segments) {
             result.append("/").append(pathSegment);
         }
         return result.toString();
+    }
+
+    private static String percentEncode(final String segment) {
+        StringBuilder result = new StringBuilder();
+        for (char character : segment.toCharArray()) {
+            if (NON_PERCENT_ENCODED_CHARACTER_SET.isMember(character)) {
+                result.append(character);
+            } else {
+                result.append(percentEncode(character));
+            }
+        }
+        return result.toString();
+    }
+
+    private static String percentEncode(final Character character) {
+        return "%" + Integer.toHexString(character).toUpperCase();
     }
 }

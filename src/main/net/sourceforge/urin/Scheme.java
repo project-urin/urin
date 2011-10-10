@@ -10,7 +10,18 @@
 
 package net.sourceforge.urin;
 
+import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
+
 public final class Scheme {
+
+    private static final CharacterSetMembershipFunction TRAILING_CHARACTER_MEMBERSHIP_FUNCTION = or(
+            ALPHA_LOWERCASE,
+            ALPHA_UPPERCASE,
+            DIGIT,
+            singleMemberCharacterSet('+'),
+            singleMemberCharacterSet('-'),
+            singleMemberCharacterSet('.')
+    );
 
     private final String value;
 
@@ -18,40 +29,19 @@ public final class Scheme {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Scheme must contain at least one character");
         }
-        if (!isAlpha(name.charAt(0))) {
-            throw new IllegalArgumentException("First character must be a-z or A-Z in scheme [" + name + "]");
+        if (!ALPHA.isMember(name.charAt(0))) {
+            throw new IllegalArgumentException("First character must be " + ALPHA.describe() + " in scheme [" + name + "]");
         }
         for (int i = 1; i < name.length(); i++) {
-            char testChar = name.charAt(i);
-            if (!isAlpha(testChar) && !(isDigit(testChar)) && !(isPlus(testChar)) && !(isHyphen(testChar)) && !(isDot(testChar))) {
-                throw new IllegalArgumentException("Character " + (i + 1) + " must be a-z, A-Z, 0-9, +, -, or . in scheme [" + name + "]");
+            if (!TRAILING_CHARACTER_MEMBERSHIP_FUNCTION.isMember(name.charAt(i))) {
+                throw new IllegalArgumentException("Character " + (i + 1) + " must be " + TRAILING_CHARACTER_MEMBERSHIP_FUNCTION.describe() + " in scheme [" + name + "]");
             }
         }
         value = name.toLowerCase();
     }
 
-    private boolean isPlus(final char testChar) {
-        return testChar == '+';
-    }
-
-    private boolean isHyphen(final char testChar) {
-        return testChar == '-';
-    }
-
-    private boolean isDot(final char testChar) {
-        return testChar == '.';
-    }
-
-    private boolean isDigit(final char testChar) {
-        return testChar >= '0' && testChar <= '9';
-    }
-
-    private static boolean isAlpha(final char testChar) {
-        return (testChar >= 'a' && testChar <= 'z')
-                || (testChar >= 'A' && testChar <= 'Z');
-    }
-
     public String asString() {
         return value;
     }
+
 }
