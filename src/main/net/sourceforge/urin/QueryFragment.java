@@ -10,10 +10,19 @@
 
 package net.sourceforge.urin;
 
-public class Query extends QueryFragment {
+import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS;
 
-    public Query(final String query) {
-        super(query);
+abstract class QueryFragment {
+
+    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
+
+    private final String content;
+
+    QueryFragment(final String content) {
+        this.content = content;
     }
 
+    public String asString() {
+        return PERCENT_ENCODER.encode(content);
+    }
 }
