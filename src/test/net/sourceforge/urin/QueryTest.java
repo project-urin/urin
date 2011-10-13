@@ -16,20 +16,16 @@ import static net.sourceforge.urin.CharacterSets.P_CHARS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class PathRootlessTest {
-
+public class QueryTest {
     @Test
     public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
-        assertThat(new PathRootless(P_CHARS).asString(), equalTo(P_CHARS));
+        String validNonPercentEncodedCharacters = P_CHARS + "/" + "?";
+        assertThat(new Query(validNonPercentEncodedCharacters).asString(), equalTo(validNonPercentEncodedCharacters));
     }
 
     @Test
     public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
-        assertThat(new PathRootless("./.?.#.[.]. .").asString(), equalTo(".%2F.%3F.%23.%5B.%5D.%20."));
+        assertThat(new Query(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
     }
 
-    @Test
-    public void encodesMultipleSegments() throws Exception {
-        assertThat(new PathRootless("/", "/").asString(), equalTo("%2F/%2F"));
-    }
 }

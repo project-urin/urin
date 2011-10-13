@@ -10,34 +10,11 @@
 
 package net.sourceforge.urin;
 
-import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
 
 public class PathRootless {
-    private static final CharacterSetMembershipFunction NON_PERCENT_ENCODED_CHARACTER_SET = or(
-            ALPHA_LOWERCASE,
-            ALPHA_UPPERCASE,
-            DIGIT,
-            singleMemberCharacterSet('-'),
-            singleMemberCharacterSet('.'),
-            singleMemberCharacterSet('_'),
-            singleMemberCharacterSet('~'),
 
-            singleMemberCharacterSet('!'),
-            singleMemberCharacterSet('$'),
-            singleMemberCharacterSet('&'),
-            singleMemberCharacterSet('\''),
-            singleMemberCharacterSet('('),
-            singleMemberCharacterSet(')'),
-            singleMemberCharacterSet('*'),
-            singleMemberCharacterSet('+'),
-            singleMemberCharacterSet(','),
-            singleMemberCharacterSet(';'),
-            singleMemberCharacterSet('='),
-
-
-            singleMemberCharacterSet(':'),
-            singleMemberCharacterSet('@')
-    );
+    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
 
     private final String firstSegment;
     private final String[] segments;
@@ -48,26 +25,11 @@ public class PathRootless {
     }
 
     public String asString() {
-        StringBuilder result = new StringBuilder(percentEncode(firstSegment));
+        StringBuilder result = new StringBuilder(PERCENT_ENCODER.encode(firstSegment));
         for (String pathSegment : segments) {
-            result.append("/").append(pathSegment);
+            result.append("/").append(PERCENT_ENCODER.encode(pathSegment));
         }
         return result.toString();
     }
 
-    private static String percentEncode(final String segment) {
-        StringBuilder result = new StringBuilder();
-        for (char character : segment.toCharArray()) {
-            if (NON_PERCENT_ENCODED_CHARACTER_SET.isMember(character)) {
-                result.append(character);
-            } else {
-                result.append(percentEncode(character));
-            }
-        }
-        return result.toString();
-    }
-
-    private static String percentEncode(final Character character) {
-        return "%" + Integer.toHexString(character).toUpperCase();
-    }
 }

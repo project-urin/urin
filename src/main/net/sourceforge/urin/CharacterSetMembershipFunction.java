@@ -53,6 +53,32 @@ abstract class CharacterSetMembershipFunction {
         }
     };
 
+    static final CharacterSetMembershipFunction P_CHAR = or(
+            ALPHA_LOWERCASE,
+            ALPHA_UPPERCASE,
+            DIGIT,
+            singleMemberCharacterSet('-'),
+            singleMemberCharacterSet('.'),
+            singleMemberCharacterSet('_'),
+            singleMemberCharacterSet('~'),
+
+            singleMemberCharacterSet('!'),
+            singleMemberCharacterSet('$'),
+            singleMemberCharacterSet('&'),
+            singleMemberCharacterSet('\''),
+            singleMemberCharacterSet('('),
+            singleMemberCharacterSet(')'),
+            singleMemberCharacterSet('*'),
+            singleMemberCharacterSet('+'),
+            singleMemberCharacterSet(','),
+            singleMemberCharacterSet(';'),
+            singleMemberCharacterSet('='),
+
+
+            singleMemberCharacterSet(':'),
+            singleMemberCharacterSet('@')
+    );
+
     static CharacterSetMembershipFunction singleMemberCharacterSet(final char member) {
         return new CharacterSetMembershipFunction() {
             @Override

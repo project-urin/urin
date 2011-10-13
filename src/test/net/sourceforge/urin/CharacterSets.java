@@ -17,4 +17,5 @@ public class CharacterSets {
     public static final String DIGIT = "0123456789";
     public static final String UNRESERVED = ALPHA + DIGIT + "-._~";
     public static final String SUB_DELIMS = "!$&'()*+,;=";
+    public static final String P_CHARS = UNRESERVED + SUB_DELIMS + ":" + "@";
 }
