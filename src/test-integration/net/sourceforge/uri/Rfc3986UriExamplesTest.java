@@ -10,7 +10,7 @@
 
 package net.sourceforge.uri;
 
-import net.sourceforge.urin.PathRootless;
+import net.sourceforge.urin.PathRootlessAbsoluteOrEmpty;
 import net.sourceforge.urin.Scheme;
 import net.sourceforge.urin.Urin;
 import org.junit.Test;
@@ -34,24 +34,24 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void telExample() throws Exception {
-        final PathRootless pathRootless = new PathRootless("+1-816-555-1212");
-        Urin urin = urin(new Scheme("tel"), hierarchicalPart(pathRootless));
+        final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = new PathRootlessAbsoluteOrEmpty("+1-816-555-1212");
+        Urin urin = urin(new Scheme("tel"), hierarchicalPart(pathRootlessAbsoluteOrEmpty));
         assertThat(urin.asString(), equalTo("tel:+1-816-555-1212"));
         assertThat(urin.asUri(), equalTo(new URI("tel:+1-816-555-1212")));
     }
 
     @Test
     public void newsExample() throws Exception {
-        final PathRootless pathRootless = new PathRootless("comp.infosystems.www.servers.unix");
-        Urin urin = urin(new Scheme("news"), hierarchicalPart(pathRootless));
+        final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = new PathRootlessAbsoluteOrEmpty("comp.infosystems.www.servers.unix");
+        Urin urin = urin(new Scheme("news"), hierarchicalPart(pathRootlessAbsoluteOrEmpty));
         assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
         assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
     }
 
     @Test
     public void urnExample() throws Exception {
-        final PathRootless pathRootless = new PathRootless("oasis:names:specification:docbook:dtd:xml:4.1.2");
-        Urin urin = urin(new Scheme("urn"), hierarchicalPart(pathRootless));
+        final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = new PathRootlessAbsoluteOrEmpty("oasis:names:specification:docbook:dtd:xml:4.1.2");
+        Urin urin = urin(new Scheme("urn"), hierarchicalPart(pathRootlessAbsoluteOrEmpty));
         assertThat(urin.asString(), equalTo("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"));
         assertThat(urin.asUri(), equalTo(new URI("urn:oasis:names:specification:docbook:dtd:xml:4.1.2")));
     }

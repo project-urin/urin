@@ -11,7 +11,7 @@
 package net.sourceforge.urin;
 
 public class PathBuilder {
-    static PathRootless aPath() {
-        return new PathRootless("some/path");
+    static PathRootlessAbsoluteOrEmpty aPath() {
+        return new PathRootlessAbsoluteOrEmpty("some/path");
     }
 }

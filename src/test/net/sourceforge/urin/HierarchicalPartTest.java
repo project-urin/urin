@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
 public class HierarchicalPartTest {
     @Test
     public void aSimplePathAsStringReturnsThePath() throws Exception {
-        PathRootless pathRootless = aPath();
-        assertThat(hierarchicalPart(pathRootless).asString(), equalTo(pathRootless.asString()));
+        PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = aPath();
+        assertThat(hierarchicalPart(pathRootlessAbsoluteOrEmpty).asString(), equalTo(pathRootlessAbsoluteOrEmpty.asString()));
     }
 }

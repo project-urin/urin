@@ -12,14 +12,14 @@ package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
 
-public class PathRootless {
+public class PathRootlessAbsoluteOrEmpty {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
 
     private final String firstSegment;
     private final String[] segments;
 
-    public PathRootless(final String firstSegment, final String... segments) {
+    public PathRootlessAbsoluteOrEmpty(final String firstSegment, final String... segments) {
         this.firstSegment = firstSegment;
         this.segments = segments.clone();
     }

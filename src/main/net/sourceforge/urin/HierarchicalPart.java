@@ -11,11 +11,11 @@
 package net.sourceforge.urin;
 
 public abstract class HierarchicalPart {
-    public static HierarchicalPart hierarchicalPart(final PathRootless pathRootless) {
+    public static HierarchicalPart hierarchicalPart(final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty) {
         return new HierarchicalPart() {
             @Override
             public String asString() {
-                return pathRootless.asString();
+                return pathRootlessAbsoluteOrEmpty.asString();
             }
         };
     }
