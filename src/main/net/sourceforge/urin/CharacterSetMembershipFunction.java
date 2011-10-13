@@ -53,15 +53,17 @@ abstract class CharacterSetMembershipFunction {
         }
     };
 
-    static final CharacterSetMembershipFunction P_CHAR = or(
+    static final CharacterSetMembershipFunction UNRESERVED = or(
             ALPHA_LOWERCASE,
             ALPHA_UPPERCASE,
             DIGIT,
             singleMemberCharacterSet('-'),
             singleMemberCharacterSet('.'),
             singleMemberCharacterSet('_'),
-            singleMemberCharacterSet('~'),
+            singleMemberCharacterSet('~')
+    );
 
+    static final CharacterSetMembershipFunction SUB_DELIMITERS = or(
             singleMemberCharacterSet('!'),
             singleMemberCharacterSet('$'),
             singleMemberCharacterSet('&'),
@@ -72,9 +74,12 @@ abstract class CharacterSetMembershipFunction {
             singleMemberCharacterSet('+'),
             singleMemberCharacterSet(','),
             singleMemberCharacterSet(';'),
-            singleMemberCharacterSet('='),
+            singleMemberCharacterSet('=')
+    );
 
-
+    static final CharacterSetMembershipFunction P_CHAR = or(
+            UNRESERVED,
+            SUB_DELIMITERS,
             singleMemberCharacterSet(':'),
             singleMemberCharacterSet('@')
     );
