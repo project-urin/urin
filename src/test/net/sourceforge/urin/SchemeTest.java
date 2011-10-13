@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import static net.sourceforge.urin.CharacterSets.ALPHA;
+import static net.sourceforge.urin.CharacterSets.DIGIT;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -29,10 +31,9 @@ public class SchemeTest {
 
     @Test
     public void acceptsTheFullRangeOfValidFirstCharacters() throws Exception {
-        new Scheme("a");
-        new Scheme("z");
-        new Scheme("A");
-        new Scheme("Z");
+        for (char character : ALPHA.toCharArray()) {
+            new Scheme(Character.toString(character));
+        }
     }
 
     @Test
@@ -109,15 +110,7 @@ public class SchemeTest {
 
     @Test
     public void acceptsFullRangeOfTailCharacters() throws Exception {
-        new Scheme("aa");
-        new Scheme("az");
-        new Scheme("aA");
-        new Scheme("aZ");
-        new Scheme("a0");
-        new Scheme("a9");
-        new Scheme("a+");
-        new Scheme("a-");
-        new Scheme("a.");
+        new Scheme("a" + ALPHA + DIGIT + "+-.");
     }
 
     @Test
