@@ -28,4 +28,8 @@ public final class Port {
     public String asString() {
         return port;
     }
+
+    public boolean isEmpty() {
+        return port.isEmpty();
+    }
 }

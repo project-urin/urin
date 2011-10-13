@@ -39,8 +39,13 @@ public class PortTest {
     }
 
     @Test
-    public void allowsZeroLengthStringPort() throws Exception {
-        new Port("");
+    public void zeroLengthStringPortKnowsItIsEmpty() throws Exception {
+        assertThat(new Port("").isEmpty(), equalTo(true));
+    }
+
+    @Test
+    public void nonZeroLengthStringPortKnowsItIsNotEmpty() throws Exception {
+        assertThat(new Port("0").isEmpty(), equalTo(false));
     }
 
     @Test
