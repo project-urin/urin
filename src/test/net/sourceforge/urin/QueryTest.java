@@ -12,15 +12,15 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.CharacterSets.P_CHARS;
+import static net.sourceforge.urin.CharacterSets.QUERY_AND_FRAGMENT_CHARACTERS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class QueryTest {
+
     @Test
     public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
-        String validNonPercentEncodedCharacters = P_CHARS + "/" + "?";
-        assertThat(new Query(validNonPercentEncodedCharacters).asString(), equalTo(validNonPercentEncodedCharacters));
+        assertThat(new Query(QUERY_AND_FRAGMENT_CHARACTERS).asString(), equalTo(QUERY_AND_FRAGMENT_CHARACTERS));
     }
 
     @Test

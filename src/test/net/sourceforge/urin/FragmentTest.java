@@ -10,19 +10,22 @@
 
 package net.sourceforge.urin;
 
-import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS;
+import org.junit.Test;
 
-public class Query {
+import static net.sourceforge.urin.CharacterSets.QUERY_AND_FRAGMENT_CHARACTERS;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
-    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
+public class FragmentTest {
 
-    private final String query;
-
-    public Query(final String query) {
-        this.query = query;
+    @Test
+    public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
+        assertThat(new Fragment(QUERY_AND_FRAGMENT_CHARACTERS).asString(), equalTo(QUERY_AND_FRAGMENT_CHARACTERS));
     }
 
-    public String asString() {
-        return PERCENT_ENCODER.encode(query);
+    @Test
+    public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
+        assertThat(new Fragment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
     }
+
 }

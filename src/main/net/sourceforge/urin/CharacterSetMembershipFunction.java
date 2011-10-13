@@ -78,6 +78,11 @@ abstract class CharacterSetMembershipFunction {
             singleMemberCharacterSet(':'),
             singleMemberCharacterSet('@')
     );
+    public static final CharacterSetMembershipFunction QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS = or(
+            P_CHAR,
+            singleMemberCharacterSet('/'),
+            singleMemberCharacterSet('?')
+    );
 
     static CharacterSetMembershipFunction singleMemberCharacterSet(final char member) {
         return new CharacterSetMembershipFunction() {
