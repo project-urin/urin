@@ -18,10 +18,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class DecimalOctetTest {
-    @Test
-    public void asStringReturnsTheArgument() throws Exception {
-        assertThat(decimalOctet("123").asString(), equalTo("123"));
-    }
 
     @Test
     public void asStringReturnsTheArgumentWhenUsingAnInt() throws Exception {
