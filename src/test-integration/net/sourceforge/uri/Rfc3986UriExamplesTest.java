@@ -17,7 +17,9 @@ import java.net.URI;
 
 import static net.sourceforge.urin.AbEmptyPath.absolutePath;
 import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.DecimalOctet.decimalOctet;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.Host.ipV4Address;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -89,7 +91,7 @@ public class Rfc3986UriExamplesTest {
         Urin urin = urin(
                 new Scheme("telnet"),
                 hierarchicalPart(
-                        authority(registeredName("192.0.2.16"), new Port("80")),
+                        authority(ipV4Address(decimalOctet(192), decimalOctet(0), decimalOctet(2), decimalOctet(16)), new Port("80")),
                         absolutePath())
         );
         assertThat(urin.asString(), equalTo("telnet://192.0.2.16:80/"));
