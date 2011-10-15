@@ -16,7 +16,7 @@ public abstract class Authority {
         return new Authority() {
             @Override
             public String asString() {
-                return null;
+                return host.asString();
             }
         };
     }
@@ -25,7 +25,10 @@ public abstract class Authority {
         return new Authority() {
             @Override
             public String asString() {
-                return null;
+                return new StringBuilder(userInfo.asString())
+                        .append('@')
+                        .append(host.asString())
+                        .toString();
             }
         };
     }
@@ -34,7 +37,10 @@ public abstract class Authority {
         return new Authority() {
             @Override
             public String asString() {
-                return null;
+                return new StringBuilder(host.asString())
+                        .append(':')
+                        .append(port.asString())
+                        .toString();
             }
         };
     }
@@ -43,7 +49,12 @@ public abstract class Authority {
         return new Authority() {
             @Override
             public String asString() {
-                return null;
+                return new StringBuilder(userInfo.asString())
+                        .append('@')
+                        .append(host.asString())
+                        .append(':')
+                        .append(port.asString())
+                        .toString();
             }
         };
     }
