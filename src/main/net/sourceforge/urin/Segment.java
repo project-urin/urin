@@ -10,9 +10,14 @@
 
 package net.sourceforge.urin;
 
-public class PathBuilder {
-    static PathRootlessAbsoluteOrEmpty aPath() {
-        return new PathRootlessAbsoluteOrEmpty(NonEmptySegmentBuilder.aNonEmptySegment());
+public final class Segment {
+    private final String value;
+
+    public Segment(final String segment) {
+        this.value = segment;
     }
 
+    public String asString() {
+        return value;
+    }
 }

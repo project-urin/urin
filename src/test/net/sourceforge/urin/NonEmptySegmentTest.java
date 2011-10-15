@@ -10,9 +10,20 @@
 
 package net.sourceforge.urin;
 
-public class PathBuilder {
-    static PathRootlessAbsoluteOrEmpty aPath() {
-        return new PathRootlessAbsoluteOrEmpty(NonEmptySegmentBuilder.aNonEmptySegment());
-    }
+import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
+
+public class NonEmptySegmentTest {
+    @Test
+    public void nonEmptySegmentRejectsEmptyString() throws Exception {
+        try {
+            new NonEmptySegment("");
+            fail("Should have thrown illegal argument exception");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Must contain at least one character"));
+        }
+    }
 }

@@ -16,18 +16,18 @@ public class PathRootlessAbsoluteOrEmpty {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
 
-    private final String firstSegment;
-    private final String[] segments;
+    private final NonEmptySegment firstSegment;
+    private final Segment[] segments;
 
-    public PathRootlessAbsoluteOrEmpty(final String firstSegment, final String... segments) {
+    public PathRootlessAbsoluteOrEmpty(final NonEmptySegment firstSegment, final Segment... segments) {
         this.firstSegment = firstSegment;
         this.segments = segments.clone();
     }
 
     public String asString() {
-        StringBuilder result = new StringBuilder(PERCENT_ENCODER.encode(firstSegment));
-        for (String pathSegment : segments) {
-            result.append("/").append(PERCENT_ENCODER.encode(pathSegment));
+        StringBuilder result = new StringBuilder(PERCENT_ENCODER.encode(firstSegment.asString()));
+        for (Segment pathSegment : segments) {
+            result.append("/").append(PERCENT_ENCODER.encode(pathSegment.asString()));
         }
         return result.toString();
     }

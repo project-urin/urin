@@ -10,9 +10,8 @@
 
 package net.sourceforge.urin;
 
-public class PathBuilder {
-    static PathRootlessAbsoluteOrEmpty aPath() {
-        return new PathRootlessAbsoluteOrEmpty(NonEmptySegmentBuilder.aNonEmptySegment());
+class IllegalZeroLengthStringArgumentException extends IllegalArgumentException {
+    IllegalZeroLengthStringArgumentException(final String s) {
+        super(s);
     }
-
 }

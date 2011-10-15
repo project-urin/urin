@@ -20,16 +20,16 @@ public class PathRootlessAbsoluteOrEmptyTest {
 
     @Test
     public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
-        assertThat(new PathRootlessAbsoluteOrEmpty(P_CHARS).asString(), equalTo(P_CHARS));
+        assertThat(new PathRootlessAbsoluteOrEmpty(new NonEmptySegment(P_CHARS)).asString(), equalTo(P_CHARS));
     }
 
     @Test
     public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
-        assertThat(new PathRootlessAbsoluteOrEmpty("./.?.#.[.]. .").asString(), equalTo(".%2F.%3F.%23.%5B.%5D.%20."));
+        assertThat(new PathRootlessAbsoluteOrEmpty(new NonEmptySegment("./.?.#.[.]. .")).asString(), equalTo(".%2F.%3F.%23.%5B.%5D.%20."));
     }
 
     @Test
     public void encodesMultipleSegments() throws Exception {
-        assertThat(new PathRootlessAbsoluteOrEmpty("/", "/").asString(), equalTo("%2F/%2F"));
+        assertThat(new PathRootlessAbsoluteOrEmpty(new NonEmptySegment("/"), new Segment("/")).asString(), equalTo("%2F/%2F"));
     }
 }
