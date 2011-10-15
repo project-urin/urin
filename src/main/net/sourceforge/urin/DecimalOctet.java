@@ -22,6 +22,9 @@ public class DecimalOctet {
     }
 
     public static DecimalOctet decimalOctet(final int decimalOctet) {
+        if (decimalOctet < 0 || decimalOctet > 255) {
+            throw new IllegalArgumentException("Argument must be in the range 0-255 but was [" + decimalOctet + "]");
+        }
         return new DecimalOctet(Integer.toString(decimalOctet));
     }
 

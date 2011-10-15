@@ -15,6 +15,7 @@ import org.junit.Test;
 import static net.sourceforge.urin.DecimalOctet.decimalOctet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class DecimalOctetTest {
     @Test
@@ -25,5 +26,21 @@ public class DecimalOctetTest {
     @Test
     public void asStringReturnsTheArgumentWhenUsingAnInt() throws Exception {
         assertThat(decimalOctet(123).asString(), equalTo("123"));
+    }
+
+    @Test
+    public void rejectsIntegerArgumentsOutsideRange() throws Exception {
+        try {
+            decimalOctet(-1);
+            fail("Should have thrown IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [-1]"));
+        }
+        try {
+            decimalOctet(256);
+            fail("Should have thrown IllegalArgumentException");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [256]"));
+        }
     }
 }
