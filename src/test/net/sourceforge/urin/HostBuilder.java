@@ -10,10 +10,34 @@
 
 package net.sourceforge.urin;
 
+import java.util.Random;
+
+import static net.sourceforge.urin.DecimalOctetBuilder.aDecimalOctet;
+import static net.sourceforge.urin.Host.ipV4Address;
+import static net.sourceforge.urin.Host.registeredName;
 import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class HostBuilder {
     static Host aHost() {
-        return Host.registeredName(randomAscii(5));
+        final Host host;
+        switch (new Random().nextInt(2)) {
+            case 0:
+                host = aRegisteredName();
+                break;
+            case 1:
+                host = anIpV4Address();
+                break;
+            default:
+                throw new Defect("Attempted to switch on more cases than are defined");
+        }
+        return host;
+    }
+
+    public static Host aRegisteredName() {
+        return registeredName(randomAscii(5));
+    }
+
+    public static Host anIpV4Address() {
+        return ipV4Address(aDecimalOctet(), aDecimalOctet(), aDecimalOctet(), aDecimalOctet());
     }
 }

@@ -28,6 +28,22 @@ public abstract class Host {
         };
     }
 
+    public static Host ipV4Address(final DecimalOctet firstDecimalOctet, final DecimalOctet secondDecimalOctet, final DecimalOctet thirdDecimalOctet, final DecimalOctet fourthDecimalOctet) {
+        return new Host() {
+            @Override
+            public String asString() {
+                return new StringBuilder(firstDecimalOctet.asString())
+                        .append('.')
+                        .append(secondDecimalOctet.asString())
+                        .append('.')
+                        .append(thirdDecimalOctet.asString())
+                        .append('.')
+                        .append(fourthDecimalOctet.asString())
+                        .toString();
+            }
+        };
+    }
+
     public abstract String asString();
 
     private Host() {

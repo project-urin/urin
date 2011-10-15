@@ -14,6 +14,8 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.SUB_DELIMS;
 import static net.sourceforge.urin.CharacterSets.UNRESERVED;
+import static net.sourceforge.urin.DecimalOctetBuilder.aDecimalOctet;
+import static net.sourceforge.urin.Host.ipV4Address;
 import static net.sourceforge.urin.Host.registeredName;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -29,4 +31,16 @@ public class HostTest {
     public void registeredNameAsStringPercentEncodesNonUnreservedCharacters() throws Exception {
         assertThat(registeredName(".:.@.#.[.]. .").asString(), equalTo(".%3A.%40.%23.%5B.%5D.%20."));
     }
+
+    @Test
+    public void ipV4AddressAsStringIsCorrect() throws Exception {
+        DecimalOctet firstDecimalOctet = aDecimalOctet();
+        DecimalOctet secondDecimalOctet = aDecimalOctet();
+        DecimalOctet thirdDecimalOctet = aDecimalOctet();
+        DecimalOctet fourthDecimalOctet = aDecimalOctet();
+        assertThat(
+                ipV4Address(firstDecimalOctet, secondDecimalOctet, thirdDecimalOctet, fourthDecimalOctet).asString(),
+                equalTo(firstDecimalOctet.asString() + "." + secondDecimalOctet.asString() + "." + thirdDecimalOctet.asString() + "." + fourthDecimalOctet.asString()));
+    }
+
 }
