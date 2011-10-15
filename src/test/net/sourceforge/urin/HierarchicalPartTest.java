@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import static net.sourceforge.urin.AbEmptyPathBuilder.anAbEmptyPath;
+import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.PathBuilder.aPath;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -23,4 +25,18 @@ public class HierarchicalPartTest {
         PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = aPath();
         assertThat(hierarchicalPart(pathRootlessAbsoluteOrEmpty).asString(), equalTo(pathRootlessAbsoluteOrEmpty.asString()));
     }
+
+    @Test
+    public void makesHierarchicalPartWithAuthorityAndEmptyPath() throws Exception {
+        Authority authority = anAuthority();
+        assertThat(hierarchicalPart(authority).asString(), equalTo("//" + authority.asString()));
+    }
+
+    @Test
+    public void makesHierarchicalPartWithAuthorityAndNonEmptyPath() throws Exception {
+        Authority authority = anAuthority();
+        AbEmptyPath abEmptyPath = anAbEmptyPath();
+        assertThat(hierarchicalPart(authority, abEmptyPath).asString(), equalTo("//" + authority.asString() + abEmptyPath.asString()));
+    }
+
 }

@@ -21,4 +21,27 @@ public abstract class HierarchicalPart {
     }
 
     public abstract String asString();
+
+    public static HierarchicalPart hierarchicalPart(final Authority authority) {
+        return new HierarchicalPart() {
+            @Override
+            public String asString() {
+                return new StringBuilder("//")
+                        .append(authority.asString())
+                        .toString();
+            }
+        };
+    }
+
+    public static HierarchicalPart hierarchicalPart(final Authority authority, final AbEmptyPath path) {
+        return new HierarchicalPart() {
+            @Override
+            public String asString() {
+                return new StringBuilder("//")
+                        .append(authority.asString())
+                        .append(path.asString())
+                        .toString();
+            }
+        };
+    }
 }

@@ -10,15 +10,15 @@
 
 package net.sourceforge.uri;
 
-import net.sourceforge.urin.NonEmptySegment;
-import net.sourceforge.urin.PathRootlessAbsoluteOrEmpty;
-import net.sourceforge.urin.Scheme;
-import net.sourceforge.urin.Urin;
+import net.sourceforge.urin.*;
 import org.junit.Test;
 
 import java.net.URI;
 
+import static net.sourceforge.urin.AbEmptyPath.absolutePath;
+import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -30,8 +30,16 @@ public class Rfc3986UriExamplesTest {
 //    mailto:John.Doe@example.com
 //     news:comp.infosystems.www.servers.unix
 //     tel:+1-816-555-1212
-//    telnet://192.0.2.16:80/
+//     telnet://192.0.2.16:80/
 //     urn:oasis:names:specification:docbook:dtd:xml:4.1.2
+
+    @Test
+    public void newsExample() throws Exception {
+        final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = new PathRootlessAbsoluteOrEmpty(new NonEmptySegment("comp.infosystems.www.servers.unix"));
+        Urin urin = urin(new Scheme("news"), hierarchicalPart(pathRootlessAbsoluteOrEmpty));
+        assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
+        assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
+    }
 
     @Test
     public void telExample() throws Exception {
@@ -42,11 +50,15 @@ public class Rfc3986UriExamplesTest {
     }
 
     @Test
-    public void newsExample() throws Exception {
-        final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = new PathRootlessAbsoluteOrEmpty(new NonEmptySegment("comp.infosystems.www.servers.unix"));
-        Urin urin = urin(new Scheme("news"), hierarchicalPart(pathRootlessAbsoluteOrEmpty));
-        assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
-        assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
+    public void telnetExample() throws Exception {
+        Urin urin = urin(
+                new Scheme("telnet"),
+                hierarchicalPart(
+                        authority(registeredName("192.0.2.16"), new Port("80")),
+                        absolutePath())
+        );
+        assertThat(urin.asString(), equalTo("telnet://192.0.2.16:80/"));
+        assertThat(urin.asUri(), equalTo(new URI("telnet://192.0.2.16:80/")));
     }
 
     @Test
