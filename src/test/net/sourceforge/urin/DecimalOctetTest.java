@@ -25,7 +25,8 @@ public class DecimalOctetTest {
 
     @Test
     public void asStringReturnsTheArgumentWhenUsingAnInt() throws Exception {
-        assertThat(decimalOctet(123).asString(), equalTo("123"));
+        assertThat(decimalOctet(0).asString(), equalTo("0"));
+        assertThat(decimalOctet(255).asString(), equalTo("255"));
     }
 
     @Test
