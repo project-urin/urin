@@ -11,15 +11,17 @@
 package net.sourceforge.uri;
 
 import net.sourceforge.urin.*;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URI;
 
 import static net.sourceforge.urin.AbEmptyPath.absolutePath;
 import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.Hexadectet.ZERO;
+import static net.sourceforge.urin.Hexadectet.hexadectet;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
-import static net.sourceforge.urin.Host.ipV4Address;
-import static net.sourceforge.urin.Host.registeredName;
+import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -57,6 +59,20 @@ public class Rfc3986UriExamplesTest {
         );
         assertThat(urin.asString(), equalTo("http://www.ietf.org/rfc/rfc2396.txt"));
         assertThat(urin.asUri(), equalTo(new URI("http://www.ietf.org/rfc/rfc2396.txt")));
+    }
+
+    @Test
+    @Ignore
+    public void ldapExample() throws Exception {
+        Urin urin = urin(
+                new Scheme("ldap"),
+                hierarchicalPart(
+                        authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
+                        absolutePath(new Segment("c=GB"))),
+                new Query("objectClass?one")
+        );
+        assertThat(urin.asString(), equalTo("ldap://[2001:db8::7]/c=GB?objectClass?one"));
+        assertThat(urin.asUri(), equalTo(new URI("ldap://[2001:db8::7]/c=GB?objectClass?one")));
     }
 
     @Test
