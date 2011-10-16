@@ -10,6 +10,9 @@
 
 package net.sourceforge.urin;
 
+import java.util.Iterator;
+
+import static java.util.Arrays.asList;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
 public abstract class Host {
@@ -53,26 +56,57 @@ public abstract class Host {
         return new Host() {
             @Override
             public String asString() {
-                return new StringBuilder()
-                        .append('[')
-                        .append(firstHexadectet.asString())
-                        .append(':')
-                        .append(secondHexadectet.asString())
-                        .append(':')
-                        .append(thirdHexadectet.asString())
-                        .append(':')
-                        .append(fourthHexadectet.asString())
-                        .append(':')
-                        .append(fifthHexadectet.asString())
-                        .append(':')
-                        .append(sixthHexadectet.asString())
-                        .append(':')
-                        .append(seventhHexadectet.asString())
-                        .append(':')
-                        .append(eighthHexadectet.asString())
-                        .append(']')
-                        .toString();
+                return ipV6String(
+                        firstHexadectet,
+                        secondHexadectet,
+                        thirdHexadectet,
+                        fourthHexadectet,
+                        fifthHexadectet,
+                        sixthHexadectet,
+                        seventhHexadectet,
+                        eighthHexadectet
+                );
             }
         };
+    }
+
+    public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
+        return new Host() {
+            @Override
+            public String asString() {
+                return ipV6String(
+                        firstHexadectet,
+                        secondHexadectet,
+                        thirdHexadectet,
+                        fourthHexadectet,
+                        fifthHexadectet,
+                        sixthHexadectet,
+                        new ElidableAsStringable() {
+                            public String asString() {
+                                return ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString();
+                            }
+
+                            public boolean isElidable() {
+                                return false;
+                            }
+                        }
+                );
+            }
+        };
+    }
+
+    private static String ipV6String(ElidableAsStringable... elidableAsStringables) {
+        StringBuilder result = new StringBuilder()
+                .append('[');
+        Iterator<ElidableAsStringable> elidableAsStringableIterator = asList(elidableAsStringables).iterator();
+        while (elidableAsStringableIterator.hasNext()) {
+            result.append(elidableAsStringableIterator.next().asString());
+            if (elidableAsStringableIterator.hasNext()) {
+                result.append(':');
+            }
+        }
+        return result
+                .append(']')
+                .toString();
     }
 }

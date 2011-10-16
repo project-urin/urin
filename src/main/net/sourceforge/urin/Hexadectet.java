@@ -10,21 +10,27 @@
 
 package net.sourceforge.urin;
 
-public final class Hexadectet {
+public final class Hexadectet implements ElidableAsStringable {
     private final String hexadecimalHexadectet;
+    private final boolean isElidable;
 
     public static Hexadectet hexadectet(final int hexadectet) {
         if (hexadectet < 0x0 || hexadectet > 0xFFFF) {
             throw new IllegalArgumentException("Argument must be in the range 0x0-0xFFFF but was [" + hexadectet + "]");
         }
-        return new Hexadectet(Integer.toHexString(hexadectet));
+        return new Hexadectet(Integer.toHexString(hexadectet), hexadectet == 0);
     }
 
-    private Hexadectet(final String hexadecimalHexadectet) {
+    private Hexadectet(final String hexadecimalHexadectet, final boolean isElidable) {
         this.hexadecimalHexadectet = hexadecimalHexadectet;
+        this.isElidable = isElidable;
     }
 
     public String asString() {
         return hexadecimalHexadectet;
+    }
+
+    public boolean isElidable() {
+        return isElidable;
     }
 }

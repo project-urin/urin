@@ -14,8 +14,7 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
-import static net.sourceforge.urin.Host.ipV4Address;
-import static net.sourceforge.urin.Host.registeredName;
+import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -59,8 +58,25 @@ public class HostTest {
         Hexadectet seventhHexadectet = aNonZeroHexadectet();
         Hexadectet eighthHexadectet = aNonZeroHexadectet();
         assertThat(
-                Host.ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet).asString(),
+                ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet).asString(),
                 equalTo("[" + firstHexadectet.asString() + ":" + secondHexadectet.asString() + ":" + thirdHexadectet.asString() + ":" + fourthHexadectet.asString() + ":" + fifthHexadectet.asString() + ":" + sixthHexadectet.asString() + ":" + seventhHexadectet.asString() + ":" + eighthHexadectet.asString() + "]"));
+    }
+
+    @Test
+    public void ipV6AddressWithTrailingIpV4AddressAsStringIsCorrect() throws Exception {
+        Hexadectet firstHexadectet = aNonZeroHexadectet();
+        Hexadectet secondHexadectet = aNonZeroHexadectet();
+        Hexadectet thirdHexadectet = aNonZeroHexadectet();
+        Hexadectet fourthHexadectet = aNonZeroHexadectet();
+        Hexadectet fifthHexadectet = aNonZeroHexadectet();
+        Hexadectet sixthHexadectet = aNonZeroHexadectet();
+        Octet firstOctet = anOctet();
+        Octet secondOctet = anOctet();
+        Octet thirdOctet = anOctet();
+        Octet fourthOctet = anOctet();
+        assertThat(
+                ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet).asString(),
+                equalTo("[" + firstHexadectet.asString() + ":" + secondHexadectet.asString() + ":" + thirdHexadectet.asString() + ":" + fourthHexadectet.asString() + ":" + fifthHexadectet.asString() + ":" + sixthHexadectet.asString() + ":" + firstOctet.asString() + "." + secondOctet.asString() + "." + thirdOctet.asString() + "." + fourthOctet.asString() + "]"));
     }
 
 }
