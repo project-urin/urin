@@ -104,20 +104,20 @@ public abstract class Host {
         for (int i = 0; i < elidableAsStringables.length; i++) {
             if (streakLength[i] > maximumStreakLength) {
                 maximumStreakLength = streakLength[i];
-                maximumStreakStartIndex = i - maximumStreakLength;
+                maximumStreakStartIndex = i - (maximumStreakLength - 1);
             }
         }
 
         StringBuilder result = new StringBuilder()
                 .append('[');
         for (int i = 0; i < elidableAsStringables.length; i++) {
-            if (maximumStreakLength < 2 || !(i > maximumStreakStartIndex && i <= (maximumStreakStartIndex + maximumStreakLength))) {
+            if (maximumStreakLength < 2 || !(i >= maximumStreakStartIndex && i < (maximumStreakStartIndex + maximumStreakLength))) {
                 if (i > 0) {
                     result.append(':');
                 }
                 result.append(elidableAsStringables[i].asString());
             } else {
-                if (i == maximumStreakStartIndex + 1) {
+                if (i == maximumStreakStartIndex) {
                     result.append(':');
                 }
             }

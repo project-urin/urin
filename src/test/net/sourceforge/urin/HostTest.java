@@ -94,6 +94,21 @@ public class HostTest {
     }
 
     @Test
+    public void ipV6AddressAsStringElidesFirstLongestSequenceOfZeros() throws Exception {
+        Hexadectet firstHexadectet = aNonZeroHexadectet();
+        Hexadectet secondHexadectet = ZERO;
+        Hexadectet thirdHexadectet = ZERO;
+        Hexadectet fourthHexadectet = aNonZeroHexadectet();
+        Hexadectet fifthHexadectet = ZERO;
+        Hexadectet sixthHexadectet = ZERO;
+        Hexadectet seventhHexadectet = aNonZeroHexadectet();
+        Hexadectet eighthHexadectet = aNonZeroHexadectet();
+        assertThat(
+                ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet).asString(),
+                equalTo("[" + firstHexadectet.asString() + "::" + fourthHexadectet.asString() + ":" + fifthHexadectet.asString() + ":" + sixthHexadectet.asString() + ":" + seventhHexadectet.asString() + ":" + eighthHexadectet.asString() + "]"));
+    }
+
+    @Test
     public void ipV6AddressWithTrailingIpV4AddressAsStringIsCorrect() throws Exception {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
