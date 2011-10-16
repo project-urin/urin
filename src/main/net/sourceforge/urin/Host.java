@@ -48,4 +48,31 @@ public abstract class Host {
 
     private Host() {
     }
+
+    public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
+        return new Host() {
+            @Override
+            public String asString() {
+                return new StringBuilder()
+                        .append('[')
+                        .append(firstHexadectet.asString())
+                        .append(':')
+                        .append(secondHexadectet.asString())
+                        .append(':')
+                        .append(thirdHexadectet.asString())
+                        .append(':')
+                        .append(fourthHexadectet.asString())
+                        .append(':')
+                        .append(fifthHexadectet.asString())
+                        .append(':')
+                        .append(sixthHexadectet.asString())
+                        .append(':')
+                        .append(seventhHexadectet.asString())
+                        .append(':')
+                        .append(eighthHexadectet.asString())
+                        .append(']')
+                        .toString();
+            }
+        };
+    }
 }
