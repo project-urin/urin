@@ -13,6 +13,7 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.*;
+import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
@@ -60,6 +61,36 @@ public class HostTest {
         assertThat(
                 ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet).asString(),
                 equalTo("[" + firstHexadectet.asString() + ":" + secondHexadectet.asString() + ":" + thirdHexadectet.asString() + ":" + fourthHexadectet.asString() + ":" + fifthHexadectet.asString() + ":" + sixthHexadectet.asString() + ":" + seventhHexadectet.asString() + ":" + eighthHexadectet.asString() + "]"));
+    }
+
+    @Test
+    public void ipV6AddressAsStringDoesNotElideASingleZero() throws Exception {
+        Hexadectet firstHexadectet = aNonZeroHexadectet();
+        Hexadectet secondHexadectet = ZERO;
+        Hexadectet thirdHexadectet = aNonZeroHexadectet();
+        Hexadectet fourthHexadectet = aNonZeroHexadectet();
+        Hexadectet fifthHexadectet = aNonZeroHexadectet();
+        Hexadectet sixthHexadectet = aNonZeroHexadectet();
+        Hexadectet seventhHexadectet = aNonZeroHexadectet();
+        Hexadectet eighthHexadectet = aNonZeroHexadectet();
+        assertThat(
+                ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet).asString(),
+                equalTo("[" + firstHexadectet.asString() + ":" + secondHexadectet.asString() + ":" + thirdHexadectet.asString() + ":" + fourthHexadectet.asString() + ":" + fifthHexadectet.asString() + ":" + sixthHexadectet.asString() + ":" + seventhHexadectet.asString() + ":" + eighthHexadectet.asString() + "]"));
+    }
+
+    @Test
+    public void ipV6AddressAsStringElidesLongestSequenceOfZeros() throws Exception {
+        Hexadectet firstHexadectet = aNonZeroHexadectet();
+        Hexadectet secondHexadectet = ZERO;
+        Hexadectet thirdHexadectet = ZERO;
+        Hexadectet fourthHexadectet = aNonZeroHexadectet();
+        Hexadectet fifthHexadectet = ZERO;
+        Hexadectet sixthHexadectet = ZERO;
+        Hexadectet seventhHexadectet = ZERO;
+        Hexadectet eighthHexadectet = aNonZeroHexadectet();
+        assertThat(
+                ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet).asString(),
+                equalTo("[" + firstHexadectet.asString() + ":" + secondHexadectet.asString() + ":" + thirdHexadectet.asString() + ":" + fourthHexadectet.asString() + "::" + eighthHexadectet.asString() + "]"));
     }
 
     @Test

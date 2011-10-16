@@ -10,9 +10,6 @@
 
 package net.sourceforge.urin;
 
-import java.util.Iterator;
-
-import static java.util.Arrays.asList;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
 public abstract class Host {
@@ -96,13 +93,33 @@ public abstract class Host {
     }
 
     private static String ipV6String(ElidableAsStringable... elidableAsStringables) {
+        int[] streakLength = new int[elidableAsStringables.length];
+        for (int i = 0; i < elidableAsStringables.length; i++) {
+            streakLength[i] = elidableAsStringables[i].isElidable()
+                    ? (i == 0 ? 0 : streakLength[i - 1]) + 1
+                    : 0;
+        }
+        int maximumStreakStartIndex = 0;
+        int maximumStreakLength = 0;
+        for (int i = 0; i < elidableAsStringables.length; i++) {
+            if (streakLength[i] > maximumStreakLength) {
+                maximumStreakLength = streakLength[i];
+                maximumStreakStartIndex = i - maximumStreakLength;
+            }
+        }
+
         StringBuilder result = new StringBuilder()
                 .append('[');
-        Iterator<ElidableAsStringable> elidableAsStringableIterator = asList(elidableAsStringables).iterator();
-        while (elidableAsStringableIterator.hasNext()) {
-            result.append(elidableAsStringableIterator.next().asString());
-            if (elidableAsStringableIterator.hasNext()) {
-                result.append(':');
+        for (int i = 0; i < elidableAsStringables.length; i++) {
+            if (maximumStreakLength < 2 || !(i > maximumStreakStartIndex && i <= (maximumStreakStartIndex + maximumStreakLength))) {
+                if (i > 0) {
+                    result.append(':');
+                }
+                result.append(elidableAsStringables[i].asString());
+            } else {
+                if (i == maximumStreakStartIndex + 1) {
+                    result.append(':');
+                }
             }
         }
         return result

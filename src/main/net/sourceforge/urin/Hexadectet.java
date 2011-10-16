@@ -11,6 +11,9 @@
 package net.sourceforge.urin;
 
 public final class Hexadectet implements ElidableAsStringable {
+
+    public static final Hexadectet ZERO = hexadectet(0x0);
+
     private final String hexadecimalHexadectet;
     private final boolean isElidable;
 
