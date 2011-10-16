@@ -12,9 +12,9 @@ package net.sourceforge.urin;
 
 import java.util.Random;
 
-import static net.sourceforge.urin.DecimalOctetBuilder.aDecimalOctet;
 import static net.sourceforge.urin.Host.ipV4Address;
 import static net.sourceforge.urin.Host.registeredName;
+import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class HostBuilder {
@@ -38,6 +38,6 @@ public class HostBuilder {
     }
 
     public static Host anIpV4Address() {
-        return ipV4Address(aDecimalOctet(), aDecimalOctet(), aDecimalOctet(), aDecimalOctet());
+        return ipV4Address(anOctet(), anOctet(), anOctet(), anOctet());
     }
 }

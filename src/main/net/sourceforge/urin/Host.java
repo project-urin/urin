@@ -23,22 +23,22 @@ public abstract class Host {
         return new Host() {
             @Override
             public String asString() {
-                return PERCENT_ENCODER.encode(registeredName);
+                return PERCENT_ENCODER.encode(registeredName.toLowerCase()); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
             }
         };
     }
 
-    public static Host ipV4Address(final DecimalOctet firstDecimalOctet, final DecimalOctet secondDecimalOctet, final DecimalOctet thirdDecimalOctet, final DecimalOctet fourthDecimalOctet) {
+    public static Host ipV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
         return new Host() {
             @Override
             public String asString() {
-                return new StringBuilder(firstDecimalOctet.asString())
+                return new StringBuilder(firstOctet.asString())
                         .append('.')
-                        .append(secondDecimalOctet.asString())
+                        .append(secondOctet.asString())
                         .append('.')
-                        .append(thirdDecimalOctet.asString())
+                        .append(thirdOctet.asString())
                         .append('.')
-                        .append(fourthDecimalOctet.asString())
+                        .append(fourthOctet.asString())
                         .toString();
             }
         };

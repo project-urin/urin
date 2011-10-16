@@ -10,15 +10,21 @@
 
 package net.sourceforge.urin;
 
-import java.util.Random;
+public class Octet {
+    private final String octet;
 
-import static net.sourceforge.urin.DecimalOctet.decimalOctet;
+    private Octet(final String octet) {
+        this.octet = octet;
+    }
 
-public class DecimalOctetBuilder {
+    public static Octet octet(final int octet) {
+        if (octet < 0 || octet > 255) {
+            throw new IllegalArgumentException("Argument must be in the range 0-255 but was [" + octet + "]");
+        }
+        return new Octet(Integer.toString(octet));
+    }
 
-    private static final Random RANDOM = new Random();
-
-    static DecimalOctet aDecimalOctet() {
-        return decimalOctet(RANDOM.nextInt(256));
+    public String asString() {
+        return octet;
     }
 }

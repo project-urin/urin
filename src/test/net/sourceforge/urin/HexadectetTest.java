@@ -12,32 +12,31 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.DecimalOctet.decimalOctet;
+import static net.sourceforge.urin.Hexadectet.hexadectet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
-public class DecimalOctetTest {
-
+public class HexadectetTest {
     @Test
-    public void asStringReturnsTheArgumentWhenUsingAnInt() throws Exception {
-        assertThat(decimalOctet(0).asString(), equalTo("0"));
-        assertThat(decimalOctet(255).asString(), equalTo("255"));
+    public void asStringReturnsGivenValue() throws Exception {
+        assertThat(hexadectet(0x0).asString(), equalTo("0"));
+        assertThat(hexadectet(0xFFFF).asString(), equalTo("ffff"));
     }
 
     @Test
-    public void rejectsIntegerArgumentsOutsideRange() throws Exception {
+    public void rejectsIntsOutsideValidRange() throws Exception {
         try {
-            decimalOctet(-1);
+            hexadectet(-0x1);
             fail("Should have thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [-1]"));
+            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [-1]"));
         }
         try {
-            decimalOctet(256);
+            hexadectet(0x10000);
             fail("Should have thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [256]"));
+            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [65536]"));
         }
     }
 }

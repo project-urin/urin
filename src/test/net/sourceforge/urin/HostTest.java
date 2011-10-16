@@ -10,21 +10,27 @@
 
 package net.sourceforge.urin;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
-import static net.sourceforge.urin.CharacterSets.SUB_DELIMS;
-import static net.sourceforge.urin.CharacterSets.UNRESERVED;
-import static net.sourceforge.urin.DecimalOctetBuilder.aDecimalOctet;
+import static net.sourceforge.urin.CharacterSets.*;
+import static net.sourceforge.urin.Hexadectet.hexadectet;
 import static net.sourceforge.urin.Host.ipV4Address;
 import static net.sourceforge.urin.Host.registeredName;
+import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class HostTest {
     @Test
     public void registeredNameAsStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
-        String nonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS;
-        assertThat(registeredName(nonPercentEncodedCharacters).asString(), equalTo(nonPercentEncodedCharacters));
+        String nonPercentEncodedCharacters = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS;
+        assertThat(registeredName(nonPercentEncodedCharacters).asString(), equalTo(LOWER_CASE_ALPHA + LOWER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS));
+    }
+
+    @Test
+    public void registeredNameLowerCasesUpperCaseNames() throws Exception {
+        assertThat(registeredName(UPPER_CASE_ALPHA).asString(), equalTo(LOWER_CASE_ALPHA));
     }
 
     @Test
@@ -34,13 +40,19 @@ public class HostTest {
 
     @Test
     public void ipV4AddressAsStringIsCorrect() throws Exception {
-        DecimalOctet firstDecimalOctet = aDecimalOctet();
-        DecimalOctet secondDecimalOctet = aDecimalOctet();
-        DecimalOctet thirdDecimalOctet = aDecimalOctet();
-        DecimalOctet fourthDecimalOctet = aDecimalOctet();
+        Octet firstOctet = anOctet();
+        Octet secondOctet = anOctet();
+        Octet thirdOctet = anOctet();
+        Octet fourthOctet = anOctet();
         assertThat(
-                ipV4Address(firstDecimalOctet, secondDecimalOctet, thirdDecimalOctet, fourthDecimalOctet).asString(),
-                equalTo(firstDecimalOctet.asString() + "." + secondDecimalOctet.asString() + "." + thirdDecimalOctet.asString() + "." + fourthDecimalOctet.asString()));
+                ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString(),
+                equalTo(firstOctet.asString() + "." + secondOctet.asString() + "." + thirdOctet.asString() + "." + fourthOctet.asString()));
+    }
+
+    @Test
+    @Ignore
+    public void ipV6AddressAsStringIsCorrect() throws Exception {
+        Hexadectet firstHexadectet = hexadectet(0xFFFF);
     }
 
 }
