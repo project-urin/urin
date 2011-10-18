@@ -183,7 +183,7 @@ public class HostTest {
     public void ipVFutureAsStringIsCorrect() throws Exception {
         String address = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
         assertThat(
-                ipVFuture(HEX_DIGIT, address).asString(),
+                ipVFutureAddress(HEX_DIGIT, address).asString(),
                 equalTo("[v" + HEX_DIGIT + "." + LOWER_CASE_ALPHA + LOWER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":" + "]"));
     }
 
@@ -191,7 +191,7 @@ public class HostTest {
     @Ignore
     public void ipVFutureRejectsInvalidVersion() throws Exception {
         try {
-            ipVFuture("a", aValidIpVFutureAddress());
+            ipVFutureAddress("a", aValidIpVFutureAddress());
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [a]"));

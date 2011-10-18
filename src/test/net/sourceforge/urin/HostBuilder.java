@@ -12,15 +12,17 @@ package net.sourceforge.urin;
 
 import java.util.Random;
 
+import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
+import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class HostBuilder {
     static Host aHost() {
         final Host host;
-        switch (new Random().nextInt(3)) {
+        switch (new Random().nextInt(4)) {
             case 0:
                 host = aRegisteredName();
                 break;
@@ -29,6 +31,9 @@ public class HostBuilder {
                 break;
             case 2:
                 host = anIpV6Address();
+                break;
+            case 3:
+                host = anIpVFutureAddress();
                 break;
             default:
                 throw new Defect("Attempted to switch on more cases than are defined");
@@ -46,5 +51,9 @@ public class HostBuilder {
 
     public static Host anIpV6Address() {
         return ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet());
+    }
+
+    public static Host anIpVFutureAddress() {
+        return ipVFutureAddress(random(5, HEX_DIGIT), random(5, UNRESERVED + SUB_DELIMS + ":"));
     }
 }

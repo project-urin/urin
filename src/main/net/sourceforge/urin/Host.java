@@ -127,7 +127,7 @@ public abstract class Host {
                 .toString();
     }
 
-    public static Host ipVFuture(final String version, final String address) {
+    public static Host ipVFutureAddress(final String version, final String address) {
         if (version.isEmpty()) {
             throw new IllegalArgumentException("version must contain at least one character");
         }
