@@ -53,6 +53,21 @@ abstract class CharacterSetMembershipFunction {
         }
     };
 
+    static final CharacterSetMembershipFunction HEX_DIGIT = or(
+            DIGIT,
+            new CharacterSetMembershipFunction() {
+                @Override
+                boolean isMember(final char character) {
+                    return character >= 'A' && character <= 'F';
+                }
+
+                @Override
+                String describe() {
+                    return "A-F";
+                }
+            }
+    );
+
     static final CharacterSetMembershipFunction UNRESERVED = or(
             ALPHA_LOWERCASE,
             ALPHA_UPPERCASE,

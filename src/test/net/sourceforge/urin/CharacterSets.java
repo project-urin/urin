@@ -19,4 +19,5 @@ public class CharacterSets {
     public static final String SUB_DELIMS = "!$&'()*+,;=";
     public static final String P_CHARS = UNRESERVED + SUB_DELIMS + ":" + "@";
     public static final String QUERY_AND_FRAGMENT_CHARACTERS = P_CHARS + "/" + "?";
+    public static final String HEX_DIGIT = "0123456789ABCDEF";
 }

@@ -126,4 +126,22 @@ public abstract class Host {
                 .append(']')
                 .toString();
     }
+
+    public static Host ipVFuture(final String version, final String address) {
+        if (version.isEmpty()) {
+            throw new IllegalArgumentException("version must contain at least one character");
+        }
+        return new Host() {
+            @Override
+            public String asString() {
+                return new StringBuilder()
+                        .append("[v")
+                        .append(version)
+                        .append('.')
+                        .append(address.toLowerCase())
+                        .append(']')
+                        .toString();
+            }
+        };
+    }
 }

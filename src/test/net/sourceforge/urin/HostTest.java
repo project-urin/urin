@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.*;
@@ -19,8 +20,10 @@ import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class HostTest {
+
     @Test
     public void registeredNameAsStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
         String nonPercentEncodedCharacters = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS;
@@ -174,6 +177,29 @@ public class HostTest {
         assertThat(
                 ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet).asString(),
                 equalTo("[" + firstHexadectet.asString() + "::" + fourthHexadectet.asString() + ":" + fifthHexadectet.asString() + ":" + sixthHexadectet.asString() + ":" + firstOctet.asString() + "." + secondOctet.asString() + "." + thirdOctet.asString() + "." + fourthOctet.asString() + "]"));
+    }
+
+    @Test
+    public void ipVFutureAsStringIsCorrect() throws Exception {
+        String address = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
+        assertThat(
+                ipVFuture(HEX_DIGIT, address).asString(),
+                equalTo("[v" + HEX_DIGIT + "." + LOWER_CASE_ALPHA + LOWER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":" + "]"));
+    }
+
+    @Test
+    @Ignore
+    public void ipVFutureRejectsInvalidVersion() throws Exception {
+        try {
+            ipVFuture("a", aValidIpVFutureAddress());
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [a]"));
+        }
+    }
+
+    private String aValidIpVFutureAddress() {
+        return LOWER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
     }
 
 }
