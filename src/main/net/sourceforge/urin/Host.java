@@ -18,6 +18,27 @@ public abstract class Host {
             UNRESERVED,
             SUB_DELIMITERS
     ));
+    private static final CharacterSetMembershipFunction ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION = or(
+            ALPHA_LOWERCASE,
+            ALPHA_UPPERCASE,
+            DIGIT,
+            singleMemberCharacterSet('-'),
+            singleMemberCharacterSet('.'),
+            singleMemberCharacterSet('_'),
+            singleMemberCharacterSet('~'),
+            singleMemberCharacterSet('!'),
+            singleMemberCharacterSet('$'),
+            singleMemberCharacterSet('&'),
+            singleMemberCharacterSet('\''),
+            singleMemberCharacterSet('('),
+            singleMemberCharacterSet(')'),
+            singleMemberCharacterSet('*'),
+            singleMemberCharacterSet('+'),
+            singleMemberCharacterSet(','),
+            singleMemberCharacterSet(';'),
+            singleMemberCharacterSet('='),
+            singleMemberCharacterSet(':')
+    );
 
     public static Host registeredName(final String registeredName) {
         return new Host() {
@@ -129,9 +150,13 @@ public abstract class Host {
 
     public static Host ipVFutureAddress(final String version, final String address) {
         if (version.isEmpty()) {
-            throw new IllegalArgumentException("version must contain at least one character");
+            throw new IllegalArgumentException("Version must contain at least one character");
         }
         verify(HEX_DIGIT, version, "version");
+        if (address.isEmpty()) {
+            throw new IllegalArgumentException("Address must contain at least one character");
+        }
+        verify(ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION, address, "address");
         return new Host() {
             @Override
             public String asString() {

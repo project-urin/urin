@@ -150,18 +150,18 @@ abstract class CharacterSetMembershipFunction {
     private CharacterSetMembershipFunction() {
     }
 
-    static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String version, final String parameterName) {
-        verify(characterSetMembershipFunction, version, parameterName, 0);
+    static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName) {
+        verify(characterSetMembershipFunction, value, parameterName, 0);
     }
 
-    static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String version, final String parameterName, final int startIndex) {
-        verify(characterSetMembershipFunction, version, parameterName, startIndex, version.length());
+    static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final int startIndex) {
+        verify(characterSetMembershipFunction, value, parameterName, startIndex, value.length());
     }
 
-    static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String version, final String parameterName, final int startIndex, final int endIndex) {
+    static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final int startIndex, final int endIndex) {
         for (int i = startIndex; i < endIndex; i++) {
-            if (!characterSetMembershipFunction.isMember(version.charAt(i))) {
-                throw new IllegalArgumentException("Character " + (i + 1) + " must be " + characterSetMembershipFunction.describe() + " in " + parameterName + " [" + version + "]");
+            if (!characterSetMembershipFunction.isMember(value.charAt(i))) {
+                throw new IllegalArgumentException("Character " + (i + 1) + " must be " + characterSetMembershipFunction.describe() + " in " + parameterName + " [" + value + "]");
             }
         }
     }

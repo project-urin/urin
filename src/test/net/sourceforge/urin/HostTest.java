@@ -187,7 +187,27 @@ public class HostTest {
     }
 
     @Test
-    public void ipVFutureRejectsInvalidVersion() throws Exception {
+    public void ipVFutureRejectsEmptyVersion() throws Exception {
+        try {
+            ipVFutureAddress("", aValidIpVFutureAddress());
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Version must contain at least one character"));
+        }
+    }
+
+    @Test
+    public void ipVFutureRejectsNullVersion() throws Exception {
+        try {
+            ipVFutureAddress(null, aValidIpVFutureAddress());
+            fail("Expected a NullPointerException to be thrown");
+        } catch (NullPointerException e) {
+            // expect to end up here
+        }
+    }
+
+    @Test
+    public void ipVFutureRejectsInvalidCharactersInVersion() throws Exception {
         try {
             ipVFutureAddress("a", aValidIpVFutureAddress());
             fail("Expected an IllegalArgumentException to be thrown");
@@ -220,8 +240,42 @@ public class HostTest {
         }
     }
 
-    private String aValidIpVFutureAddress() {
+    @Test
+    public void ipVFutureRejectsEmptyAddress() throws Exception {
+        try {
+            ipVFutureAddress(aValidIpVFutureVersion(), "");
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Address must contain at least one character"));
+        }
+    }
+
+    @Test
+    public void ipVFutureRejectsNullAddress() throws Exception {
+        try {
+            ipVFutureAddress(aValidIpVFutureVersion(), null);
+            fail("Expected a NullPointerException to be thrown");
+        } catch (NullPointerException e) {
+            // expect to end up here
+        }
+    }
+
+    @Test
+    public void ipVFutureRejectsInvalidCharactersInAddress() throws Exception {
+        try {
+            ipVFutureAddress(aValidIpVFutureVersion(), "/");
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, A-Z, 0-9, -, ., _, ~, !, $, &, ', (, ), *, +, ,, ;, =, or : in address [/]"));
+        }
+    }
+
+    private static String aValidIpVFutureAddress() {
         return LOWER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
+    }
+
+    private static String aValidIpVFutureVersion() {
+        return HEX_DIGIT;
     }
 
 }
