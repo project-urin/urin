@@ -19,14 +19,14 @@ public abstract class Urin {
             @Override
             public String asString() {
                 return new StringBuilder(scheme.asString())
-                        .append(":")
+                        .append(':')
                         .append(hierarchicalPart.asString())
                         .toString();
             }
         };
     }
 
-    public static Urin urin(final Scheme scheme, final HierarchicalPart path, final Fragment fragment) {
+    public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
         return new Urin() {
             @Override
             public String asString() {
@@ -35,16 +35,21 @@ public abstract class Urin {
         };
     }
 
-    public static Urin urin(final Scheme scheme, final HierarchicalPart path, final Query query) {
+    public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
         return new Urin() {
             @Override
             public String asString() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+                return new StringBuilder(scheme.asString())
+                        .append(':')
+                        .append(hierarchicalPart.asString())
+                        .append('?')
+                        .append(query.asString())
+                        .toString();
             }
         };
     }
 
-    public static Urin urin(final Scheme scheme, final HierarchicalPart path, final Query query, final Fragment fragment) {
+    public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
         return new Urin() {
             @Override
             public String asString() {

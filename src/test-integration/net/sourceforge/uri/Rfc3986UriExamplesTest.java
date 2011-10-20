@@ -11,7 +11,6 @@
 package net.sourceforge.uri;
 
 import net.sourceforge.urin.*;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.net.URI;
@@ -28,14 +27,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class Rfc3986UriExamplesTest {
-//     ftp://ftp.is.co.za/rfc/rfc1808.txt
-//     http://www.ietf.org/rfc/rfc2396.txt
-//    ldap://[2001:db8::7]/c=GB?objectClass?one
-//     mailto:John.Doe@example.com
-//     news:comp.infosystems.www.servers.unix
-//     tel:+1-816-555-1212
-//     telnet://192.0.2.16:80/
-//     urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 
     @Test
     public void ftpExample() throws Exception {
@@ -62,7 +53,6 @@ public class Rfc3986UriExamplesTest {
     }
 
     @Test
-    @Ignore
     public void ldapExample() throws Exception {
         Urin urin = urin(
                 new Scheme("ldap"),
