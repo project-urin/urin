@@ -15,16 +15,20 @@ import java.util.Random;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.PathBuilder.anAbsoluteOrEmptyPath;
 
 public class HierarchicalPartBuilder {
     public static HierarchicalPart aHierarchicalPart() {
         final HierarchicalPart hierarchicalPart;
-        switch (new Random().nextInt(2)) {
+        switch (new Random().nextInt(3)) {
             case 0:
                 hierarchicalPart = aHierarchicalPartWithNoAuthority();
                 break;
             case 1:
                 hierarchicalPart = aHierarchicalPartWithAuthorityAndNoPath();
+                break;
+            case 2:
+                hierarchicalPart = aHierarchicalPartWithAuthorityAndPath();
                 break;
             default:
                 throw new Defect("Attempted to switch on more cases than are defined");
@@ -41,6 +45,6 @@ public class HierarchicalPartBuilder {
     }
 
     public static HierarchicalPart aHierarchicalPartWithAuthorityAndPath() {
-        return hierarchicalPart(anAuthority(), PathBuilder.anAbsoluteOrEmptyPath());
+        return hierarchicalPart(anAuthority(), anAbsoluteOrEmptyPath());
     }
 }

@@ -10,11 +10,11 @@
 
 package net.sourceforge.urin;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class SegmentBuilder {
     public static Segment aSegment() {
-        return new Segment(randomAlphanumeric(5));
+        return new Segment(randomAscii(5));
     }
 
     public static Segment emptySegment() {

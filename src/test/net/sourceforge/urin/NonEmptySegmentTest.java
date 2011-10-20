@@ -12,6 +12,7 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import static net.sourceforge.urin.CharacterSets.P_CHARS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -26,4 +27,16 @@ public class NonEmptySegmentTest {
             assertThat(e.getMessage(), equalTo("Must contain at least one character"));
         }
     }
+
+    @Test
+    public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
+        assertThat(new NonEmptySegment(P_CHARS).asString(), equalTo(P_CHARS));
+    }
+
+    @Test
+    public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
+        assertThat(new NonEmptySegment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
+    }
+
+
 }

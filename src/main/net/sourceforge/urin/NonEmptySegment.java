@@ -10,19 +10,15 @@
 
 package net.sourceforge.urin;
 
-public final class NonEmptySegment {
-    private final String value;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
+
+public final class NonEmptySegment extends SingleEncodedValue {
+    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
 
     public NonEmptySegment(final String segment) {
+        super(segment, PERCENT_ENCODER);
         if (segment.isEmpty()) {
             throw new IllegalZeroLengthStringArgumentException("Must contain at least one character");
-        } else {
-            this.value = segment;
         }
     }
-
-    public String asString() {
-        return value;
-    }
-
 }

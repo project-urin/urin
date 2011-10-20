@@ -10,11 +10,7 @@
 
 package net.sourceforge.urin;
 
-import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
-
 public class PathRootlessAbsoluteOrEmpty {
-
-    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
 
     private final NonEmptySegment firstSegment;
     private final Segment[] segments;
@@ -25,9 +21,9 @@ public class PathRootlessAbsoluteOrEmpty {
     }
 
     public String asString() {
-        StringBuilder result = new StringBuilder(PERCENT_ENCODER.encode(firstSegment.asString()));
+        StringBuilder result = new StringBuilder(firstSegment.asString());
         for (Segment pathSegment : segments) {
-            result.append("/").append(PERCENT_ENCODER.encode(pathSegment.asString()));
+            result.append("/").append(pathSegment.asString());
         }
         return result.toString();
     }

@@ -10,12 +10,22 @@
 
 package net.sourceforge.urin;
 
-import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
+import org.junit.Test;
 
-public final class Segment extends SingleEncodedValue {
-    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
+import static net.sourceforge.urin.CharacterSets.P_CHARS;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
-    public Segment(final String segment) {
-        super(segment, PERCENT_ENCODER);
+public class SegmentTest {
+
+    @Test
+    public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
+        assertThat(new Segment(P_CHARS).asString(), equalTo(P_CHARS));
     }
+
+    @Test
+    public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
+        assertThat(new Segment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
+    }
+
 }
