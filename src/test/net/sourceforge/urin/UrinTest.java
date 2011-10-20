@@ -17,27 +17,41 @@ import static net.sourceforge.urin.HierarchicalPartBuilder.aHierarchicalPart;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Urin.urin;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 public class UrinTest {
 
     @Test
     public void createsUrinWithAllParts() throws Exception {
-        urin(aScheme(), aHierarchicalPart(), aQuery(), aFragment());
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(urin(scheme, hierarchicalPart, query, fragment).asString(), equalTo(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString() + "#" + fragment.asString()));
     }
 
     @Test
     public void createsUrinWithNoFragment() throws Exception {
-        urin(aScheme(), aHierarchicalPart(), aQuery());
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        assertThat(urin(scheme, hierarchicalPart, query).asString(), equalTo(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString()));
     }
 
     @Test
     public void createsUrinWithNoQuery() throws Exception {
-        urin(aScheme(), aHierarchicalPart(), aFragment());
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Fragment fragment = aFragment();
+        assertThat(urin(scheme, hierarchicalPart, fragment).asString(), equalTo(scheme.asString() + ":" + hierarchicalPart.asString() + "#" + fragment.asString()));
     }
 
     @Test
     public void createsUrinWithNoQueryAndNoFragment() throws Exception {
-        urin(aScheme(), aHierarchicalPart());
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        assertThat(urin(scheme, hierarchicalPart).asString(), equalTo(scheme.asString() + ":" + hierarchicalPart.asString()));
     }
 
 }

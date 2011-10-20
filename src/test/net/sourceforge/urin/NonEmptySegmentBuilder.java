@@ -10,8 +10,11 @@
 
 package net.sourceforge.urin;
 
+import static net.sourceforge.urin.CharacterSets.P_CHARS;
+import static org.apache.commons.lang3.RandomStringUtils.random;
+
 public class NonEmptySegmentBuilder {
     public static NonEmptySegment aNonEmptySegment() {
-        return new NonEmptySegment("some/path");
+        return new NonEmptySegment(random(5, P_CHARS));
     }
 }

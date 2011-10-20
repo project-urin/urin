@@ -30,7 +30,12 @@ public abstract class Urin {
         return new Urin() {
             @Override
             public String asString() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+                return new StringBuilder(scheme.asString())
+                        .append(':')
+                        .append(hierarchicalPart.asString())
+                        .append('#')
+                        .append(fragment.asString())
+                        .toString();
             }
         };
     }
@@ -53,7 +58,14 @@ public abstract class Urin {
         return new Urin() {
             @Override
             public String asString() {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+                return new StringBuilder(scheme.asString())
+                        .append(':')
+                        .append(hierarchicalPart.asString())
+                        .append('?')
+                        .append(query.asString())
+                        .append('#')
+                        .append(fragment.asString())
+                        .toString();
             }
         };
     }
