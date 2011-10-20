@@ -10,10 +10,10 @@
 
 package net.sourceforge.urin;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class QueryBuilder {
     static Query aQuery() {
-        return new Query(randomAlphanumeric(5));
+        return new Query(randomAscii(5));
     }
 }

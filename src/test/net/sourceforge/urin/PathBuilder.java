@@ -10,9 +10,41 @@
 
 package net.sourceforge.urin;
 
+import java.util.Random;
+
+import static net.sourceforge.urin.AbEmptyPath.absolutePath;
+import static net.sourceforge.urin.AbEmptyPath.emptyPath;
+import static net.sourceforge.urin.NonEmptySegmentBuilder.aNonEmptySegment;
+import static net.sourceforge.urin.SegmentBuilder.aSegment;
+
 public class PathBuilder {
-    static PathRootlessAbsoluteOrEmpty aPath() {
-        return new PathRootlessAbsoluteOrEmpty(NonEmptySegmentBuilder.aNonEmptySegment());
+
+    private static final Random RANDOM = new Random();
+
+    public static PathRootlessAbsoluteOrEmpty aPath() {
+        return new PathRootlessAbsoluteOrEmpty(aNonEmptySegment(), segments(RANDOM.nextInt(5)));
     }
 
+    public static AbEmptyPath anAbsoluteOrEmptyPath() {
+        final AbEmptyPath abEmptyPath;
+        switch (new Random().nextInt(2)) {
+            case 0:
+                abEmptyPath = absolutePath(segments(RANDOM.nextInt(6)));
+                break;
+            case 1:
+                abEmptyPath = emptyPath();
+                break;
+            default:
+                throw new Defect("Attempted to switch on more cases than are defined");
+        }
+        return abEmptyPath;
+    }
+
+    private static Segment[] segments(final int numberOfSegments) {
+        Segment[] tailSegments = new Segment[numberOfSegments];
+        for (int i = 0; i < tailSegments.length; i++) {
+            tailSegments[i] = aSegment();
+        }
+        return tailSegments;
+    }
 }

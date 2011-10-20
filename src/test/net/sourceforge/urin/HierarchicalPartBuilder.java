@@ -10,11 +10,37 @@
 
 package net.sourceforge.urin;
 
+import java.util.Random;
+
+import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.PathBuilder.aPath;
 
 public class HierarchicalPartBuilder {
     public static HierarchicalPart aHierarchicalPart() {
+        final HierarchicalPart hierarchicalPart;
+        switch (new Random().nextInt(2)) {
+            case 0:
+                hierarchicalPart = aHierarchicalPartWithNoAuthority();
+                break;
+            case 1:
+                hierarchicalPart = aHierarchicalPartWithAuthorityAndNoPath();
+                break;
+            default:
+                throw new Defect("Attempted to switch on more cases than are defined");
+        }
+        return hierarchicalPart;
+    }
+
+    public static HierarchicalPart aHierarchicalPartWithNoAuthority() {
         return hierarchicalPart(aPath());
+    }
+
+    public static HierarchicalPart aHierarchicalPartWithAuthorityAndNoPath() {
+        return hierarchicalPart(anAuthority());
+    }
+
+    public static HierarchicalPart aHierarchicalPartWithAuthorityAndPath() {
+        return hierarchicalPart(anAuthority(), PathBuilder.anAbsoluteOrEmptyPath());
     }
 }

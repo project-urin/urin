@@ -25,27 +25,27 @@ public abstract class AbEmptyPath {
 
     public abstract String asString();
 
-    public static AbEmptyPath absolutePath() {
-        return new AbEmptyPath() {
-            @Override
-            public String asString() {
-                return "/";
-            }
-        };
-    }
-
     public static AbEmptyPath absolutePath(final Segment... segments) {
-        return new AbEmptyPath() {
-            @Override
-            public String asString() {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (Segment segment : segments) {
-                    stringBuilder
-                            .append('/')
-                            .append(segment.asString());
+        if (segments.length == 0) {
+            return new AbEmptyPath() {
+                @Override
+                public String asString() {
+                    return "/";
                 }
-                return stringBuilder.toString();
-            }
-        };
+            };
+        } else {
+            return new AbEmptyPath() {
+                @Override
+                public String asString() {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (Segment segment : segments) {
+                        stringBuilder
+                                .append('/')
+                                .append(segment.asString());
+                    }
+                    return stringBuilder.toString();
+                }
+            };
+        }
     }
 }
