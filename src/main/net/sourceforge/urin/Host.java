@@ -131,6 +131,7 @@ public abstract class Host {
         if (version.isEmpty()) {
             throw new IllegalArgumentException("version must contain at least one character");
         }
+        verify(HEX_DIGIT, version, "version");
         return new Host() {
             @Override
             public String asString() {
@@ -144,4 +145,5 @@ public abstract class Host {
             }
         };
     }
+
 }

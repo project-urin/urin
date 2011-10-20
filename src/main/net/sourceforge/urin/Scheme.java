@@ -29,14 +29,8 @@ public final class Scheme {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Scheme must contain at least one character");
         }
-        if (!ALPHA.isMember(name.charAt(0))) {
-            throw new IllegalArgumentException("First character must be " + ALPHA.describe() + " in scheme [" + name + "]");
-        }
-        for (int i = 1; i < name.length(); i++) {
-            if (!TRAILING_CHARACTER_MEMBERSHIP_FUNCTION.isMember(name.charAt(i))) {
-                throw new IllegalArgumentException("Character " + (i + 1) + " must be " + TRAILING_CHARACTER_MEMBERSHIP_FUNCTION.describe() + " in scheme [" + name + "]");
-            }
-        }
+        verify(ALPHA, name, "scheme", 0, 1);
+        verify(TRAILING_CHARACTER_MEMBERSHIP_FUNCTION, name, "scheme", 1);
         value = name.toLowerCase();
     }
 

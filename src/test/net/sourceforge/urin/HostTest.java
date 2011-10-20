@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.*;
@@ -188,13 +187,36 @@ public class HostTest {
     }
 
     @Test
-    @Ignore
     public void ipVFutureRejectsInvalidVersion() throws Exception {
         try {
             ipVFutureAddress("a", aValidIpVFutureAddress());
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [a]"));
+        }
+        try {
+            ipVFutureAddress("/", aValidIpVFutureAddress());
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [/]"));
+        }
+        try {
+            ipVFutureAddress(":", aValidIpVFutureAddress());
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [:]"));
+        }
+        try {
+            ipVFutureAddress("@", aValidIpVFutureAddress());
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [@]"));
+        }
+        try {
+            ipVFutureAddress("G", aValidIpVFutureAddress());
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [G]"));
         }
     }
 

@@ -62,55 +62,55 @@ public class SchemeTest {
             new Scheme("+");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("First character must be a-z, or A-Z in scheme [+]"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [+]"));
         }
         try {
             new Scheme("-");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("First character must be a-z, or A-Z in scheme [-]"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [-]"));
         }
         try {
             new Scheme(".");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("First character must be a-z, or A-Z in scheme [.]"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [.]"));
         }
         try {
             new Scheme("4");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("First character must be a-z, or A-Z in scheme [4]"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [4]"));
         }
         try {
             new Scheme("@");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("First character must be a-z, or A-Z in scheme [@]"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [@]"));
         }
         try {
             new Scheme("[");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("First character must be a-z, or A-Z in scheme [[]"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [[]"));
         }
         try {
             new Scheme("`");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("First character must be a-z, or A-Z in scheme [`]"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [`]"));
         }
         try {
             new Scheme("{");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("First character must be a-z, or A-Z in scheme [{]"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [{]"));
         }
     }
 
     @Test
     public void acceptsFullRangeOfTailCharacters() throws Exception {
-        new Scheme("a" + ALPHA + DIGIT + "+-.");
+        new Scheme("a" + DIGIT + ALPHA + "+-.");
     }
 
     @Test
