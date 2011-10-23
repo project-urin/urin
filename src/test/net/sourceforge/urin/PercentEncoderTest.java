@@ -26,4 +26,9 @@ public class PercentEncoderTest {
         assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("\u00C0"), equalTo("%C3%80"));
         assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("\u30A2"), equalTo("%E3%82%A2"));
     }
+
+    @Test
+    public void handlesControlCharacters() throws Exception {
+        assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("\t"), equalTo("%09"));
+    }
 }

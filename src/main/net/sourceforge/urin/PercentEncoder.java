@@ -11,8 +11,10 @@
 package net.sourceforge.urin;
 
 import java.nio.charset.Charset;
+import java.util.Locale;
 
 final class PercentEncoder {
+    private static final Locale NO_LOCALISATION = null;
     private final CharacterSetMembershipFunction nonPercentEncodedCharacterSet;
 
     PercentEncoder(final CharacterSetMembershipFunction nonPercentEncodedCharacterSet) {
@@ -32,7 +34,7 @@ final class PercentEncoder {
     }
 
     private static String percentEncode(final byte character) {
-        return "%" + Integer.toHexString(character & 0xff).toUpperCase();
+        return String.format(NO_LOCALISATION, "%%%02X", character);
     }
 
 }
