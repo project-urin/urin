@@ -11,6 +11,12 @@
 package net.sourceforge.urin;
 
 public abstract class HierarchicalPart {
+
+    private HierarchicalPart() {
+    }
+
+    public abstract String asString();
+
     public static HierarchicalPart hierarchicalPart(final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty) {
         return new HierarchicalPart() {
             @Override
@@ -19,8 +25,6 @@ public abstract class HierarchicalPart {
             }
         };
     }
-
-    public abstract String asString();
 
     public static HierarchicalPart hierarchicalPart(final Authority authority) {
         return new HierarchicalPart() {

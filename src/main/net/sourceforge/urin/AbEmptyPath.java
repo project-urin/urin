@@ -11,6 +11,11 @@
 package net.sourceforge.urin;
 
 public abstract class AbEmptyPath {
+    private AbEmptyPath() {
+    }
+
+    public abstract String asString();
+
     public static AbEmptyPath emptyPath() {
         return new AbEmptyPath() {
             @Override
@@ -19,11 +24,6 @@ public abstract class AbEmptyPath {
             }
         };
     }
-
-    private AbEmptyPath() {
-    }
-
-    public abstract String asString();
 
     public static AbEmptyPath absolutePath(final Segment... segments) {
         if (segments.length == 0) {

@@ -14,6 +14,16 @@ import java.net.URI;
 
 public abstract class Urin {
 
+    private Urin() {
+        // deliberately empty
+    }
+
+    public abstract String asString();
+
+    public URI asUri() {
+        return URI.create(asString());
+    }
+
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
         return new Urin() {
             @Override
@@ -68,15 +78,5 @@ public abstract class Urin {
                         .toString();
             }
         };
-    }
-
-    private Urin() {
-        // deliberately empty
-    }
-
-    public abstract String asString();
-
-    public URI asUri() {
-        return URI.create(asString());
     }
 }

@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-public class Octet {
+public final class Octet {
     private final String octet;
 
     private Octet(final String octet) {

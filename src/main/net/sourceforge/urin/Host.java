@@ -19,6 +19,7 @@ public abstract class Host {
             UNRESERVED,
             SUB_DELIMITERS
     ));
+
     private static final CharacterSetMembershipFunction ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,
             ALPHA_UPPERCASE,
@@ -40,6 +41,11 @@ public abstract class Host {
             singleMemberCharacterSet('='),
             singleMemberCharacterSet(':')
     );
+
+    private Host() {
+    }
+
+    public abstract String asString();
 
     public static Host registeredName(final String registeredName) {
         return new Host() {
@@ -64,11 +70,6 @@ public abstract class Host {
                         .toString();
             }
         };
-    }
-
-    public abstract String asString();
-
-    private Host() {
     }
 
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {

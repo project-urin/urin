@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-public class PathRootlessAbsoluteOrEmpty {
+public final class PathRootlessAbsoluteOrEmpty {
 
     private final NonEmptySegment firstSegment;
     private final Segment[] segments;
