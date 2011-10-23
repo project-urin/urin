@@ -20,7 +20,7 @@ public final class PathRootlessAbsoluteOrEmpty {
         this.segments = segments.clone();
     }
 
-    public String asString() {
+    String asString() {
         StringBuilder result = new StringBuilder(firstSegment.asString());
         for (Segment pathSegment : segments) {
             result.append("/").append(pathSegment.asString());

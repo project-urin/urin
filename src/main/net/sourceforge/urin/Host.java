@@ -45,12 +45,12 @@ public abstract class Host {
     private Host() {
     }
 
-    public abstract String asString();
+    abstract String asString();
 
     public static Host registeredName(final String registeredName) {
         return new Host() {
             @Override
-            public String asString() {
+            String asString() {
                 return PERCENT_ENCODER.encode(registeredName.toLowerCase(ENGLISH)); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
             }
         };
@@ -59,7 +59,7 @@ public abstract class Host {
     public static Host ipV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
         return new Host() {
             @Override
-            public String asString() {
+            String asString() {
                 return new StringBuilder(firstOctet.asString())
                         .append('.')
                         .append(secondOctet.asString())
@@ -75,7 +75,7 @@ public abstract class Host {
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
         return new Host() {
             @Override
-            public String asString() {
+            String asString() {
                 return ipV6String(
                         firstHexadectet,
                         secondHexadectet,
@@ -93,7 +93,7 @@ public abstract class Host {
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
         return new Host() {
             @Override
-            public String asString() {
+            String asString() {
                 return ipV6String(
                         firstHexadectet,
                         secondHexadectet,
@@ -161,7 +161,7 @@ public abstract class Host {
         verify(ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION, address, "address");
         return new Host() {
             @Override
-            public String asString() {
+            String asString() {
                 return new StringBuilder()
                         .append("[v")
                         .append(version)

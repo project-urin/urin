@@ -20,7 +20,7 @@ abstract class SingleEncodedValue {
         this.percentEncoder = percentEncoder;
     }
 
-    public String asString() {
+    String asString() {
         return percentEncoder.encode(content);
     }
 }

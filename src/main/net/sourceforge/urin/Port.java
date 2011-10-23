@@ -25,11 +25,11 @@ public final class Port {
         this.port = port;
     }
 
-    public String asString() {
+    String asString() {
         return port;
     }
 
-    public boolean isEmpty() {
+    boolean isEmpty() {
         return port.isEmpty();
     }
 }

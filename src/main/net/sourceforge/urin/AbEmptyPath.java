@@ -14,12 +14,12 @@ public abstract class AbEmptyPath {
     private AbEmptyPath() {
     }
 
-    public abstract String asString();
+    abstract String asString();
 
     public static AbEmptyPath emptyPath() {
         return new AbEmptyPath() {
             @Override
-            public String asString() {
+            String asString() {
                 return "";
             }
         };
@@ -29,14 +29,14 @@ public abstract class AbEmptyPath {
         if (segments.length == 0) {
             return new AbEmptyPath() {
                 @Override
-                public String asString() {
+                String asString() {
                     return "/";
                 }
             };
         } else {
             return new AbEmptyPath() {
                 @Override
-                public String asString() {
+                String asString() {
                     StringBuilder stringBuilder = new StringBuilder();
                     for (Segment segment : segments) {
                         stringBuilder

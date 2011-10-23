@@ -35,7 +35,7 @@ public final class Scheme {
         value = name.toLowerCase(ENGLISH);
     }
 
-    public String asString() {
+    String asString() {
         return value;
     }
 

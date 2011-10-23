@@ -24,7 +24,7 @@ public final class Octet {
         return new Octet(Integer.toString(octet));
     }
 
-    public String asString() {
+    String asString() {
         return octet;
     }
 }

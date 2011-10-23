@@ -15,12 +15,12 @@ public abstract class HierarchicalPart {
     private HierarchicalPart() {
     }
 
-    public abstract String asString();
+    abstract String asString();
 
     public static HierarchicalPart hierarchicalPart(final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty) {
         return new HierarchicalPart() {
             @Override
-            public String asString() {
+            String asString() {
                 return pathRootlessAbsoluteOrEmpty.asString();
             }
         };
@@ -29,7 +29,7 @@ public abstract class HierarchicalPart {
     public static HierarchicalPart hierarchicalPart(final Authority authority) {
         return new HierarchicalPart() {
             @Override
-            public String asString() {
+            String asString() {
                 return new StringBuilder("//")
                         .append(authority.asString())
                         .toString();
@@ -40,7 +40,7 @@ public abstract class HierarchicalPart {
     public static HierarchicalPart hierarchicalPart(final Authority authority, final AbEmptyPath path) {
         return new HierarchicalPart() {
             @Override
-            public String asString() {
+            String asString() {
                 return new StringBuilder("//")
                         .append(authority.asString())
                         .append(path.asString())
