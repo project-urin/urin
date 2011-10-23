@@ -10,6 +10,8 @@
 
 package net.sourceforge.urin;
 
+import java.nio.charset.Charset;
+
 final class PercentEncoder {
     private final CharacterSetMembershipFunction nonPercentEncodedCharacterSet;
 
@@ -19,9 +21,9 @@ final class PercentEncoder {
 
     String encode(final String notEncoded) {
         StringBuilder result = new StringBuilder();
-        for (char character : notEncoded.toCharArray()) {
-            if (nonPercentEncodedCharacterSet.isMember(character)) {
-                result.append(character);
+        for (byte character : notEncoded.getBytes(Charset.forName("UTF-8"))) {
+            if (nonPercentEncodedCharacterSet.isMember((char) character)) {
+                result.append((char) character);
             } else {
                 result.append(percentEncode(character));
             }
@@ -29,8 +31,8 @@ final class PercentEncoder {
         return result.toString();
     }
 
-    private static String percentEncode(final Character character) {
-        return "%" + Integer.toHexString(character).toUpperCase();
+    private static String percentEncode(final byte character) {
+        return "%" + Integer.toHexString(character & 0xff).toUpperCase();
     }
 
 }

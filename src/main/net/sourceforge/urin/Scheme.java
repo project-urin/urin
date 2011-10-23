@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin;
 
+import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
 public final class Scheme {
@@ -31,7 +32,7 @@ public final class Scheme {
         }
         verify(ALPHA, name, "scheme", 0, 1);
         verify(TRAILING_CHARACTER_MEMBERSHIP_FUNCTION, name, "scheme", 1);
-        value = name.toLowerCase();
+        value = name.toLowerCase(ENGLISH);
     }
 
     public String asString() {

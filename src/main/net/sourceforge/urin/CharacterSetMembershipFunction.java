@@ -147,7 +147,7 @@ abstract class CharacterSetMembershipFunction {
         };
     }
 
-    private CharacterSetMembershipFunction() {
+    CharacterSetMembershipFunction() {
     }
 
     static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName) {

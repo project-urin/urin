@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin;
 
+import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
 public abstract class Host {
@@ -44,7 +45,7 @@ public abstract class Host {
         return new Host() {
             @Override
             public String asString() {
-                return PERCENT_ENCODER.encode(registeredName.toLowerCase()); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
+                return PERCENT_ENCODER.encode(registeredName.toLowerCase(ENGLISH)); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
             }
         };
     }
@@ -164,7 +165,7 @@ public abstract class Host {
                         .append("[v")
                         .append(version)
                         .append('.')
-                        .append(address.toLowerCase())
+                        .append(address.toLowerCase(ENGLISH))
                         .append(']')
                         .toString();
             }
