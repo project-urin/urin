@@ -69,25 +69,21 @@ public class Rfc3986UriExamplesTest {
     public void mailtoExample() throws Exception {
         Urin urin = urin(
                 new Scheme("mailto"),
-                hierarchicalPart(
-                        new PathRootlessAbsoluteOrEmpty(new NonEmptySegment("John.Doe@example.com")))
-        );
+                hierarchicalPart(new NonEmptySegment("John.Doe@example.com")));
         assertThat(urin.asString(), equalTo("mailto:John.Doe@example.com"));
         assertThat(urin.asUri(), equalTo(new URI("mailto:John.Doe@example.com")));
     }
 
     @Test
     public void newsExample() throws Exception {
-        final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = new PathRootlessAbsoluteOrEmpty(new NonEmptySegment("comp.infosystems.www.servers.unix"));
-        Urin urin = urin(new Scheme("news"), hierarchicalPart(pathRootlessAbsoluteOrEmpty));
+        Urin urin = urin(new Scheme("news"), hierarchicalPart(new NonEmptySegment("comp.infosystems.www.servers.unix")));
         assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
         assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
     }
 
     @Test
     public void telExample() throws Exception {
-        final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = new PathRootlessAbsoluteOrEmpty(new NonEmptySegment("+1-816-555-1212"));
-        Urin urin = urin(new Scheme("tel"), hierarchicalPart(pathRootlessAbsoluteOrEmpty));
+        Urin urin = urin(new Scheme("tel"), hierarchicalPart(new NonEmptySegment("+1-816-555-1212")));
         assertThat(urin.asString(), equalTo("tel:+1-816-555-1212"));
         assertThat(urin.asUri(), equalTo(new URI("tel:+1-816-555-1212")));
     }
@@ -106,8 +102,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void urnExample() throws Exception {
-        final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = new PathRootlessAbsoluteOrEmpty(new NonEmptySegment("oasis:names:specification:docbook:dtd:xml:4.1.2"));
-        Urin urin = urin(new Scheme("urn"), hierarchicalPart(pathRootlessAbsoluteOrEmpty));
+        Urin urin = urin(new Scheme("urn"), hierarchicalPart(new NonEmptySegment("oasis:names:specification:docbook:dtd:xml:4.1.2")));
         assertThat(urin.asString(), equalTo("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"));
         assertThat(urin.asUri(), equalTo(new URI("urn:oasis:names:specification:docbook:dtd:xml:4.1.2")));
     }

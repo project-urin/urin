@@ -15,15 +15,17 @@ import org.junit.Test;
 import static net.sourceforge.urin.AbEmptyPathBuilder.anAbEmptyPath;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
-import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.NonEmptySegmentBuilder.aNonEmptySegment;
+import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class HierarchicalPartTest {
     @Test
     public void aSimplePathAsStringReturnsThePath() throws Exception {
-        PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty = aPath();
-        assertThat(hierarchicalPart(pathRootlessAbsoluteOrEmpty).asString(), equalTo(pathRootlessAbsoluteOrEmpty.asString()));
+        NonEmptySegment firstSegment = aNonEmptySegment();
+        Segment secondSegment = aSegment();
+        assertThat(hierarchicalPart(firstSegment, secondSegment).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test

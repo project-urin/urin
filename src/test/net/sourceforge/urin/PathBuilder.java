@@ -14,16 +14,11 @@ import java.util.Random;
 
 import static net.sourceforge.urin.AbEmptyPath.absolutePath;
 import static net.sourceforge.urin.AbEmptyPath.emptyPath;
-import static net.sourceforge.urin.NonEmptySegmentBuilder.aNonEmptySegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
 public class PathBuilder {
 
     private static final Random RANDOM = new Random();
-
-    public static PathRootlessAbsoluteOrEmpty aPath() {
-        return new PathRootlessAbsoluteOrEmpty(aNonEmptySegment(), segments(RANDOM.nextInt(5)));
-    }
 
     public static AbEmptyPath anAbsoluteOrEmptyPath() {
         final AbEmptyPath abEmptyPath;

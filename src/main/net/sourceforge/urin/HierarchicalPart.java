@@ -17,11 +17,15 @@ public abstract class HierarchicalPart {
 
     abstract String asString();
 
-    public static HierarchicalPart hierarchicalPart(final PathRootlessAbsoluteOrEmpty pathRootlessAbsoluteOrEmpty) {
+    public static HierarchicalPart hierarchicalPart(final NonEmptySegment firstSegment, final Segment... segments) {
         return new HierarchicalPart() {
             @Override
             String asString() {
-                return pathRootlessAbsoluteOrEmpty.asString();
+                StringBuilder result = new StringBuilder(firstSegment.asString());
+                for (Segment pathSegment : segments) {
+                    result.append("/").append(pathSegment.asString());
+                }
+                return result.toString();
             }
         };
     }
