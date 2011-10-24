@@ -14,8 +14,8 @@ import java.util.Random;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolutePath;
 import static net.sourceforge.urin.NonEmptySegmentBuilder.aNonEmptySegment;
-import static net.sourceforge.urin.PathBuilder.anAbsoluteOrEmptyPath;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
 public class HierarchicalPartBuilder {
@@ -32,7 +32,7 @@ public class HierarchicalPartBuilder {
                 hierarchicalPart = aHierarchicalPartWithAuthorityAndNoPath();
                 break;
             case 2:
-                hierarchicalPart = aHierarchicalPartWithAuthorityAndPath();
+                hierarchicalPart = aHierarchicalPartWithAuthorityAndNonEmptyPath();
                 break;
             default:
                 throw new Defect("Attempted to switch on more cases than are defined");
@@ -48,8 +48,8 @@ public class HierarchicalPartBuilder {
         return hierarchicalPart(anAuthority());
     }
 
-    public static HierarchicalPart aHierarchicalPartWithAuthorityAndPath() {
-        return hierarchicalPart(anAuthority(), anAbsoluteOrEmptyPath());
+    public static HierarchicalPart aHierarchicalPartWithAuthorityAndNonEmptyPath() {
+        return hierarchicalPartAbsolutePath(anAuthority(), segments(RANDOM.nextInt(5)));
     }
 
     private static Segment[] segments(final int numberOfSegments) {

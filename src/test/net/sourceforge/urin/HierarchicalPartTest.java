@@ -12,9 +12,9 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.AbEmptyPathBuilder.anAbEmptyPath;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolutePath;
 import static net.sourceforge.urin.NonEmptySegmentBuilder.aNonEmptySegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -37,8 +37,9 @@ public class HierarchicalPartTest {
     @Test
     public void makesHierarchicalPartWithAuthorityAndNonEmptyPath() throws Exception {
         Authority authority = anAuthority();
-        AbEmptyPath abEmptyPath = anAbEmptyPath();
-        assertThat(hierarchicalPart(authority, abEmptyPath).asString(), equalTo("//" + authority.asString() + abEmptyPath.asString()));
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(hierarchicalPartAbsolutePath(authority, firstSegment, secondSegment).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
 }

@@ -41,14 +41,22 @@ public abstract class HierarchicalPart {
         };
     }
 
-    public static HierarchicalPart hierarchicalPart(final Authority authority, final AbEmptyPath path) {
+    public static HierarchicalPart hierarchicalPartAbsolutePath(final Authority authority, final Segment... segments) {
         return new HierarchicalPart() {
             @Override
             String asString() {
-                return new StringBuilder("//")
-                        .append(authority.asString())
-                        .append(path.asString())
-                        .toString();
+                StringBuilder stringBuilder = new StringBuilder("//")
+                        .append(authority.asString());
+                if (segments.length == 0) {
+                    stringBuilder.append('/');
+                } else {
+                    for (Segment segment : segments) {
+                        stringBuilder
+                                .append('/')
+                                .append(segment.asString());
+                    }
+                }
+                return stringBuilder.toString();
             }
         };
     }
