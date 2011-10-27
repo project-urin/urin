@@ -17,6 +17,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public class SchemeBuilder {
     static Scheme aScheme() {
-        return new Scheme(randomAlphabetic(1) + random(4, ALPHA + DIGIT + "+" + "-" + "."));
+        return Scheme.scheme(randomAlphabetic(1) + random(4, ALPHA + DIGIT + "+" + "-" + "."));
     }
 }

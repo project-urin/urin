@@ -26,13 +26,17 @@ public final class Scheme {
 
     private final String value;
 
-    public Scheme(final String name) {
+    private Scheme(final String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Scheme must contain at least one character");
         }
         verify(ALPHA, name, "scheme", 0, 1);
         verify(TRAILING_CHARACTER_MEMBERSHIP_FUNCTION, name, "scheme", 1);
         value = name.toLowerCase(ENGLISH);
+    }
+
+    public static Scheme scheme(final String name) {
+        return new Scheme(name);
     }
 
     String asString() {
