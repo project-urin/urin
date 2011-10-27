@@ -18,14 +18,19 @@
     <property name="location.documentation" value="docs"/>
     <property name="location.src" value="src/main"/>
     <property name="location.src.documentation" value="src/documentation"/>
+    <property name="location.src.test-support" value="src/test-support"/>
     <property name="location.src.test" value="src/test"/>
+    <property name="location.src.integration-test" value="src/test-integration"/>
 
     <property name="location.build" value="build"/>
     <property name="location.classes" value="${location.build}/classes"/>
     <property name="location.documentationclasses" value="${location.build}/documentation-classes"/>
     <property name="location.optimisedclasses" value="${location.build}/optimised-classes"/>
+    <property name="location.testsupportclasses" value="${location.build}/test-support-classes"/>
     <property name="location.testclasses" value="${location.build}/test-classes"/>
+    <property name="location.integration-testclasses" value="${location.build}/integration-test-classes"/>
     <property name="location.testresults" value="${location.build}/test-results"/>
+    <property name="location.integration-testresults" value="${location.build}/integration-test-results"/>
 
     <property name="location.dist" value="${location.build}/dist"/>
 
@@ -65,8 +70,12 @@
         <mkdir dir="${location.documentationclasses}"/>
         <delete dir="${location.optimisedclasses}"/>
         <mkdir dir="${location.optimisedclasses}"/>
+        <delete dir="${location.testsupportclasses}"/>
+        <mkdir dir="${location.testsupportclasses}"/>
         <delete dir="${location.testclasses}"/>
         <mkdir dir="${location.testclasses}"/>
+        <delete dir="${location.integration-testclasses}"/>
+        <mkdir dir="${location.integration-testclasses}"/>
 
         <javac destdir="${location.classes}" debug="on" source="1.6" target="1.6" includeantruntime="false">
             <src path="${location.src}"/>
@@ -84,9 +93,24 @@
             <classpath refid="build-libs"/>
         </javac>
 
+        <javac destdir="${location.testsupportclasses}" debug="on" source="1.6" target="1.6" includeantruntime="false">
+            <src path="${location.src.test-support}"/>
+            <classpath location="${location.classes}"/>
+            <classpath refid="test-compile-libs"/>
+        </javac>
+
         <javac destdir="${location.testclasses}" debug="on" source="1.6" target="1.6" includeantruntime="false">
             <src path="${location.src.test}"/>
             <classpath location="${location.classes}"/>
+            <classpath location="${location.testsupportclasses}"/>
+            <classpath refid="test-compile-libs"/>
+        </javac>
+
+        <javac destdir="${location.integration-testclasses}" debug="on" source="1.6" target="1.6"
+               includeantruntime="false">
+            <src path="${location.src.integration-test}"/>
+            <classpath location="${location.classes}"/>
+            <classpath location="${location.testsupportclasses}"/>
             <classpath refid="test-compile-libs"/>
         </javac>
 
@@ -94,14 +118,10 @@
             <fileset dir="src/main"/>
         </copy>
 
-        <copy todir="${location.testclasses}">
-            <fileset dir="src/test"/>
-        </copy>
-
         <echo message="Finished compile"/>
     </target>
 
-    <target name="test" depends="test-unit" description="builds and runs all tests"/>
+    <target name="test" depends="test-unit, test-integration" description="builds and runs all tests"/>
 
     <target name="test-unit" depends="compile" description="builds and runs unit tests">
         <delete dir="${location.testresults}"/>
@@ -110,6 +130,7 @@
             <classpath>
                 <pathelement location="${location.testclasses}"/>
                 <pathelement location="${location.classes}"/>
+                <pathelement location="${location.testsupportclasses}"/>
                 <path refid="test-compile-libs"/>
             </classpath>
             <batchtest fork="yes" todir="${location.testresults}">
@@ -128,6 +149,34 @@
         </junitreport>
 
         <fail if="unittestfailure" message="Unit tests failed."/>
+    </target>
+
+    <target name="test-integration" depends="compile" description="builds and runs unit tests">
+        <delete dir="${location.integration-testresults}"/>
+        <mkdir dir="${location.integration-testresults}"/>
+        <junit printsummary="yes" errorproperty="integrationtestfailure" failureproperty="integrationtestfailure">
+            <classpath>
+                <pathelement location="${location.integration-testclasses}"/>
+                <pathelement location="${location.classes}"/>
+                <pathelement location="${location.testsupportclasses}"/>
+                <path refid="test-compile-libs"/>
+            </classpath>
+            <batchtest fork="yes" todir="${location.integration-testresults}">
+                <fileset dir="${location.integration-testclasses}">
+                    <include name="**/*Test.class"/>
+                </fileset>
+                <formatter type="xml"/>
+            </batchtest>
+        </junit>
+
+        <junitreport todir="${location.integration-testresults}">
+            <fileset dir="${location.integration-testresults}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report todir="${location.integration-testresults}"/>
+        </junitreport>
+
+        <fail if="integrationtestfailure" message="Integration tests failed."/>
     </target>
 
     <target name="documentation">

@@ -10,8 +10,11 @@
 
 package net.sourceforge.urin;
 
-public class Defect extends RuntimeException {
-    public Defect(final String message) {
-        super(message);
+import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.HostBuilder.aHost;
+
+public class AuthorityBuilder {
+    static Authority anAuthority() {
+        return authority(aHost());
     }
 }

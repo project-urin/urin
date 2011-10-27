@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-public class CharacterSets {
+public final class CharacterSets {
     public static final String LOWER_CASE_ALPHA = "abcdefghijklmnopqrstuvwxyz";
     public static final String UPPER_CASE_ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     public static final String ALPHA = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA;
