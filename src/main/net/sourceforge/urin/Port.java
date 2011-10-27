@@ -16,13 +16,17 @@ public final class Port {
 
     private final String port;
 
-    public Port(final String port) {
+    private Port(final String port) {
         for (int i = 0; i < port.length(); i++) {
             if (!DIGIT.isMember(port.charAt(i))) {
                 throw new IllegalArgumentException("Character " + (i + 1) + " must be " + DIGIT.describe() + " in port [" + port + "]");
             }
         }
         this.port = port;
+    }
+
+    public static Port port(final String port) {
+        return new Port(port);
     }
 
     String asString() {

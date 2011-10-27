@@ -20,18 +20,19 @@ import static org.junit.Assert.fail;
 public class PortTest {
     @Test
     public void allowsFullRangeOfValidCharacters() throws Exception {
-        new Port(DIGIT);
+        Port.port(DIGIT);
     }
 
     @Test
     public void asStringReturnsGivenPort() throws Exception {
-        assertThat(new Port("123").asString(), equalTo("123"));
+        assertThat(Port.port("123").asString(), equalTo("123"));
     }
 
     @Test
     public void rejectsNullPort() throws Exception {
         try {
-            new Port(null);
+            //noinspection NullableProblems
+            Port.port(null);
             fail("Expected a NullPointerException to be thrown");
         } catch (NullPointerException e) {
             // expect to end up here
@@ -40,30 +41,30 @@ public class PortTest {
 
     @Test
     public void zeroLengthStringPortKnowsItIsEmpty() throws Exception {
-        assertThat(new Port("").isEmpty(), equalTo(true));
+        assertThat(Port.port("").isEmpty(), equalTo(true));
     }
 
     @Test
     public void nonZeroLengthStringPortKnowsItIsNotEmpty() throws Exception {
-        assertThat(new Port("0").isEmpty(), equalTo(false));
+        assertThat(Port.port("0").isEmpty(), equalTo(false));
     }
 
     @Test
     public void rejectsInvalidCharacters() throws Exception {
         try {
-            new Port("a");
+            Port.port("a");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [a]"));
         }
         try {
-            new Port("/");
+            Port.port("/");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [/]"));
         }
         try {
-            new Port(":");
+            Port.port(":");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [:]"));

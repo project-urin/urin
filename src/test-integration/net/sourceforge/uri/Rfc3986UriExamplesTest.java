@@ -93,7 +93,7 @@ public class Rfc3986UriExamplesTest {
         Urin urin = urin(
                 new Scheme("telnet"),
                 hierarchicalPartAbsolutePath(
-                        authority(ipV4Address(octet(192), octet(0), octet(2), octet(16)), new Port("80")))
+                        authority(ipV4Address(octet(192), octet(0), octet(2), octet(16)), Port.port("80")))
         );
         assertThat(urin.asString(), equalTo("telnet://192.0.2.16:80/"));
         assertThat(urin.asUri(), equalTo(new URI("telnet://192.0.2.16:80/")));

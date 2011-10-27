@@ -14,6 +14,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
 public class PortBuilder {
     static Port aPort() {
-        return new Port(randomNumeric(5));
+        return Port.port(randomNumeric(5));
     }
 }
