@@ -21,22 +21,22 @@ public abstract class HierarchicalPart {
 
     abstract String asString();
 
-    public static HierarchicalPart hierarchicalPartAbsolute(final Segment... segments) {
-        if (segments.length > 0 && segments[0].isEmpty()) {
-            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
-        }
+    public static HierarchicalPart hierarchicalPart() {
         return new HierarchicalPart() {
             @Override
             String asString() {
-                StringBuilder result = new StringBuilder("/");
-                Iterator<Segment> segmentIterator = asList(segments).iterator();
-                while (segmentIterator.hasNext()) {
-                    result.append(segmentIterator.next().asString());
-                    if (segmentIterator.hasNext()) {
-                        result.append('/');
-                    }
-                }
-                return result.toString();
+                return "";
+            }
+        };
+    }
+
+    public static HierarchicalPart hierarchicalPart(final Authority authority) {
+        return new HierarchicalPart() {
+            @Override
+            String asString() {
+                return new StringBuilder("//")
+                        .append(authority.asString())
+                        .toString();
             }
         };
     }
@@ -61,18 +61,27 @@ public abstract class HierarchicalPart {
         };
     }
 
-    public static HierarchicalPart hierarchicalPart(final Authority authority) {
+    public static HierarchicalPart hierarchicalPartAbsolute(final Segment... segments) {
+        if (segments.length > 0 && segments[0].isEmpty()) {
+            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
+        }
         return new HierarchicalPart() {
             @Override
             String asString() {
-                return new StringBuilder("//")
-                        .append(authority.asString())
-                        .toString();
+                StringBuilder result = new StringBuilder("/");
+                Iterator<Segment> segmentIterator = asList(segments).iterator();
+                while (segmentIterator.hasNext()) {
+                    result.append(segmentIterator.next().asString());
+                    if (segmentIterator.hasNext()) {
+                        result.append('/');
+                    }
+                }
+                return result.toString();
             }
         };
     }
 
-    public static HierarchicalPart hierarchicalPartAbsolutePath(final Authority authority, final Segment... segments) {
+    public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final Segment... segments) {
         return new HierarchicalPart() {
             @Override
             String asString() {

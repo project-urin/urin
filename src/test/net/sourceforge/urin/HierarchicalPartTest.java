@@ -22,6 +22,11 @@ import static org.junit.Assert.fail;
 
 public class HierarchicalPartTest {
     @Test
+    public void aHierarchicalPartWithEmptyPathAsStringIsCorrect() throws Exception {
+        assertThat(hierarchicalPart().asString(), equalTo(""));
+    }
+
+    @Test
     public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
@@ -70,7 +75,7 @@ public class HierarchicalPartTest {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartAbsolutePath(authority, firstSegment, secondSegment).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
 }

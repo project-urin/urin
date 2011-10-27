@@ -13,7 +13,8 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
-import static net.sourceforge.urin.HierarchicalPart.*;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Urin.urin;
@@ -32,7 +33,7 @@ public class UrinSamplesTest {
     public void canMakeAUrinWithAuthorityAndPathToRoot() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
-        assertThat(urin(scheme, hierarchicalPartAbsolutePath(authority)).asString(), equalTo(scheme.asString() + "://" + authority.asString() + "/"));
+        assertThat(urin(scheme, hierarchicalPartAbsolute(authority)).asString(), equalTo(scheme.asString() + "://" + authority.asString() + "/"));
     }
 
     @Test
@@ -40,7 +41,7 @@ public class UrinSamplesTest {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
         Segment segment = aSegment();
-        assertThat(urin(scheme, hierarchicalPartAbsolutePath(authority, segment)).asString(), equalTo(scheme.asString() + "://" + authority.asString() + "/" + segment.asString()));
+        assertThat(urin(scheme, hierarchicalPartAbsolute(authority, segment)).asString(), equalTo(scheme.asString() + "://" + authority.asString() + "/" + segment.asString()));
     }
 
     @Test

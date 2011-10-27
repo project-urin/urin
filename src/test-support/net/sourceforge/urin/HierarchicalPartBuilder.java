@@ -13,7 +13,8 @@ package net.sourceforge.urin;
 import java.util.Random;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
-import static net.sourceforge.urin.HierarchicalPart.*;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
 public class HierarchicalPartBuilder {
@@ -47,7 +48,7 @@ public class HierarchicalPartBuilder {
     }
 
     public static HierarchicalPart aHierarchicalPartWithAuthorityAndNonEmptyPath() {
-        return hierarchicalPartAbsolutePath(anAuthority(), segments(RANDOM.nextInt(5)));
+        return hierarchicalPartAbsolute(anAuthority(), segments(RANDOM.nextInt(5)));
     }
 
     private static Segment[] segments(final int numberOfSegments) {

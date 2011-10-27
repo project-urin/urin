@@ -17,7 +17,7 @@ import java.net.URI;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolutePath;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartRootless;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.Octet.octet;
@@ -34,7 +34,7 @@ public class Rfc3986UriExamplesTest {
     public void ftpExample() throws Exception {
         Urin urin = urin(
                 scheme("ftp"),
-                hierarchicalPartAbsolutePath(
+                hierarchicalPartAbsolute(
                         authority(registeredName("ftp.is.co.za")),
                         segment("rfc"), segment("rfc1808.txt"))
         );
@@ -46,7 +46,7 @@ public class Rfc3986UriExamplesTest {
     public void httpExample() throws Exception {
         Urin urin = urin(
                 scheme("http"),
-                hierarchicalPartAbsolutePath(
+                hierarchicalPartAbsolute(
                         authority(registeredName("www.ietf.org")),
                         segment("rfc"), segment("rfc2396.txt"))
         );
@@ -58,7 +58,7 @@ public class Rfc3986UriExamplesTest {
     public void ldapExample() throws Exception {
         Urin urin = urin(
                 scheme("ldap"),
-                hierarchicalPartAbsolutePath(
+                hierarchicalPartAbsolute(
                         authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
                         segment("c=GB")),
                 Query.query("objectClass?one")
@@ -94,7 +94,7 @@ public class Rfc3986UriExamplesTest {
     public void telnetExample() throws Exception {
         Urin urin = urin(
                 scheme("telnet"),
-                hierarchicalPartAbsolutePath(
+                hierarchicalPartAbsolute(
                         authority(ipV4Address(octet(192), octet(0), octet(2), octet(16)), port("80")))
         );
         assertThat(urin.asString(), equalTo("telnet://192.0.2.16:80/"));
