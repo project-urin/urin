@@ -16,8 +16,11 @@ public final class Query extends SingleEncodedValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
 
-    public Query(final String query) {
+    private Query(final String query) {
         super(query, PERCENT_ENCODER);
     }
 
+    public static Query query(final String query) {
+        return new Query(query);
+    }
 }

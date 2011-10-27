@@ -59,7 +59,7 @@ public class Rfc3986UriExamplesTest {
                 hierarchicalPartAbsolutePath(
                         authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
                         new Segment("c=GB")),
-                new Query("objectClass?one")
+                Query.query("objectClass?one")
         );
         assertThat(urin.asString(), equalTo("ldap://[2001:db8::7]/c=GB?objectClass?one"));
         assertThat(urin.asUri(), equalTo(new URI("ldap://[2001:db8::7]/c=GB?objectClass?one")));

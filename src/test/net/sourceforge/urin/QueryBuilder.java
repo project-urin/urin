@@ -14,6 +14,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class QueryBuilder {
     static Query aQuery() {
-        return new Query(randomAscii(5));
+        return Query.query(randomAscii(5));
     }
 }

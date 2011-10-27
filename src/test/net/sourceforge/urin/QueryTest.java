@@ -20,12 +20,12 @@ public class QueryTest {
 
     @Test
     public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
-        assertThat(new Query(QUERY_AND_FRAGMENT_CHARACTERS).asString(), equalTo(QUERY_AND_FRAGMENT_CHARACTERS));
+        assertThat(Query.query(QUERY_AND_FRAGMENT_CHARACTERS).asString(), equalTo(QUERY_AND_FRAGMENT_CHARACTERS));
     }
 
     @Test
     public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
-        assertThat(new Query(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
+        assertThat(Query.query(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
     }
 
 }
