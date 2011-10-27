@@ -13,8 +13,7 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolutePath;
+import static net.sourceforge.urin.HierarchicalPart.*;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -23,21 +22,40 @@ import static org.junit.Assert.fail;
 
 public class HierarchicalPartTest {
     @Test
-    public void aSimplePathAsStringReturnsThePath() throws Exception {
+    public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(hierarchicalPart(firstSegment, secondSegment).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment).asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
-    public void aSimplePathRejectsAnEmptyFirstSegment() throws Exception {
+    public void aSimpleAbsolutePathRejectsAnEmptyFirstSegment() throws Exception {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
         try {
-            hierarchicalPart(firstSegment, secondSegment).asString();
+            hierarchicalPartAbsolute(firstSegment, secondSegment).asString();
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("First segment must be non-empty"));
+            assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
+        }
+    }
+
+    @Test
+    public void aSimpleRootlessPathAsStringReturnsThePath() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(hierarchicalPartRootless(firstSegment, secondSegment).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aSimpleRootlessPathRejectsAnEmptyFirstSegment() throws Exception {
+        Segment firstSegment = segment("");
+        Segment secondSegment = aSegment();
+        try {
+            hierarchicalPartRootless(firstSegment, secondSegment).asString();
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
         }
     }
 

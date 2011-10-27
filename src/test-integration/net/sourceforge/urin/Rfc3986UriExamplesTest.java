@@ -17,8 +17,8 @@ import java.net.URI;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolutePath;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartRootless;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.Port.port;
@@ -71,21 +71,21 @@ public class Rfc3986UriExamplesTest {
     public void mailtoExample() throws Exception {
         Urin urin = urin(
                 scheme("mailto"),
-                hierarchicalPart(segment("John.Doe@example.com")));
+                hierarchicalPartRootless(segment("John.Doe@example.com")));
         assertThat(urin.asString(), equalTo("mailto:John.Doe@example.com"));
         assertThat(urin.asUri(), equalTo(new URI("mailto:John.Doe@example.com")));
     }
 
     @Test
     public void newsExample() throws Exception {
-        Urin urin = urin(scheme("news"), hierarchicalPart(segment("comp.infosystems.www.servers.unix")));
+        Urin urin = urin(scheme("news"), hierarchicalPartRootless(segment("comp.infosystems.www.servers.unix")));
         assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
         assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
     }
 
     @Test
     public void telExample() throws Exception {
-        Urin urin = urin(scheme("tel"), hierarchicalPart(segment("+1-816-555-1212")));
+        Urin urin = urin(scheme("tel"), hierarchicalPartRootless(segment("+1-816-555-1212")));
         assertThat(urin.asString(), equalTo("tel:+1-816-555-1212"));
         assertThat(urin.asUri(), equalTo(new URI("tel:+1-816-555-1212")));
     }
@@ -103,7 +103,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void urnExample() throws Exception {
-        Urin urin = urin(scheme("urn"), hierarchicalPart(segment("oasis:names:specification:docbook:dtd:xml:4.1.2")));
+        Urin urin = urin(scheme("urn"), hierarchicalPartRootless(segment("oasis:names:specification:docbook:dtd:xml:4.1.2")));
         assertThat(urin.asString(), equalTo("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"));
         assertThat(urin.asUri(), equalTo(new URI("urn:oasis:names:specification:docbook:dtd:xml:4.1.2")));
     }

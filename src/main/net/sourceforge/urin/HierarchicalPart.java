@@ -10,6 +10,10 @@
 
 package net.sourceforge.urin;
 
+import java.util.Iterator;
+
+import static java.util.Arrays.asList;
+
 public abstract class HierarchicalPart {
 
     private HierarchicalPart() {
@@ -17,16 +21,40 @@ public abstract class HierarchicalPart {
 
     abstract String asString();
 
-    public static HierarchicalPart hierarchicalPart(final Segment firstSegment, final Segment... segments) {
-        if (firstSegment.isEmpty()) {
-            throw new IllegalArgumentException("First segment must be non-empty");
+    public static HierarchicalPart hierarchicalPartAbsolute(final Segment... segments) {
+        if (segments.length > 0 && segments[0].isEmpty()) {
+            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
         return new HierarchicalPart() {
             @Override
             String asString() {
-                StringBuilder result = new StringBuilder(firstSegment.asString());
-                for (Segment pathSegment : segments) {
-                    result.append("/").append(pathSegment.asString());
+                StringBuilder result = new StringBuilder("/");
+                Iterator<Segment> segmentIterator = asList(segments).iterator();
+                while (segmentIterator.hasNext()) {
+                    result.append(segmentIterator.next().asString());
+                    if (segmentIterator.hasNext()) {
+                        result.append('/');
+                    }
+                }
+                return result.toString();
+            }
+        };
+    }
+
+    public static HierarchicalPart hierarchicalPartRootless(final Segment... segments) {
+        if (segments.length > 0 && segments[0].isEmpty()) {
+            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
+        }
+        return new HierarchicalPart() {
+            @Override
+            String asString() {
+                StringBuilder result = new StringBuilder();
+                Iterator<Segment> segmentIterator = asList(segments).iterator();
+                while (segmentIterator.hasNext()) {
+                    result.append(segmentIterator.next().asString());
+                    if (segmentIterator.hasNext()) {
+                        result.append('/');
+                    }
                 }
                 return result.toString();
             }
