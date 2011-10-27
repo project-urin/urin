@@ -14,6 +14,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class FragmentBuilder {
     static Fragment aFragment() {
-        return new Fragment(randomAscii(5));
+        return Fragment.fragment(randomAscii(5));
     }
 }

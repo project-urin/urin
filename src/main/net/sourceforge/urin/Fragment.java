@@ -16,8 +16,11 @@ public final class Fragment extends SingleEncodedValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
 
-    public Fragment(final String fragment) {
+    private Fragment(final String fragment) {
         super(fragment, PERCENT_ENCODER);
     }
 
+    public static Fragment fragment(final String fragment) {
+        return new Fragment(fragment);
+    }
 }

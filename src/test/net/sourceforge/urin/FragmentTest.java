@@ -20,12 +20,12 @@ public class FragmentTest {
 
     @Test
     public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
-        assertThat(new Fragment(QUERY_AND_FRAGMENT_CHARACTERS).asString(), equalTo(QUERY_AND_FRAGMENT_CHARACTERS));
+        assertThat(Fragment.fragment(QUERY_AND_FRAGMENT_CHARACTERS).asString(), equalTo(QUERY_AND_FRAGMENT_CHARACTERS));
     }
 
     @Test
     public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
-        assertThat(new Fragment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
+        assertThat(Fragment.fragment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
     }
 
 }
