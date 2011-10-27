@@ -10,7 +10,9 @@
 
 package net.sourceforge.urin;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -45,11 +47,12 @@ public abstract class HierarchicalPart {
         if (segments.length > 0 && segments[0].isEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
+        final Iterable<Segment> segmentIterable = new ArrayList<Segment>(asList(segments));
         return new HierarchicalPart() {
             @Override
             String asString() {
                 StringBuilder result = new StringBuilder();
-                Iterator<Segment> segmentIterator = asList(segments).iterator();
+                Iterator<Segment> segmentIterator = segmentIterable.iterator();
                 while (segmentIterator.hasNext()) {
                     result.append(segmentIterator.next().asString());
                     if (segmentIterator.hasNext()) {
@@ -65,11 +68,12 @@ public abstract class HierarchicalPart {
         if (segments.length > 0 && segments[0].isEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
+        final Iterable<Segment> segmentIterable = new ArrayList<Segment>(asList(segments));
         return new HierarchicalPart() {
             @Override
             String asString() {
                 StringBuilder result = new StringBuilder("/");
-                Iterator<Segment> segmentIterator = asList(segments).iterator();
+                Iterator<Segment> segmentIterator = segmentIterable.iterator();
                 while (segmentIterator.hasNext()) {
                     result.append(segmentIterator.next().asString());
                     if (segmentIterator.hasNext()) {
@@ -82,15 +86,16 @@ public abstract class HierarchicalPart {
     }
 
     public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final Segment... segments) {
+        final List<Segment> segmentList = new ArrayList<Segment>(asList(segments));
         return new HierarchicalPart() {
             @Override
             String asString() {
                 StringBuilder stringBuilder = new StringBuilder("//")
                         .append(authority.asString());
-                if (segments.length == 0) {
+                if (segmentList.isEmpty()) {
                     stringBuilder.append('/');
                 } else {
-                    for (Segment segment : segments) {
+                    for (Segment segment : segmentList) {
                         stringBuilder
                                 .append('/')
                                 .append(segment.asString());

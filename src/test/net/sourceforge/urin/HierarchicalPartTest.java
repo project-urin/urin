@@ -53,6 +53,16 @@ public class HierarchicalPartTest {
     }
 
     @Test
+    public void aSimpleRootlessPathAsStringHasImmutableVarargs() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        Segment[] segments = {firstSegment, secondSegment};
+        HierarchicalPart hierarchicalPart = hierarchicalPartRootless(segments);
+        segments[0] = aSegment();
+        assertThat(hierarchicalPart.asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
     public void aSimpleRootlessPathRejectsAnEmptyFirstSegment() throws Exception {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
@@ -62,6 +72,16 @@ public class HierarchicalPartTest {
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
         }
+    }
+
+    @Test
+    public void aSimpleAbsolutePathAsStringHasImmutableVarargs() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        Segment[] segments = {firstSegment, secondSegment};
+        HierarchicalPart hierarchicalPart = hierarchicalPartAbsolute(segments);
+        segments[0] = aSegment();
+        assertThat(hierarchicalPart.asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
@@ -76,6 +96,17 @@ public class HierarchicalPartTest {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
         assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aHierarchicalPartWithAuthorityAndNonEmptyPathHasImmutableVarargs() throws Exception {
+        Authority authority = anAuthority();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        Segment[] segments = {firstSegment, secondSegment};
+        HierarchicalPart hierarchicalPart = hierarchicalPartAbsolute(authority, segments);
+        segments[0] = aSegment();
+        assertThat(hierarchicalPart.asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
 }
