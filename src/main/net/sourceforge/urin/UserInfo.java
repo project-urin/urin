@@ -20,7 +20,11 @@ public final class UserInfo extends SingleEncodedValue {
             singleMemberCharacterSet(':')
     ));
 
-    public UserInfo(final String userInfo) {
+    private UserInfo(final String userInfo) {
         super(userInfo, PERCENT_ENCODER);
+    }
+
+    public static UserInfo userInfo(final String userInfo) {
+        return new UserInfo(userInfo);
     }
 }

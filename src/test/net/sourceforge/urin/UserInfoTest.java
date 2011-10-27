@@ -21,11 +21,11 @@ public class UserInfoTest {
     @Test
     public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
         String nonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS + ":";
-        assertThat(new UserInfo(nonPercentEncodedCharacters).asString(), equalTo(nonPercentEncodedCharacters));
+        assertThat(UserInfo.userInfo(nonPercentEncodedCharacters).asString(), equalTo(nonPercentEncodedCharacters));
     }
 
     @Test
     public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
-        assertThat(new UserInfo(".@.#.[.]. .").asString(), equalTo(".%40.%23.%5B.%5D.%20."));
+        assertThat(UserInfo.userInfo(".@.#.[.]. .").asString(), equalTo(".%40.%23.%5B.%5D.%20."));
     }
 }

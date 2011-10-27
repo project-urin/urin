@@ -14,6 +14,6 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 public class UserInfoBuilder {
     static UserInfo aUserInfo() {
-        return new UserInfo(randomAlphanumeric(5));
+        return UserInfo.userInfo(randomAlphanumeric(5));
     }
 }
