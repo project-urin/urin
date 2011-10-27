@@ -17,7 +17,10 @@ public abstract class HierarchicalPart {
 
     abstract String asString();
 
-    public static HierarchicalPart hierarchicalPart(final NonEmptySegment firstSegment, final Segment... segments) {
+    public static HierarchicalPart hierarchicalPart(final Segment firstSegment, final Segment... segments) {
+        if (firstSegment.isEmpty()) {
+            throw new IllegalArgumentException("First segment must be non-empty");
+        }
         return new HierarchicalPart() {
             @Override
             String asString() {

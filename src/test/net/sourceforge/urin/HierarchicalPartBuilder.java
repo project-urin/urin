@@ -15,7 +15,6 @@ import java.util.Random;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolutePath;
-import static net.sourceforge.urin.NonEmptySegmentBuilder.aNonEmptySegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
 public class HierarchicalPartBuilder {
@@ -41,7 +40,7 @@ public class HierarchicalPartBuilder {
     }
 
     public static HierarchicalPart aHierarchicalPartWithNoAuthority() {
-        return hierarchicalPart(aNonEmptySegment(), segments(RANDOM.nextInt(5)));
+        return hierarchicalPart(aSegment(), segments(RANDOM.nextInt(5)));
     }
 
     public static HierarchicalPart aHierarchicalPartWithAuthorityAndNoPath() {

@@ -15,17 +15,30 @@ import org.junit.Test;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolutePath;
-import static net.sourceforge.urin.NonEmptySegmentBuilder.aNonEmptySegment;
+import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class HierarchicalPartTest {
     @Test
     public void aSimplePathAsStringReturnsThePath() throws Exception {
-        NonEmptySegment firstSegment = aNonEmptySegment();
+        Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
         assertThat(hierarchicalPart(firstSegment, secondSegment).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aSimplePathRejectsAnEmptyFirstSegment() throws Exception {
+        Segment firstSegment = segment("");
+        Segment secondSegment = aSegment();
+        try {
+            hierarchicalPart(firstSegment, secondSegment).asString();
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("First segment must be non-empty"));
+        }
     }
 
     @Test

@@ -23,4 +23,9 @@ abstract class SingleEncodedValue {
     String asString() {
         return percentEncoder.encode(content);
     }
+
+    boolean isEmpty() {
+        return this.content.isEmpty();
+    }
+
 }

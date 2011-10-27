@@ -10,7 +10,6 @@
 
 package net.sourceforge.uri;
 
-import net.sourceforge.urin.NonEmptySegment;
 import net.sourceforge.urin.Query;
 import net.sourceforge.urin.Urin;
 import org.junit.Test;
@@ -74,21 +73,21 @@ public class Rfc3986UriExamplesTest {
     public void mailtoExample() throws Exception {
         Urin urin = urin(
                 scheme("mailto"),
-                hierarchicalPart(new NonEmptySegment("John.Doe@example.com")));
+                hierarchicalPart(segment("John.Doe@example.com")));
         assertThat(urin.asString(), equalTo("mailto:John.Doe@example.com"));
         assertThat(urin.asUri(), equalTo(new URI("mailto:John.Doe@example.com")));
     }
 
     @Test
     public void newsExample() throws Exception {
-        Urin urin = urin(scheme("news"), hierarchicalPart(new NonEmptySegment("comp.infosystems.www.servers.unix")));
+        Urin urin = urin(scheme("news"), hierarchicalPart(segment("comp.infosystems.www.servers.unix")));
         assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
         assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
     }
 
     @Test
     public void telExample() throws Exception {
-        Urin urin = urin(scheme("tel"), hierarchicalPart(new NonEmptySegment("+1-816-555-1212")));
+        Urin urin = urin(scheme("tel"), hierarchicalPart(segment("+1-816-555-1212")));
         assertThat(urin.asString(), equalTo("tel:+1-816-555-1212"));
         assertThat(urin.asUri(), equalTo(new URI("tel:+1-816-555-1212")));
     }
@@ -106,7 +105,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void urnExample() throws Exception {
-        Urin urin = urin(scheme("urn"), hierarchicalPart(new NonEmptySegment("oasis:names:specification:docbook:dtd:xml:4.1.2")));
+        Urin urin = urin(scheme("urn"), hierarchicalPart(segment("oasis:names:specification:docbook:dtd:xml:4.1.2")));
         assertThat(urin.asString(), equalTo("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"));
         assertThat(urin.asUri(), equalTo(new URI("urn:oasis:names:specification:docbook:dtd:xml:4.1.2")));
     }
