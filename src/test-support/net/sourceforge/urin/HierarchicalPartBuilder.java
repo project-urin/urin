@@ -13,8 +13,7 @@ package net.sourceforge.urin;
 import java.util.Random;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
+import static net.sourceforge.urin.HierarchicalPart.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
 public class HierarchicalPartBuilder {
@@ -23,15 +22,21 @@ public class HierarchicalPartBuilder {
 
     public static HierarchicalPart aHierarchicalPart() {
         final HierarchicalPart hierarchicalPart;
-        switch (new Random().nextInt(3)) {
+        switch (new Random().nextInt(5)) {
             case 0:
-                hierarchicalPart = aHierarchicalPartWithNoAuthority();
+                hierarchicalPart = HierarchicalPart.hierarchicalPart();
                 break;
             case 1:
                 hierarchicalPart = aHierarchicalPartWithAuthorityAndNoPath();
                 break;
             case 2:
-                hierarchicalPart = aHierarchicalPartWithAuthorityAndNonEmptyPath();
+                hierarchicalPart = aHierarchicalPartRootlessWithNoAuthority();
+                break;
+            case 3:
+                hierarchicalPart = aHierarchicalPartAbsoluteWithNoAuthority();
+                break;
+            case 4:
+                hierarchicalPart = aHierarchicalPartAbsoluteWithAuthority();
                 break;
             default:
                 throw new Defect("Attempted to switch on more cases than are defined");
@@ -39,15 +44,19 @@ public class HierarchicalPartBuilder {
         return hierarchicalPart;
     }
 
-    public static HierarchicalPart aHierarchicalPartWithNoAuthority() {
-        return hierarchicalPartAbsolute(segments(RANDOM.nextInt(5)));
-    }
-
     public static HierarchicalPart aHierarchicalPartWithAuthorityAndNoPath() {
         return hierarchicalPart(anAuthority());
     }
 
-    public static HierarchicalPart aHierarchicalPartWithAuthorityAndNonEmptyPath() {
+    public static HierarchicalPart aHierarchicalPartRootlessWithNoAuthority() {
+        return hierarchicalPartRootless(segments(RANDOM.nextInt(5)));
+    }
+
+    public static HierarchicalPart aHierarchicalPartAbsoluteWithNoAuthority() {
+        return hierarchicalPartAbsolute(segments(RANDOM.nextInt(5)));
+    }
+
+    public static HierarchicalPart aHierarchicalPartAbsoluteWithAuthority() {
         return hierarchicalPartAbsolute(anAuthority(), segments(RANDOM.nextInt(5)));
     }
 
