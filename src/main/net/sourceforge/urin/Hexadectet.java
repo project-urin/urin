@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-public final class Hexadectet implements ElidableAsStringable {
+public final class Hexadectet {
 
     public static final Hexadectet ZERO = hexadectet(0x0);
 
@@ -29,11 +29,11 @@ public final class Hexadectet implements ElidableAsStringable {
         this.isElidable = isElidable;
     }
 
-    public String asString() {
+    String asString() {
         return hexadecimalHexadectet;
     }
 
-    public boolean isElidable() {
+    boolean isElidable() {
         return isElidable;
     }
 }

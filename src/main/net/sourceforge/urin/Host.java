@@ -77,14 +77,14 @@ public abstract class Host {
             @Override
             String asString() {
                 return ipV6String(
-                        firstHexadectet,
-                        secondHexadectet,
-                        thirdHexadectet,
-                        fourthHexadectet,
-                        fifthHexadectet,
-                        sixthHexadectet,
-                        seventhHexadectet,
-                        eighthHexadectet
+                        asElidableAsStringable(firstHexadectet),
+                        asElidableAsStringable(secondHexadectet),
+                        asElidableAsStringable(thirdHexadectet),
+                        asElidableAsStringable(fourthHexadectet),
+                        asElidableAsStringable(fifthHexadectet),
+                        asElidableAsStringable(sixthHexadectet),
+                        asElidableAsStringable(seventhHexadectet),
+                        asElidableAsStringable(eighthHexadectet)
                 );
             }
         };
@@ -95,12 +95,12 @@ public abstract class Host {
             @Override
             String asString() {
                 return ipV6String(
-                        firstHexadectet,
-                        secondHexadectet,
-                        thirdHexadectet,
-                        fourthHexadectet,
-                        fifthHexadectet,
-                        sixthHexadectet,
+                        asElidableAsStringable(firstHexadectet),
+                        asElidableAsStringable(secondHexadectet),
+                        asElidableAsStringable(thirdHexadectet),
+                        asElidableAsStringable(fourthHexadectet),
+                        asElidableAsStringable(fifthHexadectet),
+                        asElidableAsStringable(sixthHexadectet),
                         new ElidableAsStringable() {
                             public String asString() {
                                 return ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString();
@@ -111,6 +111,20 @@ public abstract class Host {
                             }
                         }
                 );
+            }
+        };
+    }
+
+    private static ElidableAsStringable asElidableAsStringable(final Hexadectet hexadectet) {
+        return new ElidableAsStringable() {
+
+            public String asString() {
+                return hexadectet.asString();
+
+            }
+
+            public boolean isElidable() {
+                return hexadectet.isElidable();
             }
         };
     }
@@ -173,4 +187,9 @@ public abstract class Host {
         };
     }
 
+    private static interface ElidableAsStringable {
+        String asString();
+
+        boolean isElidable();
+    }
 }
