@@ -34,7 +34,7 @@ public class Rfc3986UriExamplesTest {
                 Scheme.scheme("ftp"),
                 hierarchicalPartAbsolutePath(
                         authority(registeredName("ftp.is.co.za")),
-                        new Segment("rfc"), new Segment("rfc1808.txt"))
+                        Segment.segment("rfc"), Segment.segment("rfc1808.txt"))
         );
         assertThat(urin.asString(), equalTo("ftp://ftp.is.co.za/rfc/rfc1808.txt"));
         assertThat(urin.asUri(), equalTo(new URI("ftp://ftp.is.co.za/rfc/rfc1808.txt")));
@@ -46,7 +46,7 @@ public class Rfc3986UriExamplesTest {
                 Scheme.scheme("http"),
                 hierarchicalPartAbsolutePath(
                         authority(registeredName("www.ietf.org")),
-                        new Segment("rfc"), new Segment("rfc2396.txt"))
+                        Segment.segment("rfc"), Segment.segment("rfc2396.txt"))
         );
         assertThat(urin.asString(), equalTo("http://www.ietf.org/rfc/rfc2396.txt"));
         assertThat(urin.asUri(), equalTo(new URI("http://www.ietf.org/rfc/rfc2396.txt")));
@@ -58,7 +58,7 @@ public class Rfc3986UriExamplesTest {
                 Scheme.scheme("ldap"),
                 hierarchicalPartAbsolutePath(
                         authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
-                        new Segment("c=GB")),
+                        Segment.segment("c=GB")),
                 Query.query("objectClass?one")
         );
         assertThat(urin.asString(), equalTo("ldap://[2001:db8::7]/c=GB?objectClass?one"));

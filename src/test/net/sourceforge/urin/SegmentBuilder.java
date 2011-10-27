@@ -14,10 +14,10 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class SegmentBuilder {
     public static Segment aSegment() {
-        return new Segment(randomAscii(5));
+        return Segment.segment(randomAscii(5));
     }
 
     public static Segment emptySegment() {
-        return new Segment("");
+        return Segment.segment("");
     }
 }

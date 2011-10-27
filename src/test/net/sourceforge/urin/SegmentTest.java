@@ -20,12 +20,12 @@ public class SegmentTest {
 
     @Test
     public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
-        assertThat(new Segment(P_CHARS).asString(), equalTo(P_CHARS));
+        assertThat(Segment.segment(P_CHARS).asString(), equalTo(P_CHARS));
     }
 
     @Test
     public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
-        assertThat(new Segment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
+        assertThat(Segment.segment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
     }
 
 }

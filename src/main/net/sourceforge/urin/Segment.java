@@ -15,7 +15,11 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
 public final class Segment extends SingleEncodedValue {
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
 
-    public Segment(final String segment) {
+    private Segment(final String segment) {
         super(segment, PERCENT_ENCODER);
+    }
+
+    public static Segment segment(final String segment) {
+        return new Segment(segment);
     }
 }
