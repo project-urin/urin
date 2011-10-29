@@ -17,6 +17,7 @@ import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -37,6 +38,26 @@ public class HostTest {
     @Test
     public void registeredNameAsStringPercentEncodesNonUnreservedCharacters() throws Exception {
         assertThat(registeredName(".:.@.#.[.]. .").asString(), equalTo(".%3A.%40.%23.%5B.%5D.%20."));
+    }
+
+    @Test
+    public void registeredNamesWithMatchingValuesAreEqual() throws Exception {
+        String registeredName = randomAlphanumeric(5);
+        assertThat(registeredName(registeredName), equalTo(registeredName(registeredName)));
+        assertThat(registeredName(registeredName).hashCode(), equalTo(registeredName(registeredName).hashCode()));
+    }
+
+    @Test
+    public void registeredNameProducesCorrectToString() throws Exception {
+        String registeredName = randomAlphanumeric(5);
+        assertThat(registeredName(registeredName).toString(), equalTo("Host{registeredName='" + registeredName + "'}"));
+    }
+
+    @Test
+    public void registeredNameReturnsGivenValue() throws Exception {
+        String registeredName = randomAlphanumeric(5);
+        assertThat(registeredName(registeredName).hasRegisteredName(), equalTo(true));
+        assertThat(registeredName(registeredName).registeredName(), equalTo(registeredName));
     }
 
     @Test
@@ -199,6 +220,7 @@ public class HostTest {
     @Test
     public void ipVFutureRejectsNullVersion() throws Exception {
         try {
+            //noinspection NullableProblems
             ipVFutureAddress(null, aValidIpVFutureAddress());
             fail("Expected a NullPointerException to be thrown");
         } catch (NullPointerException e) {
@@ -253,6 +275,7 @@ public class HostTest {
     @Test
     public void ipVFutureRejectsNullAddress() throws Exception {
         try {
+            //noinspection NullableProblems
             ipVFutureAddress(aValidIpVFutureVersion(), null);
             fail("Expected a NullPointerException to be thrown");
         } catch (NullPointerException e) {

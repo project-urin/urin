@@ -12,20 +12,20 @@ package net.sourceforge.urin;
 
 abstract class SingleEncodedValue {
 
-    private final String content;
+    private final String value;
     private final PercentEncoder percentEncoder;
 
-    SingleEncodedValue(final String content, final PercentEncoder percentEncoder) {
-        this.content = content;
+    SingleEncodedValue(final String value, final PercentEncoder percentEncoder) {
+        this.value = value;
         this.percentEncoder = percentEncoder;
     }
 
     String asString() {
-        return percentEncoder.encode(content);
+        return percentEncoder.encode(value);
     }
 
     boolean isEmpty() {
-        return this.content.isEmpty();
+        return this.value.isEmpty();
     }
 
     @Override
@@ -34,16 +34,16 @@ abstract class SingleEncodedValue {
         if (o == null || getClass() != o.getClass()) return false;
 
         SingleEncodedValue that = (SingleEncodedValue) o;
-        return !(content != null ? !content.equals(that.content) : that.content != null);
+        return !(value != null ? !value.equals(that.value) : that.value != null);
     }
 
     @Override
     public int hashCode() {
-        return content != null ? content.hashCode() : 0;
+        return value != null ? value.hashCode() : 0;
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "{" + content + '}';
+        return getClass().getSimpleName() + "{value='" + value + "'}";
     }
 }

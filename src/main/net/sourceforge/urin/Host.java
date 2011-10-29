@@ -47,11 +47,51 @@ public abstract class Host {
 
     abstract String asString();
 
+    public boolean hasRegisteredName() {
+        return false;
+    }
+
+    public String registeredName() {
+        throw new UnsupportedOperationException("This type of host doesn't have a registered name");
+    }
+
     public static Host registeredName(final String registeredName) {
         return new Host() {
             @Override
             String asString() {
                 return PERCENT_ENCODER.encode(registeredName.toLowerCase(ENGLISH)); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
+            }
+
+            @Override
+            public boolean hasRegisteredName() {
+                return true;
+            }
+
+            @Override
+            public String registeredName() {
+                return registeredName;
+            }
+
+            @Override
+            public int hashCode() {
+                return registeredName.hashCode();
+            }
+
+            @Override
+            public boolean equals(final Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+
+                Host that = (Host) o;
+                return !(registeredName != null ? !registeredName.equals(that.registeredName()) : that.registeredName() != null);
+            }
+
+            @Override
+            public String toString() {
+                return "Host{" +
+                        "registeredName='" + registeredName + '\'' +
+                        '}';
+
             }
         };
     }
@@ -68,6 +108,16 @@ public abstract class Host {
                         .append('.')
                         .append(fourthOctet.asString())
                         .toString();
+            }
+
+            @Override
+            public boolean hasRegisteredName() {
+                return false;
+            }
+
+            @Override
+            public String registeredName() {
+                throw new UnsupportedOperationException();
             }
         };
     }
@@ -86,6 +136,16 @@ public abstract class Host {
                         asElidableAsStringable(seventhHexadectet),
                         asElidableAsStringable(eighthHexadectet)
                 );
+            }
+
+            @Override
+            public boolean hasRegisteredName() {
+                return false;
+            }
+
+            @Override
+            public String registeredName() {
+                throw new UnsupportedOperationException("IP v6 addresses don't have a registered name");
             }
         };
     }
@@ -111,6 +171,16 @@ public abstract class Host {
                             }
                         }
                 );
+            }
+
+            @Override
+            public boolean hasRegisteredName() {
+                return false;
+            }
+
+            @Override
+            public String registeredName() {
+                throw new UnsupportedOperationException("IP v6 addresses don't have a registered name");
             }
         };
     }
@@ -183,6 +253,16 @@ public abstract class Host {
                         .append(address.toLowerCase(ENGLISH))
                         .append(']')
                         .toString();
+            }
+
+            @Override
+            public boolean hasRegisteredName() {
+                return false;
+            }
+
+            @Override
+            public String registeredName() {
+                throw new UnsupportedOperationException("IP v4 addresses don't have a registered name");
             }
         };
     }
