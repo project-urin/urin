@@ -19,6 +19,7 @@ import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -48,6 +49,11 @@ public class HostTest {
     }
 
     @Test
+    public void registeredNamesWithDifferingValuesAreNotEqual() throws Exception {
+        assertThat(registeredName(randomAlphanumeric(5)), not(equalTo(registeredName(randomAlphanumeric(5)))));
+    }
+
+    @Test
     public void registeredNameProducesCorrectToString() throws Exception {
         String registeredName = randomAlphanumeric(5);
         assertThat(registeredName(registeredName).toString(), equalTo("Host{registeredName='" + registeredName + "'}"));
@@ -63,6 +69,31 @@ public class HostTest {
                 ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString(),
                 equalTo(firstOctet.asString() + "." + secondOctet.asString() + "." + thirdOctet.asString() + "." + fourthOctet.asString()));
     }
+
+    @Test
+    public void ipV4addressWithMatchingValuesAreEqual() throws Exception {
+        Octet firstOctet = anOctet();
+        Octet secondOctet = anOctet();
+        Octet thirdOctet = anOctet();
+        Octet fourthOctet = anOctet();
+        assertThat(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet), equalTo(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet)));
+        assertThat(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).hashCode(), equalTo(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).hashCode()));
+    }
+
+    @Test
+    public void ipV4addressWithDifferingValuesAreNotEqual() throws Exception {
+        assertThat(ipV4Address(anOctet(), anOctet(), anOctet(), anOctet()), not(equalTo(ipV4Address(anOctet(), anOctet(), anOctet(), anOctet()))));
+    }
+
+    @Test
+    public void ipV4addressProducesCorrectToString() throws Exception {
+        Octet firstOctet = anOctet();
+        Octet secondOctet = anOctet();
+        Octet thirdOctet = anOctet();
+        Octet fourthOctet = anOctet();
+        assertThat(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).toString(), equalTo("Host{firstOctet=" + firstOctet + ", secondOctet=" + secondOctet + ", thirdOctet=" + thirdOctet + ", fourthOctet=" + fourthOctet + "}"));
+    }
+
 
     @Test
     public void ipV6AddressAsStringIsCorrect() throws Exception {

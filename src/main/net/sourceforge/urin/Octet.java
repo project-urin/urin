@@ -10,11 +10,10 @@
 
 package net.sourceforge.urin;
 
-public final class Octet {
-    private final String octet;
+public final class Octet extends StringValue {
 
     private Octet(final String octet) {
-        this.octet = octet;
+        super(octet);
     }
 
     public static Octet octet(final int octet) {
@@ -24,7 +23,4 @@ public final class Octet {
         return new Octet(Integer.toString(octet));
     }
 
-    String asString() {
-        return octet;
-    }
 }

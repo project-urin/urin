@@ -52,20 +52,7 @@ public abstract class Host {
     }
 
     public static Host ipV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
-        return new Host() {
-            @Override
-            String asString() {
-                return new StringBuilder(firstOctet.asString())
-                        .append('.')
-                        .append(secondOctet.asString())
-                        .append('.')
-                        .append(thirdOctet.asString())
-                        .append('.')
-                        .append(fourthOctet.asString())
-                        .toString();
-            }
-
-        };
+        return new IpV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet);
     }
 
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
@@ -224,6 +211,65 @@ public abstract class Host {
                     "registeredName='" + registeredName + '\'' +
                     '}';
 
+        }
+    }
+
+    private static final class IpV4Address extends Host {
+        private final Octet firstOctet;
+        private final Octet secondOctet;
+        private final Octet thirdOctet;
+        private final Octet fourthOctet;
+
+        public IpV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
+            this.firstOctet = firstOctet;
+            this.secondOctet = secondOctet;
+            this.thirdOctet = thirdOctet;
+            this.fourthOctet = fourthOctet;
+        }
+
+        @Override
+        String asString() {
+            return new StringBuilder(firstOctet.asString())
+                    .append('.')
+                    .append(secondOctet.asString())
+                    .append('.')
+                    .append(thirdOctet.asString())
+                    .append('.')
+                    .append(fourthOctet.asString())
+                    .toString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            IpV4Address that = (IpV4Address) o;
+
+            return !(firstOctet != null ? !firstOctet.equals(that.firstOctet) : that.firstOctet != null)
+                    && !(thirdOctet != null ? !thirdOctet.equals(that.thirdOctet) : that.thirdOctet != null)
+                    && !(secondOctet != null ? !secondOctet.equals(that.secondOctet) : that.secondOctet != null)
+                    && !(fourthOctet != null ? !fourthOctet.equals(that.fourthOctet) : that.fourthOctet != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = firstOctet != null ? firstOctet.hashCode() : 0;
+            result = 31 * result + (secondOctet != null ? secondOctet.hashCode() : 0);
+            result = 31 * result + (thirdOctet != null ? thirdOctet.hashCode() : 0);
+            result = 31 * result + (fourthOctet != null ? fourthOctet.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Host{" +
+                    "firstOctet=" + firstOctet +
+                    ", secondOctet=" + secondOctet +
+                    ", thirdOctet=" + thirdOctet +
+                    ", fourthOctet=" + fourthOctet +
+                    '}';
         }
     }
 }
