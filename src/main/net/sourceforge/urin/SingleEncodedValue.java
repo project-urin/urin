@@ -28,4 +28,17 @@ abstract class SingleEncodedValue {
         return this.content.isEmpty();
     }
 
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SingleEncodedValue that = (SingleEncodedValue) o;
+        return !(content != null ? !content.equals(that.content) : that.content != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return content != null ? content.hashCode() : 0;
+    }
 }
