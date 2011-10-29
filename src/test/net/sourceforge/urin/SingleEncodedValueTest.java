@@ -43,6 +43,12 @@ public class SingleEncodedValueTest {
     }
 
     @Test
+    public void canGetBackGivenValue() throws Exception {
+        String aString = randomAlphanumeric(5);
+        assertThat(testSingleEncodedValue(aString).value(), equalTo(aString));
+    }
+
+    @Test
     public void toStringFormatIsCorrect() throws Exception {
         String aString = randomAlphanumeric(5);
         assertThat(testSingleEncodedValue(aString).toString(), equalTo("TestSingleEncodedValue{value='" + aString + "'}"));
