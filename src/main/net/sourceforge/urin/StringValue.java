@@ -22,7 +22,7 @@ abstract class StringValue {
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public final boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
@@ -31,12 +31,16 @@ abstract class StringValue {
     }
 
     @Override
-    public int hashCode() {
+    public final int hashCode() {
         return value != null ? value.hashCode() : 0;
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return getClass().getSimpleName() + "{value='" + value + "'}";
+    }
+
+    final boolean isEmpty() {
+        return value.isEmpty();
     }
 }

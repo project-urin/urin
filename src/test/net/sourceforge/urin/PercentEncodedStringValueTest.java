@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
-public class SingleEncodedValueTest {
+public class PercentEncodedStringValueTest {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(UNRESERVED);
 
@@ -37,7 +37,7 @@ public class SingleEncodedValueTest {
     @Test
     public void twoSingleEncodedValuesOfDifferentClassesWithTheSameValueAreEqual() throws Exception {
         String aString = randomAlphanumeric(5);
-        SingleEncodedValue expected = new SingleEncodedValue(aString, PERCENT_ENCODER) {
+        PercentEncodedStringValue expected = new PercentEncodedStringValue(aString, PERCENT_ENCODER) {
         };
         assertThat(testSingleEncodedValue(aString), not(equalTo(expected)));
     }
@@ -45,15 +45,15 @@ public class SingleEncodedValueTest {
     @Test
     public void toStringFormatIsCorrect() throws Exception {
         String aString = randomAlphanumeric(5);
-        assertThat(testSingleEncodedValue(aString).toString(), equalTo("TestSingleEncodedValue{value='" + aString + "'}"));
+        assertThat(testSingleEncodedValue(aString).toString(), equalTo("TestPercentEncodedStringValue{value='" + aString + "'}"));
     }
 
-    static SingleEncodedValue testSingleEncodedValue(final String content) {
-        return new TestSingleEncodedValue(content);
+    static PercentEncodedStringValue testSingleEncodedValue(final String content) {
+        return new TestPercentEncodedStringValue(content);
     }
 
-    private static class TestSingleEncodedValue extends SingleEncodedValue {
-        private TestSingleEncodedValue(final String content) {
+    private static class TestPercentEncodedStringValue extends PercentEncodedStringValue {
+        private TestPercentEncodedStringValue(final String content) {
             super(content, PERCENT_ENCODER);
         }
     }

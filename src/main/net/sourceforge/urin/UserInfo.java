@@ -12,7 +12,7 @@ package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
-public final class UserInfo extends SingleEncodedValue {
+public final class UserInfo extends PercentEncodedStringValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(or(
             UNRESERVED,

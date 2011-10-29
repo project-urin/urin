@@ -12,7 +12,7 @@ package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS;
 
-public final class Fragment extends SingleEncodedValue {
+public final class Fragment extends PercentEncodedStringValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
 

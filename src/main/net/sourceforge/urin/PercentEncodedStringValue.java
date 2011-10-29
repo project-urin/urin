@@ -10,22 +10,18 @@
 
 package net.sourceforge.urin;
 
-abstract class SingleEncodedValue extends StringValue {
+abstract class PercentEncodedStringValue extends StringValue {
 
     private final PercentEncoder percentEncoder;
 
-    SingleEncodedValue(final String value, final PercentEncoder percentEncoder) {
+    PercentEncodedStringValue(final String value, final PercentEncoder percentEncoder) {
         super(value);
         this.percentEncoder = percentEncoder;
     }
 
     @Override
-    String asString() {
+    final String asString() {
         return percentEncoder.encode(value);
-    }
-
-    boolean isEmpty() {
-        return this.value.isEmpty();
     }
 
 }

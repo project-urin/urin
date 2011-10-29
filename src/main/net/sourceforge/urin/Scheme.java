@@ -13,7 +13,7 @@ package net.sourceforge.urin;
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
-public final class Scheme {
+public final class Scheme extends StringValue {
 
     private static final CharacterSetMembershipFunction TRAILING_CHARACTER_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,
@@ -24,23 +24,16 @@ public final class Scheme {
             singleMemberCharacterSet('.')
     );
 
-    private final String value;
-
     private Scheme(final String name) {
+        super(name);
+    }
+
+    public static Scheme scheme(final String name) {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Scheme must contain at least one character");
         }
         verify(ALPHA, name, "scheme", 0, 1);
         verify(TRAILING_CHARACTER_MEMBERSHIP_FUNCTION, name, "scheme", 1);
-        value = name.toLowerCase(ENGLISH);
+        return new Scheme(name.toLowerCase(ENGLISH));
     }
-
-    public static Scheme scheme(final String name) {
-        return new Scheme(name);
-    }
-
-    String asString() {
-        return value;
-    }
-
 }

@@ -12,28 +12,18 @@ package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.DIGIT;
 
-public final class Port {
-
-    private final String port;
+public final class Port extends StringValue {
 
     private Port(final String port) {
+        super(port);
+    }
+
+    public static Port port(final String port) {
         for (int i = 0; i < port.length(); i++) {
             if (!DIGIT.isMember(port.charAt(i))) {
                 throw new IllegalArgumentException("Character " + (i + 1) + " must be " + DIGIT.describe() + " in port [" + port + "]");
             }
         }
-        this.port = port;
-    }
-
-    public static Port port(final String port) {
         return new Port(port);
-    }
-
-    String asString() {
-        return port;
-    }
-
-    boolean isEmpty() {
-        return port.isEmpty();
     }
 }

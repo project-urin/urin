@@ -10,11 +10,10 @@
 
 package net.sourceforge.urin;
 
-public final class Hexadectet {
+public final class Hexadectet extends StringValue {
 
     public static final Hexadectet ZERO = hexadectet(0x0);
 
-    private final String hexadecimalHexadectet;
     private final boolean isElidable;
 
     public static Hexadectet hexadectet(final int hexadectet) {
@@ -25,12 +24,8 @@ public final class Hexadectet {
     }
 
     private Hexadectet(final String hexadecimalHexadectet, final boolean isElidable) {
-        this.hexadecimalHexadectet = hexadecimalHexadectet;
+        super(hexadecimalHexadectet);
         this.isElidable = isElidable;
-    }
-
-    String asString() {
-        return hexadecimalHexadectet;
     }
 
     boolean isElidable() {
