@@ -42,6 +42,12 @@ public class SingleEncodedValueTest {
         assertThat(testSingleEncodedValue(aString), not(equalTo(expected)));
     }
 
+    @Test
+    public void toStringFormatIsCorrect() throws Exception {
+        String aString = randomAlphanumeric(5);
+        assertThat(testSingleEncodedValue(aString).toString(), equalTo("TestSingleEncodedValue{" + aString + "}"));
+    }
+
     static SingleEncodedValue testSingleEncodedValue(final String content) {
         return new TestSingleEncodedValue(content);
     }

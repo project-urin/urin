@@ -41,4 +41,9 @@ abstract class SingleEncodedValue {
     public int hashCode() {
         return content != null ? content.hashCode() : 0;
     }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "{" + content + '}';
+    }
 }
