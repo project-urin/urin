@@ -28,10 +28,6 @@ abstract class SingleEncodedValue {
         return this.value.isEmpty();
     }
 
-    public String value() {
-        return value;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

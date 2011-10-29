@@ -54,13 +54,6 @@ public class HostTest {
     }
 
     @Test
-    public void registeredNameReturnsGivenValue() throws Exception {
-        String registeredName = randomAlphanumeric(5);
-        assertThat(registeredName(registeredName).hasRegisteredName(), equalTo(true));
-        assertThat(registeredName(registeredName).registeredName(), equalTo(registeredName));
-    }
-
-    @Test
     public void ipV4AddressAsStringIsCorrect() throws Exception {
         Octet firstOctet = anOctet();
         Octet secondOctet = anOctet();
