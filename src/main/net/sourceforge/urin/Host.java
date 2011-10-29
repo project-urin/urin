@@ -121,19 +121,7 @@ public abstract class Host {
             throw new IllegalArgumentException("Address must contain at least one character");
         }
         verify(ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION, address, "address");
-        return new Host() {
-            @Override
-            String asString() {
-                return new StringBuilder()
-                        .append("[v")
-                        .append(version)
-                        .append('.')
-                        .append(address.toLowerCase(ENGLISH))
-                        .append(']')
-                        .toString();
-            }
-
-        };
+        return new IpVFutureAddress(version, address);
     }
 
     private static interface ElidableAsStringable {
@@ -410,6 +398,53 @@ public abstract class Host {
                     ", secondOctet=" + secondOctet +
                     ", thirdOctet=" + thirdOctet +
                     ", fourthOctet=" + fourthOctet +
+                    '}';
+        }
+    }
+
+    private static final class IpVFutureAddress extends Host {
+        private final String version;
+        private final String address;
+
+        IpVFutureAddress(final String version, final String address) {
+            this.version = version;
+            this.address = address;
+        }
+
+        @Override
+        String asString() {
+            return new StringBuilder()
+                    .append("[v")
+                    .append(version)
+                    .append('.')
+                    .append(address.toLowerCase(ENGLISH))
+                    .append(']')
+                    .toString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            IpVFutureAddress that = (IpVFutureAddress) o;
+            return !(version != null ? !version.equals(that.version) : that.version != null)
+                    && !(address != null ? !address.equals(that.address) : that.address != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = version != null ? version.hashCode() : 0;
+            result = 31 * result + (address != null ? address.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Host{" +
+                    "version='" + version + '\'' +
+                    ", address='" + address + '\'' +
                     '}';
         }
     }

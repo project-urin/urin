@@ -17,6 +17,7 @@ import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
+import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -24,6 +25,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 public class HostTest {
+
+    private static final String IP_V_FUTURE_ADDRESS_CHARACTERS = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
 
     @Test
     public void registeredNameAsStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
@@ -71,7 +74,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV4addressWithMatchingValuesAreEqual() throws Exception {
+    public void ipV4AddressWithMatchingValuesAreEqual() throws Exception {
         Octet firstOctet = anOctet();
         Octet secondOctet = anOctet();
         Octet thirdOctet = anOctet();
@@ -81,12 +84,12 @@ public class HostTest {
     }
 
     @Test
-    public void ipV4addressWithDifferingValuesAreNotEqual() throws Exception {
+    public void ipV4AddressWithDifferingValuesAreNotEqual() throws Exception {
         assertThat(ipV4Address(anOctet(), anOctet(), anOctet(), anOctet()), not(equalTo(ipV4Address(anOctet(), anOctet(), anOctet(), anOctet()))));
     }
 
     @Test
-    public void ipV4addressProducesCorrectToString() throws Exception {
+    public void ipV4AddressProducesCorrectToString() throws Exception {
         Octet firstOctet = anOctet();
         Octet secondOctet = anOctet();
         Octet thirdOctet = anOctet();
@@ -155,7 +158,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6addressWithMatchingValuesAreEqual() throws Exception {
+    public void ipV6AddressWithMatchingValuesAreEqual() throws Exception {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -169,12 +172,12 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6addressWithDifferingValuesAreNotEqual() throws Exception {
+    public void ipV6AddressWithDifferingValuesAreNotEqual() throws Exception {
         assertThat(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet()), not(equalTo(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet()))));
     }
 
     @Test
-    public void ipV6addressProducesCorrectToString() throws Exception {
+    public void ipV6AddressProducesCorrectToString() throws Exception {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -255,7 +258,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6addressWithTrailingIpV4AddressWithMatchingValuesAreEqual() throws Exception {
+    public void ipV6AddressWithTrailingIpV4AddressWithMatchingValuesAreEqual() throws Exception {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -271,12 +274,12 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6addressWithTrailingIpV4AddressWithDifferingValuesAreNotEqual() throws Exception {
+    public void ipV6AddressWithTrailingIpV4AddressWithDifferingValuesAreNotEqual() throws Exception {
         assertThat(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()), not(equalTo(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()))));
     }
 
     @Test
-    public void ipV6addressWithTrailingIpV4AddressProducesCorrectToString() throws Exception {
+    public void ipV6AddressWithTrailingIpV4AddressProducesCorrectToString() throws Exception {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -382,6 +385,26 @@ public class HostTest {
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be a-z, A-Z, 0-9, -, ., _, ~, !, $, &, ', (, ), *, +, ,, ;, =, or : in address [/]"));
         }
+    }
+
+    @Test
+    public void ipVFutureAddressWithMatchingValuesAreEqual() throws Exception {
+        String versionNumber = random(5, HEX_DIGIT);
+        String address = random(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
+        assertThat(ipVFutureAddress(versionNumber, address), equalTo(ipVFutureAddress(versionNumber, address)));
+        assertThat(ipVFutureAddress(versionNumber, address).hashCode(), equalTo(ipVFutureAddress(versionNumber, address).hashCode()));
+    }
+
+    @Test
+    public void ipVFutureAddressWithDifferingValuesAreNotEqual() throws Exception {
+        assertThat(ipVFutureAddress(random(5, HEX_DIGIT), random(5, IP_V_FUTURE_ADDRESS_CHARACTERS)), not(equalTo(ipVFutureAddress(random(5, HEX_DIGIT), random(5, IP_V_FUTURE_ADDRESS_CHARACTERS)))));
+    }
+
+    @Test
+    public void ipVFutureAddressProducesCorrectToString() throws Exception {
+        String versionNumber = random(5, HEX_DIGIT);
+        String address = random(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
+        assertThat(ipVFutureAddress(versionNumber, address).toString(), equalTo("Host{version='" + versionNumber + "', address='" + address + "'}"));
     }
 
     private static String aValidIpVFutureAddress() {
