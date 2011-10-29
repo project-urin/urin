@@ -56,22 +56,7 @@ public abstract class Host {
     }
 
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
-        return new Host() {
-            @Override
-            String asString() {
-                return ipV6String(
-                        asElidableAsStringable(firstHexadectet),
-                        asElidableAsStringable(secondHexadectet),
-                        asElidableAsStringable(thirdHexadectet),
-                        asElidableAsStringable(fourthHexadectet),
-                        asElidableAsStringable(fifthHexadectet),
-                        asElidableAsStringable(sixthHexadectet),
-                        asElidableAsStringable(seventhHexadectet),
-                        asElidableAsStringable(eighthHexadectet)
-                );
-            }
-
-        };
+        return new IpV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet);
     }
 
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
@@ -182,7 +167,7 @@ public abstract class Host {
     private static final class RegisteredName extends Host {
         private final String registeredName;
 
-        public RegisteredName(final String registeredName) {
+        RegisteredName(final String registeredName) {
             this.registeredName = registeredName;
         }
 
@@ -220,7 +205,7 @@ public abstract class Host {
         private final Octet thirdOctet;
         private final Octet fourthOctet;
 
-        public IpV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
+        IpV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
             this.firstOctet = firstOctet;
             this.secondOctet = secondOctet;
             this.thirdOctet = thirdOctet;
@@ -269,6 +254,86 @@ public abstract class Host {
                     ", secondOctet=" + secondOctet +
                     ", thirdOctet=" + thirdOctet +
                     ", fourthOctet=" + fourthOctet +
+                    '}';
+        }
+    }
+
+    private static final class IpV6Address extends Host {
+        private final Hexadectet firstHexadectet;
+        private final Hexadectet secondHexadectet;
+        private final Hexadectet thirdHexadectet;
+        private final Hexadectet fourthHexadectet;
+        private final Hexadectet fifthHexadectet;
+        private final Hexadectet sixthHexadectet;
+        private final Hexadectet seventhHexadectet;
+        private final Hexadectet eighthHexadectet;
+
+        IpV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
+            this.firstHexadectet = firstHexadectet;
+            this.secondHexadectet = secondHexadectet;
+            this.thirdHexadectet = thirdHexadectet;
+            this.fourthHexadectet = fourthHexadectet;
+            this.fifthHexadectet = fifthHexadectet;
+            this.sixthHexadectet = sixthHexadectet;
+            this.seventhHexadectet = seventhHexadectet;
+            this.eighthHexadectet = eighthHexadectet;
+        }
+
+        @Override
+        String asString() {
+            return ipV6String(
+                    asElidableAsStringable(firstHexadectet),
+                    asElidableAsStringable(secondHexadectet),
+                    asElidableAsStringable(thirdHexadectet),
+                    asElidableAsStringable(fourthHexadectet),
+                    asElidableAsStringable(fifthHexadectet),
+                    asElidableAsStringable(sixthHexadectet),
+                    asElidableAsStringable(seventhHexadectet),
+                    asElidableAsStringable(eighthHexadectet)
+            );
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            IpV6Address that = (IpV6Address) o;
+
+            return !(firstHexadectet != null ? !firstHexadectet.equals(that.firstHexadectet) : that.firstHexadectet != null)
+                    && !(secondHexadectet != null ? !secondHexadectet.equals(that.secondHexadectet) : that.secondHexadectet != null)
+                    && !(thirdHexadectet != null ? !thirdHexadectet.equals(that.thirdHexadectet) : that.thirdHexadectet != null)
+                    && !(fourthHexadectet != null ? !fourthHexadectet.equals(that.fourthHexadectet) : that.fourthHexadectet != null)
+                    && !(fifthHexadectet != null ? !fifthHexadectet.equals(that.fifthHexadectet) : that.fifthHexadectet != null)
+                    && !(sixthHexadectet != null ? !sixthHexadectet.equals(that.sixthHexadectet) : that.sixthHexadectet != null)
+                    && !(seventhHexadectet != null ? !seventhHexadectet.equals(that.seventhHexadectet) : that.seventhHexadectet != null)
+                    && !(eighthHexadectet != null ? !eighthHexadectet.equals(that.eighthHexadectet) : that.eighthHexadectet != null);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = firstHexadectet != null ? firstHexadectet.hashCode() : 0;
+            result = 31 * result + (secondHexadectet != null ? secondHexadectet.hashCode() : 0);
+            result = 31 * result + (thirdHexadectet != null ? thirdHexadectet.hashCode() : 0);
+            result = 31 * result + (fourthHexadectet != null ? fourthHexadectet.hashCode() : 0);
+            result = 31 * result + (fifthHexadectet != null ? fifthHexadectet.hashCode() : 0);
+            result = 31 * result + (sixthHexadectet != null ? sixthHexadectet.hashCode() : 0);
+            result = 31 * result + (seventhHexadectet != null ? seventhHexadectet.hashCode() : 0);
+            result = 31 * result + (eighthHexadectet != null ? eighthHexadectet.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Host{" +
+                    "firstHexadectet=" + firstHexadectet +
+                    ", secondHexadectet=" + secondHexadectet +
+                    ", thirdHexadectet=" + thirdHexadectet +
+                    ", fourthHexadectet=" + fourthHexadectet +
+                    ", fifthHexadectet=" + fifthHexadectet +
+                    ", sixthHexadectet=" + sixthHexadectet +
+                    ", seventhHexadectet=" + seventhHexadectet +
+                    ", eighthHexadectet=" + eighthHexadectet +
                     '}';
         }
     }
