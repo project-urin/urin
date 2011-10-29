@@ -255,6 +255,42 @@ public class HostTest {
     }
 
     @Test
+    public void ipV6addressWithTrailingIpV4AddressWithMatchingValuesAreEqual() throws Exception {
+        Hexadectet firstHexadectet = aNonZeroHexadectet();
+        Hexadectet secondHexadectet = aNonZeroHexadectet();
+        Hexadectet thirdHexadectet = aNonZeroHexadectet();
+        Hexadectet fourthHexadectet = aNonZeroHexadectet();
+        Hexadectet fifthHexadectet = aNonZeroHexadectet();
+        Hexadectet sixthHexadectet = aNonZeroHexadectet();
+        Octet firstOctet = anOctet();
+        Octet secondOctet = anOctet();
+        Octet thirdOctet = anOctet();
+        Octet fourthOctet = anOctet();
+        assertThat(ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet), equalTo(ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet)));
+        assertThat(ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet).hashCode(), equalTo(ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet).hashCode()));
+    }
+
+    @Test
+    public void ipV6addressWithTrailingIpV4AddressWithDifferingValuesAreNotEqual() throws Exception {
+        assertThat(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()), not(equalTo(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()))));
+    }
+
+    @Test
+    public void ipV6addressWithTrailingIpV4AddressProducesCorrectToString() throws Exception {
+        Hexadectet firstHexadectet = aNonZeroHexadectet();
+        Hexadectet secondHexadectet = aNonZeroHexadectet();
+        Hexadectet thirdHexadectet = aNonZeroHexadectet();
+        Hexadectet fourthHexadectet = aNonZeroHexadectet();
+        Hexadectet fifthHexadectet = aNonZeroHexadectet();
+        Hexadectet sixthHexadectet = aNonZeroHexadectet();
+        Octet firstOctet = anOctet();
+        Octet secondOctet = anOctet();
+        Octet thirdOctet = anOctet();
+        Octet fourthOctet = anOctet();
+        assertThat(ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet).toString(), equalTo("Host{firstHexadectet=" + firstHexadectet + ", secondHexadectet=" + secondHexadectet + ", thirdHexadectet=" + thirdHexadectet + ", fourthHexadectet=" + fourthHexadectet + ", fifthHexadectet=" + fifthHexadectet + ", sixthHexadectet=" + sixthHexadectet + ", firstOctet=" + firstOctet + ", secondOctet=" + secondOctet + ", thirdOctet=" + thirdOctet + ", fourthOctet=" + fourthOctet + "}"));
+    }
+
+    @Test
     public void ipVFutureAsStringIsCorrect() throws Exception {
         String address = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
         assertThat(

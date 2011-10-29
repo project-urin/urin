@@ -60,29 +60,7 @@ public abstract class Host {
     }
 
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
-        return new Host() {
-            @Override
-            String asString() {
-                return ipV6String(
-                        asElidableAsStringable(firstHexadectet),
-                        asElidableAsStringable(secondHexadectet),
-                        asElidableAsStringable(thirdHexadectet),
-                        asElidableAsStringable(fourthHexadectet),
-                        asElidableAsStringable(fifthHexadectet),
-                        asElidableAsStringable(sixthHexadectet),
-                        new ElidableAsStringable() {
-                            public String asString() {
-                                return ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString();
-                            }
-
-                            public boolean isElidable() {
-                                return false;
-                            }
-                        }
-                );
-            }
-
-        };
+        return new IpV6AddressWithTrailingIpV4Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet);
     }
 
     private static ElidableAsStringable asElidableAsStringable(final Hexadectet hexadectet) {
@@ -334,6 +312,104 @@ public abstract class Host {
                     ", sixthHexadectet=" + sixthHexadectet +
                     ", seventhHexadectet=" + seventhHexadectet +
                     ", eighthHexadectet=" + eighthHexadectet +
+                    '}';
+        }
+    }
+
+    private static class IpV6AddressWithTrailingIpV4Address extends Host {
+        private final Hexadectet firstHexadectet;
+        private final Hexadectet secondHexadectet;
+        private final Hexadectet thirdHexadectet;
+        private final Hexadectet fourthHexadectet;
+        private final Hexadectet fifthHexadectet;
+        private final Hexadectet sixthHexadectet;
+        private final Octet firstOctet;
+        private final Octet secondOctet;
+        private final Octet thirdOctet;
+        private final Octet fourthOctet;
+
+        public IpV6AddressWithTrailingIpV4Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
+            this.firstHexadectet = firstHexadectet;
+            this.secondHexadectet = secondHexadectet;
+            this.thirdHexadectet = thirdHexadectet;
+            this.fourthHexadectet = fourthHexadectet;
+            this.fifthHexadectet = fifthHexadectet;
+            this.sixthHexadectet = sixthHexadectet;
+            this.firstOctet = firstOctet;
+            this.secondOctet = secondOctet;
+            this.thirdOctet = thirdOctet;
+            this.fourthOctet = fourthOctet;
+        }
+
+        @Override
+        String asString() {
+            return ipV6String(
+                    asElidableAsStringable(firstHexadectet),
+                    asElidableAsStringable(secondHexadectet),
+                    asElidableAsStringable(thirdHexadectet),
+                    asElidableAsStringable(fourthHexadectet),
+                    asElidableAsStringable(fifthHexadectet),
+                    asElidableAsStringable(sixthHexadectet),
+                    new ElidableAsStringable() {
+                        public String asString() {
+                            return ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString();
+                        }
+
+                        public boolean isElidable() {
+                            return false;
+                        }
+                    }
+            );
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            IpV6AddressWithTrailingIpV4Address that = (IpV6AddressWithTrailingIpV4Address) o;
+
+            return !(firstHexadectet != null ? !firstHexadectet.equals(that.firstHexadectet) : that.firstHexadectet != null)
+                    && !(secondHexadectet != null ? !secondHexadectet.equals(that.secondHexadectet) : that.secondHexadectet != null)
+                    && !(thirdHexadectet != null ? !thirdHexadectet.equals(that.thirdHexadectet) : that.thirdHexadectet != null)
+                    && !(fourthHexadectet != null ? !fourthHexadectet.equals(that.fourthHexadectet) : that.fourthHexadectet != null)
+                    && !(fifthHexadectet != null ? !fifthHexadectet.equals(that.fifthHexadectet) : that.fifthHexadectet != null)
+                    && !(sixthHexadectet != null ? !sixthHexadectet.equals(that.sixthHexadectet) : that.sixthHexadectet != null)
+                    && !(firstOctet != null ? !firstOctet.equals(that.firstOctet) : that.firstOctet != null)
+                    && !(secondOctet != null ? !secondOctet.equals(that.secondOctet) : that.secondOctet != null)
+                    && !(thirdOctet != null ? !thirdOctet.equals(that.thirdOctet) : that.thirdOctet != null)
+                    && !(fourthOctet != null ? !fourthOctet.equals(that.fourthOctet) : that.fourthOctet != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = firstHexadectet != null ? firstHexadectet.hashCode() : 0;
+            result = 31 * result + (secondHexadectet != null ? secondHexadectet.hashCode() : 0);
+            result = 31 * result + (thirdHexadectet != null ? thirdHexadectet.hashCode() : 0);
+            result = 31 * result + (fourthHexadectet != null ? fourthHexadectet.hashCode() : 0);
+            result = 31 * result + (fifthHexadectet != null ? fifthHexadectet.hashCode() : 0);
+            result = 31 * result + (sixthHexadectet != null ? sixthHexadectet.hashCode() : 0);
+            result = 31 * result + (firstOctet != null ? firstOctet.hashCode() : 0);
+            result = 31 * result + (secondOctet != null ? secondOctet.hashCode() : 0);
+            result = 31 * result + (thirdOctet != null ? thirdOctet.hashCode() : 0);
+            result = 31 * result + (fourthOctet != null ? fourthOctet.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Host{" +
+                    "firstHexadectet=" + firstHexadectet +
+                    ", secondHexadectet=" + secondHexadectet +
+                    ", thirdHexadectet=" + thirdHexadectet +
+                    ", fourthHexadectet=" + fourthHexadectet +
+                    ", fifthHexadectet=" + fifthHexadectet +
+                    ", sixthHexadectet=" + sixthHexadectet +
+                    ", firstOctet=" + firstOctet +
+                    ", secondOctet=" + secondOctet +
+                    ", thirdOctet=" + thirdOctet +
+                    ", fourthOctet=" + fourthOctet +
                     '}';
         }
     }
