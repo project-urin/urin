@@ -108,6 +108,26 @@ public class HierarchicalPartTest {
     }
 
     @Test
+    public void aSimpleRootlessPathIsEqualToAnotherWithTheSamePath() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(hierarchicalPartRootless(firstSegment, secondSegment), equalTo(hierarchicalPartRootless(firstSegment, secondSegment)));
+        assertThat(hierarchicalPartRootless(firstSegment, secondSegment).hashCode(), equalTo(hierarchicalPartRootless(firstSegment, secondSegment).hashCode()));
+    }
+
+    @Test
+    public void aSimpleRootlessPathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
+        assertThat(hierarchicalPartRootless(aSegment(), aSegment()), not(equalTo(hierarchicalPartRootless(aSegment(), aSegment()))));
+    }
+
+    @Test
+    public void aSimpleRootlessPathToStringIsCorrect() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(hierarchicalPartRootless(firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{segments=[" + firstSegment + ", " + secondSegment + "]}"));
+    }
+
+    @Test
     public void aSimpleAbsolutePathAsStringHasImmutableVarargs() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
