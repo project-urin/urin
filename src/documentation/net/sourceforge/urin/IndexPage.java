@@ -28,7 +28,9 @@ import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.Urin.urin;
+import static net.sourceforge.urin.scheme.Http.http;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
 import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Id.id;
@@ -43,21 +45,15 @@ import static org.sourceforge.xazzle.xhtml.XhtmlDimension.pixels;
 
 public class IndexPage {
 
-    private static final Scheme HTTP = scheme("http");
-    private static final Authority SOURCEFORGE = authority(registeredName("sourceforge.net"));
-    private static final Authority W3_JIGSAW = authority(registeredName("jigsaw.w3.org"));
-    private static final Authority W3_WWW = authority(registeredName("www.w3.org"));
+    private static final Host SOURCEFORGE = registeredName("sourceforge.net");
+    private static final Host W3_JIGSAW = registeredName("jigsaw.w3.org");
+    private static final Host W3_WWW = registeredName("www.w3.org");
 
     public static void main(String[] args) throws IOException, XmlWriterException {
         Properties properties = new Properties();
         properties.load(new FileReader("version.properties"));
         final String version = properties.getProperty("urin.version.major") + "." + properties.getProperty("urin.version.minor");
-        final Href projectSiteHref = href(urin(
-                HTTP,
-                hierarchicalPartAbsolute(
-                        SOURCEFORGE,
-                        segment("projects"), segment("urin"))
-        ).asString());
+        final Href projectSiteHref = href(http(SOURCEFORGE, segments("projects", "urin")).asString());
         final HtmlTag indexPage = htmlTag(
                 headTag(
                         titleTag("Urin - A Java library for making URIs"),
@@ -103,7 +99,7 @@ public class IndexPage {
                                                 "currently in initial development.")),
                                         paragraphTag(
                                                 xhtmlText("The latest version of Urin available for download is "),
-                                                anchorTag(xhtmlText(version)).withHref(href(urin(scheme("https"), hierarchicalPartAbsolute(SOURCEFORGE, segment("projects"), segment("urin"), segment("files"), segment("latest"))).asString())),
+                                                anchorTag(xhtmlText(version)).withHref(href(urin(scheme("https"), hierarchicalPartAbsolute(authority(SOURCEFORGE), segment("projects"), segment("urin"), segment("files"), segment("latest"))).asString())),
                                                 xhtmlText(".  The "),
                                                 anchorTag(xhtmlText("javadoc")).withHref(href("javadoc/")),
                                                 xhtmlText(" is also available online.")
@@ -114,7 +110,7 @@ public class IndexPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(urin(HTTP, hierarchicalPartAbsolute(authority(registeredName("sflogo.sourceforge.net")), segment("sflogo.php")), query("group_id=605761&type=13")).asString()),
+                                                                        imageSource(http(registeredName("sflogo.sourceforge.net"), segments("sflogo.php"), query("group_id=605761&type=13")).asString()),
                                                                         alternateText("Get urin at SourceForge.net. Fast, secure and Free Open Source software downloads")
                                                                 )
                                                                         .withHeight(pixels("30"))
@@ -124,22 +120,22 @@ public class IndexPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(urin(HTTP, hierarchicalPartAbsolute(W3_JIGSAW, segment("css-validator"), segment("images"), segment("vcss"))).asString()),
+                                                                        imageSource(http(W3_JIGSAW, segments("css-validator", "images", "vcss")).asString()),
                                                                         alternateText("Valid CSS!")
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(urin(HTTP, hierarchicalPartAbsolute(W3_JIGSAW, segment("css-validator"), segment("check"), segment("referer"))).asString()))
+                                                        ).withHref(href(http(W3_JIGSAW, segments("css-validator", "check", "referer")).asString()))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(urin(HTTP, hierarchicalPartAbsolute(W3_WWW, segment("Icons"), segment("valid-xhtml10"))).asString()),
+                                                                        imageSource(http(W3_WWW, segments("Icons", "valid-xhtml10")).asString()),
                                                                         alternateText("Valid XHTML 1.0 Strict")
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(urin(HTTP, hierarchicalPartAbsolute(authority(registeredName("validator.w3.org")), segment("check")), query("uri=referer")).asString()))
+                                                        ).withHref(href(http(registeredName("validator.w3.org"), segments("check"), query("uri=referer")).asString()))
                                                 )
                                         )
                                 ).withId(id("footer"))
