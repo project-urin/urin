@@ -139,7 +139,7 @@ public class IndexPage {
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(urin(HTTP, hierarchicalPartAbsolute(W3_WWW, segment("check")), query("uri=referer")).asString()))
+                                                        ).withHref(href(urin(HTTP, hierarchicalPartAbsolute(authority(registeredName("validator.w3.org")), segment("check")), query("uri=referer")).asString()))
                                                 )
                                         )
                                 ).withId(id("footer"))
