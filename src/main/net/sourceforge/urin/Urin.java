@@ -25,15 +25,7 @@ public abstract class Urin {
     }
 
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-        return new Urin() {
-            @Override
-            public String asString() {
-                return new StringBuilder(scheme.asString())
-                        .append(':')
-                        .append(hierarchicalPart.asString())
-                        .toString();
-            }
-        };
+        return new UrinWithHierarchicalPart(scheme, hierarchicalPart);
     }
 
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
@@ -203,6 +195,49 @@ public abstract class Urin {
                     "scheme=" + scheme +
                     ", hierarchicalPart=" + hierarchicalPart +
                     ", fragment=" + fragment +
+                    '}';
+        }
+    }
+
+    private static class UrinWithHierarchicalPart extends Urin {
+        private final Scheme scheme;
+        private final HierarchicalPart hierarchicalPart;
+
+        public UrinWithHierarchicalPart(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            this.scheme = scheme;
+            this.hierarchicalPart = hierarchicalPart;
+        }
+
+        @Override
+        public String asString() {
+            return new StringBuilder(scheme.asString())
+                    .append(':')
+                    .append(hierarchicalPart.asString())
+                    .toString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            UrinWithHierarchicalPart that = (UrinWithHierarchicalPart) o;
+            return !(hierarchicalPart != null ? !hierarchicalPart.equals(that.hierarchicalPart) : that.hierarchicalPart != null)
+                    && !(scheme != null ? !scheme.equals(that.scheme) : that.scheme != null);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = scheme != null ? scheme.hashCode() : 0;
+            result = 31 * result + (hierarchicalPart != null ? hierarchicalPart.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Urin{" +
+                    "scheme=" + scheme +
+                    ", hierarchicalPart=" + hierarchicalPart +
                     '}';
         }
     }

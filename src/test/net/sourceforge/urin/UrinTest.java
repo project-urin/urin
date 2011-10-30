@@ -104,7 +104,7 @@ public class UrinTest {
     }
 
     @Test
-    public void aUrinWithNoQueryPartsIsNotEqualToAnotherWithTheADifferentParts() throws Exception {
+    public void aUrinWithNoQueryIsNotEqualToAnotherWithTheADifferentParts() throws Exception {
         assertThat(urin(aScheme(), aHierarchicalPart(), aFragment()), not(equalTo(urin(aScheme(), aHierarchicalPart(), aFragment()))));
     }
 
@@ -121,6 +121,26 @@ public class UrinTest {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         assertThat(urin(scheme, hierarchicalPart).asString(), equalTo(scheme.asString() + ":" + hierarchicalPart.asString()));
+    }
+
+    @Test
+    public void aUrinWithNoQueryOrFragmentIsEqualToAnotherWithTheSameParts() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        assertThat(urin(scheme, hierarchicalPart), equalTo(urin(scheme, hierarchicalPart)));
+        assertThat(urin(scheme, hierarchicalPart).hashCode(), equalTo(urin(scheme, hierarchicalPart).hashCode()));
+    }
+
+    @Test
+    public void aUrinWithNoQueryOrFragmentIsNotEqualToAnotherWithTheADifferentParts() throws Exception {
+        assertThat(urin(aScheme(), aHierarchicalPart()), not(equalTo(urin(aScheme(), aHierarchicalPart()))));
+    }
+
+    @Test
+    public void aUrinWithNoQueryOrFragmentToStringIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        assertThat(urin(scheme, hierarchicalPart).toString(), equalTo("Urin{scheme=" + scheme + ", hierarchicalPart=" + hierarchicalPart + "}"));
     }
 
 }
