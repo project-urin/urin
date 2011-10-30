@@ -22,15 +22,7 @@ public abstract class Authority {
     }
 
     public static Authority authority(final UserInfo userInfo, final Host host) {
-        return new Authority() {
-            @Override
-            String asString() {
-                return new StringBuilder(userInfo.asString())
-                        .append('@')
-                        .append(host.asString())
-                        .toString();
-            }
-        };
+        return new AuthorityWithUserInfoAndHost(userInfo, host);
     }
 
     public static Authority authority(final Host host, final Port port) {
@@ -89,6 +81,51 @@ public abstract class Authority {
         public String toString() {
             return "Authority{" +
                     "host=" + host +
+                    '}';
+        }
+    }
+
+    private static class AuthorityWithUserInfoAndHost extends Authority {
+        private final UserInfo userInfo;
+        private final Host host;
+
+        public AuthorityWithUserInfoAndHost(final UserInfo userInfo, final Host host) {
+            this.userInfo = userInfo;
+            this.host = host;
+        }
+
+        @Override
+        String asString() {
+            return new StringBuilder(userInfo.asString())
+                    .append('@')
+                    .append(host.asString())
+                    .toString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            AuthorityWithUserInfoAndHost that = (AuthorityWithUserInfoAndHost) o;
+
+            return !(host != null ? !host.equals(that.host) : that.host != null)
+                    && !(userInfo != null ? !userInfo.equals(that.userInfo) : that.userInfo != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = userInfo != null ? userInfo.hashCode() : 0;
+            result = 31 * result + (host != null ? host.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Authority{" +
+                    "userInfo=" + userInfo +
+                    ", host=" + host +
                     '}';
         }
     }
