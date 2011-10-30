@@ -144,6 +144,24 @@ public class HierarchicalPartTest {
     }
 
     @Test
+    public void aHierarchicalPartWithAuthorityAndEmptyPathIsEqualToAnotherWithTheSameAuthority() throws Exception {
+        Authority authority = anAuthority();
+        assertThat(hierarchicalPart(authority), equalTo(hierarchicalPart(authority)));
+        assertThat(hierarchicalPart(authority).hashCode(), equalTo(hierarchicalPart(authority).hashCode()));
+    }
+
+    @Test
+    public void aHierarchicalPartWithAuthorityAndEmptyPathIsNotEqualToAnotherWithTheADifferentAuthority() throws Exception {
+        assertThat(hierarchicalPart(anAuthority()), not(equalTo(hierarchicalPart(anAuthority()))));
+    }
+
+    @Test
+    public void aHierarchicalPartWithAuthorityAndEmptyPathToStringIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        assertThat(hierarchicalPart(authority).toString(), equalTo("HierarchicalPart{authority=" + authority + ", segments=[]}"));
+    }
+
+    @Test
     public void makesHierarchicalPartWithAuthorityAndNonEmptyPath() throws Exception {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();
