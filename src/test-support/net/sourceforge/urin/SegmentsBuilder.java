@@ -10,16 +10,19 @@
 
 package net.sourceforge.urin;
 
-import static net.sourceforge.urin.Port.port;
-import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
+import java.util.Random;
 
-public class PortBuilder {
-    public static Port aPort() {
-        return port(randomNumeric(5));
-    }
+import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
-    public static Port aPortDifferentTo(Port port) {
-        String potentialPort = randomNumeric(5);
-        return port(potentialPort).equals(port) ? port(potentialPort + randomNumeric(1)) : port(potentialPort);
+public class SegmentsBuilder {
+
+    private static final Random RANDOM = new Random();
+
+    public static Segments aSegments() {
+        Segment[] segments = new Segment[RANDOM.nextInt(5)];
+        for (int i = 0; i < segments.length; i++) {
+            segments[i] = aSegment();
+        }
+        return Segments.segments(segments);
     }
 }

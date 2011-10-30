@@ -20,6 +20,10 @@ public final class Port extends StringValue {
         super(port);
     }
 
+    public static Port port(final int port) {
+        return port(Integer.toString(port));
+    }
+
     public static Port port(final String port) {
         for (int i = 0; i < port.length(); i++) {
             if (!DIGIT.isMember(port.charAt(i))) {

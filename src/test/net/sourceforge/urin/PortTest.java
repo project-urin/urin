@@ -29,6 +29,21 @@ public class PortTest {
     }
 
     @Test
+    public void canMakeAPortUsingAPositiveInt() throws Exception {
+        assertThat(Port.port(123).asString(), equalTo("123"));
+    }
+
+    @Test
+    public void cannotMakeAPortUsingANegativeInt() throws Exception {
+        try {
+            Port.port(-123).asString();
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [-123]"));
+        }
+    }
+
+    @Test
     public void normalisesLeadingZerosOnPort() throws Exception {
         assertThat(Port.port("01").asString(), equalTo("1"));
     }

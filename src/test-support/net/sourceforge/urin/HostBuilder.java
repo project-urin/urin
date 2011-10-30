@@ -20,7 +20,7 @@ import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class HostBuilder {
-    static Host aHost() {
+    public static Host aHost() {
         final Host host;
         switch (new Random().nextInt(4)) {
             case 0:
