@@ -18,6 +18,7 @@ import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 public class UrinTest {
@@ -29,6 +30,30 @@ public class UrinTest {
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(urin(scheme, hierarchicalPart, query, fragment).asString(), equalTo(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString() + "#" + fragment.asString()));
+    }
+
+    @Test
+    public void aUrinWithAllPartsIsEqualToAnotherWithTheSameParts() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(urin(scheme, hierarchicalPart, query, fragment), equalTo(urin(scheme, hierarchicalPart, query, fragment)));
+        assertThat(urin(scheme, hierarchicalPart, query, fragment).hashCode(), equalTo(urin(scheme, hierarchicalPart, query, fragment).hashCode()));
+    }
+
+    @Test
+    public void anAuthorityWithNoPortIsNotEqualToAnotherWithTheADifferentHostAndUserInfo() throws Exception {
+        assertThat(urin(aScheme(), aHierarchicalPart(), aQuery(), aFragment()), not(equalTo(urin(aScheme(), aHierarchicalPart(), aQuery(), aFragment()))));
+    }
+
+    @Test
+    public void anAuthorityWithNoPortToStringIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(urin(scheme, hierarchicalPart, query, fragment).toString(), equalTo("Urin{scheme=" + scheme + ", hierarchicalPart=" + hierarchicalPart + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
     @Test
