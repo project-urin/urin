@@ -41,7 +41,7 @@ public class HostTest {
 
     @Test
     public void registeredNameAsStringPercentEncodesNonUnreservedCharacters() throws Exception {
-        assertThat(registeredName(".:.@.#.[.]. .").asString(), equalTo(".%3A.%40.%23.%5B.%5D.%20."));
+        assertThat(registeredName(".:.@.#.[.]. .?.").asString(), equalTo(".%3A.%40.%23.%5B.%5D.%20.%3F."));
     }
 
     @Test
