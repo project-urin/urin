@@ -1,3 +1,13 @@
+/*
+ * Copyright 2011 Mark Slater
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * 	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+
 package net.sourceforge.urin;
 
 import org.sourceforge.writexml.Document;
@@ -12,6 +22,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
+import static net.sourceforge.urin.Host.registeredName;
+import static net.sourceforge.urin.Query.query;
+import static net.sourceforge.urin.Scheme.scheme;
+import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Urin.urin;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
 import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Id.id;
@@ -25,11 +42,22 @@ import static org.sourceforge.xazzle.xhtml.Tags.*;
 import static org.sourceforge.xazzle.xhtml.XhtmlDimension.pixels;
 
 public class IndexPage {
+
+    private static final Scheme HTTP = scheme("http");
+    private static final Authority SOURCEFORGE = authority(registeredName("sourceforge.net"));
+    private static final Authority W3_JIGSAW = authority(registeredName("jigsaw.w3.org"));
+    private static final Authority W3_WWW = authority(registeredName("www.w3.org"));
+
     public static void main(String[] args) throws IOException, XmlWriterException {
         Properties properties = new Properties();
         properties.load(new FileReader("version.properties"));
         final String version = properties.getProperty("urin.version.major") + "." + properties.getProperty("urin.version.minor");
-        final Href projectSiteHref = href("http://sourceforge.net/projects/urin");
+        final Href projectSiteHref = href(urin(
+                HTTP,
+                hierarchicalPartAbsolute(
+                        SOURCEFORGE,
+                        segment("projects"), segment("urin"))
+        ).asString());
         final HtmlTag indexPage = htmlTag(
                 headTag(
                         titleTag("Urin - A Java library for making URIs"),
@@ -75,7 +103,7 @@ public class IndexPage {
                                                 "currently in initial development.")),
                                         paragraphTag(
                                                 xhtmlText("The latest version of Urin available for download is "),
-                                                anchorTag(xhtmlText(version)).withHref(href("https://sourceforge.net/projects/urin/files/latest")),
+                                                anchorTag(xhtmlText(version)).withHref(href(urin(scheme("https"), hierarchicalPartAbsolute(SOURCEFORGE, segment("projects"), segment("urin"), segment("files"), segment("latest"))).asString())),
                                                 xhtmlText(".  The "),
                                                 anchorTag(xhtmlText("javadoc")).withHref(href("javadoc/")),
                                                 xhtmlText(" is also available online.")
@@ -86,7 +114,7 @@ public class IndexPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource("http://sflogo.sourceforge.net/sflogo.php?group_id=605761&type=13"),
+                                                                        imageSource(urin(HTTP, hierarchicalPartAbsolute(authority(registeredName("sflogo.sourceforge.net")), segment("sflogo.php")), query("group_id=605761&type=13")).asString()),
                                                                         alternateText("Get urin at SourceForge.net. Fast, secure and Free Open Source software downloads")
                                                                 )
                                                                         .withHeight(pixels("30"))
@@ -96,22 +124,22 @@ public class IndexPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource("http://jigsaw.w3.org/css-validator/images/vcss"),
+                                                                        imageSource(urin(HTTP, hierarchicalPartAbsolute(W3_JIGSAW, segment("css-validator"), segment("images"), segment("vcss"))).asString()),
                                                                         alternateText("Valid CSS!")
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href("http://jigsaw.w3.org/css-validator/check/referer"))
+                                                        ).withHref(href(urin(HTTP, hierarchicalPartAbsolute(W3_JIGSAW, segment("css-validator"), segment("check"), segment("referer"))).asString()))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource("http://www.w3.org/Icons/valid-xhtml10"),
+                                                                        imageSource(urin(HTTP, hierarchicalPartAbsolute(W3_WWW, segment("Icons"), segment("valid-xhtml10"))).asString()),
                                                                         alternateText("Valid XHTML 1.0 Strict")
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href("http://validator.w3.org/check?uri=referer"))
+                                                        ).withHref(href(urin(HTTP, hierarchicalPartAbsolute(W3_WWW, segment("check")), query("uri=referer")).asString()))
                                                 )
                                         )
                                 ).withId(id("footer"))
