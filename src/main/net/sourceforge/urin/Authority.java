@@ -30,17 +30,7 @@ public abstract class Authority {
     }
 
     public static Authority authority(final UserInfo userInfo, final Host host, final Port port) {
-        return new Authority() {
-            @Override
-            String asString() {
-                return new StringBuilder(userInfo.asString())
-                        .append('@')
-                        .append(host.asString())
-                        .append(':')
-                        .append(port.asString())
-                        .toString();
-            }
-        };
+        return new AuthorityWithUserInfoAndHostAndPort(userInfo, host, port);
     }
 
     private static class AuthorityWithHost extends Authority {
@@ -161,6 +151,57 @@ public abstract class Authority {
         public String toString() {
             return "Authority{" +
                     "host=" + host +
+                    ", port=" + port +
+                    '}';
+        }
+    }
+
+    private static class AuthorityWithUserInfoAndHostAndPort extends Authority {
+        private final UserInfo userInfo;
+        private final Host host;
+        private final Port port;
+
+        public AuthorityWithUserInfoAndHostAndPort(final UserInfo userInfo, final Host host, final Port port) {
+            this.userInfo = userInfo;
+            this.host = host;
+            this.port = port;
+        }
+
+        @Override
+        String asString() {
+            return new StringBuilder(userInfo.asString())
+                    .append('@')
+                    .append(host.asString())
+                    .append(':')
+                    .append(port.asString())
+                    .toString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            AuthorityWithUserInfoAndHostAndPort that = (AuthorityWithUserInfoAndHostAndPort) o;
+            return !(host != null ? !host.equals(that.host) : that.host != null)
+                    && !(port != null ? !port.equals(that.port) : that.port != null)
+                    && !(userInfo != null ? !userInfo.equals(that.userInfo) : that.userInfo != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = userInfo != null ? userInfo.hashCode() : 0;
+            result = 31 * result + (host != null ? host.hashCode() : 0);
+            result = 31 * result + (port != null ? port.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Authority{" +
+                    "userInfo=" + userInfo +
+                    ", host=" + host +
                     ", port=" + port +
                     '}';
         }

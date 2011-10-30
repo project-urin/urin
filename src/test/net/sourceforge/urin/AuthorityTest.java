@@ -107,4 +107,26 @@ public class AuthorityTest {
         assertThat(authority(userInfo, host, port).asString(), equalTo(userInfo.asString() + "@" + host.asString() + ":" + port.asString()));
     }
 
+    @Test
+    public void anAuthorityWithAllOptionsSpecifiedIsEqualToAnotherWithTheSameFields() throws Exception {
+        UserInfo userInfo = aUserInfo();
+        Host host = aHost();
+        Port port = aPort();
+        assertThat(authority(userInfo, host, port), equalTo(authority(userInfo, host, port)));
+        assertThat(authority(userInfo, host, port).hashCode(), equalTo(authority(userInfo, host, port).hashCode()));
+    }
+
+    @Test
+    public void anAuthorityWithAllOptionsSpecifiedIsNotEqualToAnotherWithTheADifferentHostUserInfoAndPort() throws Exception {
+        assertThat(authority(aUserInfo(), aHost(), aPort()), not(equalTo(authority(aUserInfo(), aHost(), aPort()))));
+    }
+
+    @Test
+    public void anAuthorityWithAllOptionsSpecifiedToStringIsCorrect() throws Exception {
+        UserInfo userInfo = aUserInfo();
+        Host host = aHost();
+        Port port = aPort();
+        assertThat(authority(userInfo, host, port).toString(), equalTo("Authority{userInfo=" + userInfo + ", host=" + host + ", port=" + port + "}"));
+    }
+
 }
