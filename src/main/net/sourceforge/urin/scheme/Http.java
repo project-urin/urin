@@ -42,4 +42,8 @@ public class Http {
     private static Authority authorityWithNormalisedDefaultPort(final Host host, final Port port) {
         return DEFAULT_PORT.equals(port) ? authority(host) : authority(host, port);
     }
+
+    public static Urin http(final Host host, final Segments segments, final Query query) {
+        return urin(SCHEME, hierarchicalPartAbsolute(authority(host), segments), query);
+    }
 }

@@ -13,7 +13,7 @@ package net.sourceforge.urin;
 import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class QueryBuilder {
-    static Query aQuery() {
+    public static Query aQuery() {
         return Query.query(randomAscii(5));
     }
 }

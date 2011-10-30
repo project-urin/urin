@@ -12,6 +12,7 @@ package net.sourceforge.urin.scheme;
 
 import net.sourceforge.urin.Host;
 import net.sourceforge.urin.Port;
+import net.sourceforge.urin.Query;
 import net.sourceforge.urin.Segments;
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
+import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.SegmentsBuilder.aSegments;
 import static net.sourceforge.urin.Urin.urin;
@@ -69,6 +71,14 @@ public class HttpTest {
         Port port = port(80);
         Segments segments = aSegments();
         assertThat(http(host, port, segments), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments))));
+    }
+
+    @Test
+    public void httpWithPathAndQueryButNoPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Segments segments = aSegments();
+        Query query = aQuery();
+        assertThat(http(host, segments, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), query)));
     }
 
 }
