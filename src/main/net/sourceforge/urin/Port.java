@@ -10,6 +10,8 @@
 
 package net.sourceforge.urin;
 
+import java.math.BigInteger;
+
 import static net.sourceforge.urin.CharacterSetMembershipFunction.DIGIT;
 
 public final class Port extends StringValue {
@@ -24,6 +26,6 @@ public final class Port extends StringValue {
                 throw new IllegalArgumentException("Character " + (i + 1) + " must be " + DIGIT.describe() + " in port [" + port + "]");
             }
         }
-        return new Port(port);
+        return new Port(port.isEmpty() ? port : new BigInteger(port).toString());
     }
 }

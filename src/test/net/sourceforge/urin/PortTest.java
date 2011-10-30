@@ -29,6 +29,11 @@ public class PortTest {
     }
 
     @Test
+    public void normalisesLeadingZerosOnPort() throws Exception {
+        assertThat(Port.port("01").asString(), equalTo("1"));
+    }
+
+    @Test
     public void rejectsNullPort() throws Exception {
         try {
             //noinspection NullableProblems
