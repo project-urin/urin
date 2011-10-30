@@ -51,21 +51,15 @@ public abstract class HierarchicalPart {
         if (segments.length > 0 && segments[0].isEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
-        final Iterable<Segment> segmentIterable = new ArrayList<Segment>(asList(segments));
-        return new HierarchicalPart() {
-            @Override
-            String asString() {
-                StringBuilder result = new StringBuilder("/");
-                Iterator<Segment> segmentIterator = segmentIterable.iterator();
-                while (segmentIterator.hasNext()) {
-                    result.append(segmentIterator.next().asString());
-                    if (segmentIterator.hasNext()) {
-                        result.append('/');
-                    }
-                }
-                return result.toString();
-            }
-        };
+        final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
+        segmentList.add(Segment.EMPTY);
+        if (segments.length == 0) {
+            segmentList.add(Segment.EMPTY);
+        } else {
+            segmentList.addAll(asList(segments));
+        }
+
+        return new HierarchicalPartNoAuthority(segmentList);
     }
 
     public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final Segment... segments) {

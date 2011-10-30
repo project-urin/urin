@@ -14,9 +14,11 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.*;
+import static net.sourceforge.urin.Segment.EMPTY;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -54,6 +56,26 @@ public class HierarchicalPartTest {
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
         }
+    }
+
+    @Test
+    public void aSimpleAbsolutePathIsEqualToAnotherWithTheSamePath() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment), equalTo(hierarchicalPartAbsolute(firstSegment, secondSegment)));
+        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment).hashCode(), equalTo(hierarchicalPartAbsolute(firstSegment, secondSegment).hashCode()));
+    }
+
+    @Test
+    public void aSimpleAbsolutePathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
+        assertThat(hierarchicalPartAbsolute(aSegment(), aSegment()), not(equalTo(hierarchicalPartAbsolute(aSegment(), aSegment()))));
+    }
+
+    @Test
+    public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{segments=[" + EMPTY + ", " + firstSegment + ", " + secondSegment + "]}"));
     }
 
     @Test
