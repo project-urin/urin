@@ -180,4 +180,26 @@ public class HierarchicalPartTest {
         assertThat(hierarchicalPart.asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
+    @Test
+    public void aHierarchicalPartWithAuthorityAndPathIsEqualToAnotherWithTheSameAuthorityAndPath() throws Exception {
+        Authority authority = anAuthority();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment), equalTo(hierarchicalPartAbsolute(authority, firstSegment, secondSegment)));
+        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).hashCode(), equalTo(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).hashCode()));
+    }
+
+    @Test
+    public void aHierarchicalPartWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPath() throws Exception {
+        assertThat(hierarchicalPartAbsolute(anAuthority(), aSegment(), aSegment()), not(equalTo(hierarchicalPartAbsolute(anAuthority(), aSegment(), aSegment()))));
+    }
+
+    @Test
+    public void aHierarchicalPartWithAuthorityAndPathToStringIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{authority=" + authority + ", segments=[" + Segment.EMPTY + ", " + firstSegment + ", " + secondSegment + "]}"));
+    }
+
 }
