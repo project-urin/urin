@@ -43,12 +43,12 @@ public class UrinTest {
     }
 
     @Test
-    public void anAuthorityWithNoPortIsNotEqualToAnotherWithTheADifferentHostAndUserInfo() throws Exception {
+    public void aUrinWithAllPartsIsNotEqualToAnotherWithTheADifferentParts() throws Exception {
         assertThat(urin(aScheme(), aHierarchicalPart(), aQuery(), aFragment()), not(equalTo(urin(aScheme(), aHierarchicalPart(), aQuery(), aFragment()))));
     }
 
     @Test
-    public void anAuthorityWithNoPortToStringIsCorrect() throws Exception {
+    public void aUrinWithAllPartsToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Query query = aQuery();
@@ -62,6 +62,28 @@ public class UrinTest {
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Query query = aQuery();
         assertThat(urin(scheme, hierarchicalPart, query).asString(), equalTo(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString()));
+    }
+
+    @Test
+    public void aUrinWithNoFragmentIsEqualToAnotherWithTheSameParts() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        assertThat(urin(scheme, hierarchicalPart, query), equalTo(urin(scheme, hierarchicalPart, query)));
+        assertThat(urin(scheme, hierarchicalPart, query).hashCode(), equalTo(urin(scheme, hierarchicalPart, query).hashCode()));
+    }
+
+    @Test
+    public void aUrinWithNoFragmentIsNotEqualToAnotherWithTheADifferentParts() throws Exception {
+        assertThat(urin(aScheme(), aHierarchicalPart(), aQuery()), not(equalTo(urin(aScheme(), aHierarchicalPart(), aQuery()))));
+    }
+
+    @Test
+    public void aUrinWithNoFragmentToStringIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        assertThat(urin(scheme, hierarchicalPart, query).toString(), equalTo("Urin{scheme=" + scheme + ", hierarchicalPart=" + hierarchicalPart + ", query=" + query + "}"));
     }
 
     @Test
