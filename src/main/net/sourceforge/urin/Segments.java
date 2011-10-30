@@ -10,10 +10,7 @@
 
 package net.sourceforge.urin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.EMPTY;
@@ -22,12 +19,21 @@ public final class Segments {
 
     private final Collection<Segment> segments;
 
-    public static Segments segments(final Collection<Segment> segments) {
-        return new Segments(segments);
+    public static Segments segments(final String firstSegment, final String... segments) {
+        final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
+        segmentList.add(Segment.segment(firstSegment));
+        for (String segment : segments) {
+            segmentList.add(Segment.segment(segment));
+        }
+        return new Segments(segmentList);
     }
 
     public static Segments segments(final Segment... segments) {
         return new Segments(asList(segments));
+    }
+
+    public static Segments segments(final Collection<Segment> segments) {
+        return new Segments(segments);
     }
 
     private Segments(final Collection<Segment> segments) {
