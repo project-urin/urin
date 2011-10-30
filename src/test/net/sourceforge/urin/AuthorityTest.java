@@ -53,7 +53,7 @@ public class AuthorityTest {
     }
 
     @Test
-    public void anAuthorityWithNoUserInfoIsEqualToAnotherWithTheSameHostAndUserInfo() throws Exception {
+    public void anAuthorityWithNoPortIsEqualToAnotherWithTheSameHostAndUserInfo() throws Exception {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         assertThat(authority(userInfo, host), equalTo(authority(userInfo, host)));
@@ -77,6 +77,26 @@ public class AuthorityTest {
         Host host = aHost();
         Port port = aPort();
         assertThat(authority(host, port).asString(), equalTo(host.asString() + ":" + port.asString()));
+    }
+
+    @Test
+    public void anAuthorityWithNoUserInfoIsEqualToAnotherWithTheSameHostAndPort() throws Exception {
+        Host host = aHost();
+        Port port = aPort();
+        assertThat(authority(host, port), equalTo(authority(host, port)));
+        assertThat(authority(host, port).hashCode(), equalTo(authority(host, port).hashCode()));
+    }
+
+    @Test
+    public void anAuthorityWithNoUserInfoIsNotEqualToAnotherWithTheADifferentHostAndPort() throws Exception {
+        assertThat(authority(aHost(), aPort()), not(equalTo(authority(aHost(), aPort()))));
+    }
+
+    @Test
+    public void anAuthorityWithNoUserInfoToStringIsCorrect() throws Exception {
+        Host host = aHost();
+        Port port = aPort();
+        assertThat(authority(host, port).toString(), equalTo("Authority{host=" + host + ", port=" + port + "}"));
     }
 
     @Test
