@@ -18,12 +18,7 @@ public abstract class Authority {
     abstract String asString();
 
     public static Authority authority(final Host host) {
-        return new Authority() {
-            @Override
-            String asString() {
-                return host.asString();
-            }
-        };
+        return new AuthorityWithHost(host);
     }
 
     public static Authority authority(final UserInfo userInfo, final Host host) {
@@ -64,4 +59,37 @@ public abstract class Authority {
         };
     }
 
+    private static class AuthorityWithHost extends Authority {
+        private final Host host;
+
+        public AuthorityWithHost(final Host host) {
+            this.host = host;
+        }
+
+        @Override
+        String asString() {
+            return host.asString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            AuthorityWithHost that = (AuthorityWithHost) o;
+            return !(host != null ? !host.equals(that.host) : that.host != null);
+        }
+
+        @Override
+        public int hashCode() {
+            return host != null ? host.hashCode() : 0;
+        }
+
+        @Override
+        public String toString() {
+            return "Authority{" +
+                    "host=" + host +
+                    '}';
+        }
+    }
 }

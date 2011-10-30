@@ -17,6 +17,7 @@ import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
 public class AuthorityTest {
@@ -24,6 +25,24 @@ public class AuthorityTest {
     public void makesAuthorityWithNoUserInfoOrPort() throws Exception {
         Host host = aHost();
         assertThat(authority(host).asString(), equalTo(host.asString()));
+    }
+
+    @Test
+    public void anAuthorityWithNoUserInfoOrPortIsEqualToAnotherWithTheSameHost() throws Exception {
+        Host host = aHost();
+        assertThat(authority(host), equalTo(authority(host)));
+        assertThat(authority(host).hashCode(), equalTo(authority(host).hashCode()));
+    }
+
+    @Test
+    public void anAuthorityWithNoUserInfoOrPortIsNotEqualToAnotherWithTheADifferentHost() throws Exception {
+        assertThat(authority(aHost()), not(equalTo(authority(aHost()))));
+    }
+
+    @Test
+    public void anAuthorityWithNoUserInfoOrPortToStringIsCorrect() throws Exception {
+        Host host = aHost();
+        assertThat(authority(host).toString(), equalTo("Authority{host=" + host + "}"));
     }
 
     @Test
