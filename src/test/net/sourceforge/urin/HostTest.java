@@ -59,7 +59,7 @@ public class HostTest {
     @Test
     public void registeredNameProducesCorrectToString() throws Exception {
         String registeredName = randomAlphanumeric(5);
-        assertThat(registeredName(registeredName).toString(), equalTo("Host{registeredName='" + registeredName + "'}"));
+        assertThat(registeredName(registeredName).toString(), equalTo("Host{registeredName='" + registeredName.toLowerCase() + "'}"));
     }
 
     @Test
@@ -404,7 +404,7 @@ public class HostTest {
     public void ipVFutureAddressProducesCorrectToString() throws Exception {
         String versionNumber = random(5, HEX_DIGIT);
         String address = random(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
-        assertThat(ipVFutureAddress(versionNumber, address).toString(), equalTo("Host{version='" + versionNumber + "', address='" + address + "'}"));
+        assertThat(ipVFutureAddress(versionNumber, address).toString(), equalTo("Host{version='" + versionNumber + "', address='" + address.toLowerCase() + "'}"));
     }
 
     private static String aValidIpVFutureAddress() {

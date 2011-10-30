@@ -134,12 +134,12 @@ public abstract class Host {
         private final String registeredName;
 
         RegisteredName(final String registeredName) {
-            this.registeredName = registeredName;
+            this.registeredName = registeredName.toLowerCase(ENGLISH); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
         }
 
         @Override
         String asString() {
-            return PERCENT_ENCODER.encode(registeredName.toLowerCase(ENGLISH)); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
+            return PERCENT_ENCODER.encode(registeredName);
         }
 
         @Override
@@ -408,7 +408,7 @@ public abstract class Host {
 
         IpVFutureAddress(final String version, final String address) {
             this.version = version;
-            this.address = address;
+            this.address = address.toLowerCase(ENGLISH);
         }
 
         @Override
@@ -417,7 +417,7 @@ public abstract class Host {
                     .append("[v")
                     .append(version)
                     .append('.')
-                    .append(address.toLowerCase(ENGLISH))
+                    .append(address)
                     .append(']')
                     .toString();
         }
