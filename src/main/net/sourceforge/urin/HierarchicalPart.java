@@ -10,12 +10,7 @@
 
 package net.sourceforge.urin;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
-import static java.util.Arrays.asList;
+import static net.sourceforge.urin.Segments.segments;
 
 public abstract class HierarchicalPart {
 
@@ -25,69 +20,65 @@ public abstract class HierarchicalPart {
     abstract String asString();
 
     public static HierarchicalPart hierarchicalPart() {
-        return new HierarchicalPartNoAuthority(Collections.<Segment>emptyList());
+        return new HierarchicalPartNoAuthority(segments());
     }
 
     public static HierarchicalPart hierarchicalPart(final Authority authority) {
-        return new HierarchicalPartWithAuthority(authority, Collections.<Segment>emptyList());
+        return new HierarchicalPartWithAuthority(authority, segments());
     }
 
     public static HierarchicalPart hierarchicalPartRootless(final Segment... segments) {
-        if (segments.length > 0 && segments[0].isEmpty()) {
+        return hierarchicalPartRootless(segments(segments));
+    }
+
+    public static HierarchicalPart hierarchicalPartRootless(final Segments segments) {
+        if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
-        final Iterable<Segment> segmentIterable = new ArrayList<Segment>(asList(segments));
-        return new HierarchicalPartNoAuthority(segmentIterable);
+        return new HierarchicalPartNoAuthority(segments);
     }
 
     public static HierarchicalPart hierarchicalPartAbsolute(final Segment... segments) {
-        if (segments.length > 0 && segments[0].isEmpty()) {
+        return hierarchicalPartAbsolute(segments(segments));
+    }
+
+    private static HierarchicalPart hierarchicalPartAbsolute(final Segments segments) {
+        if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
-        final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
-        segmentList.add(Segment.EMPTY);
-        if (segments.length == 0) {
-            segmentList.add(Segment.EMPTY);
+        final Segments absolutisedSegments;
+        if (segments.isEmpty()) {
+            absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();
         } else {
-            segmentList.addAll(asList(segments));
+            absolutisedSegments = segments.prefixWithEmptySegment();
         }
-
-        return new HierarchicalPartNoAuthority(segmentList);
+        return new HierarchicalPartNoAuthority(absolutisedSegments);
     }
 
     public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final Segment... segments) {
-        final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
-        segmentList.add(Segment.EMPTY);
-        if (segments.length == 0) {
-            segmentList.add(Segment.EMPTY);
-        } else {
-            segmentList.addAll(asList(segments));
-        }
-        return new HierarchicalPartWithAuthority(authority, segmentList);
+        return hierarchicalPartAbsolute(authority, segments(segments));
     }
 
-    private static String segmentsAsString(final Iterable<Segment> segments) {
-        StringBuilder result = new StringBuilder();
-        Iterator<Segment> segmentIterator = segments.iterator();
-        while (segmentIterator.hasNext()) {
-            result.append(segmentIterator.next().asString());
-            if (segmentIterator.hasNext()) {
-                result.append('/');
-            }
+    private static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final Segments segments) {
+        final Segments absolutisedSegments;
+        if (segments.isEmpty()) {
+            absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();
+        } else {
+            absolutisedSegments = segments.prefixWithEmptySegment();
         }
-        return result.toString();
+        return new HierarchicalPartWithAuthority(authority, absolutisedSegments);
     }
 
     private static final class HierarchicalPartNoAuthority extends HierarchicalPart {
-        private final Iterable<Segment> segments;
+        private final Segments segments;
 
-        HierarchicalPartNoAuthority(final Iterable<Segment> segments) {
+        HierarchicalPartNoAuthority(final Segments segments) {
             this.segments = segments;
         }
 
         @Override
         String asString() {
-            return segmentsAsString(segments);
+            return segments.asString();
         }
 
         @Override
@@ -116,9 +107,9 @@ public abstract class HierarchicalPart {
 
     private static final class HierarchicalPartWithAuthority extends HierarchicalPart {
         private final Authority authority;
-        private final List<Segment> segments;
+        private final Segments segments;
 
-        HierarchicalPartWithAuthority(final Authority authority, final List<Segment> segments) {
+        HierarchicalPartWithAuthority(final Authority authority, final Segments segments) {
             this.authority = authority;
             this.segments = segments;
         }
@@ -127,7 +118,7 @@ public abstract class HierarchicalPart {
         String asString() {
             return new StringBuilder("//")
                     .append(authority.asString())
-                    .append(segmentsAsString(segments))
+                    .append(segments.asString())
                     .toString();
         }
 
@@ -157,4 +148,5 @@ public abstract class HierarchicalPart {
                     '}';
         }
     }
+
 }
