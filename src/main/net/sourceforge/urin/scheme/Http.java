@@ -46,4 +46,8 @@ public class Http {
     public static Urin http(final Host host, final Segments segments, final Query query) {
         return urin(SCHEME, hierarchicalPartAbsolute(authority(host), segments), query);
     }
+
+    public static Urin http(final Host host, final Port port, final Segments segments, final Query query) {
+        return urin(SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port), segments), query);
+    }
 }
