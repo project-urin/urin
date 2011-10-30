@@ -37,17 +37,7 @@ public abstract class Urin {
     }
 
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
-        return new Urin() {
-            @Override
-            public String asString() {
-                return new StringBuilder(scheme.asString())
-                        .append(':')
-                        .append(hierarchicalPart.asString())
-                        .append('#')
-                        .append(fragment.asString())
-                        .toString();
-            }
-        };
+        return new UrinWithHierarchicalPartAndFragment(scheme, hierarchicalPart, fragment);
     }
 
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
@@ -162,6 +152,57 @@ public abstract class Urin {
                     "scheme=" + scheme +
                     ", hierarchicalPart=" + hierarchicalPart +
                     ", query=" + query +
+                    '}';
+        }
+    }
+
+    private static final class UrinWithHierarchicalPartAndFragment extends Urin {
+        private final Scheme scheme;
+        private final HierarchicalPart hierarchicalPart;
+        private final Fragment fragment;
+
+        UrinWithHierarchicalPartAndFragment(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            this.scheme = scheme;
+            this.hierarchicalPart = hierarchicalPart;
+            this.fragment = fragment;
+        }
+
+        @Override
+        public String asString() {
+            return new StringBuilder(scheme.asString())
+                    .append(':')
+                    .append(hierarchicalPart.asString())
+                    .append('#')
+                    .append(fragment.asString())
+                    .toString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            UrinWithHierarchicalPartAndFragment that = (UrinWithHierarchicalPartAndFragment) o;
+            return !(fragment != null ? !fragment.equals(that.fragment) : that.fragment != null)
+                    && !(hierarchicalPart != null ? !hierarchicalPart.equals(that.hierarchicalPart) : that.hierarchicalPart != null)
+                    && !(scheme != null ? !scheme.equals(that.scheme) : that.scheme != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = scheme != null ? scheme.hashCode() : 0;
+            result = 31 * result + (hierarchicalPart != null ? hierarchicalPart.hashCode() : 0);
+            result = 31 * result + (fragment != null ? fragment.hashCode() : 0);
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Urin{" +
+                    "scheme=" + scheme +
+                    ", hierarchicalPart=" + hierarchicalPart +
+                    ", fragment=" + fragment +
                     '}';
         }
     }
