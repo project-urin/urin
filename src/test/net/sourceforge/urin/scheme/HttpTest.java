@@ -55,4 +55,20 @@ public class HttpTest {
         assertThat(http(host, segments), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments))));
     }
 
+    @Test
+    public void httpWithPathAndPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = aPortDifferentTo(port(80));
+        Segments segments = aSegments();
+        assertThat(http(host, port, segments), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port), segments))));
+    }
+
+    @Test
+    public void httpWithPathButAndDefaultPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = port(80);
+        Segments segments = aSegments();
+        assertThat(http(host, port, segments), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments))));
+    }
+
 }

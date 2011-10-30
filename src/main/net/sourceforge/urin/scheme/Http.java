@@ -28,12 +28,18 @@ public class Http {
     }
 
     public static Urin http(final Host host, final Port port) {
-        return DEFAULT_PORT.equals(port)
-                ? urin(SCHEME, hierarchicalPartAbsolute(authority(host)))
-                : urin(SCHEME, hierarchicalPartAbsolute(authority(host, port)));
+        return urin(SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port)));
     }
 
     public static Urin http(final Host host, final Segments segments) {
         return urin(SCHEME, hierarchicalPartAbsolute(authority(host), segments));
+    }
+
+    public static Urin http(final Host host, final Port port, final Segments segments) {
+        return urin(SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port), segments));
+    }
+
+    private static Authority authorityWithNormalisedDefaultPort(final Host host, final Port port) {
+        return DEFAULT_PORT.equals(port) ? authority(host) : authority(host, port);
     }
 }
