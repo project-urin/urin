@@ -27,6 +27,17 @@ public class HierarchicalPartTest {
     }
 
     @Test
+    public void aHierarchicalPartWithEmptyPathIsEqualToAnotherHierarchicalPartWithEmptyPath() throws Exception {
+        assertThat(hierarchicalPart(), equalTo(hierarchicalPart()));
+        assertThat(hierarchicalPart().hashCode(), equalTo(hierarchicalPart().hashCode()));
+    }
+
+    @Test
+    public void aHierarchicalPartWithEmptyPathToStringIsCorrect() throws Exception {
+        assertThat(hierarchicalPart().toString(), equalTo("HierarchicalPart{segments=[]}"));
+    }
+
+    @Test
     public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();

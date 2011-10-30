@@ -11,6 +11,7 @@
 package net.sourceforge.urin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,12 +25,7 @@ public abstract class HierarchicalPart {
     abstract String asString();
 
     public static HierarchicalPart hierarchicalPart() {
-        return new HierarchicalPart() {
-            @Override
-            String asString() {
-                return "";
-            }
-        };
+        return new HierarchicalPartNoAuthority(Collections.<Segment>emptyList());
     }
 
     public static HierarchicalPart hierarchicalPart(final Authority authority) {
@@ -48,20 +44,7 @@ public abstract class HierarchicalPart {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
         final Iterable<Segment> segmentIterable = new ArrayList<Segment>(asList(segments));
-        return new HierarchicalPart() {
-            @Override
-            String asString() {
-                StringBuilder result = new StringBuilder();
-                Iterator<Segment> segmentIterator = segmentIterable.iterator();
-                while (segmentIterator.hasNext()) {
-                    result.append(segmentIterator.next().asString());
-                    if (segmentIterator.hasNext()) {
-                        result.append('/');
-                    }
-                }
-                return result.toString();
-            }
-        };
+        return new HierarchicalPartNoAuthority(segmentIterable);
     }
 
     public static HierarchicalPart hierarchicalPartAbsolute(final Segment... segments) {
@@ -104,5 +87,49 @@ public abstract class HierarchicalPart {
                 return stringBuilder.toString();
             }
         };
+    }
+
+    private static final class HierarchicalPartNoAuthority extends HierarchicalPart {
+        private final Iterable<Segment> segments;
+
+        HierarchicalPartNoAuthority(final Iterable<Segment> segments) {
+            this.segments = segments;
+        }
+
+        @Override
+        String asString() {
+            StringBuilder result = new StringBuilder();
+            Iterator<Segment> segmentIterator = segments.iterator();
+            while (segmentIterator.hasNext()) {
+                result.append(segmentIterator.next().asString());
+                if (segmentIterator.hasNext()) {
+                    result.append('/');
+                }
+            }
+            return result.toString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            HierarchicalPartNoAuthority that = (HierarchicalPartNoAuthority) o;
+
+            return !(segments != null ? !segments.equals(that.segments) : that.segments != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return segments != null ? segments.hashCode() : 0;
+        }
+
+        @Override
+        public String toString() {
+            return "HierarchicalPart{" +
+                    "segments=" + segments +
+                    '}';
+        }
     }
 }
