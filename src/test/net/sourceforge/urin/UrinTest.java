@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HierarchicalPartBuilder.aHierarchicalPart;
+import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Urin.urin;
@@ -54,6 +55,34 @@ public class UrinTest {
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(urin(scheme, hierarchicalPart, query, fragment).toString(), equalTo("Urin{scheme=" + scheme + ", hierarchicalPart=" + hierarchicalPart + ", query=" + query + ", fragment=" + fragment + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForAUrinWithAllParts() throws Exception {
+        assertThrowsNullPointerException("Null scheme should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                urin(null, aHierarchicalPart(), aQuery(), aFragment());
+            }
+        });
+        assertThrowsNullPointerException("Null hierarchicalPart should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                urin(aScheme(), null, aQuery(), aFragment());
+            }
+        });
+        assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                urin(aScheme(), aHierarchicalPart(), null, aFragment());
+            }
+        });
+        assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                urin(aScheme(), aHierarchicalPart(), aQuery(), null);
+            }
+        });
     }
 
     @Test

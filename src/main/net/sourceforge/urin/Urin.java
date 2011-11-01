@@ -47,9 +47,21 @@ public abstract class Urin {
         private final Fragment fragment;
 
         UrinWithHierarchicalPartAndQueryAndFragment(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            if (scheme == null) {
+                throw new NullPointerException("Cannot instantiate Urin with null scheme");
+            }
             this.scheme = scheme;
+            if (hierarchicalPart == null) {
+                throw new NullPointerException("Cannot instantiate Urin with null hierarchicalPart");
+            }
             this.hierarchicalPart = hierarchicalPart;
+            if (query == null) {
+                throw new NullPointerException("Cannot instantiate Urin with null query");
+            }
             this.query = query;
+            if (fragment == null) {
+                throw new NullPointerException("Cannot instantiate Urin with null fragment");
+            }
             this.fragment = fragment;
         }
 
@@ -71,18 +83,18 @@ public abstract class Urin {
             if (o == null || getClass() != o.getClass()) return false;
 
             UrinWithHierarchicalPartAndQueryAndFragment that = (UrinWithHierarchicalPartAndQueryAndFragment) o;
-            return !(fragment != null ? !fragment.equals(that.fragment) : that.fragment != null)
-                    && !(hierarchicalPart != null ? !hierarchicalPart.equals(that.hierarchicalPart) : that.hierarchicalPart != null)
-                    && !(query != null ? !query.equals(that.query) : that.query != null)
-                    && !(scheme != null ? !scheme.equals(that.scheme) : that.scheme != null);
+            return fragment.equals(that.fragment)
+                    && hierarchicalPart.equals(that.hierarchicalPart)
+                    && query.equals(that.query)
+                    && scheme.equals(that.scheme);
         }
 
         @Override
         public int hashCode() {
-            int result = scheme != null ? scheme.hashCode() : 0;
-            result = 31 * result + (hierarchicalPart != null ? hierarchicalPart.hashCode() : 0);
-            result = 31 * result + (query != null ? query.hashCode() : 0);
-            result = 31 * result + (fragment != null ? fragment.hashCode() : 0);
+            int result = scheme.hashCode();
+            result = 31 * result + hierarchicalPart.hashCode();
+            result = 31 * result + query.hashCode();
+            result = 31 * result + fragment.hashCode();
             return result;
         }
 
