@@ -143,17 +143,17 @@ public abstract class Host {
         }
 
         @Override
-        public int hashCode() {
-            return registeredName.hashCode();
-        }
-
-        @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
             RegisteredName that = (RegisteredName) o;
-            return !(registeredName != null ? !registeredName.equals(that.registeredName) : that.registeredName != null);
+            return registeredName.equals(that.registeredName);
+        }
+
+        @Override
+        public int hashCode() {
+            return registeredName.hashCode();
         }
 
         @Override
@@ -172,9 +172,21 @@ public abstract class Host {
         private final Octet fourthOctet;
 
         IpV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
+            if (firstOctet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null firstOctet");
+            }
             this.firstOctet = firstOctet;
+            if (secondOctet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null secondOctet");
+            }
             this.secondOctet = secondOctet;
+            if (thirdOctet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null thirdOctet");
+            }
             this.thirdOctet = thirdOctet;
+            if (fourthOctet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fourthOctet");
+            }
             this.fourthOctet = fourthOctet;
         }
 
@@ -196,20 +208,18 @@ public abstract class Host {
             if (o == null || getClass() != o.getClass()) return false;
 
             IpV4Address that = (IpV4Address) o;
-
-            return !(firstOctet != null ? !firstOctet.equals(that.firstOctet) : that.firstOctet != null)
-                    && !(thirdOctet != null ? !thirdOctet.equals(that.thirdOctet) : that.thirdOctet != null)
-                    && !(secondOctet != null ? !secondOctet.equals(that.secondOctet) : that.secondOctet != null)
-                    && !(fourthOctet != null ? !fourthOctet.equals(that.fourthOctet) : that.fourthOctet != null);
-
+            return firstOctet.equals(that.firstOctet)
+                    && thirdOctet.equals(that.thirdOctet)
+                    && secondOctet.equals(that.secondOctet)
+                    && fourthOctet.equals(that.fourthOctet);
         }
 
         @Override
         public int hashCode() {
-            int result = firstOctet != null ? firstOctet.hashCode() : 0;
-            result = 31 * result + (secondOctet != null ? secondOctet.hashCode() : 0);
-            result = 31 * result + (thirdOctet != null ? thirdOctet.hashCode() : 0);
-            result = 31 * result + (fourthOctet != null ? fourthOctet.hashCode() : 0);
+            int result = firstOctet.hashCode();
+            result = 31 * result + secondOctet.hashCode();
+            result = 31 * result + thirdOctet.hashCode();
+            result = 31 * result + fourthOctet.hashCode();
             return result;
         }
 

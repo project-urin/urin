@@ -16,6 +16,7 @@ import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
 import static net.sourceforge.urin.Host.*;
+import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -63,6 +64,16 @@ public class HostTest {
     }
 
     @Test
+    public void rejectsNullInFactoryForARegisteredName() throws Exception {
+        assertThrowsNullPointerException("Null registeredName should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                registeredName(null);
+            }
+        });
+    }
+
+    @Test
     public void ipV4AddressAsStringIsCorrect() throws Exception {
         Octet firstOctet = anOctet();
         Octet secondOctet = anOctet();
@@ -95,6 +106,34 @@ public class HostTest {
         Octet thirdOctet = anOctet();
         Octet fourthOctet = anOctet();
         assertThat(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).toString(), equalTo("Host{firstOctet=" + firstOctet + ", secondOctet=" + secondOctet + ", thirdOctet=" + thirdOctet + ", fourthOctet=" + fourthOctet + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForAnIpV4Address() throws Exception {
+        assertThrowsNullPointerException("Null firstOctet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV4Address(null, anOctet(), anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null secondOctet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV4Address(anOctet(), null, anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null thirdOctet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV4Address(anOctet(), anOctet(), null, anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null fourthOctet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV4Address(anOctet(), anOctet(), anOctet(), null);
+            }
+        });
     }
 
     @Test
