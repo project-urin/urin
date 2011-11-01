@@ -160,6 +160,29 @@ public class AuthorityTest {
     }
 
     @Test
+    public void rejectsNullInFactoryForAuthorityWithAllOptions() throws Exception {
+        assertThrowsNullPointerException("Null userInfo should throw NullPointerException in factory", new NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                authority(null, aHost(), aPort());
+            }
+        });
+        assertThrowsNullPointerException("Null host should throw NullPointerException in factory", new NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                authority(aUserInfo(), null, aPort());
+            }
+        });
+        assertThrowsNullPointerException("Null port should throw NullPointerException in factory", new NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                authority(aUserInfo(), aHost(), null);
+            }
+        });
+    }
+
+
+    @Test
     public void anAuthorityWithAllOptionsSpecifiedIsEqualToAnotherWithTheSameFields() throws Exception {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
