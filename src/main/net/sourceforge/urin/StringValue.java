@@ -14,6 +14,9 @@ abstract class StringValue {
     final String value;
 
     StringValue(final String value) {
+        if (value == null) {
+            throw new NullPointerException("value cannot be null");
+        }
         this.value = value;
     }
 
@@ -22,17 +25,17 @@ abstract class StringValue {
     }
 
     @Override
-    public final boolean equals(final Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         StringValue that = (StringValue) o;
-        return !(value != null ? !value.equals(that.value) : that.value != null);
+        return value.equals(that.value);
     }
 
     @Override
-    public final int hashCode() {
-        return value != null ? value.hashCode() : 0;
+    public int hashCode() {
+        return value.hashCode();
     }
 
     @Override

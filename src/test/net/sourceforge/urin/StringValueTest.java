@@ -12,21 +12,16 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.CharacterSets.QUERY_AND_FRAGMENT_CHARACTERS;
-import static net.sourceforge.urin.Fragment.fragment;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 
-public class FragmentTest {
-
+public class StringValueTest {
     @Test
-    public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
-        assertThat(fragment(QUERY_AND_FRAGMENT_CHARACTERS).asString(), equalTo(QUERY_AND_FRAGMENT_CHARACTERS));
+    public void valueCannotBeNull() throws Exception {
+        assertThrowsNullPointerException("Null value should throw NullPointerException in constructor", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                new StringValue(null) {
+                };
+            }
+        });
     }
-
-    @Test
-    public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
-        assertThat(fragment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
-    }
-
 }
