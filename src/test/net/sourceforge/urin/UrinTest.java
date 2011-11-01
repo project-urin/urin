@@ -169,6 +169,29 @@ public class UrinTest {
     }
 
     @Test
+    public void rejectsNullInFactoryForAUrinWithNoQuery() throws Exception {
+        assertThrowsNullPointerException("Null scheme should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                urin(null, aHierarchicalPart(), aFragment());
+            }
+        });
+        assertThrowsNullPointerException("Null hierarchicalPart should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                urin(aScheme(), null, aFragment());
+            }
+        });
+        assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Fragment fragment = null;
+                urin(aScheme(), aHierarchicalPart(), fragment);
+            }
+        });
+    }
+
+    @Test
     public void createsUrinWithNoQueryAndNoFragment() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
