@@ -73,6 +73,9 @@ public abstract class HierarchicalPart {
         private final Segments segments;
 
         HierarchicalPartNoAuthority(final Segments segments) {
+            if (segments == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null segments");
+            }
             this.segments = segments;
         }
 
@@ -87,14 +90,12 @@ public abstract class HierarchicalPart {
             if (o == null || getClass() != o.getClass()) return false;
 
             HierarchicalPartNoAuthority that = (HierarchicalPartNoAuthority) o;
-
-            return !(segments != null ? !segments.equals(that.segments) : that.segments != null);
-
+            return segments.equals(that.segments);
         }
 
         @Override
         public int hashCode() {
-            return segments != null ? segments.hashCode() : 0;
+            return segments.hashCode();
         }
 
         @Override
