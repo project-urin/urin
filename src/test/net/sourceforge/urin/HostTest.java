@@ -545,22 +545,46 @@ public class HostTest {
 
     @Test
     public void ipVFutureAddressWithMatchingValuesAreEqual() throws Exception {
-        String versionNumber = random(5, HEX_DIGIT);
-        String address = random(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
+        String versionNumber = anIpVFutureAddressVersion();
+        String address = anIpVFutureAddressAddress();
         assertThat(ipVFutureAddress(versionNumber, address), equalTo(ipVFutureAddress(versionNumber, address)));
         assertThat(ipVFutureAddress(versionNumber, address).hashCode(), equalTo(ipVFutureAddress(versionNumber, address).hashCode()));
     }
 
     @Test
     public void ipVFutureAddressWithDifferingValuesAreNotEqual() throws Exception {
-        assertThat(ipVFutureAddress(random(5, HEX_DIGIT), random(5, IP_V_FUTURE_ADDRESS_CHARACTERS)), not(equalTo(ipVFutureAddress(random(5, HEX_DIGIT), random(5, IP_V_FUTURE_ADDRESS_CHARACTERS)))));
+        assertThat(ipVFutureAddress(anIpVFutureAddressVersion(), anIpVFutureAddressAddress()), not(equalTo(ipVFutureAddress(anIpVFutureAddressVersion(), anIpVFutureAddressAddress()))));
+    }
+
+    private static String anIpVFutureAddressVersion() {
+        return random(5, HEX_DIGIT);
+    }
+
+    private static String anIpVFutureAddressAddress() {
+        return random(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
     }
 
     @Test
     public void ipVFutureAddressProducesCorrectToString() throws Exception {
-        String versionNumber = random(5, HEX_DIGIT);
-        String address = random(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
+        String versionNumber = anIpVFutureAddressVersion();
+        String address = anIpVFutureAddressAddress();
         assertThat(ipVFutureAddress(versionNumber, address).toString(), equalTo("Host{version='" + versionNumber + "', address='" + address.toLowerCase() + "'}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForAnIpVFutureAddress() throws Exception {
+        assertThrowsNullPointerException("Null version should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipVFutureAddress(null, anIpVFutureAddressAddress());
+            }
+        });
+        assertThrowsNullPointerException("Null address should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipVFutureAddress(anIpVFutureAddressVersion(), null);
+            }
+        });
     }
 
     private static String aValidIpVFutureAddress() {

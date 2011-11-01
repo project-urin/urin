@@ -489,15 +489,16 @@ public abstract class Host {
             if (o == null || getClass() != o.getClass()) return false;
 
             IpVFutureAddress that = (IpVFutureAddress) o;
-            return !(version != null ? !version.equals(that.version) : that.version != null)
-                    && !(address != null ? !address.equals(that.address) : that.address != null);
+
+            return address.equals(that.address)
+                    && version.equals(that.version);
 
         }
 
         @Override
         public int hashCode() {
-            int result = version != null ? version.hashCode() : 0;
-            result = 31 * result + (address != null ? address.hashCode() : 0);
+            int result = version.hashCode();
+            result = 31 * result + address.hashCode();
             return result;
         }
 
