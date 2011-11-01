@@ -350,15 +350,45 @@ public abstract class Host {
         private final Octet fourthOctet;
 
         public IpV6AddressWithTrailingIpV4Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
+            if (firstHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null firstHexadectet");
+            }
             this.firstHexadectet = firstHexadectet;
+            if (secondHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null secondHexadectet");
+            }
             this.secondHexadectet = secondHexadectet;
+            if (thirdHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null thirdHexadectet");
+            }
             this.thirdHexadectet = thirdHexadectet;
+            if (fourthHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fourthHexadectet");
+            }
             this.fourthHexadectet = fourthHexadectet;
+            if (fifthHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fifthHexadectet");
+            }
             this.fifthHexadectet = fifthHexadectet;
+            if (sixthHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null sixthHexadectet");
+            }
             this.sixthHexadectet = sixthHexadectet;
+            if (firstOctet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null firstOctet");
+            }
             this.firstOctet = firstOctet;
+            if (secondOctet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null secondOctet");
+            }
             this.secondOctet = secondOctet;
+            if (thirdOctet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null thirdOctet");
+            }
             this.thirdOctet = thirdOctet;
+            if (fourthOctet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fourthOctet");
+            }
             this.fourthOctet = fourthOctet;
         }
 
@@ -389,32 +419,30 @@ public abstract class Host {
             if (o == null || getClass() != o.getClass()) return false;
 
             IpV6AddressWithTrailingIpV4Address that = (IpV6AddressWithTrailingIpV4Address) o;
-
-            return !(firstHexadectet != null ? !firstHexadectet.equals(that.firstHexadectet) : that.firstHexadectet != null)
-                    && !(secondHexadectet != null ? !secondHexadectet.equals(that.secondHexadectet) : that.secondHexadectet != null)
-                    && !(thirdHexadectet != null ? !thirdHexadectet.equals(that.thirdHexadectet) : that.thirdHexadectet != null)
-                    && !(fourthHexadectet != null ? !fourthHexadectet.equals(that.fourthHexadectet) : that.fourthHexadectet != null)
-                    && !(fifthHexadectet != null ? !fifthHexadectet.equals(that.fifthHexadectet) : that.fifthHexadectet != null)
-                    && !(sixthHexadectet != null ? !sixthHexadectet.equals(that.sixthHexadectet) : that.sixthHexadectet != null)
-                    && !(firstOctet != null ? !firstOctet.equals(that.firstOctet) : that.firstOctet != null)
-                    && !(secondOctet != null ? !secondOctet.equals(that.secondOctet) : that.secondOctet != null)
-                    && !(thirdOctet != null ? !thirdOctet.equals(that.thirdOctet) : that.thirdOctet != null)
-                    && !(fourthOctet != null ? !fourthOctet.equals(that.fourthOctet) : that.fourthOctet != null);
-
+            return firstHexadectet.equals(that.firstHexadectet)
+                    && secondHexadectet.equals(that.secondHexadectet)
+                    && thirdHexadectet.equals(that.thirdHexadectet)
+                    && fourthHexadectet.equals(that.fourthHexadectet)
+                    && fifthHexadectet.equals(that.fifthHexadectet)
+                    && sixthHexadectet.equals(that.sixthHexadectet)
+                    && firstOctet.equals(that.firstOctet)
+                    && secondOctet.equals(that.secondOctet)
+                    && thirdOctet.equals(that.thirdOctet)
+                    && fourthOctet.equals(that.fourthOctet);
         }
 
         @Override
         public int hashCode() {
-            int result = firstHexadectet != null ? firstHexadectet.hashCode() : 0;
-            result = 31 * result + (secondHexadectet != null ? secondHexadectet.hashCode() : 0);
-            result = 31 * result + (thirdHexadectet != null ? thirdHexadectet.hashCode() : 0);
-            result = 31 * result + (fourthHexadectet != null ? fourthHexadectet.hashCode() : 0);
-            result = 31 * result + (fifthHexadectet != null ? fifthHexadectet.hashCode() : 0);
-            result = 31 * result + (sixthHexadectet != null ? sixthHexadectet.hashCode() : 0);
-            result = 31 * result + (firstOctet != null ? firstOctet.hashCode() : 0);
-            result = 31 * result + (secondOctet != null ? secondOctet.hashCode() : 0);
-            result = 31 * result + (thirdOctet != null ? thirdOctet.hashCode() : 0);
-            result = 31 * result + (fourthOctet != null ? fourthOctet.hashCode() : 0);
+            int result = firstHexadectet.hashCode();
+            result = 31 * result + secondHexadectet.hashCode();
+            result = 31 * result + thirdHexadectet.hashCode();
+            result = 31 * result + fourthHexadectet.hashCode();
+            result = 31 * result + fifthHexadectet.hashCode();
+            result = 31 * result + sixthHexadectet.hashCode();
+            result = 31 * result + firstOctet.hashCode();
+            result = 31 * result + secondOctet.hashCode();
+            result = 31 * result + thirdOctet.hashCode();
+            result = 31 * result + fourthOctet.hashCode();
             return result;
         }
 

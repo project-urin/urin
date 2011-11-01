@@ -386,6 +386,70 @@ public class HostTest {
     }
 
     @Test
+    public void rejectsNullInFactoryForAnIpV6AddressWithTrailingIpV4Address() throws Exception {
+        assertThrowsNullPointerException("Null firstHexadectet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null secondHexadectet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null thirdHexadectet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null fourthHexadectet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null fifthHexadectet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null sixthHexadectet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null firstOctet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null secondOctet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), null, anOctet(), anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null thirdOctet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), null, anOctet());
+            }
+        });
+        assertThrowsNullPointerException("Null fourthOctet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), null);
+            }
+        });
+    }
+
+    @Test
     public void ipVFutureAsStringIsCorrect() throws Exception {
         String address = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
         assertThat(
