@@ -162,6 +162,16 @@ public class HierarchicalPartTest {
     }
 
     @Test
+    public void rejectsNullInFactoryForHierarchicalPartWithAuthorityAndEmptyPath() throws Exception {
+        assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                hierarchicalPart(null);
+            }
+        });
+    }
+
+    @Test
     public void aHierarchicalPartWithAuthorityAndEmptyPathIsEqualToAnotherWithTheSameAuthority() throws Exception {
         Authority authority = anAuthority();
         assertThat(hierarchicalPart(authority), equalTo(hierarchicalPart(authority)));
