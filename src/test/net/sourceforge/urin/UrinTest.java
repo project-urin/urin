@@ -218,4 +218,19 @@ public class UrinTest {
         assertThat(urin(scheme, hierarchicalPart).toString(), equalTo("Urin{scheme=" + scheme + ", hierarchicalPart=" + hierarchicalPart + "}"));
     }
 
+    @Test
+    public void rejectsNullInFactoryForAUrinWithNoQueryOrNoFragment() throws Exception {
+        assertThrowsNullPointerException("Null scheme should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                urin(null, aHierarchicalPart());
+            }
+        });
+        assertThrowsNullPointerException("Null hierarchicalPart should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                urin(aScheme(), null);
+            }
+        });
+    }
 }
