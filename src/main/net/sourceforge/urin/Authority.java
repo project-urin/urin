@@ -126,7 +126,13 @@ public abstract class Authority {
         private final Port port;
 
         AuthorityWithHostAndPort(final Host host, final Port port) {
+            if (host == null) {
+                throw new NullPointerException("Cannot instantiate Authority with null host");
+            }
             this.host = host;
+            if (port == null) {
+                throw new NullPointerException("Cannot instantiate Authority with null port");
+            }
             this.port = port;
         }
 
@@ -144,15 +150,14 @@ public abstract class Authority {
             if (o == null || getClass() != o.getClass()) return false;
 
             AuthorityWithHostAndPort that = (AuthorityWithHostAndPort) o;
-            return !(host != null ? !host.equals(that.host) : that.host != null)
-                    && !(port != null ? !port.equals(that.port) : that.port != null);
-
+            return host.equals(that.host)
+                    && port.equals(that.port);
         }
 
         @Override
         public int hashCode() {
-            int result = host != null ? host.hashCode() : 0;
-            result = 31 * result + (port != null ? port.hashCode() : 0);
+            int result = host.hashCode();
+            result = 31 * result + port.hashCode();
             return result;
         }
 

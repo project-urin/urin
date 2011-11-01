@@ -116,6 +116,22 @@ public class AuthorityTest {
     }
 
     @Test
+    public void rejectsNullInFactoryForAuthorityWithNoUserInfo() throws Exception {
+        assertThrowsNullPointerException("Null host should throw NullPointerException in factory", new NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                authority(null, aPort());
+            }
+        });
+        assertThrowsNullPointerException("Null port should throw NullPointerException in factory", new NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                authority(aHost(), null);
+            }
+        });
+    }
+
+    @Test
     public void anAuthorityWithNoUserInfoIsEqualToAnotherWithTheSameHostAndPort() throws Exception {
         Host host = aHost();
         Port port = aPort();
