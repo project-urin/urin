@@ -38,6 +38,11 @@ public final class Segments {
 
     private Segments(final Collection<Segment> segments) {
         this.segments = new ArrayList<Segment>(segments);
+        for (Segment segment : segments) {
+            if (segment == null) {
+                throw new NullPointerException("Segment cannot be null");
+            }
+        }
     }
 
     Iterator<Segment> iterator() {
@@ -71,9 +76,8 @@ public final class Segments {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Segments that = (Segments) o;
-        return segments.equals(that.segments);
-
+        Segments segments1 = (Segments) o;
+        return segments.equals(segments1.segments);
     }
 
     @Override

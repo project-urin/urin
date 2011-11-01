@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.*;
+import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.Segment.EMPTY;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
@@ -56,6 +57,23 @@ public class HierarchicalPartTest {
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
         }
+    }
+
+    @Test
+    public void rejectsNullInFactoryForASimplePath() throws Exception {
+        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Segment firstSegment = null;
+                hierarchicalPartAbsolute(firstSegment, aSegment());
+            }
+        });
+        assertThrowsNullPointerException("Null second segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                hierarchicalPartAbsolute(aSegment(), null);
+            }
+        });
     }
 
     @Test
