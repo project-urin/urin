@@ -19,12 +19,32 @@ import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class AuthorityTest {
     @Test
     public void makesAuthorityWithNoUserInfoOrPort() throws Exception {
         Host host = aHost();
         assertThat(authority(host).asString(), equalTo(host.asString()));
+    }
+
+    @Test
+    public void rejectsNullHostInFactory() throws Exception {
+        assertThrowsNullPointerException("Null host should throw NullPointerException in factory", new NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                authority(null);
+            }
+        });
+    }
+
+    private static void assertThrowsNullPointerException(final String message, final NullPointerExceptionThrower nullPointerExceptionThrower) {
+        try {
+            nullPointerExceptionThrower.execute();
+            fail(message);
+        } catch (NullPointerException e) {
+            // expect to end up here
+        }
     }
 
     @Test
@@ -50,6 +70,22 @@ public class AuthorityTest {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         assertThat(authority(userInfo, host).asString(), equalTo(userInfo.asString() + "@" + host.asString()));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForAuthorityWithNoPort() throws Exception {
+        assertThrowsNullPointerException("Null userInfo should throw NullPointerException in factory", new NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                authority(null, aHost());
+            }
+        });
+        assertThrowsNullPointerException("Null host should throw NullPointerException in factory", new NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                authority(aUserInfo(), null);
+            }
+        });
     }
 
     @Test
@@ -129,4 +165,7 @@ public class AuthorityTest {
         assertThat(authority(userInfo, host, port).toString(), equalTo("Authority{userInfo=" + userInfo + ", host=" + host + ", port=" + port + "}"));
     }
 
+    private static interface NullPointerExceptionThrower {
+        void execute() throws NullPointerException;
+    }
 }

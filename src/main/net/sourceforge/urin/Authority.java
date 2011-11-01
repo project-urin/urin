@@ -37,6 +37,9 @@ public abstract class Authority {
         private final Host host;
 
         public AuthorityWithHost(final Host host) {
+            if (host == null) {
+                throw new NullPointerException("Cannot instantiate Authority with null host");
+            }
             this.host = host;
         }
 
@@ -51,12 +54,12 @@ public abstract class Authority {
             if (o == null || getClass() != o.getClass()) return false;
 
             AuthorityWithHost that = (AuthorityWithHost) o;
-            return !(host != null ? !host.equals(that.host) : that.host != null);
+            return host.equals(that.host);
         }
 
         @Override
         public int hashCode() {
-            return host != null ? host.hashCode() : 0;
+            return host.hashCode();
         }
 
         @Override
@@ -72,7 +75,13 @@ public abstract class Authority {
         private final Host host;
 
         AuthorityWithUserInfoAndHost(final UserInfo userInfo, final Host host) {
+            if (userInfo == null) {
+                throw new NullPointerException("Cannot instantiate Authority with null userInfo");
+            }
             this.userInfo = userInfo;
+            if (host == null) {
+                throw new NullPointerException("Cannot instantiate Authority with null host");
+            }
             this.host = host;
         }
 
@@ -91,15 +100,15 @@ public abstract class Authority {
 
             AuthorityWithUserInfoAndHost that = (AuthorityWithUserInfoAndHost) o;
 
-            return !(host != null ? !host.equals(that.host) : that.host != null)
-                    && !(userInfo != null ? !userInfo.equals(that.userInfo) : that.userInfo != null);
+            return host.equals(that.host)
+                    && userInfo.equals(that.userInfo);
 
         }
 
         @Override
         public int hashCode() {
-            int result = userInfo != null ? userInfo.hashCode() : 0;
-            result = 31 * result + (host != null ? host.hashCode() : 0);
+            int result = userInfo.hashCode();
+            result = 31 * result + host.hashCode();
             return result;
         }
 
