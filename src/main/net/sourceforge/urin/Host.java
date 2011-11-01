@@ -245,13 +245,37 @@ public abstract class Host {
         private final Hexadectet eighthHexadectet;
 
         IpV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
+            if (firstHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null firstHexadectet");
+            }
             this.firstHexadectet = firstHexadectet;
+            if (secondHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null secondHexadectet");
+            }
             this.secondHexadectet = secondHexadectet;
+            if (thirdHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null thirdHexadectet");
+            }
             this.thirdHexadectet = thirdHexadectet;
+            if (fourthHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fourthHexadectet");
+            }
             this.fourthHexadectet = fourthHexadectet;
+            if (fifthHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fifthHexadectet");
+            }
             this.fifthHexadectet = fifthHexadectet;
+            if (sixthHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null sixthHexadectet");
+            }
             this.sixthHexadectet = sixthHexadectet;
+            if (seventhHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null seventhHexadectet");
+            }
             this.seventhHexadectet = seventhHexadectet;
+            if (eighthHexadectet == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null eighthHexadectet");
+            }
             this.eighthHexadectet = eighthHexadectet;
         }
 
@@ -275,27 +299,26 @@ public abstract class Host {
             if (o == null || getClass() != o.getClass()) return false;
 
             IpV6Address that = (IpV6Address) o;
-
-            return !(firstHexadectet != null ? !firstHexadectet.equals(that.firstHexadectet) : that.firstHexadectet != null)
-                    && !(secondHexadectet != null ? !secondHexadectet.equals(that.secondHexadectet) : that.secondHexadectet != null)
-                    && !(thirdHexadectet != null ? !thirdHexadectet.equals(that.thirdHexadectet) : that.thirdHexadectet != null)
-                    && !(fourthHexadectet != null ? !fourthHexadectet.equals(that.fourthHexadectet) : that.fourthHexadectet != null)
-                    && !(fifthHexadectet != null ? !fifthHexadectet.equals(that.fifthHexadectet) : that.fifthHexadectet != null)
-                    && !(sixthHexadectet != null ? !sixthHexadectet.equals(that.sixthHexadectet) : that.sixthHexadectet != null)
-                    && !(seventhHexadectet != null ? !seventhHexadectet.equals(that.seventhHexadectet) : that.seventhHexadectet != null)
-                    && !(eighthHexadectet != null ? !eighthHexadectet.equals(that.eighthHexadectet) : that.eighthHexadectet != null);
+            return firstHexadectet.equals(that.firstHexadectet)
+                    && secondHexadectet.equals(that.secondHexadectet)
+                    && thirdHexadectet.equals(that.thirdHexadectet)
+                    && fourthHexadectet.equals(that.fourthHexadectet)
+                    && fifthHexadectet.equals(that.fifthHexadectet)
+                    && sixthHexadectet.equals(that.sixthHexadectet)
+                    && seventhHexadectet.equals(that.seventhHexadectet)
+                    && eighthHexadectet.equals(that.eighthHexadectet);
         }
 
         @Override
         public int hashCode() {
-            int result = firstHexadectet != null ? firstHexadectet.hashCode() : 0;
-            result = 31 * result + (secondHexadectet != null ? secondHexadectet.hashCode() : 0);
-            result = 31 * result + (thirdHexadectet != null ? thirdHexadectet.hashCode() : 0);
-            result = 31 * result + (fourthHexadectet != null ? fourthHexadectet.hashCode() : 0);
-            result = 31 * result + (fifthHexadectet != null ? fifthHexadectet.hashCode() : 0);
-            result = 31 * result + (sixthHexadectet != null ? sixthHexadectet.hashCode() : 0);
-            result = 31 * result + (seventhHexadectet != null ? seventhHexadectet.hashCode() : 0);
-            result = 31 * result + (eighthHexadectet != null ? eighthHexadectet.hashCode() : 0);
+            int result = firstHexadectet.hashCode();
+            result = 31 * result + secondHexadectet.hashCode();
+            result = 31 * result + thirdHexadectet.hashCode();
+            result = 31 * result + fourthHexadectet.hashCode();
+            result = 31 * result + fifthHexadectet.hashCode();
+            result = 31 * result + sixthHexadectet.hashCode();
+            result = 31 * result + seventhHexadectet.hashCode();
+            result = 31 * result + eighthHexadectet.hashCode();
             return result;
         }
 
