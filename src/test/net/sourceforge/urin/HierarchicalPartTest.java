@@ -230,4 +230,27 @@ public class HierarchicalPartTest {
         assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{authority=" + authority + ", segments=[" + Segment.EMPTY + ", " + firstSegment + ", " + secondSegment + "]}"));
     }
 
+    @Test
+    public void rejectsNullInFactoryForHierarchicalPartWithAuthorityAndPath() throws Exception {
+        assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Authority authority = null;
+                hierarchicalPartAbsolute(authority, aSegment(), aSegment());
+            }
+        });
+        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                hierarchicalPartAbsolute(anAuthority(), null, aSegment());
+            }
+        });
+        assertThrowsNullPointerException("Null second segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                hierarchicalPartAbsolute(anAuthority(), aSegment(), null);
+            }
+        });
+    }
+
 }
