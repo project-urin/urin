@@ -115,8 +115,17 @@ public abstract class Urin {
         private final Query query;
 
         UrinWithHierarchicalPartAndQuery(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            if (scheme == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null scheme");
+            }
             this.scheme = scheme;
+            if (hierarchicalPart == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null hierarchicalPart");
+            }
             this.hierarchicalPart = hierarchicalPart;
+            if (query == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null query");
+            }
             this.query = query;
         }
 
@@ -136,17 +145,16 @@ public abstract class Urin {
             if (o == null || getClass() != o.getClass()) return false;
 
             UrinWithHierarchicalPartAndQuery that = (UrinWithHierarchicalPartAndQuery) o;
-            return !(hierarchicalPart != null ? !hierarchicalPart.equals(that.hierarchicalPart) : that.hierarchicalPart != null)
-                    && !(query != null ? !query.equals(that.query) : that.query != null)
-                    && !(scheme != null ? !scheme.equals(that.scheme) : that.scheme != null);
-
+            return hierarchicalPart.equals(that.hierarchicalPart)
+                    && query.equals(that.query)
+                    && scheme.equals(that.scheme);
         }
 
         @Override
         public int hashCode() {
-            int result = scheme != null ? scheme.hashCode() : 0;
-            result = 31 * result + (hierarchicalPart != null ? hierarchicalPart.hashCode() : 0);
-            result = 31 * result + (query != null ? query.hashCode() : 0);
+            int result = scheme.hashCode();
+            result = 31 * result + hierarchicalPart.hashCode();
+            result = 31 * result + query.hashCode();
             return result;
         }
 
