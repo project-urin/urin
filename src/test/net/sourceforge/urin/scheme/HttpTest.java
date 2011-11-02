@@ -14,6 +14,7 @@ import net.sourceforge.urin.Host;
 import net.sourceforge.urin.Port;
 import net.sourceforge.urin.Query;
 import net.sourceforge.urin.Segments;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Authority.authority;
@@ -25,9 +26,10 @@ import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.SegmentsBuilder.aSegments;
 import static net.sourceforge.urin.Urin.urin;
-import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.Http.*;
+import static net.sourceforge.urin.scheme.QueryParametersMatcher.convertsToQueryString;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class HttpTest {
     @Test
@@ -97,6 +99,12 @@ public class HttpTest {
         Query query = aQuery();
         Port port = port(80);
         assertThat(http(host, port, segments, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), query)));
+    }
+
+    @Test
+    @Ignore
+    public void queryParametersCorrectlyConvertsToQuery() throws Exception {
+        assertThat(queryParameters(queryParameter("+&; ", "+&; "), queryParameter("+&; ", "+&; ")), convertsToQueryString(equalTo("blah")));
     }
 
 }

@@ -12,6 +12,7 @@ package net.sourceforge.urin.scheme;
 
 import net.sourceforge.urin.*;
 
+import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
 import static net.sourceforge.urin.Port.port;
@@ -47,7 +48,36 @@ public class Http {
         return urin(SCHEME, hierarchicalPartAbsolute(authority(host), segments), query);
     }
 
+    public static Urin http(final Host host, final Segments segments, final QueryParameters queryParameters) {
+        return urin(SCHEME, hierarchicalPartAbsolute(authority(host), segments), queryParameters.asQuery());
+    }
+
     public static Urin http(final Host host, final Port port, final Segments segments, final Query query) {
         return urin(SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port), segments), query);
+    }
+
+    public static Urin http(final Host host, final Port port, final Segments segments, final QueryParameters queryParameters) {
+        return urin(SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port), segments), queryParameters.asQuery());
+    }
+
+    public static QueryParameter queryParameter(final String name, final String value) {
+        return null;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public static QueryParameters queryParameters(final QueryParameter... queryParameters) {
+        return queryParameters(asList(queryParameters));
+    }
+
+    public static QueryParameters queryParameters(final Iterable<QueryParameter> queryParameters) {
+        return null;  //To change body of created methods use File | Settings | File Templates.
+    }
+
+    public static final class QueryParameter {
+    }
+
+    public static final class QueryParameters {
+        private Query asQuery() {
+            return null;  //To change body of created methods use File | Settings | File Templates.
+        }
     }
 }
