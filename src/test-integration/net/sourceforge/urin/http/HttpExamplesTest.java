@@ -10,14 +10,12 @@
 
 package net.sourceforge.urin.http;
 
-import net.sourceforge.urin.scheme.Http;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Segments.segments;
-import static net.sourceforge.urin.scheme.Http.http;
-import static net.sourceforge.urin.scheme.Http.queryParameter;
+import static net.sourceforge.urin.scheme.Http.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -30,6 +28,6 @@ public class HttpExamplesTest {
     @Test
     @Ignore
     public void canGenerateAnHttpUriWithQueryParameters() throws Exception {
-        assertThat(http(registeredName("urin.sourceforge.net"), segments("javadoc"), Http.queryParameters(queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
+        assertThat(http(registeredName("urin.sourceforge.net"), segments("javadoc"), queryParameters(queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
     }
 }
