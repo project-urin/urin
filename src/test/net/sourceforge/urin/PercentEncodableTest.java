@@ -66,29 +66,25 @@ public class PercentEncodableTest {
         });
     }
 
-    public static PercentEncodable aPercentEncodableString() {
-        return percentEncodableString(randomAlphanumeric(5));
-    }
-
     @Test
     public void twoPercentEncodableDelimitedValuesOfTheSameClassWithTheSameValueAreEqual() throws Exception {
         char delimiter = 'a';
-        PercentEncodable firstPercentEncodable = aPercentEncodableString();
-        PercentEncodable secondPercentEncodable = aPercentEncodableString();
+        PercentEncodable firstPercentEncodable = PercentEncodableBuilder.aPercentEncodableString();
+        PercentEncodable secondPercentEncodable = PercentEncodableBuilder.aPercentEncodableString();
         assertThat(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable), equalTo(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable)));
         assertThat(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable).hashCode(), equalTo(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable).hashCode()));
     }
 
     @Test
     public void twoPercentEncodableDelimitedValuesOfTheSameClassWithDifferentValuesAreNotEqual() throws Exception {
-        assertThat(percentEncodableDelimitedValue('a', aPercentEncodableString(), aPercentEncodableString()), not(equalTo(percentEncodableDelimitedValue('a', aPercentEncodableString(), aPercentEncodableString()))));
+        assertThat(percentEncodableDelimitedValue('a', PercentEncodableBuilder.aPercentEncodableString(), PercentEncodableBuilder.aPercentEncodableString()), not(equalTo(percentEncodableDelimitedValue('a', PercentEncodableBuilder.aPercentEncodableString(), PercentEncodableBuilder.aPercentEncodableString()))));
     }
 
     @Test
     public void percentEncodableDelimitedValueToStringFormatIsCorrect() throws Exception {
         char delimiter = 'a';
-        PercentEncodable firstPercentEncodable = aPercentEncodableString();
-        PercentEncodable secondPercentEncodable = aPercentEncodableString();
+        PercentEncodable firstPercentEncodable = PercentEncodableBuilder.aPercentEncodableString();
+        PercentEncodable secondPercentEncodable = PercentEncodableBuilder.aPercentEncodableString();
         assertThat(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable).toString(), equalTo("PercentEncodable{delimiter=" + delimiter + ", values=" + asList(firstPercentEncodable, secondPercentEncodable) + "}"));
     }
 
@@ -105,7 +101,7 @@ public class PercentEncodableTest {
     @Test
     public void percentEncodableDelimitedValueIdentifiesEmptinessCorrectly() throws Exception {
         char delimiter = 'a';
-        assertThat(percentEncodableDelimitedValue(delimiter, aPercentEncodableString(), aPercentEncodableString()).isEmpty(), equalTo(false));
+        assertThat(percentEncodableDelimitedValue(delimiter, PercentEncodableBuilder.aPercentEncodableString(), PercentEncodableBuilder.aPercentEncodableString()).isEmpty(), equalTo(false));
         assertThat(percentEncodableDelimitedValue(delimiter).isEmpty(), equalTo(true));
     }
 
@@ -130,11 +126,11 @@ public class PercentEncodableTest {
     @Test
     public void percentEncodableDelimitedValueHasImmutableVarargs() throws Exception {
         char delimiter = 'a';
-        PercentEncodable firstPercentEncodable = aPercentEncodableString();
-        PercentEncodable secondPercentEncodable = aPercentEncodableString();
+        PercentEncodable firstPercentEncodable = PercentEncodableBuilder.aPercentEncodableString();
+        PercentEncodable secondPercentEncodable = PercentEncodableBuilder.aPercentEncodableString();
         PercentEncodable[] values = new PercentEncodable[]{firstPercentEncodable, secondPercentEncodable};
         PercentEncodable percentEncodable = percentEncodableDelimitedValue(delimiter, values);
-        values[0] = aPercentEncodableString();
+        values[0] = PercentEncodableBuilder.aPercentEncodableString();
         assertThat(percentEncodable, equalTo(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable)));
     }
 }
