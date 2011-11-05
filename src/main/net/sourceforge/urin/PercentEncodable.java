@@ -10,6 +10,11 @@
 
 package net.sourceforge.urin;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 public abstract class PercentEncodable {
 
     private PercentEncodable() {
@@ -22,6 +27,10 @@ public abstract class PercentEncodable {
 
     public static PercentEncodable percentEncodableString(final String value) {
         return new PercentEncodableString(value);
+    }
+
+    public static PercentEncodable percentEncodableDelimitedValue(final char delimiter, final PercentEncodable... values) {
+        return new PercentEncodableDelimitedValue(delimiter, values);
     }
 
     private static final class PercentEncodableString extends PercentEncodable {
@@ -62,6 +71,65 @@ public abstract class PercentEncodable {
         public String toString() {
             return "PercentEncodable{" +
                     "value='" + value + '\'' +
+                    '}';
+        }
+    }
+
+    private static final class PercentEncodableDelimitedValue extends PercentEncodable {
+        private final char delimiter;
+        private final Collection<PercentEncodable> values;
+
+        PercentEncodableDelimitedValue(final char delimiter, final PercentEncodable... values) {
+            final List<PercentEncodable> percentEncodableList = new ArrayList<PercentEncodable>(values.length);
+            for (PercentEncodable value : values) {
+                if (value == null) {
+                    throw new NullPointerException("Cannot instantiate PercentEncodable with null value");
+                }
+                percentEncodableList.add(value);
+            }
+            this.delimiter = delimiter;
+            this.values = percentEncodableList;
+        }
+
+        @Override
+        String encode(final PercentEncoder encoder) {
+            Iterator<PercentEncodable> percentEncodableIterator = values.iterator();
+            final StringBuilder result = new StringBuilder();
+            while (percentEncodableIterator.hasNext()) {
+                result.append(percentEncodableIterator.next().encode(encoder));
+                if (percentEncodableIterator.hasNext()) {
+                    result.append(delimiter);
+                }
+            }
+            return result.toString();
+        }
+
+        @Override
+        boolean isEmpty() {
+            return values.isEmpty();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            PercentEncodableDelimitedValue that = (PercentEncodableDelimitedValue) o;
+            return delimiter == that.delimiter && values.equals(that.values);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = (int) delimiter;
+            result = 31 * result + values.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "PercentEncodable{" +
+                    "delimiter=" + delimiter +
+                    ", values=" + values +
                     '}';
         }
     }

@@ -12,8 +12,10 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import static java.util.Arrays.asList;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
+import static net.sourceforge.urin.PercentEncodable.percentEncodableDelimitedValue;
 import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -64,5 +66,75 @@ public class PercentEncodableTest {
         });
     }
 
+    public static PercentEncodable aPercentEncodableString() {
+        return percentEncodableString(randomAlphanumeric(5));
+    }
 
+    @Test
+    public void twoPercentEncodableDelimitedValuesOfTheSameClassWithTheSameValueAreEqual() throws Exception {
+        char delimiter = 'a';
+        PercentEncodable firstPercentEncodable = aPercentEncodableString();
+        PercentEncodable secondPercentEncodable = aPercentEncodableString();
+        assertThat(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable), equalTo(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable)));
+        assertThat(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable).hashCode(), equalTo(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable).hashCode()));
+    }
+
+    @Test
+    public void twoPercentEncodableDelimitedValuesOfTheSameClassWithDifferentValuesAreNotEqual() throws Exception {
+        assertThat(percentEncodableDelimitedValue('a', aPercentEncodableString(), aPercentEncodableString()), not(equalTo(percentEncodableDelimitedValue('a', aPercentEncodableString(), aPercentEncodableString()))));
+    }
+
+    @Test
+    public void percentEncodableDelimitedValueToStringFormatIsCorrect() throws Exception {
+        char delimiter = 'a';
+        PercentEncodable firstPercentEncodable = aPercentEncodableString();
+        PercentEncodable secondPercentEncodable = aPercentEncodableString();
+        assertThat(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable).toString(), equalTo("PercentEncodable{delimiter=" + delimiter + ", values=" + asList(firstPercentEncodable, secondPercentEncodable) + "}"));
+    }
+
+    @Test
+    public void encodesPercentEncodableDelimitedValueWithNoSubDelimitersCorrectly() throws Exception {
+        assertThat(percentEncodableDelimitedValue('&', percentEncodableString(CharacterSets.UNRESERVED), percentEncodableString(CharacterSets.UNRESERVED)).encode(PERCENT_ENCODER), equalTo(CharacterSets.UNRESERVED + "&" + CharacterSets.UNRESERVED));
+    }
+
+    @Test
+    public void encodesPercentEncodableDelimitedValueWithSubDelimitersCorrectly() throws Exception {
+        assertThat(percentEncodableDelimitedValue('&', percentEncodableString(". ./.&."), percentEncodableString(". ./.&.")).encode(PERCENT_ENCODER), equalTo(".%20.%2F.%26." + "&" + ".%20.%2F.%26."));
+    }
+
+    @Test
+    public void percentEncodableDelimitedValueIdentifiesEmptinessCorrectly() throws Exception {
+        char delimiter = 'a';
+        assertThat(percentEncodableDelimitedValue(delimiter, aPercentEncodableString(), aPercentEncodableString()).isEmpty(), equalTo(false));
+        assertThat(percentEncodableDelimitedValue(delimiter).isEmpty(), equalTo(true));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForPercentEncodableDelimitedValue() throws Exception {
+        assertThrowsNullPointerException("Null value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                PercentEncodable value = null;
+                percentEncodableDelimitedValue('a', value);
+            }
+        });
+        assertThrowsNullPointerException("Null value array should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                PercentEncodable[] values = null;
+                percentEncodableDelimitedValue('a', values);
+            }
+        });
+    }
+
+    @Test
+    public void percentEncodableDelimitedValueHasImmutableVarargs() throws Exception {
+        char delimiter = 'a';
+        PercentEncodable firstPercentEncodable = aPercentEncodableString();
+        PercentEncodable secondPercentEncodable = aPercentEncodableString();
+        PercentEncodable[] values = new PercentEncodable[]{firstPercentEncodable, secondPercentEncodable};
+        PercentEncodable percentEncodable = percentEncodableDelimitedValue(delimiter, values);
+        values[0] = aPercentEncodableString();
+        assertThat(percentEncodable, equalTo(percentEncodableDelimitedValue(delimiter, firstPercentEncodable, secondPercentEncodable)));
+    }
 }
