@@ -10,18 +10,18 @@
 
 package net.sourceforge.urin;
 
-abstract class PercentEncodedStringValue extends StringValue {
+import org.junit.Test;
 
-    private final PercentEncoder percentEncoder;
+import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 
-    PercentEncodedStringValue(final String value, final PercentEncoder percentEncoder) {
-        super(value);
-        this.percentEncoder = percentEncoder;
+public class UnaryStringValueTest {
+    @Test
+    public void valueCannotBeNull() throws Exception {
+        assertThrowsNullPointerException("Null value should throw NullPointerException in constructor", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                new UnaryStringValue(null) {
+                };
+            }
+        });
     }
-
-    @Override
-    final String asString() {
-        return percentEncoder.encode(value);
-    }
-
 }

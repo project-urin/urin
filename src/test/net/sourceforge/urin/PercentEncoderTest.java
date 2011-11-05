@@ -12,7 +12,7 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -30,5 +30,12 @@ public class PercentEncoderTest {
     @Test
     public void handlesControlCharacters() throws Exception {
         assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("\t"), equalTo("%09"));
+    }
+
+    @Test
+    public void canEncodeAdditionalCharacters() throws Exception {
+        PercentEncoder aPercentEncoder = new PercentEncoder(or(singleMemberCharacterSet('B'), singleMemberCharacterSet('C')));
+        assertThat(aPercentEncoder.encode("ABC"), equalTo("%41BC"));
+        assertThat(aPercentEncoder.additionallyEncoding('B').encode("ABC"), equalTo("%41%42C"));
     }
 }

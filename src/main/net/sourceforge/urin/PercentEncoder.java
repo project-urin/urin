@@ -21,6 +21,10 @@ final class PercentEncoder {
         this.nonPercentEncodedCharacterSet = nonPercentEncodedCharacterSet;
     }
 
+    PercentEncoder additionallyEncoding(final char additionallyEncodedCharacter) {
+        return new PercentEncoder(nonPercentEncodedCharacterSet.remove(additionallyEncodedCharacter));
+    }
+
     String encode(final String notEncoded) {
         StringBuilder result = new StringBuilder();
         for (byte character : notEncoded.getBytes(Charset.forName("UTF-8"))) {

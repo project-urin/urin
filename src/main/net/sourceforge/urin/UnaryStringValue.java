@@ -10,40 +10,18 @@
 
 package net.sourceforge.urin;
 
-abstract class StringValue {
-    final String value;
-
-    StringValue(final String value) {
-        if (value == null) {
-            throw new NullPointerException("value cannot be null");
-        }
-        this.value = value;
+abstract class UnaryStringValue extends UnaryValue<String> {
+    UnaryStringValue(final String value) {
+        super(value);
     }
 
+    @Override
     String asString() {
         return value;
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        StringValue that = (StringValue) o;
-        return value.equals(that.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public final String toString() {
-        return getClass().getSimpleName() + "{value='" + value + "'}";
-    }
-
-    final boolean isEmpty() {
+    boolean isEmpty() {
         return value.isEmpty();
     }
 }

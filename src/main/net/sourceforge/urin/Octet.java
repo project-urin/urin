@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-public final class Octet extends StringValue {
+public final class Octet extends UnaryStringValue {
 
     private Octet(final String octet) {
         super(octet);

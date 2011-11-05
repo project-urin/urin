@@ -13,6 +13,8 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.DIGIT;
+import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
+import static net.sourceforge.urin.Port.port;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -20,23 +22,23 @@ import static org.junit.Assert.fail;
 public class PortTest {
     @Test
     public void allowsFullRangeOfValidCharacters() throws Exception {
-        Port.port(DIGIT);
+        port(DIGIT);
     }
 
     @Test
     public void asStringReturnsGivenPort() throws Exception {
-        assertThat(Port.port("123").asString(), equalTo("123"));
+        assertThat(port("123").asString(), equalTo("123"));
     }
 
     @Test
     public void canMakeAPortUsingAPositiveInt() throws Exception {
-        assertThat(Port.port(123).asString(), equalTo("123"));
+        assertThat(port(123).asString(), equalTo("123"));
     }
 
     @Test
     public void cannotMakeAPortUsingANegativeInt() throws Exception {
         try {
-            Port.port(-123).asString();
+            port(-123).asString();
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [-123]"));
@@ -45,46 +47,45 @@ public class PortTest {
 
     @Test
     public void normalisesLeadingZerosOnPort() throws Exception {
-        assertThat(Port.port("01").asString(), equalTo("1"));
+        assertThat(port("01").asString(), equalTo("1"));
     }
 
     @Test
     public void rejectsNullPort() throws Exception {
-        try {
-            //noinspection NullableProblems
-            Port.port(null);
-            fail("Expected a NullPointerException to be thrown");
-        } catch (NullPointerException e) {
-            // expect to end up here
-        }
+        assertThrowsNullPointerException("Null value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                port(null);
+            }
+        });
     }
 
     @Test
     public void zeroLengthStringPortKnowsItIsEmpty() throws Exception {
-        assertThat(Port.port("").isEmpty(), equalTo(true));
+        assertThat(port("").isEmpty(), equalTo(true));
     }
 
     @Test
     public void nonZeroLengthStringPortKnowsItIsNotEmpty() throws Exception {
-        assertThat(Port.port("0").isEmpty(), equalTo(false));
+        assertThat(port("0").isEmpty(), equalTo(false));
     }
 
     @Test
     public void rejectsInvalidCharacters() throws Exception {
         try {
-            Port.port("a");
+            port("a");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [a]"));
         }
         try {
-            Port.port("/");
+            port("/");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [/]"));
         }
         try {
-            Port.port(":");
+            port(":");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [:]"));

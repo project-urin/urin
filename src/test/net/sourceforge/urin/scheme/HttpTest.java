@@ -103,8 +103,14 @@ public class HttpTest {
 
     @Test
     @Ignore
-    public void queryParametersCorrectlyConvertsToQuery() throws Exception {
-        assertThat(queryParameters(queryParameter("+&; ", "+&; "), queryParameter("+&; ", "+&; ")), convertsToQueryString(equalTo("blah")));
+    public void multipleQueryParametersCorrectlyConvertsToQuery() throws Exception {
+        assertThat(queryParameters(queryParameter(".+.&.;.=. .", ".+.&.;.=. ."), queryParameter(".+.&.;.=. .", ".+.&.;.=. .")), convertsToQueryString(equalTo(".%2C.%26.%3B.%3D.+.=.%2C.%26.%3B.%3D.+.&.%2C.%26.%3B.%3D.+.=.%2C.%26.%3B.%3D.+.")));
+    }
+
+    @Test
+    @Ignore
+    public void singleQueryParameterCorrectlyConvertsToQuery() throws Exception {
+        assertThat(queryParameters(queryParameter(".+.&.;.=. .", ".+.&.;.=. .")), convertsToQueryString(equalTo(".%2C.%26.%3B.%3D.+.=.%2C.%26.%3B.%3D.+.&.%2C.%26.%3B.%3D.+.=.%2C.%26.%3B.%3D.+.")));
     }
 
 }

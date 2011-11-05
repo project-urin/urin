@@ -14,7 +14,7 @@ import java.math.BigInteger;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.DIGIT;
 
-public final class Port extends StringValue {
+public final class Port extends UnaryStringValue {
 
     private Port(final String port) {
         super(port);

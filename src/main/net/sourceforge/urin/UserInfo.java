@@ -11,8 +11,9 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
+import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 
-public final class UserInfo extends PercentEncodedStringValue {
+public final class UserInfo extends PercentEncodedUnaryValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(or(
             UNRESERVED,
@@ -21,7 +22,7 @@ public final class UserInfo extends PercentEncodedStringValue {
     ));
 
     private UserInfo(final String userInfo) {
-        super(userInfo, PERCENT_ENCODER);
+        super(percentEncodableString(userInfo), PERCENT_ENCODER);
     }
 
     public static UserInfo userInfo(final String userInfo) {

@@ -169,4 +169,18 @@ abstract class CharacterSetMembershipFunction {
     abstract boolean isMember(char character);
 
     abstract String describe();
+
+    CharacterSetMembershipFunction remove(final char excludedCharacter) {
+        return new CharacterSetMembershipFunction() {
+            @Override
+            boolean isMember(final char character) {
+                return character != excludedCharacter && CharacterSetMembershipFunction.this.isMember(character);
+            }
+
+            @Override
+            String describe() {
+                return "not " + Character.toString(excludedCharacter) + " and " + CharacterSetMembershipFunction.this.describe();
+            }
+        };
+    }
 }

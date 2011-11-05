@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-public final class Hexadectet extends StringValue {
+public final class Hexadectet extends UnaryStringValue {
 
     public static final Hexadectet ZERO = hexadectet(0x0);
 

@@ -13,6 +13,7 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
+import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -25,36 +26,37 @@ public class PercentEncodedStringValueTest {
     @Test
     public void twoSingleEncodedValuesOfTheSameClassWithTheSameValueAreEqual() throws Exception {
         String aString = randomAlphanumeric(5);
-        assertThat(testSingleEncodedValue(aString), equalTo(testSingleEncodedValue(aString)));
-        assertThat(testSingleEncodedValue(aString).hashCode(), equalTo(testSingleEncodedValue(aString).hashCode()));
+        assertThat(testSingleEncodedValue(percentEncodableString(aString)), equalTo(testSingleEncodedValue(percentEncodableString(aString))));
+        assertThat(testSingleEncodedValue(percentEncodableString(aString)).hashCode(), equalTo(testSingleEncodedValue(percentEncodableString(aString)).hashCode()));
     }
 
     @Test
     public void twoSingleEncodedValuesOfTheSameClassWithDifferentValuesAreNotEqual() throws Exception {
-        assertThat(testSingleEncodedValue(randomAlphanumeric(5)), not(equalTo(testSingleEncodedValue(randomAlphanumeric(5)))));
+        assertThat(testSingleEncodedValue(percentEncodableString(randomAlphanumeric(5))), not(equalTo(testSingleEncodedValue(percentEncodableString(randomAlphanumeric(5))))));
     }
 
     @Test
-    public void twoSingleEncodedValuesOfDifferentClassesWithTheSameValueAreEqual() throws Exception {
+    public void twoSingleEncodedValuesOfDifferentClassesWithTheSameValueAreNotEqual() throws Exception {
         String aString = randomAlphanumeric(5);
-        PercentEncodedStringValue expected = new PercentEncodedStringValue(aString, PERCENT_ENCODER) {
+        PercentEncodedUnaryValue expected = new PercentEncodedUnaryValue(percentEncodableString(aString), PERCENT_ENCODER) {
         };
-        assertThat(testSingleEncodedValue(aString), not(equalTo(expected)));
+        assertThat(testSingleEncodedValue(percentEncodableString(aString)), not(equalTo(expected)));
     }
 
     @Test
     public void toStringFormatIsCorrect() throws Exception {
-        String aString = randomAlphanumeric(5);
-        assertThat(testSingleEncodedValue(aString).toString(), equalTo("TestPercentEncodedStringValue{value='" + aString + "'}"));
+        PercentEncodable value = percentEncodableString(randomAlphanumeric(5));
+        assertThat(testSingleEncodedValue(value).toString(), equalTo("TestPercentEncodedUnaryValue{value='" + value + "'}"));
     }
 
-    static PercentEncodedStringValue testSingleEncodedValue(final String content) {
-        return new TestPercentEncodedStringValue(content);
+    static PercentEncodedUnaryValue testSingleEncodedValue(final PercentEncodable value) {
+        return new TestPercentEncodedUnaryValue(value);
     }
 
-    private static class TestPercentEncodedStringValue extends PercentEncodedStringValue {
-        private TestPercentEncodedStringValue(final String content) {
-            super(content, PERCENT_ENCODER);
+    private static class TestPercentEncodedUnaryValue extends PercentEncodedUnaryValue {
+        private TestPercentEncodedUnaryValue(final PercentEncodable value) {
+            super(value, PERCENT_ENCODER);
         }
     }
+
 }

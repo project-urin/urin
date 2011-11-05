@@ -12,6 +12,9 @@ package net.sourceforge.urin.scheme;
 
 import net.sourceforge.urin.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
@@ -61,7 +64,7 @@ public class Http {
     }
 
     public static QueryParameter queryParameter(final String name, final String value) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return new QueryParameter(name, value);
     }
 
     public static QueryParameters queryParameters(final QueryParameter... queryParameters) {
@@ -69,15 +72,42 @@ public class Http {
     }
 
     public static QueryParameters queryParameters(final Iterable<QueryParameter> queryParameters) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return new QueryParameters(queryParameters);
     }
 
     public static final class QueryParameter {
+        private final String name;
+        private final String value;
+
+        QueryParameter(final String name, final String value) {
+            //To change body of created methods use File | Settings | File Templates.
+            this.name = name;
+            this.value = value;
+        }
     }
 
     public static final class QueryParameters {
+
+        private final Iterable<QueryParameter> queryParameters;
+
+        public QueryParameters(final Iterable<QueryParameter> queryParameters) {
+            this.queryParameters = new ArrayList<QueryParameter>() {{
+                for (QueryParameter queryParameter : queryParameters) {
+                    add(queryParameter);
+                }
+            }};
+        }
+
         private Query asQuery() {
-            return null;  //To change body of created methods use File | Settings | File Templates.
+            final StringBuilder queryString = new StringBuilder();
+            Iterator<QueryParameter> iterator = queryParameters.iterator();
+            while (iterator.hasNext()) {
+                queryString.append(iterator.next());
+                if (iterator.hasNext()) {
+                    queryString.append('&');
+                }
+            }
+            return Query.query(queryString.toString());
         }
     }
 }

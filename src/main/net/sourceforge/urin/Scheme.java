@@ -13,7 +13,7 @@ package net.sourceforge.urin;
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
-public final class Scheme extends StringValue {
+public final class Scheme extends UnaryStringValue {
 
     private static final CharacterSetMembershipFunction TRAILING_CHARACTER_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,

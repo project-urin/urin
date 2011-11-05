@@ -11,13 +11,14 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
+import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 
-public final class Segment extends PercentEncodedStringValue {
+public final class Segment extends PercentEncodedUnaryValue {
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
     public static final Segment EMPTY = segment("");
 
     private Segment(final String segment) {
-        super(segment, PERCENT_ENCODER);
+        super(percentEncodableString(segment), PERCENT_ENCODER);
     }
 
     public static Segment segment(final String segment) {

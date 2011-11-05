@@ -11,13 +11,14 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS;
+import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 
-public final class Fragment extends PercentEncodedStringValue {
+public final class Fragment extends PercentEncodedUnaryValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
 
     private Fragment(final String fragment) {
-        super(fragment, PERCENT_ENCODER);
+        super(percentEncodableString(fragment), PERCENT_ENCODER);
     }
 
     public static Fragment fragment(final String fragment) {
