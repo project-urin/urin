@@ -15,6 +15,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 public abstract class PercentEncodable {
 
     private PercentEncodable() {
@@ -30,6 +32,10 @@ public abstract class PercentEncodable {
     }
 
     public static PercentEncodable percentEncodableDelimitedValue(final char delimiter, final PercentEncodable... values) {
+        return percentEncodableDelimitedValue(delimiter, asList(values));
+    }
+
+    public static PercentEncodable percentEncodableDelimitedValue(final char delimiter, final Collection<PercentEncodable> values) {
         return new PercentEncodableDelimitedValue(delimiter, values);
     }
 
@@ -79,8 +85,8 @@ public abstract class PercentEncodable {
         private final char delimiter;
         private final Collection<PercentEncodable> values;
 
-        PercentEncodableDelimitedValue(final char delimiter, final PercentEncodable... values) {
-            final List<PercentEncodable> percentEncodableList = new ArrayList<PercentEncodable>(values.length);
+        PercentEncodableDelimitedValue(final char delimiter, final Collection<PercentEncodable> values) {
+            final List<PercentEncodable> percentEncodableList = new ArrayList<PercentEncodable>(values.size());
             for (PercentEncodable value : values) {
                 if (value == null) {
                     throw new NullPointerException("Cannot instantiate PercentEncodable with null value");
@@ -93,10 +99,11 @@ public abstract class PercentEncodable {
 
         @Override
         String encode(final PercentEncoder encoder) {
+            PercentEncoder subEncoder = encoder.additionallyEncoding(delimiter);
             Iterator<PercentEncodable> percentEncodableIterator = values.iterator();
             final StringBuilder result = new StringBuilder();
             while (percentEncodableIterator.hasNext()) {
-                result.append(percentEncodableIterator.next().encode(encoder));
+                result.append(percentEncodableIterator.next().encode(subEncoder));
                 if (percentEncodableIterator.hasNext()) {
                     result.append(delimiter);
                 }

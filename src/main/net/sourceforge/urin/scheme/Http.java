@@ -13,12 +13,16 @@ package net.sourceforge.urin.scheme;
 import net.sourceforge.urin.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
+import static net.sourceforge.urin.PercentEncodable.percentEncodableDelimitedValue;
+import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 import static net.sourceforge.urin.Port.port;
+import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Urin.urin;
 
@@ -80,7 +84,6 @@ public class Http {
         private final String value;
 
         QueryParameter(final String name, final String value) {
-            //To change body of created methods use File | Settings | File Templates.
             this.name = name;
             this.value = value;
         }
@@ -88,7 +91,7 @@ public class Http {
 
     public static final class QueryParameters {
 
-        private final Iterable<QueryParameter> queryParameters;
+        private final Collection<QueryParameter> queryParameters;
 
         public QueryParameters(final Iterable<QueryParameter> queryParameters) {
             this.queryParameters = new ArrayList<QueryParameter>() {{
@@ -99,15 +102,11 @@ public class Http {
         }
 
         private Query asQuery() {
-            final StringBuilder queryString = new StringBuilder();
-            Iterator<QueryParameter> iterator = queryParameters.iterator();
-            while (iterator.hasNext()) {
-                queryString.append(iterator.next());
-                if (iterator.hasNext()) {
-                    queryString.append('&');
-                }
+            List<PercentEncodable> percentEncodables = new ArrayList<PercentEncodable>(queryParameters.size());
+            for (QueryParameter queryParameter : queryParameters) {
+                percentEncodables.add(PercentEncodable.percentEncodableDelimitedValue('=', percentEncodableString(queryParameter.name), percentEncodableString(queryParameter.value)));
             }
-            return Query.query(queryString.toString());
+            return query(percentEncodableDelimitedValue(';', percentEncodableDelimitedValue('&', percentEncodables)));
         }
     }
 }

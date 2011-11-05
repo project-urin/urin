@@ -17,11 +17,15 @@ public final class Query extends PercentEncodedUnaryValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
 
-    private Query(final String query) {
-        super(percentEncodableString(query), PERCENT_ENCODER);
+    private Query(final PercentEncodable value) {
+        super(value, PERCENT_ENCODER);
     }
 
     public static Query query(final String query) {
+        return new Query(percentEncodableString(query));
+    }
+
+    public static Query query(final PercentEncodable query) {
         return new Query(query);
     }
 }

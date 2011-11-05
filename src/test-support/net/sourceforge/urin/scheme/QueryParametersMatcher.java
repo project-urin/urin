@@ -15,7 +15,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static net.sourceforge.urin.HostBuilder.aHost;
+import static net.sourceforge.urin.HostBuilder.anIpV4Address;
 import static net.sourceforge.urin.scheme.Http.http;
 
 public class QueryParametersMatcher {
@@ -23,7 +23,7 @@ public class QueryParametersMatcher {
         return new TypeSafeDiagnosingMatcher<Http.QueryParameters>() {
             @Override
             protected boolean matchesSafely(final Http.QueryParameters queryParameters, final Description description) {
-                String rawQuery = http(aHost(), Segments.segments(), queryParameters).asUri().getRawQuery();
+                String rawQuery = http(anIpV4Address(), Segments.segments(), queryParameters).asUri().getRawQuery();
                 boolean matches = expected.matches(rawQuery);
                 if (!matches) {
                     description.appendText("got a QueryParameters that as uri String is ").appendValue(rawQuery);

@@ -14,7 +14,6 @@ import net.sourceforge.urin.Host;
 import net.sourceforge.urin.Port;
 import net.sourceforge.urin.Query;
 import net.sourceforge.urin.Segments;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Authority.authority;
@@ -102,13 +101,11 @@ public class HttpTest {
     }
 
     @Test
-    @Ignore
     public void multipleQueryParametersCorrectlyConvertsToQuery() throws Exception {
         assertThat(queryParameters(queryParameter(".+.&.;.=. .", ".+.&.;.=. ."), queryParameter(".+.&.;.=. .", ".+.&.;.=. .")), convertsToQueryString(equalTo(".%2C.%26.%3B.%3D.+.=.%2C.%26.%3B.%3D.+.&.%2C.%26.%3B.%3D.+.=.%2C.%26.%3B.%3D.+.")));
     }
 
     @Test
-    @Ignore
     public void singleQueryParameterCorrectlyConvertsToQuery() throws Exception {
         assertThat(queryParameters(queryParameter(".+.&.;.=. .", ".+.&.;.=. .")), convertsToQueryString(equalTo(".%2C.%26.%3B.%3D.+.=.%2C.%26.%3B.%3D.+.&.%2C.%26.%3B.%3D.+.=.%2C.%26.%3B.%3D.+.")));
     }
