@@ -31,6 +31,10 @@ public abstract class PercentEncodable {
         return new PercentEncodableString(value);
     }
 
+    public static PercentEncodable percentEncodableSubstitutedValue(final char original, final char replacement, final String value) {
+        return new PercentEncodableSubstitutedValue(original, replacement, value);
+    }
+
     public static PercentEncodable percentEncodableDelimitedValue(final char delimiter, final PercentEncodable... values) {
         return percentEncodableDelimitedValue(delimiter, asList(values));
     }
@@ -137,6 +141,48 @@ public abstract class PercentEncodable {
             return "PercentEncodable{" +
                     "delimiter=" + delimiter +
                     ", values=" + values +
+                    '}';
+        }
+    }
+
+    private static class PercentEncodableSubstitutedValue extends PercentEncodable {
+        private final char original;
+        private final char replacement;
+        private final String value;
+
+        public PercentEncodableSubstitutedValue(final char original, final char replacement, final String value) {
+            this.original = original;
+            this.replacement = replacement;
+            if (value == null) {
+                throw new NullPointerException("Cannot instantiate PercentEncodable with null value");
+            }
+            this.value = value;
+        }
+
+        @Override
+        String encode(final PercentEncoder encoder) {
+            StringBuilder result = new StringBuilder();
+            Iterator<String> valuePartsIterator = asList(value.split(Character.toString(original))).iterator();
+            while (valuePartsIterator.hasNext()) {
+                result.append(encoder.additionallyEncoding(original).encode(valuePartsIterator.next()));
+                if (valuePartsIterator.hasNext()) {
+                    result.append(replacement);
+                }
+            }
+            return result.toString();
+        }
+
+        @Override
+        boolean isEmpty() {
+            return value.isEmpty();
+        }
+
+        @Override
+        public String toString() {
+            return "PercentEncodable{" +
+                    "original=" + original +
+                    ", replacement=" + replacement +
+                    ", value='" + value + '\'' +
                     '}';
         }
     }
