@@ -20,7 +20,7 @@ import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
 import static net.sourceforge.urin.PercentEncodable.percentEncodableDelimitedValue;
-import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
+import static net.sourceforge.urin.PercentEncodable.percentEncodableSubstitutedValue;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Scheme.scheme;
@@ -104,7 +104,7 @@ public class Http {
         private Query asQuery() {
             List<PercentEncodable> percentEncodables = new ArrayList<PercentEncodable>(queryParameters.size());
             for (QueryParameter queryParameter : queryParameters) {
-                percentEncodables.add(PercentEncodable.percentEncodableDelimitedValue('=', percentEncodableString(queryParameter.name), percentEncodableString(queryParameter.value)));
+                percentEncodables.add(PercentEncodable.percentEncodableDelimitedValue('=', percentEncodableSubstitutedValue(' ', '+', queryParameter.name), percentEncodableSubstitutedValue(' ', '+', queryParameter.value)));
             }
             return query(percentEncodableDelimitedValue(';', percentEncodableDelimitedValue('&', percentEncodables)));
         }

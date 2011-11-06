@@ -146,13 +146,13 @@ public abstract class PercentEncodable {
     }
 
     private static class PercentEncodableSubstitutedValue extends PercentEncodable {
-        private final char original;
-        private final char replacement;
+        private final char originalCharacter;
+        private final char replacementCharacter;
         private final String value;
 
-        public PercentEncodableSubstitutedValue(final char original, final char replacement, final String value) {
-            this.original = original;
-            this.replacement = replacement;
+        public PercentEncodableSubstitutedValue(final char originalCharacter, final char replacementCharacter, final String value) {
+            this.originalCharacter = originalCharacter;
+            this.replacementCharacter = replacementCharacter;
             if (value == null) {
                 throw new NullPointerException("Cannot instantiate PercentEncodable with null value");
             }
@@ -162,11 +162,11 @@ public abstract class PercentEncodable {
         @Override
         String encode(final PercentEncoder encoder) {
             StringBuilder result = new StringBuilder();
-            Iterator<String> valuePartsIterator = asList(value.split(Character.toString(original))).iterator();
+            Iterator<String> valuePartsIterator = asList(value.split(Character.toString(originalCharacter))).iterator();
             while (valuePartsIterator.hasNext()) {
-                result.append(encoder.additionallyEncoding(original).encode(valuePartsIterator.next()));
+                result.append(encoder.additionallyEncoding(replacementCharacter).encode(valuePartsIterator.next()));
                 if (valuePartsIterator.hasNext()) {
-                    result.append(replacement);
+                    result.append(replacementCharacter);
                 }
             }
             return result.toString();
@@ -178,10 +178,29 @@ public abstract class PercentEncodable {
         }
 
         @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            PercentEncodableSubstitutedValue that = (PercentEncodableSubstitutedValue) o;
+            return originalCharacter == that.originalCharacter
+                    && replacementCharacter == that.replacementCharacter
+                    && value.equals(that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = (int) originalCharacter;
+            result = 31 * result + (int) replacementCharacter;
+            result = 31 * result + value.hashCode();
+            return result;
+        }
+
+        @Override
         public String toString() {
             return "PercentEncodable{" +
-                    "original=" + original +
-                    ", replacement=" + replacement +
+                    "originalCharacter=" + originalCharacter +
+                    ", replacementCharacter=" + replacementCharacter +
                     ", value='" + value + '\'' +
                     '}';
         }

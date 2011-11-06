@@ -154,7 +154,7 @@ public class PercentEncodableTest {
         char originalCharacter = 'a';
         char replacementCharacter = 'b';
         String value = randomAscii(5);
-        assertThat(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value).toString(), equalTo("PercentEncodable{originalCharacter=" + originalCharacter + ", replacementCharacter=" + replacementCharacter + "value=" + value + "}"));
+        assertThat(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value).toString(), equalTo("PercentEncodable{originalCharacter=" + originalCharacter + ", replacementCharacter=" + replacementCharacter + ", value='" + value + "'}"));
     }
 
     @Test
