@@ -83,7 +83,7 @@ public class Http {
         private final String name;
         private final String value;
 
-        QueryParameter(final String name, final String value) {
+        public QueryParameter(final String name, final String value) {
             this.name = name;
             this.value = value;
         }
