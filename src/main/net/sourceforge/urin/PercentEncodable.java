@@ -162,9 +162,10 @@ public abstract class PercentEncodable {
         @Override
         String encode(final PercentEncoder encoder) {
             StringBuilder result = new StringBuilder();
+            PercentEncoder modifiedPercentEncoder = encoder.additionallyEncoding(replacementCharacter);
             Iterator<String> valuePartsIterator = asList(value.split(Character.toString(originalCharacter))).iterator();
             while (valuePartsIterator.hasNext()) {
-                result.append(encoder.additionallyEncoding(replacementCharacter).encode(valuePartsIterator.next()));
+                result.append(modifiedPercentEncoder.encode(valuePartsIterator.next()));
                 if (valuePartsIterator.hasNext()) {
                     result.append(replacementCharacter);
                 }

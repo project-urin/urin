@@ -110,4 +110,73 @@ public class HttpTest {
         assertThat(queryParameters(queryParameter(".+.&.;.=. .", ".+.&.;.=. .")), convertsToQueryString(equalTo(".%2B.%26.%3B.%3D.+.=.%2B.%26.%3B.%3D.+.")));
     }
 
+    @Test
+    public void httpsWithNoPathProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        assertThat(https(host), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host)))));
+    }
+
+    @Test
+    public void httpsWithPortButNoPathProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = aPortDifferentTo(port(443));
+        assertThat(https(host, port), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port)))));
+    }
+
+    @Test
+    public void port443IsNormalisedAway() throws Exception {
+        Host host = aHost();
+        Port port = port(443);
+        assertThat(https(host, port), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host)))));
+    }
+
+    @Test
+    public void httpsWithPathButNoPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Segments segments = aSegments();
+        assertThat(https(host, segments), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments))));
+    }
+
+    @Test
+    public void httpsWithPathAndPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = aPortDifferentTo(port(443));
+        Segments segments = aSegments();
+        assertThat(https(host, port, segments), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port), segments))));
+    }
+
+    @Test
+    public void httpsWithPathButAndDefaultPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = port(443);
+        Segments segments = aSegments();
+        assertThat(https(host, port, segments), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments))));
+    }
+
+    @Test
+    public void httpsWithPathAndQueryButNoPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Segments segments = aSegments();
+        Query query = aQuery();
+        assertThat(https(host, segments, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments), query)));
+    }
+
+    @Test
+    public void httpsWithPathAndQueryAndPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Segments segments = aSegments();
+        Query query = aQuery();
+        Port port = aPortDifferentTo(port(443));
+        assertThat(https(host, port, segments, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port), segments), query)));
+    }
+
+    @Test
+    public void httpsWithPathAndQueryAndDefaultPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Segments segments = aSegments();
+        Query query = aQuery();
+        Port port = port(443);
+        assertThat(https(host, port, segments, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments), query)));
+    }
+
 }
