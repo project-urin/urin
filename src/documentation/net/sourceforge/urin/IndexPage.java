@@ -22,15 +22,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import static net.sourceforge.urin.Authority.authority;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Query.query;
-import static net.sourceforge.urin.Scheme.scheme;
-import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.Segments.segments;
-import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.Http.https;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
 import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Id.id;
@@ -99,7 +95,7 @@ public class IndexPage {
                                                 "currently in initial development.")),
                                         paragraphTag(
                                                 xhtmlText("The latest version of Urin available for download is "),
-                                                anchorTag(xhtmlText(version)).withHref(href(urin(scheme("https"), hierarchicalPartAbsolute(authority(SOURCEFORGE), segment("projects"), segment("urin"), segment("files"), segment("latest"))).asString())),
+                                                anchorTag(xhtmlText(version)).withHref(href(https(SOURCEFORGE, segments("projects", "urin", "files", "latest")).asString())),
                                                 xhtmlText(".  The "),
                                                 anchorTag(xhtmlText("javadoc")).withHref(href("javadoc/")),
                                                 xhtmlText(" is also available online.")
