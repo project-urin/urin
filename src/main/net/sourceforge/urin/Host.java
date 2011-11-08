@@ -47,6 +47,8 @@ public abstract class Host {
 
     abstract String asString();
 
+    public static final Host LOCAL_HOST = registeredName("localhost");
+
     public static Host registeredName(final String registeredName) {
         return new RegisteredName(registeredName);
     }
