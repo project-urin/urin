@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin.scheme;
 
+import net.sourceforge.urin.Query;
 import net.sourceforge.urin.Segments;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -18,21 +19,21 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import static net.sourceforge.urin.HostBuilder.anIpV4Address;
 import static net.sourceforge.urin.scheme.Http.http;
 
-public class QueryParametersMatcher {
-    public static Matcher<Http.QueryParameters> convertsToQueryString(final Matcher<String> expected) {
-        return new TypeSafeDiagnosingMatcher<Http.QueryParameters>() {
+public class QueryMatcher {
+    public static Matcher<Query> convertsToQueryString(final Matcher<String> expected) {
+        return new TypeSafeDiagnosingMatcher<Query>() {
             @Override
-            protected boolean matchesSafely(final Http.QueryParameters queryParameters, final Description description) {
-                String rawQuery = http(anIpV4Address(), Segments.segments(), queryParameters).asUri().getRawQuery();
+            protected boolean matchesSafely(final Query query, final Description description) {
+                String rawQuery = http(anIpV4Address(), Segments.segments(), query).asUri().getRawQuery();
                 boolean matches = expected.matches(rawQuery);
                 if (!matches) {
-                    description.appendText("got a QueryParameters that as uri String is ").appendValue(rawQuery);
+                    description.appendText("got a Query that as uri String is ").appendValue(rawQuery);
                 }
                 return matches;
             }
 
             public void describeTo(final Description description) {
-                description.appendText("a QueryParameters that as a uri String is ").appendDescriptionOf(expected);
+                description.appendText("a Query that as a uri String is ").appendDescriptionOf(expected);
             }
         };
     }

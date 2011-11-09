@@ -26,7 +26,7 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.SegmentsBuilder.aSegments;
 import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.scheme.Http.*;
-import static net.sourceforge.urin.scheme.QueryParametersMatcher.convertsToQueryString;
+import static net.sourceforge.urin.scheme.QueryMatcher.convertsToQueryString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 

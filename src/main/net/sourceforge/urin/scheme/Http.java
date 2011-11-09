@@ -13,7 +13,6 @@ package net.sourceforge.urin.scheme;
 import net.sourceforge.urin.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -53,32 +52,16 @@ public class Http {
         return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authority(host), segments), query);
     }
 
-    public static Urin http(final Host host, final Segments segments, final QueryParameters queryParameters) {
-        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authority(host), segments), queryParameters.asQuery());
-    }
-
     public static Urin http(final Host host, final Port port, final Segments segments, final Query query) {
         return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), segments), query);
-    }
-
-    public static Urin http(final Host host, final Port port, final Segments segments, final QueryParameters queryParameters) {
-        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), segments), queryParameters.asQuery());
     }
 
     public static Urin http(final Host host, final Query query) {
         return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authority(host)), query);
     }
 
-    public static Urin http(final Host host, final QueryParameters queryParameters) {
-        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authority(host)), queryParameters.asQuery());
-    }
-
     public static Urin http(final Host host, final Port port, final Query query) {
         return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT)), query);
-    }
-
-    public static Urin http(final Host host, final Port port, final QueryParameters queryParameters) {
-        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT)), queryParameters.asQuery());
     }
 
     public static Urin https(final Host host) {
@@ -101,32 +84,16 @@ public class Http {
         return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authority(host), segments), query);
     }
 
-    public static Urin https(final Host host, final Segments segments, final QueryParameters queryParameters) {
-        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authority(host), segments), queryParameters.asQuery());
-    }
-
     public static Urin https(final Host host, final Port port, final Segments segments, final Query query) {
         return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), segments), query);
-    }
-
-    public static Urin https(final Host host, final Port port, final Segments segments, final QueryParameters queryParameters) {
-        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), segments), queryParameters.asQuery());
     }
 
     public static Urin https(final Host host, final Query query) {
         return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authority(host)), query);
     }
 
-    public static Urin https(final Host host, final QueryParameters queryParameters) {
-        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authority(host)), queryParameters.asQuery());
-    }
-
     public static Urin https(final Host host, final Port port, final Query query) {
         return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT)), query);
-    }
-
-    public static Urin https(final Host host, final Port port, final QueryParameters queryParameters) {
-        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT)), queryParameters.asQuery());
     }
 
     private static Authority authorityWithNormalisedDefaultPort(final Host host, final Port port, final Port defaultPort) {
@@ -137,12 +104,16 @@ public class Http {
         return new QueryParameter(name, value);
     }
 
-    public static QueryParameters queryParameters(final QueryParameter... queryParameters) {
+    public static Query queryParameters(final QueryParameter... queryParameters) {
         return queryParameters(asList(queryParameters));
     }
 
-    public static QueryParameters queryParameters(final Iterable<QueryParameter> queryParameters) {
-        return new QueryParameters(queryParameters);
+    public static Query queryParameters(final Iterable<QueryParameter> queryParameters) {
+        final List<PercentEncodable> percentEncodables = new ArrayList<PercentEncodable>();
+        for (QueryParameter queryParameter : queryParameters) {
+            percentEncodables.add(PercentEncodable.percentEncodableDelimitedValue('=', percentEncodableSubstitutedValue(' ', '+', queryParameter.name), percentEncodableSubstitutedValue(' ', '+', queryParameter.value)));
+        }
+        return query(percentEncodableDelimitedValue(';', percentEncodableDelimitedValue('&', percentEncodables)));
     }
 
     public static final class QueryParameter {
@@ -155,24 +126,4 @@ public class Http {
         }
     }
 
-    public static final class QueryParameters {
-
-        private final Collection<QueryParameter> queryParameters;
-
-        private QueryParameters(final Iterable<QueryParameter> queryParameters) {
-            this.queryParameters = new ArrayList<QueryParameter>() {{
-                for (QueryParameter queryParameter : queryParameters) {
-                    add(queryParameter);
-                }
-            }};
-        }
-
-        private Query asQuery() {
-            List<PercentEncodable> percentEncodables = new ArrayList<PercentEncodable>(queryParameters.size());
-            for (QueryParameter queryParameter : queryParameters) {
-                percentEncodables.add(PercentEncodable.percentEncodableDelimitedValue('=', percentEncodableSubstitutedValue(' ', '+', queryParameter.name), percentEncodableSubstitutedValue(' ', '+', queryParameter.value)));
-            }
-            return query(percentEncodableDelimitedValue(';', percentEncodableDelimitedValue('&', percentEncodables)));
-        }
-    }
 }
