@@ -32,15 +32,17 @@ public final class Segments {
         return new Segments(asList(segments));
     }
 
-    public static Segments segments(final Collection<Segment> segments) {
+    public static Segments segments(final Iterable<Segment> segments) {
         return new Segments(segments);
     }
 
-    private Segments(final Collection<Segment> segments) {
-        this.segments = new ArrayList<Segment>(segments);
+    private Segments(final Iterable<Segment> segments) {
+        this.segments = new ArrayList<Segment>();
         for (Segment segment : segments) {
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
+            } else {
+                this.segments.add(segment);
             }
         }
     }
