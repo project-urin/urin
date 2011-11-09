@@ -12,6 +12,7 @@ package net.sourceforge.urin.http;
 
 import org.junit.Test;
 
+import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.scheme.Http.*;
@@ -27,5 +28,10 @@ public class HttpExamplesTest {
     @Test
     public void canGenerateAnHttpUriWithQueryParameters() throws Exception {
         assertThat(http(registeredName("urin.sourceforge.net"), segments("javadoc"), queryParameters(queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
+    }
+
+    @Test
+    public void canGenerateAnHttpUriWithAFragment() throws Exception {
+        assertThat(http(registeredName("urin.sourceforge.net"), segments("javadoc"), fragment("the first bit")).asString(), equalTo("http://urin.sourceforge.net/javadoc#the%20first%20bit"));
     }
 }

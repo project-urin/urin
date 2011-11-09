@@ -128,6 +128,38 @@ public class Http {
         return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT)), query);
     }
 
+    public static Urin https(final Host host, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authority(host)), fragment);
+    }
+
+    public static Urin https(final Host host, final Port port, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT)), fragment);
+    }
+
+    public static Urin https(final Host host, final Segments segments, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authority(host), segments), fragment);
+    }
+
+    public static Urin https(final Host host, final Port port, final Segments segments, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), segments), fragment);
+    }
+
+    public static Urin https(final Host host, final Segments segments, final Query query, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authority(host), segments), query, fragment);
+    }
+
+    public static Urin https(final Host host, final Port port, final Segments segments, final Query query, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), segments), query, fragment);
+    }
+
+    public static Urin https(final Host host, final Query query, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authority(host)), query, fragment);
+    }
+
+    public static Urin https(final Host host, final Port port, final Query query, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT)), query, fragment);
+    }
+
     private static Authority authorityWithNormalisedDefaultPort(final Host host, final Port port, final Port defaultPort) {
         return defaultPort.equals(port) ? authority(host) : authority(host, port);
     }
