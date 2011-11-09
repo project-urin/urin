@@ -45,6 +45,21 @@ public class HttpTest {
     }
 
     @Test
+    public void httpWithQueryButNoPathProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Query query = aQuery();
+        assertThat(http(host, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host)), query)));
+    }
+
+    @Test
+    public void httpWithQueryAndPortButNoPathProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = aPortDifferentTo(port(80));
+        Query query = aQuery();
+        assertThat(http(host, port, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port)), query)));
+    }
+
+    @Test
     public void port80IsNormalisedAway() throws Exception {
         Host host = aHost();
         Port port = port(80);
@@ -168,6 +183,21 @@ public class HttpTest {
         Query query = aQuery();
         Port port = aPortDifferentTo(port(443));
         assertThat(https(host, port, segments, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port), segments), query)));
+    }
+
+    @Test
+    public void httpsWithQueryButNoPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Query query = aQuery();
+        assertThat(https(host, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host)), query)));
+    }
+
+    @Test
+    public void httpsWithQueryAndPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Query query = aQuery();
+        Port port = aPortDifferentTo(port(443));
+        assertThat(https(host, port, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port)), query)));
     }
 
     @Test
