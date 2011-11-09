@@ -10,13 +10,11 @@
 
 package net.sourceforge.urin.scheme;
 
-import net.sourceforge.urin.Host;
-import net.sourceforge.urin.Port;
-import net.sourceforge.urin.Query;
-import net.sourceforge.urin.Segments;
+import net.sourceforge.urin.*;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.Port.port;
@@ -113,6 +111,93 @@ public class HttpTest {
         Query query = aQuery();
         Port port = port(80);
         assertThat(http(host, port, segments, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), query)));
+    }
+
+    @Test
+    public void httpWithOnlyFragmentProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Fragment fragment = aFragment();
+        assertThat(http(host, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host)), fragment)));
+    }
+
+    @Test
+    public void httpWithPortAndFragmentButNoPathProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = aPortDifferentTo(port(80));
+        Fragment fragment = aFragment();
+        assertThat(http(host, port, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port)), fragment)));
+    }
+
+    @Test
+    public void httpWithQueryAndFragmentButNoPathProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(http(host, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host)), query, fragment)));
+    }
+
+    @Test
+    public void httpWithQueryAndPortAndFragmentButNoPathProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = aPortDifferentTo(port(80));
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(http(host, port, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port)), query, fragment)));
+    }
+
+    @Test
+    public void httpWithPathAndFragmentButNoPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Segments segments = aSegments();
+        Fragment fragment = aFragment();
+        assertThat(http(host, segments, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), fragment)));
+    }
+
+    @Test
+    public void httpWithPathAndPortAndFragmentProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = aPortDifferentTo(port(80));
+        Segments segments = aSegments();
+        Fragment fragment = aFragment();
+        assertThat(http(host, port, segments, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port), segments), fragment)));
+    }
+
+    @Test
+    public void httpWithPathAndFragmentButAndDefaultPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Port port = port(80);
+        Segments segments = aSegments();
+        Fragment fragment = aFragment();
+        assertThat(http(host, port, segments, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), fragment)));
+    }
+
+    @Test
+    public void httpWithPathAndQueryAndFragmentButNoPortProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Segments segments = aSegments();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(http(host, segments, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), query, fragment)));
+    }
+
+    @Test
+    public void httpWithPathAndQueryAndPortAndFragmentProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Segments segments = aSegments();
+        Query query = aQuery();
+        Port port = aPortDifferentTo(port(80));
+        Fragment fragment = aFragment();
+        assertThat(http(host, port, segments, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port), segments), query, fragment)));
+    }
+
+    @Test
+    public void httpWithPathAndQueryAndDefaultPortAndFragmentProducesCorrectUrin() throws Exception {
+        Host host = aHost();
+        Segments segments = aSegments();
+        Query query = aQuery();
+        Port port = port(80);
+        Fragment fragment = aFragment();
+        assertThat(http(host, port, segments, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), query, fragment)));
     }
 
     @Test

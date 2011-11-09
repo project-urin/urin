@@ -64,6 +64,38 @@ public class Http {
         return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT)), query);
     }
 
+    public static Urin http(final Host host, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authority(host)), fragment);
+    }
+
+    public static Urin http(final Host host, final Port port, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT)), fragment);
+    }
+
+    public static Urin http(final Host host, final Segments segments, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authority(host), segments), fragment);
+    }
+
+    public static Urin http(final Host host, final Port port, final Segments segments, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), segments), fragment);
+    }
+
+    public static Urin http(final Host host, final Segments segments, final Query query, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authority(host), segments), query, fragment);
+    }
+
+    public static Urin http(final Host host, final Port port, final Segments segments, final Query query, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), segments), query, fragment);
+    }
+
+    public static Urin http(final Host host, final Query query, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authority(host)), query, fragment);
+    }
+
+    public static Urin http(final Host host, final Port port, final Query query, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPartAbsolute(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT)), query, fragment);
+    }
+
     public static Urin https(final Host host) {
         return urin(HTTPS_SCHEME, hierarchicalPartAbsolute(authority(host)));
     }

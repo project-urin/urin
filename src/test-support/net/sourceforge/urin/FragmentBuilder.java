@@ -13,7 +13,7 @@ package net.sourceforge.urin;
 import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
 
 public class FragmentBuilder {
-    static Fragment aFragment() {
+    public static Fragment aFragment() {
         return Fragment.fragment(randomAscii(5));
     }
 }
