@@ -31,7 +31,7 @@ public class SegmentsTest {
     }
 
     @Test
-    public void aSegmentsUsingVarargsFactoryIsEqualToWithTheSameMembersMadeUsingCollectionFactory() throws Exception {
+    public void aSegmentsUsingVarargsFactoryIsEqualToWithTheSameMembersMadeUsingIterableFactory() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
         assertThat(segments(firstSegment, secondSegment), equalTo(segments(asList(firstSegment, secondSegment))));
