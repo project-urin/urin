@@ -30,13 +30,18 @@ public class HexadectetTest {
             hexadectet(-0x1);
             fail("Should have thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [-1]"));
+            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [-0x1]"));
         }
         try {
             hexadectet(0x10000);
             fail("Should have thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [65536]"));
+            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [0x10000]"));
         }
+    }
+
+    @Test
+    public void toStringIsCorrect() throws Exception {
+        assertThat(hexadectet(0xFA).toString(), equalTo("Hexadectet{value=0xFA}"));
     }
 }

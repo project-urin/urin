@@ -37,7 +37,7 @@ abstract class UnaryValue<T> {
     }
 
     @Override
-    public final String toString() {
+    public String toString() {
         return getClass().getSimpleName() + "{value='" + value + "'}";
     }
 
