@@ -15,6 +15,7 @@ import org.junit.Test;
 import java.net.URI;
 
 import static net.sourceforge.urin.RelativeReference.relativeReference;
+import static net.sourceforge.urin.Segments.segments;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -22,11 +23,11 @@ public class RelativeReferenceTest {
 
     @Test
     public void relativeReferenceWithNoQueryOrFragmentAsStringIsCorrect() throws Exception {
-        assertThat(relativeReference("").asString(), equalTo(""));
+        assertThat(relativeReference(segments()).asString(), equalTo(""));
     }
 
     @Test
     public void relativeReferenceWithNoQueryOrFragmentAsUriIsCorrect() throws Exception {
-        assertThat(relativeReference("").asUri(), equalTo(URI.create("")));
+        assertThat(relativeReference(segments()).asUri(), equalTo(URI.create("")));
     }
 }

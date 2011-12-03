@@ -13,11 +13,11 @@ package net.sourceforge.urin;
 import java.net.URI;
 
 public abstract class RelativeReference {
-    public static RelativeReference relativeReference(final String path) {
+    public static RelativeReference relativeReference(final Segments segments) {
         return new RelativeReference() {
             @Override
             public String asString() {
-                return path;
+                return segments.asString();
             }
         };
     }
