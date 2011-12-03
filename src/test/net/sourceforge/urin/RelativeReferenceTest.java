@@ -15,6 +15,7 @@ import org.junit.Test;
 import java.net.URI;
 
 import static net.sourceforge.urin.RelativeReference.relativeReference;
+import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.segments;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -29,5 +30,15 @@ public class RelativeReferenceTest {
     @Test
     public void relativeReferenceWithNoQueryOrFragmentAsUriIsCorrect() throws Exception {
         assertThat(relativeReference(segments()).asUri(), equalTo(URI.create("")));
+    }
+
+    @Test
+    public void varargsSegmentsAreImmutable() throws Exception {
+        @SuppressWarnings({"MismatchedReadAndWriteOfArray"})
+        Segment[] segments = new Segment[]{aSegment(), aSegment()};
+        RelativeReference relativeReference = relativeReference(aSegment(), aSegment());
+        String originalRelativeReferenceAsString = relativeReference.asString();
+        segments[0] = aSegment();
+        assertThat(originalRelativeReferenceAsString, equalTo(relativeReference.asString()));
     }
 }

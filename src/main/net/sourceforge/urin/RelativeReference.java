@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import java.net.URI;
 
+import static net.sourceforge.urin.Segments.segments;
+
 public abstract class RelativeReference {
     public static RelativeReference relativeReference(final Segments segments) {
         return new RelativeReference() {
@@ -26,5 +28,9 @@ public abstract class RelativeReference {
 
     public URI asUri() {
         return URI.create(asString());
+    }
+
+    public static RelativeReference relativeReference(final Segment... segments) {
+        return relativeReference(segments(segments));
     }
 }
