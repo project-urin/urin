@@ -10,6 +10,8 @@
 
 package net.sourceforge.urin;
 
+import java.net.URI;
+
 public abstract class RelativeReference {
     public static RelativeReference relativeReference(final String path) {
         return new RelativeReference() {
@@ -21,4 +23,8 @@ public abstract class RelativeReference {
     }
 
     public abstract String asString();
+
+    public URI asUri() {
+        return URI.create(asString());
+    }
 }

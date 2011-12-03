@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import java.net.URI;
+
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -21,5 +23,10 @@ public class RelativeReferenceTest {
     @Test
     public void relativeReferenceWithNoQueryOrFragmentAsStringIsCorrect() throws Exception {
         assertThat(relativeReference("").asString(), equalTo(""));
+    }
+
+    @Test
+    public void relativeReferenceWithNoQueryOrFragmentAsUriIsCorrect() throws Exception {
+        assertThat(relativeReference("").asUri(), equalTo(URI.create("")));
     }
 }
