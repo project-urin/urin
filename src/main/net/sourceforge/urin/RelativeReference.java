@@ -16,19 +16,7 @@ import static net.sourceforge.urin.Segments.segments;
 
 public abstract class RelativeReference {
     public static RelativeReference relativeReference(final Segments segments) {
-        return new RelativeReference() {
-            @Override
-            public String asString() {
-                return segments.asString();
-            }
-
-            @Override
-            public String toString() {
-                return "RelativeReference{" +
-                        "segments=" + segments +
-                        '}';
-            }
-        };
+        return new PathOnlyRelativeReference(segments);
     }
 
     public abstract String asString();
@@ -39,5 +27,41 @@ public abstract class RelativeReference {
 
     public static RelativeReference relativeReference(final Segment... segments) {
         return relativeReference(segments(segments));
+    }
+
+    private static final class PathOnlyRelativeReference extends RelativeReference {
+        private final Segments segments;
+
+        public PathOnlyRelativeReference(final Segments segments) {
+            this.segments = segments;
+        }
+
+        @Override
+        public String asString() {
+            return segments.asString();
+        }
+
+        @Override
+        public String toString() {
+            return "RelativeReference{" +
+                    "segments=" + segments +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            PathOnlyRelativeReference that = (PathOnlyRelativeReference) o;
+
+            return !(segments != null ? !segments.equals(that.segments) : that.segments != null);
+
+        }
+
+        @Override
+        public int hashCode() {
+            return segments != null ? segments.hashCode() : 0;
+        }
     }
 }

@@ -53,4 +53,11 @@ public class RelativeReferenceTest {
         Segments segments = aSegments();
         assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
     }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathIsEqualToAnotherRelativeReferenceWithEmptyPath() throws Exception {
+        assertThat(relativeReference(), equalTo(relativeReference()));
+        assertThat(relativeReference().hashCode(), equalTo(relativeReference().hashCode()));
+    }
+
 }
