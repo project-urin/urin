@@ -33,6 +33,9 @@ public abstract class RelativeReference {
         private final Segments segments;
 
         public PathOnlyRelativeReference(final Segments segments) {
+            if (segments == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null segments");
+            }
             this.segments = segments;
         }
 
@@ -54,14 +57,12 @@ public abstract class RelativeReference {
             if (o == null || getClass() != o.getClass()) return false;
 
             PathOnlyRelativeReference that = (PathOnlyRelativeReference) o;
-
-            return !(segments != null ? !segments.equals(that.segments) : that.segments != null);
-
+            return segments.equals(that.segments);
         }
 
         @Override
         public int hashCode() {
-            return segments != null ? segments.hashCode() : 0;
+            return segments.hashCode();
         }
     }
 }

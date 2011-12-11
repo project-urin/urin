@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.net.URI;
 
+import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.segments;
@@ -31,6 +32,39 @@ public class RelativeReferenceTest {
     @Test
     public void relativeReferenceWithNoQueryOrFragmentAsUriIsCorrect() throws Exception {
         assertThat(relativeReference(segments()).asUri(), equalTo(URI.create("")));
+    }
+
+    @Test
+    public void relativeReferenceRejectsNullSegments() throws Exception {
+        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Segments segments = null;
+                relativeReference(segments);
+            }
+        });
+    }
+
+    @Test
+    public void relativeReferenceRejectsNullFirstSegment() throws Exception {
+        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Segment firstSegment = null;
+                relativeReference(firstSegment, aSegment());
+            }
+        });
+    }
+
+    @Test
+    public void relativeReferenceRejectsNullTrailingSegment() throws Exception {
+        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Segment secondSegmentSegment = null;
+                relativeReference(aSegment(), secondSegmentSegment);
+            }
+        });
     }
 
     @Test
