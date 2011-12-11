@@ -17,6 +17,7 @@ import java.net.URI;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.SegmentsBuilder.aSegments;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -45,5 +46,11 @@ public class RelativeReferenceTest {
     @Test
     public void relativeReferenceWithEmptyPathToStringIsCorrect() throws Exception {
         assertThat(relativeReference().toString(), equalTo("RelativeReference{segments=[]}"));
+    }
+
+    @Test
+    public void relativeReferenceWithPathToStringIsCorrect() throws Exception {
+        Segments segments = aSegments();
+        assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
     }
 }
