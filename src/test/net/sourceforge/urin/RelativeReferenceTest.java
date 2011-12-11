@@ -41,4 +41,9 @@ public class RelativeReferenceTest {
         segments[0] = aSegment();
         assertThat(originalRelativeReferenceAsString, equalTo(relativeReference.asString()));
     }
+
+    @Test
+    public void relativeReferenceWithEmptyPathToStringIsCorrect() throws Exception {
+        assertThat(relativeReference().toString(), equalTo("RelativeReference{segments=[]}"));
+    }
 }

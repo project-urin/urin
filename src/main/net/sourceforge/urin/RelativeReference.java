@@ -21,6 +21,13 @@ public abstract class RelativeReference {
             public String asString() {
                 return segments.asString();
             }
+
+            @Override
+            public String toString() {
+                return "RelativeReference{" +
+                        "segments=" + segments +
+                        '}';
+            }
         };
     }
 
