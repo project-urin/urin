@@ -43,6 +43,8 @@ public abstract class PercentEncodable {
         return new PercentEncodableDelimitedValue(delimiter, values);
     }
 
+    abstract boolean containsColon();
+
     private static final class PercentEncodableString extends PercentEncodable {
         private final String value;
 
@@ -61,6 +63,11 @@ public abstract class PercentEncodable {
         @Override
         boolean isEmpty() {
             return value.isEmpty();
+        }
+
+        @Override
+        boolean containsColon() {
+            return value.indexOf(':') != -1;
         }
 
         @Override
@@ -121,6 +128,16 @@ public abstract class PercentEncodable {
         }
 
         @Override
+        boolean containsColon() {
+            for (final PercentEncodable value : values) {
+                if (value.containsColon()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -176,6 +193,11 @@ public abstract class PercentEncodable {
         @Override
         boolean isEmpty() {
             return value.isEmpty();
+        }
+
+        @Override
+        boolean containsColon() {
+            return value.indexOf(':') != -1;
         }
 
         @Override

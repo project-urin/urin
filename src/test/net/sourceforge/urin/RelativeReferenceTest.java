@@ -126,15 +126,10 @@ public class RelativeReferenceTest {
     }
 
     @Test
-    public void aSimpleRootlessPathRejectsAColonInFirstSegment() throws Exception {
+    public void aSimpleRootlessPathPrependsAColonInFirstSegmentWithDotSlash() throws Exception {
         Segment firstSegment = segment(":");
         Segment secondSegment = aSegment();
-        try {
-            relativeReferenceRootless(firstSegment, secondSegment).asString();
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
-        }
+        assertThat(relativeReferenceRootless(firstSegment, secondSegment), equalTo(relativeReferenceRootless(segment("."), firstSegment, secondSegment)));
     }
 
     @Test

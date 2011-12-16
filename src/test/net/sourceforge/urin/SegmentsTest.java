@@ -76,6 +76,16 @@ public class SegmentsTest {
     }
 
     @Test
+    public void correctlyIdentifiesFirstPartContainingColon() throws Exception {
+        assertThat(segments(segment(":")).firstPartIsSuppliedButContainsColon(), equalTo(true));
+    }
+
+    @Test
+    public void correctlyIdentifiesFirstPartDoesNotContainColon() throws Exception {
+        assertThat(segments(segment("")).firstPartIsSuppliedButContainsColon(), equalTo(false));
+    }
+
+    @Test
     public void addsAnEmptyPartOntoAnEmptySegments() throws Exception {
         assertThat(segments().prefixWithEmptySegment(), equalTo(segments(Segment.EMPTY)));
     }
@@ -84,5 +94,11 @@ public class SegmentsTest {
     public void addsAnEmptyPartOntoANonEmptySegments() throws Exception {
         Segment segment = aSegment();
         assertThat(segments(segment).prefixWithEmptySegment(), equalTo(segments(Segment.EMPTY, segment)));
+    }
+
+    @Test
+    public void addsADotSegmentOntoSegments() throws Exception {
+        Segment segment = aSegment();
+        assertThat(segments(segment).prefixWithDotSegment(), equalTo(segments(segment("."), segment)));
     }
 }

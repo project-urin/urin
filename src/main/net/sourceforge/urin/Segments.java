@@ -13,7 +13,7 @@ package net.sourceforge.urin;
 import java.util.*;
 
 import static java.util.Arrays.asList;
-import static net.sourceforge.urin.Segment.EMPTY;
+import static net.sourceforge.urin.Segment.*;
 
 public final class Segments {
 
@@ -21,9 +21,9 @@ public final class Segments {
 
     public static Segments segments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
-        segmentList.add(Segment.segment(firstSegment));
+        segmentList.add(segment(firstSegment));
         for (String segment : segments) {
-            segmentList.add(Segment.segment(segment));
+            segmentList.add(segment(segment));
         }
         return new Segments(segmentList);
     }
@@ -55,9 +55,19 @@ public final class Segments {
         return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
     }
 
+    boolean firstPartIsSuppliedButContainsColon() {
+        return !segments.isEmpty() && segments.iterator().next().containsColon();
+    }
+
     Segments prefixWithEmptySegment() {
         LinkedList<Segment> newSegments = new LinkedList<Segment>(segments);
         newSegments.offerFirst(EMPTY);
+        return new Segments(newSegments);
+    }
+
+    Segments prefixWithDotSegment() {
+        LinkedList<Segment> newSegments = new LinkedList<Segment>(segments);
+        newSegments.offerFirst(DOT);
         return new Segments(newSegments);
     }
 

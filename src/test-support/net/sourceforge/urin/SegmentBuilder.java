@@ -17,7 +17,4 @@ public class SegmentBuilder {
         return Segment.segment(randomAscii(5));
     }
 
-    public static Segment emptySegment() {
-        return Segment.segment("");
-    }
 }

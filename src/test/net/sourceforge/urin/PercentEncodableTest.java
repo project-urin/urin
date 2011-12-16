@@ -58,6 +58,12 @@ public class PercentEncodableTest {
     }
 
     @Test
+    public void percentEncodableStringIdentifiesColonCorrectly() throws Exception {
+        assertThat(percentEncodableString(":").containsColon(), equalTo(true));
+        assertThat(percentEncodableString(randomAlphanumeric(5)).containsColon(), equalTo(false));
+    }
+
+    @Test
     public void rejectsNullInFactoryForPercentEncodableString() throws Exception {
         assertThrowsNullPointerException("Null value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
@@ -104,6 +110,13 @@ public class PercentEncodableTest {
         char delimiter = 'a';
         assertThat(percentEncodableDelimitedValue(delimiter, aPercentEncodableString(), aPercentEncodableString()).isEmpty(), equalTo(false));
         assertThat(percentEncodableDelimitedValue(delimiter).isEmpty(), equalTo(true));
+    }
+
+    @Test
+    public void percentEncodableDelimitedValueIdentifiesColonCorrectly() throws Exception {
+        char delimiter = 'a';
+        assertThat(percentEncodableDelimitedValue(delimiter, percentEncodableString(":"), aPercentEncodableString()).containsColon(), equalTo(true));
+        assertThat(percentEncodableDelimitedValue(delimiter, aPercentEncodableString(), aPercentEncodableString()).containsColon(), equalTo(false));
     }
 
     @Test
@@ -166,6 +179,12 @@ public class PercentEncodableTest {
     public void percentEncodableSubstitutedValueIdentifiesEmptinessCorrectly() throws Exception {
         assertThat(percentEncodableSubstitutedValue('a', 'A', randomAscii(5)).isEmpty(), equalTo(false));
         assertThat(percentEncodableSubstitutedValue('a', 'A', "").isEmpty(), equalTo(true));
+    }
+
+    @Test
+    public void percentEncodableSubstitutedValueIdentifiesColonCorrectly() throws Exception {
+        assertThat(percentEncodableSubstitutedValue(':', 'A', ":").containsColon(), equalTo(true));
+        assertThat(percentEncodableSubstitutedValue(':', 'A', "b").containsColon(), equalTo(false));
     }
 
     @Test

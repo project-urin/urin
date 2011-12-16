@@ -35,7 +35,8 @@ public abstract class RelativeReference {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
-        return new RelativeReferenceNoAuthority(segments);
+        Segments segmentsWithoutColonInFirstSegment = segments.firstPartIsSuppliedButContainsColon() ? segments.prefixWithDotSegment() : segments;
+        return new RelativeReferenceNoAuthority(segmentsWithoutColonInFirstSegment);
     }
 
     public static RelativeReference relativeReferenceAbsolute(final Segment... segments) {
