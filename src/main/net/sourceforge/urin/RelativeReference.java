@@ -10,29 +10,69 @@
 
 package net.sourceforge.urin;
 
-import java.net.URI;
-
 import static net.sourceforge.urin.Segments.segments;
 
 public abstract class RelativeReference {
-    public static RelativeReference relativeReference(final Segments segments) {
-        return new PathOnlyRelativeReference(segments);
+
+    private RelativeReference() {
     }
 
-    public abstract String asString();
+    abstract String asString();
 
-    public URI asUri() {
-        return URI.create(asString());
+    public static RelativeReference relativeReference() {
+        return new RelativeReferenceNoAuthority(segments());
     }
 
-    public static RelativeReference relativeReference(final Segment... segments) {
-        return relativeReference(segments(segments));
+    public static RelativeReference relativeReference(final Authority authority) {
+        return new RelativeReferenceWithAuthority(authority, segments());
     }
 
-    private static final class PathOnlyRelativeReference extends RelativeReference {
+    public static RelativeReference relativeReferenceRootless(final Segment... segments) {
+        return relativeReferenceRootless(segments(segments));
+    }
+
+    public static RelativeReference relativeReferenceRootless(final Segments segments) {
+        if (segments.firstPartIsSuppliedButIsEmpty()) {
+            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
+        }
+        return new RelativeReferenceNoAuthority(segments);
+    }
+
+    public static RelativeReference relativeReferenceAbsolute(final Segment... segments) {
+        return relativeReferenceAbsolute(segments(segments));
+    }
+
+    public static RelativeReference relativeReferenceAbsolute(final Segments segments) {
+        if (segments.firstPartIsSuppliedButIsEmpty()) {
+            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
+        }
+        final Segments absolutisedSegments;
+        if (segments.isEmpty()) {
+            absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();
+        } else {
+            absolutisedSegments = segments.prefixWithEmptySegment();
+        }
+        return new RelativeReferenceNoAuthority(absolutisedSegments);
+    }
+
+    public static RelativeReference relativeReferenceAbsolute(final Authority authority, final Segment... segments) {
+        return relativeReferenceAbsolute(authority, segments(segments));
+    }
+
+    public static RelativeReference relativeReferenceAbsolute(final Authority authority, final Segments segments) {
+        final Segments absolutisedSegments;
+        if (segments.isEmpty()) {
+            absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();
+        } else {
+            absolutisedSegments = segments.prefixWithEmptySegment();
+        }
+        return new RelativeReferenceWithAuthority(authority, absolutisedSegments);
+    }
+
+    private static final class RelativeReferenceNoAuthority extends RelativeReference {
         private final Segments segments;
 
-        public PathOnlyRelativeReference(final Segments segments) {
+        RelativeReferenceNoAuthority(final Segments segments) {
             if (segments == null) {
                 throw new NullPointerException("Cannot instantiate RelativeReference with null segments");
             }
@@ -40,8 +80,22 @@ public abstract class RelativeReference {
         }
 
         @Override
-        public String asString() {
+        String asString() {
             return segments.asString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            RelativeReferenceNoAuthority that = (RelativeReferenceNoAuthority) o;
+            return segments.equals(that.segments);
+        }
+
+        @Override
+        public int hashCode() {
+            return segments.hashCode();
         }
 
         @Override
@@ -50,19 +104,55 @@ public abstract class RelativeReference {
                     "segments=" + segments +
                     '}';
         }
+    }
+
+    private static final class RelativeReferenceWithAuthority extends RelativeReference {
+        private final Authority authority;
+        private final Segments segments;
+
+        RelativeReferenceWithAuthority(final Authority authority, final Segments segments) {
+            if (authority == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
+            }
+            this.authority = authority;
+            if (segments == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null segments");
+            }
+            this.segments = segments;
+        }
+
+        @Override
+        String asString() {
+            return new StringBuilder("//")
+                    .append(authority.asString())
+                    .append(segments.asString())
+                    .toString();
+        }
 
         @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            PathOnlyRelativeReference that = (PathOnlyRelativeReference) o;
-            return segments.equals(that.segments);
+            RelativeReferenceWithAuthority that = (RelativeReferenceWithAuthority) o;
+            return authority.equals(that.authority)
+                    && segments.equals(that.segments);
         }
 
         @Override
         public int hashCode() {
-            return segments.hashCode();
+            int result = authority.hashCode();
+            result = 31 * result + segments.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "RelativeReference{" +
+                    "authority=" + authority +
+                    ", segments=" + segments +
+                    '}';
         }
     }
+
 }

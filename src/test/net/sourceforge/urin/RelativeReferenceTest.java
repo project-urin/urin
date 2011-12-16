@@ -12,86 +12,245 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import java.net.URI;
-
+import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
-import static net.sourceforge.urin.RelativeReference.relativeReference;
+import static net.sourceforge.urin.RelativeReference.*;
+import static net.sourceforge.urin.Segment.EMPTY;
+import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
-import static net.sourceforge.urin.Segments.segments;
-import static net.sourceforge.urin.SegmentsBuilder.aSegments;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class RelativeReferenceTest {
-
     @Test
-    public void relativeReferenceWithNoQueryOrFragmentAsStringIsCorrect() throws Exception {
-        assertThat(relativeReference(segments()).asString(), equalTo(""));
-    }
-
-    @Test
-    public void relativeReferenceWithNoQueryOrFragmentAsUriIsCorrect() throws Exception {
-        assertThat(relativeReference(segments()).asUri(), equalTo(URI.create("")));
-    }
-
-    @Test
-    public void relativeReferenceRejectsNullSegments() throws Exception {
-        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                Segments segments = null;
-                relativeReference(segments);
-            }
-        });
-    }
-
-    @Test
-    public void relativeReferenceRejectsNullFirstSegment() throws Exception {
-        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                Segment firstSegment = null;
-                relativeReference(firstSegment, aSegment());
-            }
-        });
-    }
-
-    @Test
-    public void relativeReferenceRejectsNullTrailingSegment() throws Exception {
-        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                Segment secondSegmentSegment = null;
-                relativeReference(aSegment(), secondSegmentSegment);
-            }
-        });
-    }
-
-    @Test
-    public void varargsSegmentsAreImmutable() throws Exception {
-        @SuppressWarnings({"MismatchedReadAndWriteOfArray"})
-        Segment[] segments = new Segment[]{aSegment(), aSegment()};
-        RelativeReference relativeReference = relativeReference(aSegment(), aSegment());
-        String originalRelativeReferenceAsString = relativeReference.asString();
-        segments[0] = aSegment();
-        assertThat(originalRelativeReferenceAsString, equalTo(relativeReference.asString()));
-    }
-
-    @Test
-    public void relativeReferenceWithEmptyPathToStringIsCorrect() throws Exception {
-        assertThat(relativeReference().toString(), equalTo("RelativeReference{segments=[]}"));
-    }
-
-    @Test
-    public void relativeReferenceWithPathToStringIsCorrect() throws Exception {
-        Segments segments = aSegments();
-        assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
+    public void aRelativeReferenceWithEmptyPathAsStringIsCorrect() throws Exception {
+        assertThat(relativeReference().asString(), equalTo(""));
     }
 
     @Test
     public void aRelativeReferenceWithEmptyPathIsEqualToAnotherRelativeReferenceWithEmptyPath() throws Exception {
         assertThat(relativeReference(), equalTo(relativeReference()));
         assertThat(relativeReference().hashCode(), equalTo(relativeReference().hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathToStringIsCorrect() throws Exception {
+        assertThat(relativeReference().toString(), equalTo("RelativeReference{segments=[]}"));
+    }
+
+    @Test
+    public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(relativeReferenceAbsolute(firstSegment, secondSegment).asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aSimpleAbsolutePathRejectsAnEmptyFirstSegment() throws Exception {
+        Segment firstSegment = segment("");
+        Segment secondSegment = aSegment();
+        try {
+            relativeReferenceAbsolute(firstSegment, secondSegment).asString();
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
+        }
+    }
+
+    @Test
+    public void rejectsNullInFactoryForASimplePath() throws Exception {
+        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Segment firstSegment = null;
+                relativeReferenceAbsolute(firstSegment, aSegment());
+            }
+        });
+        assertThrowsNullPointerException("Null second segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReferenceAbsolute(aSegment(), null);
+            }
+        });
+    }
+
+    @Test
+    public void aSimpleAbsolutePathIsEqualToAnotherWithTheSamePath() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(relativeReferenceAbsolute(firstSegment, secondSegment), equalTo(relativeReferenceAbsolute(firstSegment, secondSegment)));
+        assertThat(relativeReferenceAbsolute(firstSegment, secondSegment).hashCode(), equalTo(relativeReferenceAbsolute(firstSegment, secondSegment).hashCode()));
+    }
+
+    @Test
+    public void aSimpleAbsolutePathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
+        assertThat(relativeReferenceAbsolute(aSegment(), aSegment()), not(equalTo(relativeReferenceAbsolute(aSegment(), aSegment()))));
+    }
+
+    @Test
+    public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(relativeReferenceAbsolute(firstSegment, secondSegment).toString(), equalTo("RelativeReference{segments=[" + EMPTY + ", " + firstSegment + ", " + secondSegment + "]}"));
+    }
+
+    @Test
+    public void aSimpleRootlessPathAsStringReturnsThePath() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(relativeReferenceRootless(firstSegment, secondSegment).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aSimpleRootlessPathAsStringHasImmutableVarargs() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        Segment[] segments = {firstSegment, secondSegment};
+        RelativeReference relativeReference = relativeReferenceRootless(segments);
+        segments[0] = aSegment();
+        assertThat(relativeReference.asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aSimpleRootlessPathRejectsAnEmptyFirstSegment() throws Exception {
+        Segment firstSegment = segment("");
+        Segment secondSegment = aSegment();
+        try {
+            relativeReferenceRootless(firstSegment, secondSegment).asString();
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (IllegalArgumentException e) {
+            assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
+        }
+    }
+
+    @Test
+    public void aSimpleRootlessPathIsEqualToAnotherWithTheSamePath() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(relativeReferenceRootless(firstSegment, secondSegment), equalTo(relativeReferenceRootless(firstSegment, secondSegment)));
+        assertThat(relativeReferenceRootless(firstSegment, secondSegment).hashCode(), equalTo(relativeReferenceRootless(firstSegment, secondSegment).hashCode()));
+    }
+
+    @Test
+    public void aSimpleRootlessPathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
+        assertThat(relativeReferenceRootless(aSegment(), aSegment()), not(equalTo(relativeReferenceRootless(aSegment(), aSegment()))));
+    }
+
+    @Test
+    public void aSimpleRootlessPathToStringIsCorrect() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(relativeReferenceRootless(firstSegment, secondSegment).toString(), equalTo("RelativeReference{segments=[" + firstSegment + ", " + secondSegment + "]}"));
+    }
+
+    @Test
+    public void aSimpleAbsolutePathAsStringHasImmutableVarargs() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        Segment[] segments = {firstSegment, secondSegment};
+        RelativeReference relativeReference = relativeReferenceAbsolute(segments);
+        segments[0] = aSegment();
+        assertThat(relativeReference.asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void makesRelativeReferenceWithAuthorityAndEmptyPath() throws Exception {
+        Authority authority = anAuthority();
+        assertThat(relativeReference(authority).asString(), equalTo("//" + authority.asString()));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndEmptyPath() throws Exception {
+        assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference(null);
+            }
+        });
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndEmptyPathIsEqualToAnotherWithTheSameAuthority() throws Exception {
+        Authority authority = anAuthority();
+        assertThat(relativeReference(authority), equalTo(relativeReference(authority)));
+        assertThat(relativeReference(authority).hashCode(), equalTo(relativeReference(authority).hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndEmptyPathIsNotEqualToAnotherWithTheADifferentAuthority() throws Exception {
+        assertThat(relativeReference(anAuthority()), not(equalTo(relativeReference(anAuthority()))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndEmptyPathToStringIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        assertThat(relativeReference(authority).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=[]}"));
+    }
+
+    @Test
+    public void makesRelativeReferenceWithAuthorityAndNonEmptyPath() throws Exception {
+        Authority authority = anAuthority();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndNonEmptyPathHasImmutableVarargs() throws Exception {
+        Authority authority = anAuthority();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        Segment[] segments = {firstSegment, secondSegment};
+        RelativeReference relativeReference = relativeReferenceAbsolute(authority, segments);
+        segments[0] = aSegment();
+        assertThat(relativeReference.asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndPathIsEqualToAnotherWithTheSameAuthorityAndPath() throws Exception {
+        Authority authority = anAuthority();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment), equalTo(relativeReferenceAbsolute(authority, firstSegment, secondSegment)));
+        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment).hashCode(), equalTo(relativeReferenceAbsolute(authority, firstSegment, secondSegment).hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPath() throws Exception {
+        assertThat(relativeReferenceAbsolute(anAuthority(), aSegment(), aSegment()), not(equalTo(relativeReferenceAbsolute(anAuthority(), aSegment(), aSegment()))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndPathToStringIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=[" + Segment.EMPTY + ", " + firstSegment + ", " + secondSegment + "]}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPath() throws Exception {
+        assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Authority authority = null;
+                relativeReferenceAbsolute(authority, aSegment(), aSegment());
+            }
+        });
+        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReferenceAbsolute(anAuthority(), null, aSegment());
+            }
+        });
+        assertThrowsNullPointerException("Null second segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReferenceAbsolute(anAuthority(), aSegment(), null);
+            }
+        });
     }
 
 }
