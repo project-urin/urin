@@ -16,7 +16,7 @@ import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.segments;
-import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
+import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -40,9 +40,9 @@ public class SegmentsTest {
 
     @Test
     public void aSegmentsUsingSegmentVarargsFactoryIsEqualToWithTheSameMembersMadeUsingStringVarargsFactory() throws Exception {
-        String firstSegmentValue = randomAscii(5);
+        String firstSegmentValue = random(5);
         Segment firstSegment = segment(firstSegmentValue);
-        String secondSegmentValue = randomAscii(5);
+        String secondSegmentValue = random(5);
         Segment secondSegment = segment(secondSegmentValue);
         assertThat(segments(firstSegment, secondSegment), equalTo(segments(firstSegmentValue, secondSegmentValue)));
         assertThat(segments(firstSegment, secondSegment).hashCode(), equalTo(segments(firstSegmentValue, secondSegmentValue).hashCode()));

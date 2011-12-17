@@ -12,8 +12,9 @@ package net.sourceforge.urin;
 
 import static org.apache.commons.lang3.RandomStringUtils.random;
 
-public class FragmentBuilder {
-    public static Fragment aFragment() {
-        return Fragment.fragment(random(5));
+public class MoreRandomStringUtils {
+    static String randomDifferentTo(final String aString, final int size) {
+        String random = random(size);
+        return random.equals(aString) ? random + random(1) : random;  //To change body of created methods use File | Settings | File Templates.
     }
 }

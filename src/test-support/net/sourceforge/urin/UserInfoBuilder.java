@@ -10,10 +10,10 @@
 
 package net.sourceforge.urin;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.RandomStringUtils.random;
 
 public class UserInfoBuilder {
     static UserInfo aUserInfo() {
-        return UserInfo.userInfo(randomAlphanumeric(5));
+        return UserInfo.userInfo(random(5));
     }
 }

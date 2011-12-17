@@ -20,7 +20,6 @@ import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.apache.commons.lang3.RandomStringUtils.random;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -48,19 +47,19 @@ public class HostTest {
 
     @Test
     public void registeredNamesWithMatchingValuesAreEqual() throws Exception {
-        String registeredName = randomAlphanumeric(5);
+        String registeredName = random(5);
         assertThat(registeredName(registeredName), equalTo(registeredName(registeredName)));
         assertThat(registeredName(registeredName).hashCode(), equalTo(registeredName(registeredName).hashCode()));
     }
 
     @Test
     public void registeredNamesWithDifferingValuesAreNotEqual() throws Exception {
-        assertThat(registeredName(randomAlphanumeric(5)), not(equalTo(registeredName(randomAlphanumeric(5)))));
+        assertThat(registeredName(random(5)), not(equalTo(registeredName(random(5)))));
     }
 
     @Test
     public void registeredNameProducesCorrectToString() throws Exception {
-        String registeredName = randomAlphanumeric(5);
+        String registeredName = random(5);
         assertThat(registeredName(registeredName).toString(), equalTo("Host{registeredName='" + registeredName.toLowerCase() + "'}"));
     }
 

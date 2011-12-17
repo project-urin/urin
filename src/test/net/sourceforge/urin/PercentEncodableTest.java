@@ -17,8 +17,7 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.PercentEncodable.*;
 import static net.sourceforge.urin.PercentEncodableBuilder.aPercentEncodableString;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static org.apache.commons.lang3.RandomStringUtils.randomAscii;
+import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -29,38 +28,39 @@ public class PercentEncodableTest {
 
     @Test
     public void twoPercentEncodableStringValuesOfTheSameClassWithTheSameValueAreEqual() throws Exception {
-        String aString = randomAlphanumeric(5);
+        String aString = random(5);
         assertThat(percentEncodableString(aString), equalTo(percentEncodableString(aString)));
         assertThat(percentEncodableString(aString).hashCode(), equalTo(percentEncodableString(aString).hashCode()));
     }
 
     @Test
     public void twoPercentEncodableStringValuesOfTheSameClassWithDifferentValuesAreNotEqual() throws Exception {
-        assertThat(percentEncodableString(randomAlphanumeric(5)), not(equalTo(percentEncodableString(randomAlphanumeric(5)))));
+        String aString = random(5);
+        assertThat(percentEncodableString(aString), not(equalTo(percentEncodableString(MoreRandomStringUtils.randomDifferentTo(aString, 5)))));
     }
 
     @Test
     public void percentEncodableStringToStringFormatIsCorrect() throws Exception {
-        String aString = randomAlphanumeric(5);
+        String aString = random(5);
         assertThat(percentEncodableString(aString).toString(), equalTo("PercentEncodable{value='" + aString + "'}"));
     }
 
     @Test
     public void encodesPercentEncodableStringValueCorrectly() throws Exception {
-        String aString = randomAlphanumeric(5);
+        String aString = random(5);
         assertThat(percentEncodableString(aString).encode(PERCENT_ENCODER), equalTo(PERCENT_ENCODER.encode(aString)));
     }
 
     @Test
     public void percentEncodableStringIdentifiesEmptinessCorrectly() throws Exception {
-        assertThat(percentEncodableString(randomAlphanumeric(5)).isEmpty(), equalTo(false));
+        assertThat(percentEncodableString(random(5)).isEmpty(), equalTo(false));
         assertThat(percentEncodableString("").isEmpty(), equalTo(true));
     }
 
     @Test
     public void percentEncodableStringIdentifiesColonCorrectly() throws Exception {
         assertThat(percentEncodableString(":").containsColon(), equalTo(true));
-        assertThat(percentEncodableString(randomAlphanumeric(5)).containsColon(), equalTo(false));
+        assertThat(percentEncodableString(random(5)).containsColon(), equalTo(false));
     }
 
     @Test
@@ -152,21 +152,21 @@ public class PercentEncodableTest {
     public void twoPercentEncodableSubstitutedValuesOfTheSameClassWithTheSameValueAreEqual() throws Exception {
         char originalCharacter = 'a';
         char replacementCharacter = 'b';
-        String value = randomAscii(5);
+        String value = random(5);
         assertThat(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value), equalTo(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value)));
         assertThat(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value).hashCode(), equalTo(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value).hashCode()));
     }
 
     @Test
     public void twoPercentEncodableSubstitutedValuesOfTheSameClassWithDifferentValuesAreNotEqual() throws Exception {
-        assertThat(percentEncodableSubstitutedValue('a', 'b', randomAscii(5)), not(equalTo(percentEncodableSubstitutedValue('a', 'b', randomAscii(5)))));
+        assertThat(percentEncodableSubstitutedValue('a', 'b', random(5)), not(equalTo(percentEncodableSubstitutedValue('a', 'b', random(5)))));
     }
 
     @Test
     public void percentEncodableSubstitutedValueToStringFormatIsCorrect() throws Exception {
         char originalCharacter = 'a';
         char replacementCharacter = 'b';
-        String value = randomAscii(5);
+        String value = random(5);
         assertThat(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value).toString(), equalTo("PercentEncodable{originalCharacter=" + originalCharacter + ", replacementCharacter=" + replacementCharacter + ", value='" + value + "'}"));
     }
 
@@ -177,7 +177,7 @@ public class PercentEncodableTest {
 
     @Test
     public void percentEncodableSubstitutedValueIdentifiesEmptinessCorrectly() throws Exception {
-        assertThat(percentEncodableSubstitutedValue('a', 'A', randomAscii(5)).isEmpty(), equalTo(false));
+        assertThat(percentEncodableSubstitutedValue('a', 'A', random(5)).isEmpty(), equalTo(false));
         assertThat(percentEncodableSubstitutedValue('a', 'A', "").isEmpty(), equalTo(true));
     }
 
