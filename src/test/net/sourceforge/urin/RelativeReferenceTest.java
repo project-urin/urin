@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import java.net.URI;
+
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.MoreRandomStringUtils.randomIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
@@ -27,6 +29,7 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithEmptyPathAsStringIsCorrect() throws Exception {
         assertThat(relativeReference().asString(), equalTo(""));
+        assertThat(relativeReference().asUri(), equalTo(URI.create("")));
     }
 
     @Test
@@ -45,6 +48,7 @@ public class RelativeReferenceTest {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
         assertThat(relativeReferenceAbsolute(firstSegment, secondSegment).asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReferenceAbsolute(firstSegment, secondSegment).asUri(), equalTo(URI.create("/" + firstSegment.asString() + "/" + secondSegment.asString())));
     }
 
     @Test
@@ -101,6 +105,7 @@ public class RelativeReferenceTest {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
         assertThat(relativeReferenceRootless(firstSegment, secondSegment).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReferenceRootless(firstSegment, secondSegment).asUri(), equalTo(URI.create(firstSegment.asString() + "/" + secondSegment.asString())));
     }
 
     @Test

@@ -10,6 +10,8 @@
 
 package net.sourceforge.urin;
 
+import java.net.URI;
+
 import static net.sourceforge.urin.Segments.segments;
 
 public abstract class RelativeReference {
@@ -17,7 +19,11 @@ public abstract class RelativeReference {
     private RelativeReference() {
     }
 
-    abstract String asString();
+    public abstract String asString();
+
+    public URI asUri() {
+        return URI.create(asString());
+    }
 
     public static RelativeReference relativeReference() {
         return new RelativeReferenceNoAuthority(segments());
@@ -81,7 +87,7 @@ public abstract class RelativeReference {
         }
 
         @Override
-        String asString() {
+        public String asString() {
             return segments.asString();
         }
 
@@ -123,7 +129,7 @@ public abstract class RelativeReference {
         }
 
         @Override
-        String asString() {
+        public String asString() {
             return new StringBuilder("//")
                     .append(authority.asString())
                     .append(segments.asString())
