@@ -13,10 +13,10 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
+import static net.sourceforge.urin.MoreRandomStringUtils.randomIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.RelativeReference.*;
-import static net.sourceforge.urin.Segment.EMPTY;
-import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -127,14 +127,14 @@ public class RelativeReferenceTest {
 
     @Test
     public void aSimpleRootlessPathPrependsAColonInFirstSegmentWithDotSlash() throws Exception {
-        Segment firstSegment = segment(":");
+        Segment firstSegment = segment(randomIncluding(':', 5));
         Segment secondSegment = aSegment();
-        assertThat(relativeReferenceRootless(firstSegment, secondSegment), equalTo(relativeReferenceRootless(segment("."), firstSegment, secondSegment)));
+        assertThat(relativeReferenceRootless(firstSegment, secondSegment), equalTo(relativeReferenceRootless(DOT, firstSegment, secondSegment)));
     }
 
     @Test
     public void aSimpleRootlessPathPermitsAColonInTrailingSegments() throws Exception {
-        relativeReferenceRootless(aSegment(), segment(":")).asString();
+        relativeReferenceRootless(aSegment(), segment(randomIncluding(':', 5))).asString();
     }
 
     @Test

@@ -19,9 +19,12 @@ import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.apache.commons.lang3.RandomStringUtils.random;
 
 public class HostBuilder {
+
+    private static final Random RANDOM = new Random();
+
     public static Host aHost() {
         final Host host;
-        switch (new Random().nextInt(4)) {
+        switch (RANDOM.nextInt(4)) {
             case 0:
                 host = aRegisteredName();
                 break;

@@ -14,6 +14,8 @@ import org.junit.Test;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
+import static net.sourceforge.urin.MoreRandomStringUtils.randomExcluding;
+import static net.sourceforge.urin.MoreRandomStringUtils.randomIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.PercentEncodable.*;
 import static net.sourceforge.urin.PercentEncodableBuilder.aPercentEncodableString;
@@ -59,8 +61,8 @@ public class PercentEncodableTest {
 
     @Test
     public void percentEncodableStringIdentifiesColonCorrectly() throws Exception {
-        assertThat(percentEncodableString(":").containsColon(), equalTo(true));
-        assertThat(percentEncodableString(random(5)).containsColon(), equalTo(false));
+        assertThat(percentEncodableString(randomIncluding(':', 5)).containsColon(), equalTo(true));
+        assertThat(percentEncodableString(randomExcluding(':', 5)).containsColon(), equalTo(false));
     }
 
     @Test
@@ -115,8 +117,8 @@ public class PercentEncodableTest {
     @Test
     public void percentEncodableDelimitedValueIdentifiesColonCorrectly() throws Exception {
         char delimiter = 'a';
-        assertThat(percentEncodableDelimitedValue(delimiter, percentEncodableString(":"), aPercentEncodableString()).containsColon(), equalTo(true));
-        assertThat(percentEncodableDelimitedValue(delimiter, aPercentEncodableString(), aPercentEncodableString()).containsColon(), equalTo(false));
+        assertThat(percentEncodableDelimitedValue(delimiter, percentEncodableString(randomIncluding(':', 5)), aPercentEncodableString()).containsColon(), equalTo(true));
+        assertThat(percentEncodableDelimitedValue(delimiter, percentEncodableString(randomExcluding(':', 5)), aPercentEncodableString()).containsColon(), equalTo(false));
     }
 
     @Test

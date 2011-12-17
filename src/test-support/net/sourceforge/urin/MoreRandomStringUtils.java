@@ -10,11 +10,47 @@
 
 package net.sourceforge.urin;
 
+import java.util.Random;
+
 import static org.apache.commons.lang3.RandomStringUtils.random;
 
 public class MoreRandomStringUtils {
+
+    private static final Random RANDOM = new Random();
+
     static String randomDifferentTo(final String aString, final int size) {
         String random = random(size);
-        return random.equals(aString) ? random + random(1) : random;  //To change body of created methods use File | Settings | File Templates.
+        return random.equals(aString) ? random + random(1) : random;
+    }
+
+    static String randomExcluding(final char excluded, final int size) {
+        int maximumAttempts = 5;
+        for (int i = 0; i < maximumAttempts; i++) {
+            String random = random(size);
+            if (random.indexOf(excluded) == -1) {
+                return random;
+            }
+        }
+        throw new RuntimeException("Couldn't make a random String excluding [" + excluded + "] in " + maximumAttempts + " attempts");
+    }
+
+    static String randomIncluding(final char included, final int size) {
+        if (size == 0) {
+            throw new IllegalArgumentException("Cannot create a String containing [" + included + "] of size " + size);
+        }
+        StringBuilder result = new StringBuilder();
+        int includeAt = RANDOM.nextInt(size);
+        for (int i = 0; i < size; i++) {
+            if (i == includeAt) {
+                result.append(included);
+            } else {
+                result.append(random(1));
+            }
+        }
+        return result.toString();
+    }
+
+    static char aRandomChar() {
+        return random(1).charAt(0);
     }
 }

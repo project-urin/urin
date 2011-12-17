@@ -22,7 +22,7 @@ public class HierarchicalPartBuilder {
 
     public static HierarchicalPart aHierarchicalPart() {
         final HierarchicalPart hierarchicalPart;
-        switch (new Random().nextInt(5)) {
+        switch (RANDOM.nextInt(5)) {
             case 0:
                 hierarchicalPart = HierarchicalPart.hierarchicalPart();
                 break;

@@ -13,6 +13,8 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
+import static net.sourceforge.urin.MoreRandomStringUtils.randomExcluding;
+import static net.sourceforge.urin.MoreRandomStringUtils.randomIncluding;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.segments;
@@ -77,12 +79,12 @@ public class SegmentsTest {
 
     @Test
     public void correctlyIdentifiesFirstPartContainingColon() throws Exception {
-        assertThat(segments(segment(":")).firstPartIsSuppliedButContainsColon(), equalTo(true));
+        assertThat(segments(segment(randomIncluding(':', 5))).firstPartIsSuppliedButContainsColon(), equalTo(true));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartDoesNotContainColon() throws Exception {
-        assertThat(segments(segment("")).firstPartIsSuppliedButContainsColon(), equalTo(false));
+        assertThat(segments(segment(randomExcluding(':', 5))).firstPartIsSuppliedButContainsColon(), equalTo(false));
     }
 
     @Test
