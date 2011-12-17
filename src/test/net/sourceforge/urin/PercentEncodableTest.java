@@ -185,8 +185,8 @@ public class PercentEncodableTest {
 
     @Test
     public void percentEncodableSubstitutedValueIdentifiesColonCorrectly() throws Exception {
-        assertThat(percentEncodableSubstitutedValue(':', 'A', ":").containsColon(), equalTo(true));
-        assertThat(percentEncodableSubstitutedValue(':', 'A', "b").containsColon(), equalTo(false));
+        assertThat(percentEncodableSubstitutedValue(':', 'A', randomIncluding(':', 5)).containsColon(), equalTo(true));
+        assertThat(percentEncodableSubstitutedValue(':', 'A', randomExcluding(':', 5)).containsColon(), equalTo(false));
     }
 
     @Test
