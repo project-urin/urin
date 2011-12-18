@@ -50,7 +50,7 @@ public class MoreRandomStringUtils {
         return result.toString();
     }
 
-    static char aRandomChar() {
+    static char aChar() {
         return random(1).charAt(0);
     }
 
