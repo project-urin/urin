@@ -13,6 +13,8 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.P_CHARS;
+import static net.sourceforge.urin.Segment.DOT;
+import static net.sourceforge.urin.Segment.DOT_DOT;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -26,6 +28,26 @@ public class SegmentTest {
     @Test
     public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
         assertThat(Segment.segment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
+    }
+
+    @Test
+    public void asStringPercentEncodesDotSegment() throws Exception {
+        assertThat(Segment.segment(".").asString(), equalTo("%2E"));
+    }
+
+    @Test
+    public void asStringPercentEncodesDotDotSegment() throws Exception {
+        assertThat(Segment.segment("..").asString(), equalTo("%2E%2E"));
+    }
+
+    @Test
+    public void explicitDotSegmentIsNotEncoded() throws Exception {
+        assertThat(DOT.asString(), equalTo("."));
+    }
+
+    @Test
+    public void explicitDotDotSegmentIsNotEncoded() throws Exception {
+        assertThat(DOT_DOT.asString(), equalTo(".."));
     }
 
 }

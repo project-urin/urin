@@ -17,6 +17,7 @@ public final class Segment extends PercentEncodedUnaryValue {
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
     public static final Segment EMPTY = segment("");
     public static final Segment DOT = segment(".");
+    public static final Segment DOT_DOT = segment("..");
 
     private Segment(final String segment) {
         super(percentEncodableString(segment), PERCENT_ENCODER);
