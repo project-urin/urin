@@ -53,4 +53,8 @@ public class MoreRandomStringUtils {
     static char aRandomChar() {
         return random(1).charAt(0);
     }
+
+    static String aString() {
+        return random(5);
+    }
 }

@@ -11,20 +11,30 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
+import static net.sourceforge.urin.PercentEncodable.percentEncodableSpecifiedValue;
 import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
+import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
 
-public final class Segment extends PercentEncodedUnaryValue {
+public abstract class Segment extends PercentEncodedUnaryValue {
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
     public static final Segment EMPTY = segment("");
-    public static final Segment DOT = segment(".");
-    public static final Segment DOT_DOT = segment("..");
+    public static final Segment DOT = new Segment(percentEncodableString("."), ENCODE_NOTHING) {
+    };
+    public static final Segment DOT_DOT = new Segment(percentEncodableString(".."), ENCODE_NOTHING) {
+    };
 
-    private Segment(final String segment) {
-        super(percentEncodableString(segment), PERCENT_ENCODER);
+    private Segment(final PercentEncodable percentEncodable, final PercentEncoder percentEncoder) {
+        super(percentEncodable, percentEncoder);
     }
 
     public static Segment segment(final String segment) {
-        return new Segment(segment);
+        return new Segment(percentEncodableSpecifiedValue(
+                "..",
+                percentEncodableSpecifiedValue(
+                        ".",
+                        percentEncodableString(segment))
+        ), PERCENT_ENCODER) {
+        };
     }
 
     boolean containsColon() {

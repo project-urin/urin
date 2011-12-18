@@ -14,12 +14,11 @@ import org.junit.Test;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
-import static net.sourceforge.urin.MoreRandomStringUtils.randomExcluding;
-import static net.sourceforge.urin.MoreRandomStringUtils.randomIncluding;
+import static net.sourceforge.urin.MoreRandomStringUtils.*;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.PercentEncodable.*;
 import static net.sourceforge.urin.PercentEncodableBuilder.aPercentEncodableString;
-import static org.apache.commons.lang3.RandomStringUtils.random;
+import static net.sourceforge.urin.PercentEncoder.ENCODE_EVERYTHING;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -30,32 +29,32 @@ public class PercentEncodableTest {
 
     @Test
     public void twoPercentEncodableStringValuesOfTheSameClassWithTheSameValueAreEqual() throws Exception {
-        String aString = random(5);
+        String aString = aString();
         assertThat(percentEncodableString(aString), equalTo(percentEncodableString(aString)));
         assertThat(percentEncodableString(aString).hashCode(), equalTo(percentEncodableString(aString).hashCode()));
     }
 
     @Test
     public void twoPercentEncodableStringValuesOfTheSameClassWithDifferentValuesAreNotEqual() throws Exception {
-        String aString = random(5);
+        String aString = aString();
         assertThat(percentEncodableString(aString), not(equalTo(percentEncodableString(MoreRandomStringUtils.randomDifferentTo(aString, 5)))));
     }
 
     @Test
     public void percentEncodableStringToStringFormatIsCorrect() throws Exception {
-        String aString = random(5);
+        String aString = aString();
         assertThat(percentEncodableString(aString).toString(), equalTo("PercentEncodable{value='" + aString + "'}"));
     }
 
     @Test
     public void encodesPercentEncodableStringValueCorrectly() throws Exception {
-        String aString = random(5);
+        String aString = aString();
         assertThat(percentEncodableString(aString).encode(PERCENT_ENCODER), equalTo(PERCENT_ENCODER.encode(aString)));
     }
 
     @Test
     public void percentEncodableStringIdentifiesEmptinessCorrectly() throws Exception {
-        assertThat(percentEncodableString(random(5)).isEmpty(), equalTo(false));
+        assertThat(percentEncodableString(aString()).isEmpty(), equalTo(false));
         assertThat(percentEncodableString("").isEmpty(), equalTo(true));
     }
 
@@ -154,21 +153,21 @@ public class PercentEncodableTest {
     public void twoPercentEncodableSubstitutedValuesOfTheSameClassWithTheSameValueAreEqual() throws Exception {
         char originalCharacter = 'a';
         char replacementCharacter = 'b';
-        String value = random(5);
+        String value = aString();
         assertThat(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value), equalTo(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value)));
         assertThat(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value).hashCode(), equalTo(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value).hashCode()));
     }
 
     @Test
     public void twoPercentEncodableSubstitutedValuesOfTheSameClassWithDifferentValuesAreNotEqual() throws Exception {
-        assertThat(percentEncodableSubstitutedValue('a', 'b', random(5)), not(equalTo(percentEncodableSubstitutedValue('a', 'b', random(5)))));
+        assertThat(percentEncodableSubstitutedValue('a', 'b', aString()), not(equalTo(percentEncodableSubstitutedValue('a', 'b', aString()))));
     }
 
     @Test
     public void percentEncodableSubstitutedValueToStringFormatIsCorrect() throws Exception {
         char originalCharacter = 'a';
         char replacementCharacter = 'b';
-        String value = random(5);
+        String value = aString();
         assertThat(percentEncodableSubstitutedValue(originalCharacter, replacementCharacter, value).toString(), equalTo("PercentEncodable{originalCharacter=" + originalCharacter + ", replacementCharacter=" + replacementCharacter + ", value='" + value + "'}"));
     }
 
@@ -179,7 +178,7 @@ public class PercentEncodableTest {
 
     @Test
     public void percentEncodableSubstitutedValueIdentifiesEmptinessCorrectly() throws Exception {
-        assertThat(percentEncodableSubstitutedValue('a', 'A', random(5)).isEmpty(), equalTo(false));
+        assertThat(percentEncodableSubstitutedValue('a', 'A', aString()).isEmpty(), equalTo(false));
         assertThat(percentEncodableSubstitutedValue('a', 'A', "").isEmpty(), equalTo(true));
     }
 
@@ -195,6 +194,56 @@ public class PercentEncodableTest {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 percentEncodableSubstitutedValue('a', 'A', null);
+            }
+        });
+    }
+
+    @Test
+    public void encodesPercentEncodableSpecifiedValuesCorrectly() throws Exception {
+        String aString = aString();
+        assertThat(percentEncodableSpecifiedValue(aString, percentEncodableString(aString)).encode(PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(ENCODE_EVERYTHING)));
+        assertThat(percentEncodableSpecifiedValue(randomDifferentTo(aString, 5), percentEncodableString(aString)).encode(PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(PERCENT_ENCODER)));
+    }
+
+    @Test
+    public void twoPercentEncodableSpecifiedValuesOfTheSameClassWithTheSameValueAreEqual() throws Exception {
+        String aString = aString();
+        PercentEncodable aPercentEncodable = aPercentEncodableString();
+        assertThat(percentEncodableSpecifiedValue(aString, aPercentEncodable), equalTo(percentEncodableSpecifiedValue(aString, aPercentEncodable)));
+        assertThat(percentEncodableSpecifiedValue(aString, aPercentEncodable).hashCode(), equalTo(percentEncodableSpecifiedValue(aString, aPercentEncodable).hashCode()));
+    }
+
+    @Test
+    public void twoPercentEncodableSpecifiedValuesOfTheSameClassWithDifferentValuesAreNotEqual() throws Exception {
+        String aString = aString();
+        assertThat(percentEncodableSpecifiedValue(aString, aPercentEncodableString()), not(equalTo(percentEncodableSpecifiedValue(aString, aPercentEncodableString()))));
+    }
+
+    @Test
+    public void twoPercentEncodableSpecifiedValuesOfTheSameClassWithDifferentSpecifiedEncodablesAreNotEqual() throws Exception {
+        PercentEncodable aPercentEncodable = aPercentEncodableString();
+        assertThat(percentEncodableSpecifiedValue(aString(), aPercentEncodable), not(equalTo(percentEncodableSpecifiedValue(aString(), aPercentEncodable))));
+    }
+
+    @Test
+    public void percentEncodableSpecifiedValueToStringFormatIsCorrect() throws Exception {
+        String aString = aString();
+        PercentEncodable aPercentEncodable = aPercentEncodableString();
+        assertThat(percentEncodableSpecifiedValue(aString, aPercentEncodable).toString(), equalTo("PercentEncodable{encodedValue='" + aString + "', value=" + aPercentEncodable + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForPercentEncodableSpecifiedValue() throws Exception {
+        assertThrowsNullPointerException("Null value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                percentEncodableSpecifiedValue(aString(), null);
+            }
+        });
+        assertThrowsNullPointerException("Null specified value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                percentEncodableSpecifiedValue(null, aPercentEncodableString());
             }
         });
     }

@@ -13,7 +13,13 @@ package net.sourceforge.urin;
 import java.nio.charset.Charset;
 import java.util.Locale;
 
+import static net.sourceforge.urin.CharacterSetMembershipFunction.ALL_CHARACTERS;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
+
 final class PercentEncoder {
+    static final PercentEncoder ENCODE_NOTHING = new PercentEncoder(ALL_CHARACTERS);
+    static final PercentEncoder ENCODE_EVERYTHING = new PercentEncoder(NO_CHARACTERS);
+
     private static final Locale NO_LOCALISATION = null;
     private final CharacterSetMembershipFunction nonPercentEncodedCharacterSet;
 

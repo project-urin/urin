@@ -16,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static net.sourceforge.urin.PercentEncoder.ENCODE_EVERYTHING;
+import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
 
 public abstract class PercentEncodable {
 
@@ -41,6 +43,10 @@ public abstract class PercentEncodable {
 
     public static PercentEncodable percentEncodableDelimitedValue(final char delimiter, final Collection<PercentEncodable> values) {
         return new PercentEncodableDelimitedValue(delimiter, values);
+    }
+
+    public static PercentEncodable percentEncodableSpecifiedValue(final String encodedValue, final PercentEncodable value) {
+        return new PercentEncodableSpecifiedValue(encodedValue, value);
     }
 
     abstract boolean containsColon();
@@ -167,7 +173,7 @@ public abstract class PercentEncodable {
         private final char replacementCharacter;
         private final String value;
 
-        public PercentEncodableSubstitutedValue(final char originalCharacter, final char replacementCharacter, final String value) {
+        PercentEncodableSubstitutedValue(final char originalCharacter, final char replacementCharacter, final String value) {
             this.originalCharacter = originalCharacter;
             this.replacementCharacter = replacementCharacter;
             if (value == null) {
@@ -225,6 +231,65 @@ public abstract class PercentEncodable {
                     "originalCharacter=" + originalCharacter +
                     ", replacementCharacter=" + replacementCharacter +
                     ", value='" + value + '\'' +
+                    '}';
+        }
+    }
+
+    private static class PercentEncodableSpecifiedValue extends PercentEncodable {
+        private final String encodedValue;
+        private final PercentEncodable value;
+
+        PercentEncodableSpecifiedValue(final String encodedValue, final PercentEncodable value) {
+            if (encodedValue == null) {
+                throw new NullPointerException("Cannot instantiate PercentEncodable with null encodedValue");
+            }
+            if (value == null) {
+                throw new NullPointerException("Cannot instantiate PercentEncodable with null value");
+            }
+            this.encodedValue = encodedValue;
+            this.value = value;
+        }
+
+        @Override
+        String encode(final PercentEncoder encoder) {
+            if (encodedValue.equals(value.encode(ENCODE_NOTHING))) {
+                return value.encode(ENCODE_EVERYTHING);
+            } else {
+                return value.encode(encoder);
+            }
+        }
+
+        @Override
+        boolean isEmpty() {
+            return value.isEmpty();
+        }
+
+        @Override
+        boolean containsColon() {
+            return value.containsColon();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            PercentEncodableSpecifiedValue that = (PercentEncodableSpecifiedValue) o;
+            return encodedValue.equals(that.encodedValue) && value.equals(that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = encodedValue.hashCode();
+            result = 31 * result + value.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "PercentEncodable{" +
+                    "encodedValue='" + encodedValue + '\'' +
+                    ", value=" + value +
                     '}';
         }
     }

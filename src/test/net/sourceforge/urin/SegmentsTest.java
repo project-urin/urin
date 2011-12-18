@@ -15,7 +15,7 @@ import org.junit.Test;
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.MoreRandomStringUtils.randomExcluding;
 import static net.sourceforge.urin.MoreRandomStringUtils.randomIncluding;
-import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.segments;
 import static org.apache.commons.lang3.RandomStringUtils.random;
@@ -64,7 +64,7 @@ public class SegmentsTest {
 
     @Test
     public void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() throws Exception {
-        assertThat(segments(Segment.EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
+        assertThat(segments(EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
     }
 
     @Test
@@ -89,18 +89,18 @@ public class SegmentsTest {
 
     @Test
     public void addsAnEmptyPartOntoAnEmptySegments() throws Exception {
-        assertThat(segments().prefixWithEmptySegment(), equalTo(segments(Segment.EMPTY)));
+        assertThat(segments().prefixWithEmptySegment(), equalTo(segments(EMPTY)));
     }
 
     @Test
     public void addsAnEmptyPartOntoANonEmptySegments() throws Exception {
         Segment segment = aSegment();
-        assertThat(segments(segment).prefixWithEmptySegment(), equalTo(segments(Segment.EMPTY, segment)));
+        assertThat(segments(segment).prefixWithEmptySegment(), equalTo(segments(EMPTY, segment)));
     }
 
     @Test
     public void addsADotSegmentOntoSegments() throws Exception {
         Segment segment = aSegment();
-        assertThat(segments(segment).prefixWithDotSegment(), equalTo(segments(segment("."), segment)));
+        assertThat(segments(segment).prefixWithDotSegment(), equalTo(segments(DOT, segment)));
     }
 }
