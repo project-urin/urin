@@ -103,4 +103,9 @@ public class SegmentsTest {
         Segment segment = aSegment();
         assertThat(segments(segment).prefixWithDotSegment(), equalTo(segments(DOT, segment)));
     }
+
+    @Test
+    public void removesDotSegments() throws Exception {
+        assertThat(segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(segments(segment("a"), segment("g"))));
+    }
 }

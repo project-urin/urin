@@ -42,7 +42,9 @@ public final class Segments {
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
             } else {
-                this.segments.add(segment);
+                if (!DOT.equals(segment)) {
+                    this.segments.add(segment);
+                }
             }
         }
     }

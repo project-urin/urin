@@ -22,8 +22,11 @@ import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartRootless;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.Port.port;
+import static net.sourceforge.urin.RelativeReference.relativeReferenceAbsolute;
+import static net.sourceforge.urin.RelativeReference.relativeReferenceRootless;
 import static net.sourceforge.urin.Scheme.scheme;
-import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -106,5 +109,25 @@ public class Rfc3986UriExamplesTest {
         Urin urin = urin(scheme("urn"), hierarchicalPartRootless(segment("oasis:names:specification:docbook:dtd:xml:4.1.2")));
         assertThat(urin.asString(), equalTo("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"));
         assertThat(urin.asUri(), equalTo(new URI("urn:oasis:names:specification:docbook:dtd:xml:4.1.2")));
+    }
+
+    @Test
+    public void removeDotSegmentsExample1() throws Exception {
+        assertThat(
+                relativeReferenceAbsolute(segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asString(),
+                equalTo("/a/g"));
+        assertThat(
+                relativeReferenceAbsolute(segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asUri(),
+                equalTo(new URI("/a/g")));
+    }
+
+    @Test
+    public void removeDotSegmentsExample2() throws Exception {
+        assertThat(
+                relativeReferenceRootless(segments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asString(),
+                equalTo("mid/6"));
+        assertThat(
+                relativeReferenceRootless(segments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asUri(),
+                equalTo(new URI("mid/6")));
     }
 }
