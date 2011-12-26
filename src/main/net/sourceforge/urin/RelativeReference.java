@@ -12,6 +12,7 @@ package net.sourceforge.urin;
 
 import java.net.URI;
 
+import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
 import static net.sourceforge.urin.Segments.segments;
 
 public abstract class RelativeReference {
@@ -63,10 +64,10 @@ public abstract class RelativeReference {
     }
 
     public static RelativeReference relativeReferenceAbsolute(final Authority authority, final Segment... segments) {
-        return relativeReferenceAbsolute(authority, segments(segments));
+        return relativeReferenceAbsolute(authority, absoluteSegments(segments));
     }
 
-    public static RelativeReference relativeReferenceAbsolute(final Authority authority, final Segments segments) {
+    public static RelativeReference relativeReferenceAbsolute(final Authority authority, final AbsoluteSegments segments) {
         final Segments absolutisedSegments;
         if (segments.isEmpty()) {
             absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();

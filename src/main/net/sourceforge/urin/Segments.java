@@ -15,7 +15,7 @@ import java.util.*;
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.*;
 
-public final class Segments {
+public class Segments {
 
     private final Collection<Segment> segments;
 
@@ -36,7 +36,7 @@ public final class Segments {
         return new Segments(segments, false);
     }
 
-    private Segments(final Iterable<Segment> segments, final boolean prefixWithDotSegment) {
+    Segments(final Iterable<Segment> segments, final boolean prefixWithDotSegment) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
         if (prefixWithDotSegment) {
             newSegments.add(DOT);

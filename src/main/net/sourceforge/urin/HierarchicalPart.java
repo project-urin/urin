@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin;
 
+import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
 import static net.sourceforge.urin.Segments.segments;
 
 public abstract class HierarchicalPart {
@@ -56,10 +57,10 @@ public abstract class HierarchicalPart {
     }
 
     public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final Segment... segments) {
-        return hierarchicalPartAbsolute(authority, segments(segments));
+        return hierarchicalPartAbsolute(authority, absoluteSegments(segments));
     }
 
-    public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final Segments segments) {
+    public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final AbsoluteSegments segments) {
         final Segments absolutisedSegments;
         if (segments.isEmpty()) {
             absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();
