@@ -13,29 +13,17 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.MoreRandomStringUtils.aChar;
-import static net.sourceforge.urin.MoreRandomStringUtils.randomIncluding;
+import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.fail;
 
 public class MoreRandomStringUtilsTest {
 
     @Test
     public void randomIncludingDoesInclude() throws Exception {
         char aChar = aChar();
-        String actual = randomIncluding(aChar, 5);
+        String actual = aStringIncluding(aChar);
         assertThat(actual, containsString(String.valueOf(aChar)));
-        assertThat(actual.length(), equalTo(5));
     }
 
-    @Test
-    public void randomIncludingRejectsZeroLengthRandom() throws Exception {
-        try {
-            randomIncluding(aChar(), 0);
-            fail("Should throw an IllegalArgumentException for a zero length random String including a particular character");
-        } catch (final IllegalArgumentException e) {
-            // expect to end up here
-        }
-    }
 }

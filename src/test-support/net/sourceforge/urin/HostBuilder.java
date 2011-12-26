@@ -15,6 +15,7 @@ import java.util.Random;
 import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.Host.*;
+import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.apache.commons.lang3.RandomStringUtils.random;
 
@@ -44,7 +45,7 @@ public class HostBuilder {
     }
 
     public static Host aRegisteredName() {
-        return registeredName(random(5));
+        return registeredName(aString());
     }
 
     public static Host anIpV4Address() {

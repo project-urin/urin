@@ -10,12 +10,12 @@
 
 package net.sourceforge.urin;
 
+import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
-import static org.apache.commons.lang3.RandomStringUtils.random;
 
 public class PercentEncodableBuilder {
 
     public static PercentEncodable aPercentEncodableString() {
-        return percentEncodableString(random(5));
+        return percentEncodableString(aString());
     }
 }

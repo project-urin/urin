@@ -12,7 +12,7 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.MoreRandomStringUtils.randomIncluding;
+import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.RelativeReference.relativeReferenceRootless;
 import static net.sourceforge.urin.Segment.segment;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertThat;
 public class RelativeReferenceSamplesTest {
     @Test
     public void canMakeARelativeReferenceWithColonInTheFirstSegment() throws Exception {
-        Segment segment = segment(randomIncluding(':', 5));
+        Segment segment = segment(aStringIncluding(':'));
         assertThat(relativeReferenceRootless(segment).asString(), equalTo("./" + segment.asString()));
     }
 }

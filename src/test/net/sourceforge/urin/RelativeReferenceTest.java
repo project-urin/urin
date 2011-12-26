@@ -15,7 +15,7 @@ import org.junit.Test;
 import java.net.URI;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
-import static net.sourceforge.urin.MoreRandomStringUtils.randomIncluding;
+import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.RelativeReference.*;
 import static net.sourceforge.urin.Segment.*;
@@ -132,14 +132,14 @@ public class RelativeReferenceTest {
 
     @Test
     public void aSimpleRootlessPathPrependsAColonInFirstSegmentWithDotSlash() throws Exception {
-        Segment firstSegment = segment(randomIncluding(':', 5));
+        Segment firstSegment = segment(aStringIncluding(':'));
         Segment secondSegment = aSegment();
         assertThat(relativeReferenceRootless(firstSegment, secondSegment), equalTo(relativeReferenceRootless(DOT, firstSegment, secondSegment)));
     }
 
     @Test
     public void aSimpleRootlessPathPermitsAColonInTrailingSegments() throws Exception {
-        relativeReferenceRootless(aSegment(), segment(randomIncluding(':', 5))).asString();
+        relativeReferenceRootless(aSegment(), segment(aStringIncluding(':'))).asString();
     }
 
     @Test

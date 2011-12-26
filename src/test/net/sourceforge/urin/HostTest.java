@@ -17,6 +17,7 @@ import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
 import static net.sourceforge.urin.Host.*;
+import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.apache.commons.lang3.RandomStringUtils.random;
@@ -47,19 +48,19 @@ public class HostTest {
 
     @Test
     public void registeredNamesWithMatchingValuesAreEqual() throws Exception {
-        String registeredName = random(5);
+        String registeredName = aString();
         assertThat(registeredName(registeredName), equalTo(registeredName(registeredName)));
         assertThat(registeredName(registeredName).hashCode(), equalTo(registeredName(registeredName).hashCode()));
     }
 
     @Test
     public void registeredNamesWithDifferingValuesAreNotEqual() throws Exception {
-        assertThat(registeredName(random(5)), not(equalTo(registeredName(random(5)))));
+        assertThat(registeredName(aString()), not(equalTo(registeredName(aString()))));
     }
 
     @Test
     public void registeredNameProducesCorrectToString() throws Exception {
-        String registeredName = random(5);
+        String registeredName = aString();
         assertThat(registeredName(registeredName).toString(), equalTo("Host{registeredName='" + registeredName.toLowerCase() + "'}"));
     }
 

@@ -37,7 +37,7 @@ public class PercentEncodableTest {
     @Test
     public void twoPercentEncodableStringValuesOfTheSameClassWithDifferentValuesAreNotEqual() throws Exception {
         String aString = aString();
-        assertThat(percentEncodableString(aString), not(equalTo(percentEncodableString(MoreRandomStringUtils.randomDifferentTo(aString, 5)))));
+        assertThat(percentEncodableString(aString), not(equalTo(percentEncodableString(aStringDifferentTo(aString)))));
     }
 
     @Test
@@ -60,8 +60,8 @@ public class PercentEncodableTest {
 
     @Test
     public void percentEncodableStringIdentifiesColonCorrectly() throws Exception {
-        assertThat(percentEncodableString(randomIncluding(':', 5)).containsColon(), equalTo(true));
-        assertThat(percentEncodableString(randomExcluding(':', 5)).containsColon(), equalTo(false));
+        assertThat(percentEncodableString(aStringIncluding(':')).containsColon(), equalTo(true));
+        assertThat(percentEncodableString(aStringExcluding(':')).containsColon(), equalTo(false));
     }
 
     @Test
@@ -116,8 +116,8 @@ public class PercentEncodableTest {
     @Test
     public void percentEncodableDelimitedValueIdentifiesColonCorrectly() throws Exception {
         char delimiter = 'a';
-        assertThat(percentEncodableDelimitedValue(delimiter, percentEncodableString(randomIncluding(':', 5)), aPercentEncodableString()).containsColon(), equalTo(true));
-        assertThat(percentEncodableDelimitedValue(delimiter, percentEncodableString(randomExcluding(':', 5)), aPercentEncodableString()).containsColon(), equalTo(false));
+        assertThat(percentEncodableDelimitedValue(delimiter, percentEncodableString(aStringIncluding(':')), aPercentEncodableString()).containsColon(), equalTo(true));
+        assertThat(percentEncodableDelimitedValue(delimiter, percentEncodableString(aStringExcluding(':')), aPercentEncodableString()).containsColon(), equalTo(false));
     }
 
     @Test
@@ -184,8 +184,8 @@ public class PercentEncodableTest {
 
     @Test
     public void percentEncodableSubstitutedValueIdentifiesColonCorrectly() throws Exception {
-        assertThat(percentEncodableSubstitutedValue(':', 'A', randomIncluding(':', 5)).containsColon(), equalTo(true));
-        assertThat(percentEncodableSubstitutedValue(':', 'A', randomExcluding(':', 5)).containsColon(), equalTo(false));
+        assertThat(percentEncodableSubstitutedValue(':', 'A', aStringIncluding(':')).containsColon(), equalTo(true));
+        assertThat(percentEncodableSubstitutedValue(':', 'A', aStringExcluding(':')).containsColon(), equalTo(false));
     }
 
     @Test
@@ -202,7 +202,7 @@ public class PercentEncodableTest {
     public void encodesPercentEncodableSpecifiedValuesCorrectly() throws Exception {
         String aString = aString();
         assertThat(percentEncodableSpecifiedValue(aString, percentEncodableString(aString)).encode(PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(ENCODE_EVERYTHING)));
-        assertThat(percentEncodableSpecifiedValue(randomDifferentTo(aString, 5), percentEncodableString(aString)).encode(PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(PERCENT_ENCODER)));
+        assertThat(percentEncodableSpecifiedValue(aStringDifferentTo(aString), percentEncodableString(aString)).encode(PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(PERCENT_ENCODER)));
     }
 
     @Test

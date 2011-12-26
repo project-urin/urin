@@ -18,15 +18,15 @@ public class MoreRandomStringUtils {
 
     private static final Random RANDOM = new Random();
 
-    static String randomDifferentTo(final String aString, final int size) {
-        String random = random(size);
+    static String aStringDifferentTo(final String aString) {
+        String random = aString();
         return random.equals(aString) ? random + random(1) : random;
     }
 
-    static String randomExcluding(final char excluded, final int size) {
+    static String aStringExcluding(final char excluded) {
         int maximumAttempts = 5;
         for (int i = 0; i < maximumAttempts; i++) {
-            String random = random(size);
+            String random = aString();
             if (random.indexOf(excluded) == -1) {
                 return random;
             }
@@ -34,13 +34,10 @@ public class MoreRandomStringUtils {
         throw new RuntimeException("Couldn't make a random String excluding [" + excluded + "] in " + maximumAttempts + " attempts");
     }
 
-    static String randomIncluding(final char included, final int size) {
-        if (size == 0) {
-            throw new IllegalArgumentException("Cannot create a String containing [" + included + "] of size " + size);
-        }
+    static String aStringIncluding(final char included) {
         StringBuilder result = new StringBuilder();
-        int includeAt = RANDOM.nextInt(size);
-        for (int i = 0; i < size; i++) {
+        int includeAt = RANDOM.nextInt(5);
+        for (int i = 0; i < 5; i++) {
             if (i == includeAt) {
                 result.append(included);
             } else {

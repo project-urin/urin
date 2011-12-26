@@ -10,10 +10,11 @@
 
 package net.sourceforge.urin;
 
-import static org.apache.commons.lang3.RandomStringUtils.random;
+import static net.sourceforge.urin.Fragment.fragment;
+import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 
 public class FragmentBuilder {
     public static Fragment aFragment() {
-        return Fragment.fragment(random(5));
+        return fragment(aString());
     }
 }
