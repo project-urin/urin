@@ -101,7 +101,7 @@ public class SegmentsTest {
     @Test
     public void addsADotSegmentOntoSegments() throws Exception {
         Segment segment = aSegment();
-        assertThat(segments(segment).prefixWithDotSegment(), equalTo(segments(DOT, segment)));
+        assertThat(segments(segment).prefixWithDotSegment().asString(), equalTo("./" + segment.asString()));
     }
 
     @Test

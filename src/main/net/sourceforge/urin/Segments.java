@@ -25,19 +25,22 @@ public final class Segments {
         for (String segment : segments) {
             segmentList.add(segment(segment));
         }
-        return new Segments(segmentList);
+        return new Segments(segmentList, false);
     }
 
     public static Segments segments(final Segment... segments) {
-        return new Segments(asList(segments));
+        return new Segments(asList(segments), false);
     }
 
     public static Segments segments(final Iterable<Segment> segments) {
-        return new Segments(segments);
+        return new Segments(segments, false);
     }
 
-    private Segments(final Iterable<Segment> segments) {
+    private Segments(final Iterable<Segment> segments, final boolean prefixWithDotSegment) {
         this.segments = new ArrayList<Segment>();
+        if (prefixWithDotSegment) {
+            this.segments.add(DOT);
+        }
         for (Segment segment : segments) {
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
@@ -64,13 +67,11 @@ public final class Segments {
     Segments prefixWithEmptySegment() {
         LinkedList<Segment> newSegments = new LinkedList<Segment>(segments);
         newSegments.offerFirst(EMPTY);
-        return new Segments(newSegments);
+        return new Segments(newSegments, false);
     }
 
     Segments prefixWithDotSegment() {
-        LinkedList<Segment> newSegments = new LinkedList<Segment>(segments);
-        newSegments.offerFirst(DOT);
-        return new Segments(newSegments);
+        return new Segments(segments, true);
     }
 
     String asString() {
