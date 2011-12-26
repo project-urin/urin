@@ -37,19 +37,28 @@ public final class Segments {
     }
 
     private Segments(final Iterable<Segment> segments, final boolean prefixWithDotSegment) {
-        this.segments = new ArrayList<Segment>();
+        LinkedList<Segment> newSegments = new LinkedList<Segment>();
         if (prefixWithDotSegment) {
-            this.segments.add(DOT);
+            newSegments.add(DOT);
         }
         for (Segment segment : segments) {
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
             } else {
                 if (!DOT.equals(segment)) {
-                    this.segments.add(segment);
+                    if (DOT_DOT.equals(segment)) {
+                        if ((newSegments.size() == 1 && newSegments.getLast().isEmpty())) {
+
+                        } else if (newSegments.size() > 1) {
+                            newSegments.removeLast();
+                        }
+                    } else {
+                        newSegments.add(segment);
+                    }
                 }
             }
         }
+        this.segments = newSegments;
     }
 
     Iterator<Segment> iterator() {
