@@ -12,8 +12,6 @@ package net.sourceforge.urin;
 
 import java.net.URI;
 
-import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
-import static net.sourceforge.urin.RelativeSegments.relativeSegments;
 import static net.sourceforge.urin.Segments.emptySegments;
 
 public abstract class RelativeReference {
@@ -36,21 +34,10 @@ public abstract class RelativeReference {
     }
 
     public static RelativeReference relativeReferenceRootless(final Segment... segments) {
-        return relativeReferenceRootless(relativeSegments(segments));
+        return relativeReference(Segments.rootlessSegments(segments));
     }
 
-    public static RelativeReference relativeReferenceRootless(final RelativeSegments segments) {
-        if (segments.firstPartIsSuppliedButIsEmpty()) {
-            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
-        }
-        return new RelativeReferenceNoAuthority(segments);
-    }
-
-    public static RelativeReference relativeReferenceAbsolute(final Segment... segments) {
-        return relativeReferenceAbsolute(absoluteSegments(segments));
-    }
-
-    public static RelativeReference relativeReferenceAbsolute(final AbsoluteSegments segments) {
+    public static RelativeReference relativeReference(final Segments segments) {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
@@ -58,7 +45,7 @@ public abstract class RelativeReference {
     }
 
     public static RelativeReference relativeReferenceAbsolute(final Authority authority, final Segment... segments) {
-        return relativeReferenceAbsolute(authority, absoluteSegments(segments));
+        return relativeReferenceAbsolute(authority, AbsoluteSegments.segments(segments));
     }
 
     public static RelativeReference relativeReferenceAbsolute(final Authority authority, final AbsoluteSegments segments) {

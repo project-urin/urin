@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -22,7 +22,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.scheme.Http.http;
@@ -49,7 +48,7 @@ public class IndexPage {
         Properties properties = new Properties();
         properties.load(new FileReader("version.properties"));
         final String version = properties.getProperty("urin.version.major") + "." + properties.getProperty("urin.version.minor");
-        final Href projectSiteHref = href(http(SOURCEFORGE, absoluteSegments("projects", "urin")).asString());
+        final Href projectSiteHref = href(http(SOURCEFORGE, AbsoluteSegments.segments("projects", "urin")).asString());
         final HtmlTag indexPage = htmlTag(
                 headTag(
                         titleTag("Urin - A Java library for making URIs"),
@@ -95,7 +94,7 @@ public class IndexPage {
                                                 "currently in initial development.")),
                                         paragraphTag(
                                                 xhtmlText("The latest version of Urin available for download is "),
-                                                anchorTag(xhtmlText(version)).withHref(href(https(SOURCEFORGE, absoluteSegments("projects", "urin", "files", "latest")).asString())),
+                                                anchorTag(xhtmlText(version)).withHref(href(https(SOURCEFORGE, AbsoluteSegments.segments("projects", "urin", "files", "latest")).asString())),
                                                 xhtmlText(".  The "),
                                                 anchorTag(xhtmlText("javadoc")).withHref(href("javadoc/")),
                                                 xhtmlText(" is also available online.")
@@ -106,7 +105,7 @@ public class IndexPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(http(registeredName("sflogo.sourceforge.net"), absoluteSegments("sflogo.php"), query("group_id=605761&type=13")).asString()),
+                                                                        imageSource(http(registeredName("sflogo.sourceforge.net"), AbsoluteSegments.segments("sflogo.php"), query("group_id=605761&type=13")).asString()),
                                                                         alternateText("Get urin at SourceForge.net. Fast, secure and Free Open Source software downloads")
                                                                 )
                                                                         .withHeight(pixels("30"))
@@ -116,22 +115,22 @@ public class IndexPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(http(W3_JIGSAW, absoluteSegments("css-validator", "images", "vcss")).asString()),
+                                                                        imageSource(http(W3_JIGSAW, AbsoluteSegments.segments("css-validator", "images", "vcss")).asString()),
                                                                         alternateText("Valid CSS!")
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(http(W3_JIGSAW, absoluteSegments("css-validator", "check", "referer")).asString()))
+                                                        ).withHref(href(http(W3_JIGSAW, AbsoluteSegments.segments("css-validator", "check", "referer")).asString()))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(http(W3_WWW, absoluteSegments("Icons", "valid-xhtml10")).asString()),
+                                                                        imageSource(http(W3_WWW, AbsoluteSegments.segments("Icons", "valid-xhtml10")).asString()),
                                                                         alternateText("Valid XHTML 1.0 Strict")
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(http(registeredName("validator.w3.org"), absoluteSegments("check"), query("uri=referer")).asString()))
+                                                        ).withHref(href(http(registeredName("validator.w3.org"), AbsoluteSegments.segments("check"), query("uri=referer")).asString()))
                                                 )
                                         )
                                 ).withId(id("footer"))

@@ -13,7 +13,7 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
-import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
+import static net.sourceforge.urin.AbsoluteSegments.segments;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
@@ -26,16 +26,16 @@ public class AbsoluteSegmentsTest {
     public void anAbsoluteSegmentsIsEqualToAnotherAbsoluteSegmentsWithTheSameMembers() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(absoluteSegments(firstSegment, secondSegment), equalTo(absoluteSegments(firstSegment, secondSegment)));
-        assertThat(absoluteSegments(firstSegment, secondSegment).hashCode(), equalTo(absoluteSegments(firstSegment, secondSegment).hashCode()));
+        assertThat(AbsoluteSegments.segments(firstSegment, secondSegment), equalTo(AbsoluteSegments.segments(firstSegment, secondSegment)));
+        assertThat(AbsoluteSegments.segments(firstSegment, secondSegment).hashCode(), equalTo(AbsoluteSegments.segments(firstSegment, secondSegment).hashCode()));
     }
 
     @Test
     public void aSegmentsUsingVarargsFactoryIsEqualToWithTheSameMembersMadeUsingIterableFactory() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(absoluteSegments(firstSegment, secondSegment), equalTo(absoluteSegments(asList(firstSegment, secondSegment))));
-        assertThat(absoluteSegments(firstSegment, secondSegment).hashCode(), equalTo(absoluteSegments(asList(firstSegment, secondSegment)).hashCode()));
+        assertThat(AbsoluteSegments.segments(firstSegment, secondSegment), equalTo(segments(asList(firstSegment, secondSegment))));
+        assertThat(AbsoluteSegments.segments(firstSegment, secondSegment).hashCode(), equalTo(segments(asList(firstSegment, secondSegment)).hashCode()));
     }
 
     @Test
@@ -44,8 +44,8 @@ public class AbsoluteSegmentsTest {
         Segment firstSegment = segment(firstSegmentValue);
         String secondSegmentValue = aString();
         Segment secondSegment = segment(secondSegmentValue);
-        assertThat(absoluteSegments(firstSegment, secondSegment), equalTo(absoluteSegments(firstSegmentValue, secondSegmentValue)));
-        assertThat(absoluteSegments(firstSegment, secondSegment).hashCode(), equalTo(absoluteSegments(firstSegmentValue, secondSegmentValue).hashCode()));
+        assertThat(AbsoluteSegments.segments(firstSegment, secondSegment), equalTo(AbsoluteSegments.segments(firstSegmentValue, secondSegmentValue)));
+        assertThat(AbsoluteSegments.segments(firstSegment, secondSegment).hashCode(), equalTo(AbsoluteSegments.segments(firstSegmentValue, secondSegmentValue).hashCode()));
     }
 
     @Test
@@ -53,40 +53,40 @@ public class AbsoluteSegmentsTest {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
         Segment[] segments = {firstSegment, secondSegment};
-        AbsoluteSegments absoluteSegments = Segments.absoluteSegments(segments);
+        AbsoluteSegments absoluteSegments = Segments.segments(segments);
         segments[0] = aSegment();
         assertThat(absoluteSegments.asString(true), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
     public void aSegmentsIsNotEqualToAnotherSegmentsWithDifferentMembers() throws Exception {
-        assertThat(absoluteSegments(aSegment(), aSegment()), not(equalTo(absoluteSegments(aSegment(), aSegment()))));
+        assertThat(AbsoluteSegments.segments(aSegment(), aSegment()), not(equalTo(AbsoluteSegments.segments(aSegment(), aSegment()))));
     }
 
     @Test
     public void aSegmentsToStringIsCorrect() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(absoluteSegments(firstSegment, secondSegment).toString(), equalTo("[" + firstSegment + ", " + secondSegment + "]"));
+        assertThat(AbsoluteSegments.segments(firstSegment, secondSegment).toString(), equalTo("[" + firstSegment + ", " + secondSegment + "]"));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() throws Exception {
-        assertThat(absoluteSegments(EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
+        assertThat(AbsoluteSegments.segments(EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartUnsupplied() throws Exception {
-        assertThat(absoluteSegments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(AbsoluteSegments.segments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartNonEmpty() throws Exception {
-        assertThat(absoluteSegments(aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(AbsoluteSegments.segments(aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
     public void removesDotSegments() throws Exception {
-        assertThat(absoluteSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(absoluteSegments(segment("a"), segment("g"))));
+        assertThat(AbsoluteSegments.segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(AbsoluteSegments.segments(segment("a"), segment("g"))));
     }
 }

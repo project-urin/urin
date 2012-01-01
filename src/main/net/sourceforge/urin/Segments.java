@@ -22,7 +22,7 @@ public abstract class Segments {
         return new EmptySegments();
     }
 
-    public static Segments relativeSegments(final String firstSegment, final String... segments) {
+    public static Segments rootlessSegments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
         segmentList.add(segment(firstSegment));
         for (String segment : segments) {
@@ -31,15 +31,15 @@ public abstract class Segments {
         return new RelativeSegments(segmentList);
     }
 
-    public static Segments relativeSegments(final Segment... segments) {
+    public static RelativeSegments rootlessSegments(final Segment... segments) {
         return new RelativeSegments(asList(segments));
     }
 
-    public static Segments relativeSegments(final Iterable<Segment> segments) {
+    public static Segments rootlessSegments(final Iterable<Segment> segments) {
         return new RelativeSegments(segments);
     }
 
-    public static AbsoluteSegments absoluteSegments(final String firstSegment, final String... segments) {
+    public static AbsoluteSegments segments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
         segmentList.add(segment(firstSegment));
         for (String segment : segments) {
@@ -48,11 +48,11 @@ public abstract class Segments {
         return new AbsoluteSegments(segmentList);
     }
 
-    public static AbsoluteSegments absoluteSegments(final Segment... segments) {
+    public static AbsoluteSegments segments(final Segment... segments) {
         return new AbsoluteSegments(asList(segments));
     }
 
-    public static AbsoluteSegments absoluteSegments(final Iterable<Segment> segments) {
+    public static AbsoluteSegments segments(final Iterable<Segment> segments) {
         return new AbsoluteSegments(segments);
     }
 

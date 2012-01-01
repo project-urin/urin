@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,9 +10,9 @@
 
 package net.sourceforge.urin.http;
 
+import net.sourceforge.urin.AbsoluteSegments;
 import org.junit.Test;
 
-import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.scheme.Http.*;
@@ -22,16 +22,16 @@ import static org.junit.Assert.assertThat;
 public class HttpExamplesTest {
     @Test
     public void canGenerateAnHttpUriWithoutQueryParameters() throws Exception {
-        assertThat(http(registeredName("urin.sourceforge.net"), absoluteSegments("javadoc")).asString(), equalTo("http://urin.sourceforge.net/javadoc"));
+        assertThat(http(registeredName("urin.sourceforge.net"), AbsoluteSegments.segments("javadoc")).asString(), equalTo("http://urin.sourceforge.net/javadoc"));
     }
 
     @Test
     public void canGenerateAnHttpUriWithQueryParameters() throws Exception {
-        assertThat(http(registeredName("urin.sourceforge.net"), absoluteSegments("javadoc"), queryParameters(queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
+        assertThat(http(registeredName("urin.sourceforge.net"), AbsoluteSegments.segments("javadoc"), queryParameters(queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
     }
 
     @Test
     public void canGenerateAnHttpUriWithAFragment() throws Exception {
-        assertThat(http(registeredName("urin.sourceforge.net"), absoluteSegments("javadoc"), fragment("the first bit")).asString(), equalTo("http://urin.sourceforge.net/javadoc#the%20first%20bit"));
+        assertThat(http(registeredName("urin.sourceforge.net"), AbsoluteSegments.segments("javadoc"), fragment("the first bit")).asString(), equalTo("http://urin.sourceforge.net/javadoc#the%20first%20bit"));
     }
 }

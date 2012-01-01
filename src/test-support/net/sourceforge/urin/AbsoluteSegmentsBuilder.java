@@ -23,6 +23,6 @@ public class AbsoluteSegmentsBuilder {
         for (int i = 0; i < segments.length; i++) {
             segments[i] = aSegment();
         }
-        return Segments.absoluteSegments(segments);
+        return Segments.segments(segments);
     }
 }

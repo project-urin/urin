@@ -33,9 +33,4 @@ public class EmptySegmentsTest {
         assertThat(emptySegments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
-    @Test
-    public void correctlyIdentifiesFirstPartDoesNotContainColon() throws Exception {
-        assertThat(emptySegments().firstPartIsSuppliedButContainsColon(), equalTo(false));
-    }
-
 }

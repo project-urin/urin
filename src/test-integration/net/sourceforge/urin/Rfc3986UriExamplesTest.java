@@ -14,7 +14,6 @@ import org.junit.Test;
 
 import java.net.URI;
 
-import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
@@ -22,9 +21,6 @@ import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.Port.port;
-import static net.sourceforge.urin.RelativeReference.relativeReferenceAbsolute;
-import static net.sourceforge.urin.RelativeReference.relativeReferenceRootless;
-import static net.sourceforge.urin.RelativeSegments.relativeSegments;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.Urin.urin;
@@ -39,7 +35,7 @@ public class Rfc3986UriExamplesTest {
                 scheme("ftp"),
                 hierarchicalPart(
                         authority(registeredName("ftp.is.co.za")),
-                        Segments.absoluteSegments(segment("rfc"), segment("rfc1808.txt")))
+                        Segments.segments(segment("rfc"), segment("rfc1808.txt")))
         );
         assertThat(urin.asString(), equalTo("ftp://ftp.is.co.za/rfc/rfc1808.txt"));
         assertThat(urin.asUri(), equalTo(new URI("ftp://ftp.is.co.za/rfc/rfc1808.txt")));
@@ -51,7 +47,7 @@ public class Rfc3986UriExamplesTest {
                 scheme("http"),
                 hierarchicalPart(
                         authority(registeredName("www.ietf.org")),
-                        Segments.absoluteSegments(segment("rfc"), segment("rfc2396.txt")))
+                        Segments.segments(segment("rfc"), segment("rfc2396.txt")))
         );
         assertThat(urin.asString(), equalTo("http://www.ietf.org/rfc/rfc2396.txt"));
         assertThat(urin.asUri(), equalTo(new URI("http://www.ietf.org/rfc/rfc2396.txt")));
@@ -63,7 +59,7 @@ public class Rfc3986UriExamplesTest {
                 scheme("ldap"),
                 hierarchicalPart(
                         authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
-                        absoluteSegments(segment("c=GB"))),
+                        AbsoluteSegments.segments(segment("c=GB"))),
                 Query.query("objectClass?one")
         );
         assertThat(urin.asString(), equalTo("ldap://[2001:db8::7]/c=GB?objectClass?one"));
@@ -74,21 +70,21 @@ public class Rfc3986UriExamplesTest {
     public void mailtoExample() throws Exception {
         Urin urin = urin(
                 scheme("mailto"),
-                HierarchicalPart.hierarchicalPart(relativeSegments(segment("John.Doe@example.com"))));
+                HierarchicalPart.hierarchicalPart(RelativeSegments.rootlessSegments(segment("John.Doe@example.com"))));
         assertThat(urin.asString(), equalTo("mailto:John.Doe@example.com"));
         assertThat(urin.asUri(), equalTo(new URI("mailto:John.Doe@example.com")));
     }
 
     @Test
     public void newsExample() throws Exception {
-        Urin urin = urin(scheme("news"), HierarchicalPart.hierarchicalPart(relativeSegments(segment("comp.infosystems.www.servers.unix"))));
+        Urin urin = urin(scheme("news"), HierarchicalPart.hierarchicalPart(RelativeSegments.rootlessSegments(segment("comp.infosystems.www.servers.unix"))));
         assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
         assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
     }
 
     @Test
     public void telExample() throws Exception {
-        Urin urin = urin(scheme("tel"), HierarchicalPart.hierarchicalPart(relativeSegments(segment("+1-816-555-1212"))));
+        Urin urin = urin(scheme("tel"), HierarchicalPart.hierarchicalPart(RelativeSegments.rootlessSegments(segment("+1-816-555-1212"))));
         assertThat(urin.asString(), equalTo("tel:+1-816-555-1212"));
         assertThat(urin.asUri(), equalTo(new URI("tel:+1-816-555-1212")));
     }
@@ -99,7 +95,7 @@ public class Rfc3986UriExamplesTest {
                 scheme("telnet"),
                 hierarchicalPart(
                         authority(ipV4Address(octet(192), octet(0), octet(2), octet(16)), port("80")),
-                        absoluteSegments())
+                        AbsoluteSegments.segments())
         );
         assertThat(urin.asString(), equalTo("telnet://192.0.2.16:80/"));
         assertThat(urin.asUri(), equalTo(new URI("telnet://192.0.2.16:80/")));
@@ -107,7 +103,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void urnExample() throws Exception {
-        Urin urin = urin(scheme("urn"), HierarchicalPart.hierarchicalPart(relativeSegments(segment("oasis:names:specification:docbook:dtd:xml:4.1.2"))));
+        Urin urin = urin(scheme("urn"), HierarchicalPart.hierarchicalPart(RelativeSegments.rootlessSegments(segment("oasis:names:specification:docbook:dtd:xml:4.1.2"))));
         assertThat(urin.asString(), equalTo("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"));
         assertThat(urin.asUri(), equalTo(new URI("urn:oasis:names:specification:docbook:dtd:xml:4.1.2")));
     }
@@ -115,20 +111,20 @@ public class Rfc3986UriExamplesTest {
     @Test
     public void removeDotSegmentsExample1() throws Exception {
         assertThat(
-                relativeReferenceAbsolute(absoluteSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asString(),
+                RelativeReference.relativeReference(AbsoluteSegments.segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asString(),
                 equalTo("/a/g"));
         assertThat(
-                relativeReferenceAbsolute(absoluteSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asUri(),
+                RelativeReference.relativeReference(AbsoluteSegments.segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asUri(),
                 equalTo(new URI("/a/g")));
     }
 
     @Test
     public void removeDotSegmentsExample2() throws Exception {
         assertThat(
-                relativeReferenceRootless(relativeSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asString(),
+                RelativeReference.relativeReference(RelativeSegments.rootlessSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asString(),
                 equalTo("mid/6"));
         assertThat(
-                relativeReferenceRootless(relativeSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asUri(),
+                RelativeReference.relativeReference(RelativeSegments.rootlessSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asUri(),
                 equalTo(new URI("mid/6")));
     }
 }

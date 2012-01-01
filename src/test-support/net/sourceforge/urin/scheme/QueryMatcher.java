@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,12 +10,12 @@
 
 package net.sourceforge.urin.scheme;
 
+import net.sourceforge.urin.AbsoluteSegments;
 import net.sourceforge.urin.Query;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
-import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
 import static net.sourceforge.urin.HostBuilder.anIpV4Address;
 import static net.sourceforge.urin.scheme.Http.http;
 
@@ -24,7 +24,7 @@ public class QueryMatcher {
         return new TypeSafeDiagnosingMatcher<Query>() {
             @Override
             protected boolean matchesSafely(final Query query, final Description description) {
-                String rawQuery = http(anIpV4Address(), absoluteSegments(), query).asUri().getRawQuery();
+                String rawQuery = http(anIpV4Address(), AbsoluteSegments.segments(), query).asUri().getRawQuery();
                 boolean matches = expected.matches(rawQuery);
                 if (!matches) {
                     description.appendText("got a Query that as uri String is ").appendValue(rawQuery);

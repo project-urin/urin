@@ -23,7 +23,7 @@ public class SegmentsBuilder {
         for (int i = 0; i < tailSegments.length; i++) {
             tailSegments[i] = aSegment();
         }
-        return Segments.absoluteSegments(tailSegments);
+        return Segments.segments(tailSegments);
     }
 
     public static RelativeSegments relativeSegments() {
@@ -32,7 +32,7 @@ public class SegmentsBuilder {
         for (int i = 0; i < tailSegments.length; i++) {
             tailSegments[i] = aSegment();
         }
-        return RelativeSegments.relativeSegments(tailSegments);
+        return RelativeSegments.rootlessSegments(tailSegments);
     }
 
     public static Segments segments() {
