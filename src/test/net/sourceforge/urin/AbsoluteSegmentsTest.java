@@ -49,6 +49,16 @@ public class AbsoluteSegmentsTest {
     }
 
     @Test
+    public void aSegmentsUsingSegmentVarargsIsImmutable() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        Segment[] segments = {firstSegment, secondSegment};
+        AbsoluteSegments absoluteSegments = Segments.absoluteSegments(segments);
+        segments[0] = aSegment();
+        assertThat(absoluteSegments.asString(true), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
     public void aSegmentsIsNotEqualToAnotherSegmentsWithDifferentMembers() throws Exception {
         assertThat(absoluteSegments(aSegment(), aSegment()), not(equalTo(absoluteSegments(aSegment(), aSegment()))));
     }

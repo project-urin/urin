@@ -10,8 +10,6 @@
 
 package net.sourceforge.urin;
 
-import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
-import static net.sourceforge.urin.RelativeSegments.relativeSegments;
 import static net.sourceforge.urin.Segments.emptySegments;
 
 public abstract class HierarchicalPart {
@@ -29,33 +27,14 @@ public abstract class HierarchicalPart {
         return new HierarchicalPartWithAuthority(authority, emptySegments());
     }
 
-    public static HierarchicalPart hierarchicalPartRootless(final Segment... segments) {
-        return hierarchicalPartRootless(relativeSegments(segments));
-    }
-
-    public static HierarchicalPart hierarchicalPartRootless(final RelativeSegments segments) {
+    public static HierarchicalPart hierarchicalPart(final Segments segments) {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
         return new HierarchicalPartNoAuthority(segments);
     }
 
-    public static HierarchicalPart hierarchicalPartAbsolute(final Segment... segments) {
-        return hierarchicalPartAbsolute(absoluteSegments(segments));
-    }
-
-    public static HierarchicalPart hierarchicalPartAbsolute(final AbsoluteSegments segments) {
-        if (segments.firstPartIsSuppliedButIsEmpty()) {
-            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
-        }
-        return new HierarchicalPartNoAuthority(segments);
-    }
-
-    public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final Segment... segments) {
-        return hierarchicalPartAbsolute(authority, absoluteSegments(segments));
-    }
-
-    public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final AbsoluteSegments segments) {
+    public static HierarchicalPart hierarchicalPart(final Authority authority, final AbsoluteSegments segments) {
         return new HierarchicalPartWithAuthority(authority, segments);
     }
 

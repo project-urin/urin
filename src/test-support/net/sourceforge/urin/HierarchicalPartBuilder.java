@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -13,8 +13,9 @@ package net.sourceforge.urin;
 import java.util.Random;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
-import static net.sourceforge.urin.HierarchicalPart.*;
-import static net.sourceforge.urin.SegmentBuilder.aSegment;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.SegmentsBuilder.absoluteSegments;
+import static net.sourceforge.urin.SegmentsBuilder.segments;
 
 public class HierarchicalPartBuilder {
 
@@ -22,7 +23,7 @@ public class HierarchicalPartBuilder {
 
     public static HierarchicalPart aHierarchicalPart() {
         final HierarchicalPart hierarchicalPart;
-        switch (RANDOM.nextInt(5)) {
+        switch (RANDOM.nextInt(4)) {
             case 0:
                 hierarchicalPart = HierarchicalPart.hierarchicalPart();
                 break;
@@ -30,12 +31,9 @@ public class HierarchicalPartBuilder {
                 hierarchicalPart = aHierarchicalPartWithAuthorityAndNoPath();
                 break;
             case 2:
-                hierarchicalPart = aHierarchicalPartRootlessWithNoAuthority();
+                hierarchicalPart = aHierarchicalPartWithNoAuthority();
                 break;
             case 3:
-                hierarchicalPart = aHierarchicalPartAbsoluteWithNoAuthority();
-                break;
-            case 4:
                 hierarchicalPart = aHierarchicalPartAbsoluteWithAuthority();
                 break;
             default:
@@ -48,24 +46,12 @@ public class HierarchicalPartBuilder {
         return hierarchicalPart(anAuthority());
     }
 
-    public static HierarchicalPart aHierarchicalPartRootlessWithNoAuthority() {
-        return hierarchicalPartRootless(segments(RANDOM.nextInt(5)));
-    }
-
-    public static HierarchicalPart aHierarchicalPartAbsoluteWithNoAuthority() {
-        return hierarchicalPartAbsolute(segments(RANDOM.nextInt(5)));
+    public static HierarchicalPart aHierarchicalPartWithNoAuthority() {
+        return hierarchicalPart(segments());
     }
 
     public static HierarchicalPart aHierarchicalPartAbsoluteWithAuthority() {
-        return hierarchicalPartAbsolute(anAuthority(), segments(RANDOM.nextInt(5)));
-    }
-
-    private static Segment[] segments(final int numberOfSegments) {
-        Segment[] tailSegments = new Segment[numberOfSegments];
-        for (int i = 0; i < tailSegments.length; i++) {
-            tailSegments[i] = aSegment();
-        }
-        return tailSegments;
+        return HierarchicalPart.hierarchicalPart(anAuthority(), absoluteSegments());
     }
 
 }

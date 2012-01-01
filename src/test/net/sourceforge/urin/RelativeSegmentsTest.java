@@ -50,6 +50,16 @@ public class RelativeSegmentsTest {
     }
 
     @Test
+    public void aSegmentsUsingSegmentVarargsIsImmutable() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        Segment[] segments = {firstSegment, secondSegment};
+        RelativeSegments relativeSegments = Segments.relativeSegments(segments);
+        segments[0] = aSegment();
+        assertThat(relativeSegments.asString(true), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
     public void aSegmentsIsNotEqualToAnotherSegmentsWithDifferentMembers() throws Exception {
         assertThat(relativeSegments(aSegment(), aSegment()), not(equalTo(relativeSegments(aSegment(), aSegment()))));
     }

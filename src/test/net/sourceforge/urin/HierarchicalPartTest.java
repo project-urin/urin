@@ -13,10 +13,13 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
-import static net.sourceforge.urin.HierarchicalPart.*;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
+import static net.sourceforge.urin.Segments.absoluteSegments;
+import static net.sourceforge.urin.Segments.relativeSegments;
+import static net.sourceforge.urin.SegmentsBuilder.segments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -41,9 +44,8 @@ public class HierarchicalPartTest {
 
     @Test
     public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment).asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
+        Segments segments = segments();
+        assertThat(hierarchicalPart(segments).asString(), equalTo(segments.asString(true)));
     }
 
     @Test
@@ -51,7 +53,7 @@ public class HierarchicalPartTest {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
         try {
-            hierarchicalPartAbsolute(firstSegment, secondSegment).asString();
+            hierarchicalPart(absoluteSegments(firstSegment, secondSegment)).asString();
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
@@ -60,56 +62,38 @@ public class HierarchicalPartTest {
 
     @Test
     public void rejectsNullInFactoryForASimplePath() throws Exception {
-        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Segment firstSegment = null;
-                hierarchicalPartAbsolute(firstSegment, aSegment());
-            }
-        });
-        assertThrowsNullPointerException("Null second segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                hierarchicalPartAbsolute(aSegment(), null);
+                Segments segments = null;
+                hierarchicalPart(segments);
             }
         });
     }
 
     @Test
     public void aSimpleAbsolutePathIsEqualToAnotherWithTheSamePath() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment), equalTo(hierarchicalPartAbsolute(firstSegment, secondSegment)));
-        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment).hashCode(), equalTo(hierarchicalPartAbsolute(firstSegment, secondSegment).hashCode()));
+        Segments segments = segments();
+        assertThat(hierarchicalPart(segments), equalTo(hierarchicalPart(segments)));
+        assertThat(hierarchicalPart(segments).hashCode(), equalTo(hierarchicalPart(segments).hashCode()));
     }
 
     @Test
     public void aSimpleAbsolutePathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(hierarchicalPartAbsolute(aSegment(), aSegment()), not(equalTo(hierarchicalPartAbsolute(aSegment(), aSegment()))));
+        assertThat(hierarchicalPart(segments()), not(equalTo(hierarchicalPart(segments()))));
     }
 
     @Test
     public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{segments=[" + firstSegment + ", " + secondSegment + "]}"));
+        Segments segments = segments();
+        assertThat(hierarchicalPart(segments).toString(), equalTo("HierarchicalPart{segments=" + segments + "}"));
     }
 
     @Test
     public void aSimpleRootlessPathAsStringReturnsThePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartRootless(firstSegment, secondSegment).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
-    }
-
-    @Test
-    public void aSimpleRootlessPathAsStringHasImmutableVarargs() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        Segment[] segments = {firstSegment, secondSegment};
-        HierarchicalPart hierarchicalPart = hierarchicalPartRootless(segments);
-        segments[0] = aSegment();
-        assertThat(hierarchicalPart.asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(hierarchicalPart(relativeSegments(firstSegment, secondSegment)).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
@@ -117,7 +101,7 @@ public class HierarchicalPartTest {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
         try {
-            hierarchicalPartRootless(firstSegment, secondSegment).asString();
+            hierarchicalPart(relativeSegments(firstSegment, secondSegment)).asString();
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
@@ -128,30 +112,20 @@ public class HierarchicalPartTest {
     public void aSimpleRootlessPathIsEqualToAnotherWithTheSamePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartRootless(firstSegment, secondSegment), equalTo(hierarchicalPartRootless(firstSegment, secondSegment)));
-        assertThat(hierarchicalPartRootless(firstSegment, secondSegment).hashCode(), equalTo(hierarchicalPartRootless(firstSegment, secondSegment).hashCode()));
+        assertThat(hierarchicalPart(relativeSegments(firstSegment, secondSegment)), equalTo(hierarchicalPart(relativeSegments(firstSegment, secondSegment))));
+        assertThat(hierarchicalPart(relativeSegments(firstSegment, secondSegment)).hashCode(), equalTo(hierarchicalPart(relativeSegments(firstSegment, secondSegment)).hashCode()));
     }
 
     @Test
     public void aSimpleRootlessPathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(hierarchicalPartRootless(aSegment(), aSegment()), not(equalTo(hierarchicalPartRootless(aSegment(), aSegment()))));
+        assertThat(hierarchicalPart(relativeSegments(aSegment(), aSegment())), not(equalTo(hierarchicalPart(relativeSegments(aSegment(), aSegment())))));
     }
 
     @Test
     public void aSimpleRootlessPathToStringIsCorrect() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartRootless(firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{segments=[" + firstSegment + ", " + secondSegment + "]}"));
-    }
-
-    @Test
-    public void aSimpleAbsolutePathAsStringHasImmutableVarargs() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        Segment[] segments = {firstSegment, secondSegment};
-        HierarchicalPart hierarchicalPart = hierarchicalPartAbsolute(segments);
-        segments[0] = aSegment();
-        assertThat(hierarchicalPart.asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(hierarchicalPart(relativeSegments(firstSegment, secondSegment)).toString(), equalTo("HierarchicalPart{segments=[" + firstSegment + ", " + secondSegment + "]}"));
     }
 
     @Test
@@ -165,7 +139,8 @@ public class HierarchicalPartTest {
         assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                hierarchicalPart(null);
+                Authority authority = null;
+                hierarchicalPart(authority);
             }
         });
     }
@@ -193,7 +168,7 @@ public class HierarchicalPartTest {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(hierarchicalPart(authority, absoluteSegments(firstSegment, secondSegment)).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
@@ -202,7 +177,7 @@ public class HierarchicalPartTest {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
         Segment[] segments = {firstSegment, secondSegment};
-        HierarchicalPart hierarchicalPart = hierarchicalPartAbsolute(authority, segments);
+        HierarchicalPart hierarchicalPart = hierarchicalPart(authority, absoluteSegments(segments));
         segments[0] = aSegment();
         assertThat(hierarchicalPart.asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
@@ -210,23 +185,21 @@ public class HierarchicalPartTest {
     @Test
     public void aHierarchicalPartWithAuthorityAndPathIsEqualToAnotherWithTheSameAuthorityAndPath() throws Exception {
         Authority authority = anAuthority();
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment), equalTo(hierarchicalPartAbsolute(authority, firstSegment, secondSegment)));
-        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).hashCode(), equalTo(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).hashCode()));
+        AbsoluteSegments absoluteSegments = absoluteSegments();
+        assertThat(hierarchicalPart(authority, absoluteSegments), equalTo(hierarchicalPart(authority, absoluteSegments)));
+        assertThat(hierarchicalPart(authority, absoluteSegments).hashCode(), equalTo(hierarchicalPart(authority, absoluteSegments).hashCode()));
     }
 
     @Test
     public void aHierarchicalPartWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPath() throws Exception {
-        assertThat(hierarchicalPartAbsolute(anAuthority(), aSegment(), aSegment()), not(equalTo(hierarchicalPartAbsolute(anAuthority(), aSegment(), aSegment()))));
+        assertThat(hierarchicalPart(anAuthority(), absoluteSegments()), not(equalTo(hierarchicalPart(anAuthority(), absoluteSegments()))));
     }
 
     @Test
     public void aHierarchicalPartWithAuthorityAndPathToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{authority=" + authority + ", segments=[" + firstSegment + ", " + secondSegment + "]}"));
+        AbsoluteSegments absoluteSegments = absoluteSegments();
+        assertThat(hierarchicalPart(authority, absoluteSegments).toString(), equalTo("HierarchicalPart{authority=" + authority + ", segments=" + absoluteSegments + "}"));
     }
 
     @Test
@@ -235,19 +208,13 @@ public class HierarchicalPartTest {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 Authority authority = null;
-                hierarchicalPartAbsolute(authority, aSegment(), aSegment());
+                hierarchicalPart(authority, absoluteSegments());
             }
         });
-        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                hierarchicalPartAbsolute(anAuthority(), null, aSegment());
-            }
-        });
-        assertThrowsNullPointerException("Null second segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                hierarchicalPartAbsolute(anAuthority(), aSegment(), null);
+                hierarchicalPart(anAuthority(), null);
             }
         });
     }

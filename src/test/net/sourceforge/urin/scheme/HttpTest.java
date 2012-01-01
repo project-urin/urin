@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -16,12 +16,13 @@ import org.junit.Test;
 import static net.sourceforge.urin.AbsoluteSegmentsBuilder.anAbsoluteSegments;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPartAbsolute;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.Scheme.scheme;
+import static net.sourceforge.urin.Segments.absoluteSegments;
 import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.scheme.Http.*;
 import static net.sourceforge.urin.scheme.QueryMatcher.convertsToQueryString;
@@ -32,21 +33,21 @@ public class HttpTest {
     @Test
     public void httpWithNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        assertThat(http(host), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host)))));
+        assertThat(http(host), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), absoluteSegments()))));
     }
 
     @Test
     public void httpWithPortButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
-        assertThat(http(host, port), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port)))));
+        assertThat(http(host, port), equalTo(urin(scheme("http"), hierarchicalPart(authority(host, port), absoluteSegments()))));
     }
 
     @Test
     public void httpWithQueryButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Query query = aQuery();
-        assertThat(http(host, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host)), query)));
+        assertThat(http(host, query), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), absoluteSegments()), query)));
     }
 
     @Test
@@ -54,21 +55,21 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
         Query query = aQuery();
-        assertThat(http(host, port, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port)), query)));
+        assertThat(http(host, port, query), equalTo(urin(scheme("http"), hierarchicalPart(authority(host, port), absoluteSegments()), query)));
     }
 
     @Test
     public void port80IsNormalisedAway() throws Exception {
         Host host = aHost();
         Port port = port(80);
-        assertThat(http(host, port), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host)))));
+        assertThat(http(host, port), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), absoluteSegments()))));
     }
 
     @Test
     public void httpWithPathButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsoluteSegments segments = anAbsoluteSegments();
-        assertThat(http(host, segments), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments))));
+        assertThat(http(host, segments), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), segments))));
     }
 
     @Test
@@ -76,7 +77,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
         AbsoluteSegments segments = anAbsoluteSegments();
-        assertThat(http(host, port, segments), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port), segments))));
+        assertThat(http(host, port, segments), equalTo(urin(scheme("http"), hierarchicalPart(authority(host, port), segments))));
     }
 
     @Test
@@ -84,7 +85,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = port(80);
         AbsoluteSegments segments = anAbsoluteSegments();
-        assertThat(http(host, port, segments), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments))));
+        assertThat(http(host, port, segments), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), segments))));
     }
 
     @Test
@@ -92,7 +93,7 @@ public class HttpTest {
         Host host = aHost();
         AbsoluteSegments segments = anAbsoluteSegments();
         Query query = aQuery();
-        assertThat(http(host, segments, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), query)));
+        assertThat(http(host, segments, query), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), segments), query)));
     }
 
     @Test
@@ -101,7 +102,7 @@ public class HttpTest {
         AbsoluteSegments segments = anAbsoluteSegments();
         Query query = aQuery();
         Port port = aPortDifferentTo(port(80));
-        assertThat(http(host, port, segments, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port), segments), query)));
+        assertThat(http(host, port, segments, query), equalTo(urin(scheme("http"), hierarchicalPart(authority(host, port), segments), query)));
     }
 
     @Test
@@ -110,14 +111,14 @@ public class HttpTest {
         AbsoluteSegments segments = anAbsoluteSegments();
         Query query = aQuery();
         Port port = port(80);
-        assertThat(http(host, port, segments, query), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), query)));
+        assertThat(http(host, port, segments, query), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), segments), query)));
     }
 
     @Test
     public void httpWithOnlyFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Fragment fragment = aFragment();
-        assertThat(http(host, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host)), fragment)));
+        assertThat(http(host, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), absoluteSegments()), fragment)));
     }
 
     @Test
@@ -125,7 +126,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
         Fragment fragment = aFragment();
-        assertThat(http(host, port, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port)), fragment)));
+        assertThat(http(host, port, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host, port), absoluteSegments()), fragment)));
     }
 
     @Test
@@ -133,7 +134,7 @@ public class HttpTest {
         Host host = aHost();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(http(host, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host)), query, fragment)));
+        assertThat(http(host, query, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), absoluteSegments()), query, fragment)));
     }
 
     @Test
@@ -142,7 +143,7 @@ public class HttpTest {
         Port port = aPortDifferentTo(port(80));
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(http(host, port, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port)), query, fragment)));
+        assertThat(http(host, port, query, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host, port), absoluteSegments()), query, fragment)));
     }
 
     @Test
@@ -150,7 +151,7 @@ public class HttpTest {
         Host host = aHost();
         AbsoluteSegments segments = anAbsoluteSegments();
         Fragment fragment = aFragment();
-        assertThat(http(host, segments, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), fragment)));
+        assertThat(http(host, segments, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), segments), fragment)));
     }
 
     @Test
@@ -159,7 +160,7 @@ public class HttpTest {
         Port port = aPortDifferentTo(port(80));
         AbsoluteSegments segments = anAbsoluteSegments();
         Fragment fragment = aFragment();
-        assertThat(http(host, port, segments, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port), segments), fragment)));
+        assertThat(http(host, port, segments, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host, port), segments), fragment)));
     }
 
     @Test
@@ -168,7 +169,7 @@ public class HttpTest {
         Port port = port(80);
         AbsoluteSegments segments = anAbsoluteSegments();
         Fragment fragment = aFragment();
-        assertThat(http(host, port, segments, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), fragment)));
+        assertThat(http(host, port, segments, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), segments), fragment)));
     }
 
     @Test
@@ -177,7 +178,7 @@ public class HttpTest {
         AbsoluteSegments segments = anAbsoluteSegments();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(http(host, segments, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), query, fragment)));
+        assertThat(http(host, segments, query, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), segments), query, fragment)));
     }
 
     @Test
@@ -187,7 +188,7 @@ public class HttpTest {
         Query query = aQuery();
         Port port = aPortDifferentTo(port(80));
         Fragment fragment = aFragment();
-        assertThat(http(host, port, segments, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host, port), segments), query, fragment)));
+        assertThat(http(host, port, segments, query, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host, port), segments), query, fragment)));
     }
 
     @Test
@@ -197,7 +198,7 @@ public class HttpTest {
         Query query = aQuery();
         Port port = port(80);
         Fragment fragment = aFragment();
-        assertThat(http(host, port, segments, query, fragment), equalTo(urin(scheme("http"), hierarchicalPartAbsolute(authority(host), segments), query, fragment)));
+        assertThat(http(host, port, segments, query, fragment), equalTo(urin(scheme("http"), hierarchicalPart(authority(host), segments), query, fragment)));
     }
 
     @Test
@@ -213,28 +214,28 @@ public class HttpTest {
     @Test
     public void httpsWithNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        assertThat(https(host), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host)))));
+        assertThat(https(host), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), absoluteSegments()))));
     }
 
     @Test
     public void httpsWithPortButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
-        assertThat(https(host, port), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port)))));
+        assertThat(https(host, port), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), absoluteSegments()))));
     }
 
     @Test
     public void port443IsNormalisedAway() throws Exception {
         Host host = aHost();
         Port port = port(443);
-        assertThat(https(host, port), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host)))));
+        assertThat(https(host, port), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), absoluteSegments()))));
     }
 
     @Test
     public void httpsWithPathButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsoluteSegments segments = anAbsoluteSegments();
-        assertThat(https(host, segments), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments))));
+        assertThat(https(host, segments), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), segments))));
     }
 
     @Test
@@ -242,7 +243,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
         AbsoluteSegments segments = anAbsoluteSegments();
-        assertThat(https(host, port, segments), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port), segments))));
+        assertThat(https(host, port, segments), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), segments))));
     }
 
     @Test
@@ -250,7 +251,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = port(443);
         AbsoluteSegments segments = anAbsoluteSegments();
-        assertThat(https(host, port, segments), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments))));
+        assertThat(https(host, port, segments), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), segments))));
     }
 
     @Test
@@ -258,7 +259,7 @@ public class HttpTest {
         Host host = aHost();
         AbsoluteSegments segments = anAbsoluteSegments();
         Query query = aQuery();
-        assertThat(https(host, segments, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments), query)));
+        assertThat(https(host, segments, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), segments), query)));
     }
 
     @Test
@@ -267,14 +268,14 @@ public class HttpTest {
         AbsoluteSegments segments = anAbsoluteSegments();
         Query query = aQuery();
         Port port = aPortDifferentTo(port(443));
-        assertThat(https(host, port, segments, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port), segments), query)));
+        assertThat(https(host, port, segments, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), segments), query)));
     }
 
     @Test
     public void httpsWithQueryButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Query query = aQuery();
-        assertThat(https(host, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host)), query)));
+        assertThat(https(host, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), absoluteSegments()), query)));
     }
 
     @Test
@@ -282,7 +283,7 @@ public class HttpTest {
         Host host = aHost();
         Query query = aQuery();
         Port port = aPortDifferentTo(port(443));
-        assertThat(https(host, port, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port)), query)));
+        assertThat(https(host, port, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), absoluteSegments()), query)));
     }
 
     @Test
@@ -291,14 +292,14 @@ public class HttpTest {
         AbsoluteSegments segments = anAbsoluteSegments();
         Query query = aQuery();
         Port port = port(443);
-        assertThat(https(host, port, segments, query), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments), query)));
+        assertThat(https(host, port, segments, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), segments), query)));
     }
 
     @Test
     public void httpsWithJustFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Fragment fragment = aFragment();
-        assertThat(https(host, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host)), fragment)));
+        assertThat(https(host, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), absoluteSegments()), fragment)));
     }
 
     @Test
@@ -306,7 +307,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
         Fragment fragment = aFragment();
-        assertThat(https(host, port, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port)), fragment)));
+        assertThat(https(host, port, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), absoluteSegments()), fragment)));
     }
 
     @Test
@@ -314,7 +315,7 @@ public class HttpTest {
         Host host = aHost();
         AbsoluteSegments segments = anAbsoluteSegments();
         Fragment fragment = aFragment();
-        assertThat(https(host, segments, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments), fragment)));
+        assertThat(https(host, segments, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), segments), fragment)));
     }
 
     @Test
@@ -323,7 +324,7 @@ public class HttpTest {
         Port port = aPortDifferentTo(port(443));
         AbsoluteSegments segments = anAbsoluteSegments();
         Fragment fragment = aFragment();
-        assertThat(https(host, port, segments, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port), segments), fragment)));
+        assertThat(https(host, port, segments, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), segments), fragment)));
     }
 
     @Test
@@ -332,7 +333,7 @@ public class HttpTest {
         Port port = port(443);
         AbsoluteSegments segments = anAbsoluteSegments();
         Fragment fragment = aFragment();
-        assertThat(https(host, port, segments, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments), fragment)));
+        assertThat(https(host, port, segments, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), segments), fragment)));
     }
 
     @Test
@@ -341,7 +342,7 @@ public class HttpTest {
         AbsoluteSegments segments = anAbsoluteSegments();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(https(host, segments, query, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments), query, fragment)));
+        assertThat(https(host, segments, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), segments), query, fragment)));
     }
 
     @Test
@@ -351,7 +352,7 @@ public class HttpTest {
         Query query = aQuery();
         Port port = aPortDifferentTo(port(443));
         Fragment fragment = aFragment();
-        assertThat(https(host, port, segments, query, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port), segments), query, fragment)));
+        assertThat(https(host, port, segments, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), segments), query, fragment)));
     }
 
     @Test
@@ -359,7 +360,7 @@ public class HttpTest {
         Host host = aHost();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(https(host, query, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host)), query, fragment)));
+        assertThat(https(host, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), absoluteSegments()), query, fragment)));
     }
 
     @Test
@@ -368,7 +369,7 @@ public class HttpTest {
         Query query = aQuery();
         Port port = aPortDifferentTo(port(443));
         Fragment fragment = aFragment();
-        assertThat(https(host, port, query, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host, port)), query, fragment)));
+        assertThat(https(host, port, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), absoluteSegments()), query, fragment)));
     }
 
     @Test
@@ -378,7 +379,7 @@ public class HttpTest {
         Query query = aQuery();
         Port port = port(443);
         Fragment fragment = aFragment();
-        assertThat(https(host, port, segments, query, fragment), equalTo(urin(scheme("https"), hierarchicalPartAbsolute(authority(host), segments), query, fragment)));
+        assertThat(https(host, port, segments, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), segments), query, fragment)));
     }
 
 }
