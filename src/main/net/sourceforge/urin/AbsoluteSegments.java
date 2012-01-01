@@ -25,22 +25,19 @@ public class AbsoluteSegments extends Segments {
         for (String segment : segments) {
             segmentList.add(segment(segment));
         }
-        return new AbsoluteSegments(segmentList, false);
+        return new AbsoluteSegments(segmentList);
     }
 
     public static AbsoluteSegments absoluteSegments(final Segment... segments) {
-        return new AbsoluteSegments(asList(segments), false);
+        return new AbsoluteSegments(asList(segments));
     }
 
     public static AbsoluteSegments absoluteSegments(final Iterable<Segment> segments) {
-        return new AbsoluteSegments(segments, false);
+        return new AbsoluteSegments(segments);
     }
 
-    private AbsoluteSegments(final Iterable<Segment> segments, final boolean prefixWithDotSegment) {
+    private AbsoluteSegments(final Iterable<Segment> segments) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
-        if (prefixWithDotSegment) {
-            newSegments.add(DOT);
-        }
         for (Segment segment : segments) {
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
