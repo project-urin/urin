@@ -10,13 +10,9 @@
 
 package net.sourceforge.urin;
 
-public class EmptySegments extends Segments {
+class EmptySegments extends Segments {
 
-    public static EmptySegments emptySegments() {
-        return new EmptySegments();
-    }
-
-    private EmptySegments() {
+    EmptySegments() {
     }
 
     boolean firstPartIsSuppliedButIsEmpty() {

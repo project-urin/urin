@@ -11,8 +11,8 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
-import static net.sourceforge.urin.EmptySegments.emptySegments;
 import static net.sourceforge.urin.RelativeSegments.relativeSegments;
+import static net.sourceforge.urin.Segments.emptySegments;
 
 public abstract class HierarchicalPart {
 

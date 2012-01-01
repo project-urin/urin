@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -23,6 +23,6 @@ public class AbsoluteSegmentsBuilder {
         for (int i = 0; i < segments.length; i++) {
             segments[i] = aSegment();
         }
-        return AbsoluteSegments.absoluteSegments(segments);
+        return Segments.absoluteSegments(segments);
     }
 }

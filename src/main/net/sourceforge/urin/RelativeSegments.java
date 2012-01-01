@@ -10,33 +10,17 @@
 
 package net.sourceforge.urin;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.*;
 
-public class RelativeSegments extends Segments {
+class RelativeSegments extends Segments {
 
     private final Collection<Segment> segments;
 
-    public static RelativeSegments relativeSegments(final String firstSegment, final String... segments) {
-        final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
-        segmentList.add(segment(firstSegment));
-        for (String segment : segments) {
-            segmentList.add(segment(segment));
-        }
-        return new RelativeSegments(segmentList);
-    }
-
-    public static RelativeSegments relativeSegments(final Segment... segments) {
-        return new RelativeSegments(asList(segments));
-    }
-
-    public static RelativeSegments relativeSegments(final Iterable<Segment> segments) {
-        return new RelativeSegments(segments);
-    }
-
-    private RelativeSegments(final Iterable<Segment> segments) {
+    RelativeSegments(final Iterable<Segment> segments) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
         for (Segment segment : segments) {
             if (segment == null) {

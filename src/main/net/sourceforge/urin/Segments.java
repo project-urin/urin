@@ -10,7 +10,51 @@
 
 package net.sourceforge.urin;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static net.sourceforge.urin.Segment.segment;
+
 public abstract class Segments {
+
+    public static EmptySegments emptySegments() {
+        return new EmptySegments();
+    }
+
+    public static RelativeSegments relativeSegments(final String firstSegment, final String... segments) {
+        final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
+        segmentList.add(segment(firstSegment));
+        for (String segment : segments) {
+            segmentList.add(segment(segment));
+        }
+        return new RelativeSegments(segmentList);
+    }
+
+    public static RelativeSegments relativeSegments(final Segment... segments) {
+        return new RelativeSegments(asList(segments));
+    }
+
+    public static RelativeSegments relativeSegments(final Iterable<Segment> segments) {
+        return new RelativeSegments(segments);
+    }
+
+    public static AbsoluteSegments absoluteSegments(final String firstSegment, final String... segments) {
+        final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
+        segmentList.add(segment(firstSegment));
+        for (String segment : segments) {
+            segmentList.add(segment(segment));
+        }
+        return new AbsoluteSegments(segmentList);
+    }
+
+    public static AbsoluteSegments absoluteSegments(final Segment... segments) {
+        return new AbsoluteSegments(asList(segments));
+    }
+
+    public static AbsoluteSegments absoluteSegments(final Iterable<Segment> segments) {
+        return new AbsoluteSegments(segments);
+    }
 
     abstract boolean firstPartIsSuppliedButIsEmpty();
 

@@ -12,7 +12,7 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.EmptySegments.emptySegments;
+import static net.sourceforge.urin.Segments.emptySegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 

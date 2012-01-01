@@ -10,33 +10,17 @@
 
 package net.sourceforge.urin;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 
-import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.*;
 
 public class AbsoluteSegments extends Segments {
 
     private final Collection<Segment> segments;
 
-    public static AbsoluteSegments absoluteSegments(final String firstSegment, final String... segments) {
-        final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
-        segmentList.add(segment(firstSegment));
-        for (String segment : segments) {
-            segmentList.add(segment(segment));
-        }
-        return new AbsoluteSegments(segmentList);
-    }
-
-    public static AbsoluteSegments absoluteSegments(final Segment... segments) {
-        return new AbsoluteSegments(asList(segments));
-    }
-
-    public static AbsoluteSegments absoluteSegments(final Iterable<Segment> segments) {
-        return new AbsoluteSegments(segments);
-    }
-
-    private AbsoluteSegments(final Iterable<Segment> segments) {
+    AbsoluteSegments(final Iterable<Segment> segments) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
         for (Segment segment : segments) {
             if (segment == null) {
