@@ -40,10 +40,6 @@ public abstract class RelativeReference {
         return new RelativeReferenceNoAuthority(segments);
     }
 
-    public static RelativeReference relativeReferenceAbsolute(final Authority authority, final Segment... segments) {
-        return relativeReference(authority, AbsoluteSegments.segments(segments));
-    }
-
     public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments) {
         return new RelativeReferenceWithAuthority(authority, segments);
     }

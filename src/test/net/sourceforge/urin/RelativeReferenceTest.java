@@ -18,12 +18,12 @@ import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
-import static net.sourceforge.urin.RelativeReference.relativeReferenceAbsolute;
 import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.SegmentsBuilder.absoluteSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -185,40 +185,27 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
-    }
-
-    @Test
-    public void aRelativeReferenceWithAuthorityAndNonEmptyPathHasImmutableVarargs() throws Exception {
-        Authority authority = anAuthority();
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        Segment[] segments = {firstSegment, secondSegment};
-        RelativeReference relativeReference = relativeReferenceAbsolute(authority, segments);
-        segments[0] = aSegment();
-        assertThat(relativeReference.asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReference(authority, segments(firstSegment, secondSegment)).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathIsEqualToAnotherWithTheSameAuthorityAndPath() throws Exception {
         Authority authority = anAuthority();
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment), equalTo(relativeReferenceAbsolute(authority, firstSegment, secondSegment)));
-        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment).hashCode(), equalTo(relativeReferenceAbsolute(authority, firstSegment, secondSegment).hashCode()));
+        AbsoluteSegments absoluteSegments = absoluteSegments();
+        assertThat(relativeReference(authority, absoluteSegments), equalTo(relativeReference(authority, absoluteSegments)));
+        assertThat(relativeReference(authority, absoluteSegments).hashCode(), equalTo(relativeReference(authority, absoluteSegments).hashCode()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPath() throws Exception {
-        assertThat(relativeReferenceAbsolute(anAuthority(), aSegment(), aSegment()), not(equalTo(relativeReferenceAbsolute(anAuthority(), aSegment(), aSegment()))));
+        assertThat(relativeReference(anAuthority(), absoluteSegments()), not(equalTo(relativeReference(anAuthority(), absoluteSegments()))));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=[" + firstSegment + ", " + secondSegment + "]}"));
+        AbsoluteSegments absoluteSegments = absoluteSegments();
+        assertThat(relativeReference(authority, absoluteSegments).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + "}"));
     }
 
     @Test
@@ -227,19 +214,13 @@ public class RelativeReferenceTest {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 Authority authority = null;
-                relativeReferenceAbsolute(authority, aSegment(), aSegment());
+                relativeReference(authority, absoluteSegments());
             }
         });
-        assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReferenceAbsolute(anAuthority(), null, aSegment());
-            }
-        });
-        assertThrowsNullPointerException("Null second segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                relativeReferenceAbsolute(anAuthority(), aSegment(), null);
+                relativeReference(anAuthority(), null);
             }
         });
     }
