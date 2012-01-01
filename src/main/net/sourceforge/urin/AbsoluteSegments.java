@@ -72,10 +72,6 @@ public class AbsoluteSegments extends Segments {
         return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
     }
 
-    boolean firstPartIsSuppliedButContainsColon() {
-        return !segments.isEmpty() && segments.iterator().next().containsColon();
-    }
-
     String asString() {
         StringBuilder result = new StringBuilder();
         Iterator<Segment> segmentIterator = segments.iterator();

@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
-import static net.sourceforge.urin.MoreRandomStringUtils.*;
+import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -73,16 +73,6 @@ public class AbsoluteSegmentsTest {
     @Test
     public void correctlyIdentifiesFirstPartNonEmpty() throws Exception {
         assertThat(absoluteSegments(aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
-    }
-
-    @Test
-    public void correctlyIdentifiesFirstPartContainingColon() throws Exception {
-        assertThat(absoluteSegments(segment(aStringIncluding(':'))).firstPartIsSuppliedButContainsColon(), equalTo(true));
-    }
-
-    @Test
-    public void correctlyIdentifiesFirstPartDoesNotContainColon() throws Exception {
-        assertThat(absoluteSegments(segment(aStringExcluding(':'))).firstPartIsSuppliedButContainsColon(), equalTo(false));
     }
 
     @Test
