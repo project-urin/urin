@@ -26,7 +26,7 @@ public class SegmentsBuilder {
         return Segments.segments(tailSegments);
     }
 
-    public static RelativeSegments relativeSegments() {
+    public static Segments relativeSegments() {
         int numberOfSegments = RANDOM.nextInt(5);
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {

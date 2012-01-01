@@ -31,7 +31,7 @@ public abstract class Segments {
         return new RelativeSegments(segmentList);
     }
 
-    public static RelativeSegments rootlessSegments(final Segment... segments) {
+    public static Segments rootlessSegments(final Segment... segments) {
         return new RelativeSegments(asList(segments));
     }
 
