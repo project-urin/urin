@@ -48,13 +48,7 @@ public abstract class HierarchicalPart {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
-        final Segments absolutisedSegments;
-        if (segments.isEmpty()) {
-            absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();
-        } else {
-            absolutisedSegments = segments.prefixWithEmptySegment();
-        }
-        return new HierarchicalPartNoAuthority(absolutisedSegments);
+        return new HierarchicalPartNoAuthority(segments);
     }
 
     public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final Segment... segments) {
@@ -62,13 +56,7 @@ public abstract class HierarchicalPart {
     }
 
     public static HierarchicalPart hierarchicalPartAbsolute(final Authority authority, final AbsoluteSegments segments) {
-        final Segments absolutisedSegments;
-        if (segments.isEmpty()) {
-            absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();
-        } else {
-            absolutisedSegments = segments.prefixWithEmptySegment();
-        }
-        return new HierarchicalPartWithAuthority(authority, absolutisedSegments);
+        return new HierarchicalPartWithAuthority(authority, segments);
     }
 
     private static final class HierarchicalPartNoAuthority extends HierarchicalPart {

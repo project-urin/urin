@@ -76,17 +76,6 @@ public class AbsoluteSegmentsTest {
     }
 
     @Test
-    public void addsAnEmptyPartOntoAnEmptySegments() throws Exception {
-        assertThat(absoluteSegments().prefixWithEmptySegment(), equalTo(absoluteSegments(EMPTY)));
-    }
-
-    @Test
-    public void addsAnEmptyPartOntoANonEmptySegments() throws Exception {
-        Segment segment = aSegment();
-        assertThat(absoluteSegments(segment).prefixWithEmptySegment(), equalTo(absoluteSegments(EMPTY, segment)));
-    }
-
-    @Test
     public void removesDotSegments() throws Exception {
         assertThat(absoluteSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(absoluteSegments(segment("a"), segment("g"))));
     }

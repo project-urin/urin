@@ -15,7 +15,6 @@ import org.junit.Test;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.*;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
-import static net.sourceforge.urin.Segment.EMPTY;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -93,7 +92,7 @@ public class HierarchicalPartTest {
     public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{segments=[" + EMPTY + ", " + firstSegment + ", " + secondSegment + "]}"));
+        assertThat(hierarchicalPartAbsolute(firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{segments=[" + firstSegment + ", " + secondSegment + "]}"));
     }
 
     @Test
@@ -227,7 +226,7 @@ public class HierarchicalPartTest {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{authority=" + authority + ", segments=[" + Segment.EMPTY + ", " + firstSegment + ", " + secondSegment + "]}"));
+        assertThat(hierarchicalPartAbsolute(authority, firstSegment, secondSegment).toString(), equalTo("HierarchicalPart{authority=" + authority + ", segments=[" + firstSegment + ", " + secondSegment + "]}"));
     }
 
     @Test

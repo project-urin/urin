@@ -17,7 +17,7 @@ import static net.sourceforge.urin.Segment.*;
 
 public class AbsoluteSegments extends Segments {
 
-    final Collection<Segment> segments;
+    private final Collection<Segment> segments;
 
     public static AbsoluteSegments absoluteSegments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
@@ -61,19 +61,13 @@ public class AbsoluteSegments extends Segments {
         this.segments = newSegments;
     }
 
-    AbsoluteSegments prefixWithEmptySegment() {
-        LinkedList<Segment> newSegments = new LinkedList<Segment>(segments);
-        newSegments.offerFirst(EMPTY);
-        return new AbsoluteSegments(newSegments, false);
-    }
-
 
     boolean firstPartIsSuppliedButIsEmpty() {
         return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
     }
 
     String asString() {
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder("/");
         Iterator<Segment> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
             result.append(segmentIterator.next().asString());

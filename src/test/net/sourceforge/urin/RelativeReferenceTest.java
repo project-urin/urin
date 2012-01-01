@@ -18,7 +18,8 @@ import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.RelativeReference.*;
-import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.Segment.DOT;
+import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -97,7 +98,7 @@ public class RelativeReferenceTest {
     public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(relativeReferenceAbsolute(firstSegment, secondSegment).toString(), equalTo("RelativeReference{segments=[" + EMPTY + ", " + firstSegment + ", " + secondSegment + "]}"));
+        assertThat(relativeReferenceAbsolute(firstSegment, secondSegment).toString(), equalTo("RelativeReference{segments=[" + firstSegment + ", " + secondSegment + "]}"));
     }
 
     @Test
@@ -244,7 +245,7 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=[" + Segment.EMPTY + ", " + firstSegment + ", " + secondSegment + "]}"));
+        assertThat(relativeReferenceAbsolute(authority, firstSegment, secondSegment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=[" + firstSegment + ", " + secondSegment + "]}"));
     }
 
     @Test

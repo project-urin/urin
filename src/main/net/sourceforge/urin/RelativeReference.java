@@ -55,13 +55,7 @@ public abstract class RelativeReference {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
-        final Segments absolutisedSegments;
-        if (segments.isEmpty()) {
-            absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();
-        } else {
-            absolutisedSegments = segments.prefixWithEmptySegment();
-        }
-        return new RelativeReferenceNoAuthority(absolutisedSegments);
+        return new RelativeReferenceNoAuthority(segments);
     }
 
     public static RelativeReference relativeReferenceAbsolute(final Authority authority, final Segment... segments) {
@@ -69,13 +63,7 @@ public abstract class RelativeReference {
     }
 
     public static RelativeReference relativeReferenceAbsolute(final Authority authority, final AbsoluteSegments segments) {
-        final Segments absolutisedSegments;
-        if (segments.isEmpty()) {
-            absolutisedSegments = segments.prefixWithEmptySegment().prefixWithEmptySegment();
-        } else {
-            absolutisedSegments = segments.prefixWithEmptySegment();
-        }
-        return new RelativeReferenceWithAuthority(authority, absolutisedSegments);
+        return new RelativeReferenceWithAuthority(authority, segments);
     }
 
     private static final class RelativeReferenceNoAuthority extends RelativeReference {
