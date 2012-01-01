@@ -31,7 +31,7 @@ public class EmptySegments extends Segments {
         return true;
     }
 
-    String asString() {
+    String asString(final boolean allowColonInFirstSegment) {
         return "";
     }
 

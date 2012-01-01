@@ -13,7 +13,8 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
-import static net.sourceforge.urin.MoreRandomStringUtils.*;
+import static net.sourceforge.urin.MoreRandomStringUtils.aString;
+import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.RelativeSegments.relativeSegments;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
@@ -76,19 +77,15 @@ public class RelativeSegmentsTest {
     }
 
     @Test
-    public void correctlyIdentifiesFirstPartContainingColon() throws Exception {
-        assertThat(relativeSegments(segment(aStringIncluding(':'))).firstPartIsSuppliedButContainsColon(), equalTo(true));
+    public void addsADotSegmentOntoSegmentsWhenFirstSegmentContainsColonAndColonNotAllowed() throws Exception {
+        Segment segment = segment(aStringIncluding(':'));
+        assertThat(relativeSegments(segment).asString(false), equalTo("./" + segment.asString()));
     }
 
     @Test
-    public void correctlyIdentifiesFirstPartDoesNotContainColon() throws Exception {
-        assertThat(relativeSegments(segment(aStringExcluding(':'))).firstPartIsSuppliedButContainsColon(), equalTo(false));
-    }
-
-    @Test
-    public void addsADotSegmentOntoSegments() throws Exception {
-        Segment segment = aSegment();
-        assertThat(relativeSegments(segment).prefixWithDotSegment().asString(), equalTo("./" + segment.asString()));
+    public void doesNotAddADotSegmentOntoSegmentsWhenFirstSegmentContainsColonAndColonAllowed() throws Exception {
+        Segment segment = segment(aStringIncluding(':'));
+        assertThat(relativeSegments(segment).asString(true), equalTo(segment.asString()));
     }
 
     @Test

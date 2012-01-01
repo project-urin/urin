@@ -43,8 +43,7 @@ public abstract class RelativeReference {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
-        Segments segmentsWithoutColonInFirstSegment = segments.firstPartIsSuppliedButContainsColon() ? segments.prefixWithDotSegment() : segments;
-        return new RelativeReferenceNoAuthority(segmentsWithoutColonInFirstSegment);
+        return new RelativeReferenceNoAuthority(segments);
     }
 
     public static RelativeReference relativeReferenceAbsolute(final Segment... segments) {
@@ -78,7 +77,7 @@ public abstract class RelativeReference {
 
         @Override
         public String asString() {
-            return segments.asString();
+            return segments.asString(false);
         }
 
         @Override
@@ -122,7 +121,7 @@ public abstract class RelativeReference {
         public String asString() {
             return new StringBuilder("//")
                     .append(authority.asString())
-                    .append(segments.asString())
+                    .append(segments.asString(true))
                     .toString();
         }
 

@@ -63,7 +63,7 @@ public class AbsoluteSegments extends Segments {
         return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
     }
 
-    String asString() {
+    String asString(final boolean allowColonInFirstSegment) {
         StringBuilder result = new StringBuilder("/");
         Iterator<Segment> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {

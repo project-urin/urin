@@ -17,7 +17,7 @@ import static net.sourceforge.urin.Segment.*;
 
 public class RelativeSegments extends Segments {
 
-    final Collection<Segment> segments;
+    private final Collection<Segment> segments;
 
     public static RelativeSegments relativeSegments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
@@ -25,22 +25,19 @@ public class RelativeSegments extends Segments {
         for (String segment : segments) {
             segmentList.add(segment(segment));
         }
-        return new RelativeSegments(segmentList, false);
+        return new RelativeSegments(segmentList);
     }
 
     public static RelativeSegments relativeSegments(final Segment... segments) {
-        return new RelativeSegments(asList(segments), false);
+        return new RelativeSegments(asList(segments));
     }
 
     public static RelativeSegments relativeSegments(final Iterable<Segment> segments) {
-        return new RelativeSegments(segments, false);
+        return new RelativeSegments(segments);
     }
 
-    private RelativeSegments(final Iterable<Segment> segments, final boolean prefixWithDotSegment) {
+    private RelativeSegments(final Iterable<Segment> segments) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
-        if (prefixWithDotSegment) {
-            newSegments.add(DOT);
-        }
         for (Segment segment : segments) {
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
@@ -61,20 +58,19 @@ public class RelativeSegments extends Segments {
         this.segments = newSegments;
     }
 
-    Segments prefixWithDotSegment() {
-        return new RelativeSegments(segments, true);
-    }
-
     boolean firstPartIsSuppliedButIsEmpty() {
         return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
     }
 
-    boolean firstPartIsSuppliedButContainsColon() {
+    private boolean firstPartIsSuppliedButContainsColon() {
         return !segments.isEmpty() && segments.iterator().next().containsColon();
     }
 
-    String asString() {
+    String asString(final boolean allowColonInFirstSegment) {
         StringBuilder result = new StringBuilder();
+        if (firstPartIsSuppliedButContainsColon() && !allowColonInFirstSegment) {
+            result.append("./");
+        }
         Iterator<Segment> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
             result.append(segmentIterator.next().asString());

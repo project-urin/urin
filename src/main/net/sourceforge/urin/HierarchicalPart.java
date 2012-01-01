@@ -71,7 +71,7 @@ public abstract class HierarchicalPart {
 
         @Override
         String asString() {
-            return segments.asString();
+            return segments.asString(true);
         }
 
         @Override
@@ -115,7 +115,7 @@ public abstract class HierarchicalPart {
         String asString() {
             return new StringBuilder("//")
                     .append(authority.asString())
-                    .append(segments.asString())
+                    .append(segments.asString(true))
                     .toString();
         }
 

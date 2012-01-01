@@ -14,7 +14,7 @@ public abstract class Segments {
 
     abstract boolean firstPartIsSuppliedButIsEmpty();
 
-    abstract String asString();
+    abstract String asString(final boolean allowColonInFirstSegment);
 
     abstract boolean isEmpty();
 
