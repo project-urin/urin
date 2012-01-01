@@ -18,11 +18,11 @@ import static net.sourceforge.urin.Segment.segment;
 
 public abstract class Segments {
 
-    public static EmptySegments emptySegments() {
+    public static Segments emptySegments() {
         return new EmptySegments();
     }
 
-    public static RelativeSegments relativeSegments(final String firstSegment, final String... segments) {
+    public static Segments relativeSegments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
         segmentList.add(segment(firstSegment));
         for (String segment : segments) {
@@ -31,11 +31,11 @@ public abstract class Segments {
         return new RelativeSegments(segmentList);
     }
 
-    public static RelativeSegments relativeSegments(final Segment... segments) {
+    public static Segments relativeSegments(final Segment... segments) {
         return new RelativeSegments(asList(segments));
     }
 
-    public static RelativeSegments relativeSegments(final Iterable<Segment> segments) {
+    public static Segments relativeSegments(final Iterable<Segment> segments) {
         return new RelativeSegments(segments);
     }
 
