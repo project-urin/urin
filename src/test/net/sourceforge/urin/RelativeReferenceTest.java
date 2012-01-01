@@ -17,10 +17,12 @@ import java.net.URI;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
-import static net.sourceforge.urin.RelativeReference.*;
+import static net.sourceforge.urin.RelativeReference.relativeReference;
+import static net.sourceforge.urin.RelativeReference.relativeReferenceAbsolute;
 import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
+import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -98,18 +100,8 @@ public class RelativeReferenceTest {
     public void aSimpleRootlessPathAsStringReturnsThePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(relativeReferenceRootless(firstSegment, secondSegment).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
-        assertThat(relativeReferenceRootless(firstSegment, secondSegment).asUri(), equalTo(URI.create(firstSegment.asString() + "/" + secondSegment.asString())));
-    }
-
-    @Test
-    public void aSimpleRootlessPathAsStringHasImmutableVarargs() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        Segment[] segments = {firstSegment, secondSegment};
-        RelativeReference relativeReference = relativeReferenceRootless(segments);
-        segments[0] = aSegment();
-        assertThat(relativeReference.asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReference(rootlessSegments(firstSegment, secondSegment)).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReference(rootlessSegments(firstSegment, secondSegment)).asUri(), equalTo(URI.create(firstSegment.asString() + "/" + secondSegment.asString())));
     }
 
     @Test
@@ -117,7 +109,7 @@ public class RelativeReferenceTest {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
         try {
-            relativeReferenceRootless(firstSegment, secondSegment).asString();
+            relativeReference(rootlessSegments(firstSegment, secondSegment)).asString();
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
@@ -128,32 +120,30 @@ public class RelativeReferenceTest {
     public void aSimpleRootlessPathPrependsAColonInFirstSegmentWithDotSlash() throws Exception {
         Segment firstSegment = segment(aStringIncluding(':'));
         Segment secondSegment = aSegment();
-        assertThat(relativeReferenceRootless(firstSegment, secondSegment), equalTo(relativeReferenceRootless(DOT, firstSegment, secondSegment)));
+        assertThat(relativeReference(rootlessSegments(firstSegment, secondSegment)), equalTo(relativeReference(rootlessSegments(DOT, firstSegment, secondSegment))));
     }
 
     @Test
     public void aSimpleRootlessPathPermitsAColonInTrailingSegments() throws Exception {
-        relativeReferenceRootless(aSegment(), segment(aStringIncluding(':'))).asString();
+        relativeReference(rootlessSegments(aSegment(), segment(aStringIncluding(':')))).asString();
     }
 
     @Test
     public void aSimpleRootlessPathIsEqualToAnotherWithTheSamePath() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        assertThat(relativeReferenceRootless(firstSegment, secondSegment), equalTo(relativeReferenceRootless(firstSegment, secondSegment)));
-        assertThat(relativeReferenceRootless(firstSegment, secondSegment).hashCode(), equalTo(relativeReferenceRootless(firstSegment, secondSegment).hashCode()));
+        Segments segments = SegmentsBuilder.segments();
+        assertThat(relativeReference(segments), equalTo(relativeReference(segments)));
+        assertThat(relativeReference(segments).hashCode(), equalTo(relativeReference(segments).hashCode()));
     }
 
     @Test
     public void aSimpleRootlessPathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(relativeReferenceRootless(aSegment(), aSegment()), not(equalTo(relativeReferenceRootless(aSegment(), aSegment()))));
+        assertThat(relativeReference(SegmentsBuilder.segments()), not(equalTo(relativeReference(SegmentsBuilder.segments()))));
     }
 
     @Test
     public void aSimpleRootlessPathToStringIsCorrect() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
-        assertThat(relativeReferenceRootless(firstSegment, secondSegment).toString(), equalTo("RelativeReference{segments=[" + firstSegment + ", " + secondSegment + "]}"));
+        Segments segments = SegmentsBuilder.segments();
+        assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
     }
 
     @Test

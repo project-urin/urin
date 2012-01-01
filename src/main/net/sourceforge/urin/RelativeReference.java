@@ -33,10 +33,6 @@ public abstract class RelativeReference {
         return new RelativeReferenceWithAuthority(authority, emptySegments());
     }
 
-    public static RelativeReference relativeReferenceRootless(final Segment... segments) {
-        return relativeReference(Segments.rootlessSegments(segments));
-    }
-
     public static RelativeReference relativeReference(final Segments segments) {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
@@ -45,10 +41,10 @@ public abstract class RelativeReference {
     }
 
     public static RelativeReference relativeReferenceAbsolute(final Authority authority, final Segment... segments) {
-        return relativeReferenceAbsolute(authority, AbsoluteSegments.segments(segments));
+        return relativeReference(authority, AbsoluteSegments.segments(segments));
     }
 
-    public static RelativeReference relativeReferenceAbsolute(final Authority authority, final AbsoluteSegments segments) {
+    public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments) {
         return new RelativeReferenceWithAuthority(authority, segments);
     }
 

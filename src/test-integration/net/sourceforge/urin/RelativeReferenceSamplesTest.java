@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -13,8 +13,9 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
-import static net.sourceforge.urin.RelativeReference.relativeReferenceRootless;
+import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Segments.rootlessSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -22,6 +23,6 @@ public class RelativeReferenceSamplesTest {
     @Test
     public void canMakeARelativeReferenceWithColonInTheFirstSegment() throws Exception {
         Segment segment = segment(aStringIncluding(':'));
-        assertThat(relativeReferenceRootless(segment).asString(), equalTo("./" + segment.asString()));
+        assertThat(relativeReference(rootlessSegments(segment)).asString(), equalTo("./" + segment.asString()));
     }
 }
