@@ -97,12 +97,6 @@ public class AbsoluteSegmentsTest {
     }
 
     @Test
-    public void addsADotSegmentOntoSegments() throws Exception {
-        Segment segment = aSegment();
-        assertThat(absoluteSegments(segment).prefixWithDotSegment().asString(), equalTo("./" + segment.asString()));
-    }
-
-    @Test
     public void removesDotSegments() throws Exception {
         assertThat(absoluteSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(absoluteSegments(segment("a"), segment("g"))));
     }

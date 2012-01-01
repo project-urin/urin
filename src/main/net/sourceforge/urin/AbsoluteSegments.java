@@ -68,10 +68,6 @@ public class AbsoluteSegments extends Segments {
     }
 
 
-    Segments prefixWithDotSegment() {
-        return new AbsoluteSegments(segments, true);
-    }
-
     boolean firstPartIsSuppliedButIsEmpty() {
         return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
     }
