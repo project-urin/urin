@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -40,7 +40,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithEmptyPathToStringIsCorrect() throws Exception {
-        assertThat(relativeReference().toString(), equalTo("RelativeReference{segments=[]}"));
+        assertThat(relativeReference().toString(), equalTo("RelativeReference{segments=EmptySegments}"));
     }
 
     @Test
@@ -203,7 +203,7 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
-        assertThat(relativeReference(authority).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=[]}"));
+        assertThat(relativeReference(authority).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=EmptySegments}"));
     }
 
     @Test

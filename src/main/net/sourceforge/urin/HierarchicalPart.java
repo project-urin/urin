@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -11,7 +11,8 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
-import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.EmptySegments.emptySegments;
+import static net.sourceforge.urin.RelativeSegments.relativeSegments;
 
 public abstract class HierarchicalPart {
 
@@ -21,18 +22,18 @@ public abstract class HierarchicalPart {
     abstract String asString();
 
     public static HierarchicalPart hierarchicalPart() {
-        return new HierarchicalPartNoAuthority(segments());
+        return new HierarchicalPartNoAuthority(emptySegments());
     }
 
     public static HierarchicalPart hierarchicalPart(final Authority authority) {
-        return new HierarchicalPartWithAuthority(authority, segments());
+        return new HierarchicalPartWithAuthority(authority, emptySegments());
     }
 
     public static HierarchicalPart hierarchicalPartRootless(final Segment... segments) {
-        return hierarchicalPartRootless(segments(segments));
+        return hierarchicalPartRootless(relativeSegments(segments));
     }
 
-    public static HierarchicalPart hierarchicalPartRootless(final Segments segments) {
+    public static HierarchicalPart hierarchicalPartRootless(final RelativeSegments segments) {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
@@ -40,10 +41,10 @@ public abstract class HierarchicalPart {
     }
 
     public static HierarchicalPart hierarchicalPartAbsolute(final Segment... segments) {
-        return hierarchicalPartAbsolute(segments(segments));
+        return hierarchicalPartAbsolute(absoluteSegments(segments));
     }
 
-    public static HierarchicalPart hierarchicalPartAbsolute(final Segments segments) {
+    public static HierarchicalPart hierarchicalPartAbsolute(final AbsoluteSegments segments) {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }

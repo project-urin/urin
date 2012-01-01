@@ -15,28 +15,28 @@ import java.util.*;
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.*;
 
-public class AbsoluteSegments extends Segments {
+public class RelativeSegments extends Segments {
 
     final Collection<Segment> segments;
 
-    public static AbsoluteSegments absoluteSegments(final String firstSegment, final String... segments) {
+    public static RelativeSegments relativeSegments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
         segmentList.add(segment(firstSegment));
         for (String segment : segments) {
             segmentList.add(segment(segment));
         }
-        return new AbsoluteSegments(segmentList, false);
+        return new RelativeSegments(segmentList, false);
     }
 
-    public static AbsoluteSegments absoluteSegments(final Segment... segments) {
-        return new AbsoluteSegments(asList(segments), false);
+    public static RelativeSegments relativeSegments(final Segment... segments) {
+        return new RelativeSegments(asList(segments), false);
     }
 
-    public static AbsoluteSegments absoluteSegments(final Iterable<Segment> segments) {
-        return new AbsoluteSegments(segments, false);
+    public static RelativeSegments relativeSegments(final Iterable<Segment> segments) {
+        return new RelativeSegments(segments, false);
     }
 
-    private AbsoluteSegments(final Iterable<Segment> segments, final boolean prefixWithDotSegment) {
+    private RelativeSegments(final Iterable<Segment> segments, final boolean prefixWithDotSegment) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
         if (prefixWithDotSegment) {
             newSegments.add(DOT);
@@ -61,15 +61,8 @@ public class AbsoluteSegments extends Segments {
         this.segments = newSegments;
     }
 
-    AbsoluteSegments prefixWithEmptySegment() {
-        LinkedList<Segment> newSegments = new LinkedList<Segment>(segments);
-        newSegments.offerFirst(EMPTY);
-        return new AbsoluteSegments(newSegments, false);
-    }
-
-
     Segments prefixWithDotSegment() {
-        return new AbsoluteSegments(segments, true);
+        return new RelativeSegments(segments, true);
     }
 
     boolean firstPartIsSuppliedButIsEmpty() {
@@ -97,7 +90,7 @@ public class AbsoluteSegments extends Segments {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbsoluteSegments segments1 = (AbsoluteSegments) o;
+        RelativeSegments segments1 = (RelativeSegments) o;
         return segments.equals(segments1.segments);
     }
 

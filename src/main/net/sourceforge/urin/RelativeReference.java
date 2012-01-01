@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -13,7 +13,8 @@ package net.sourceforge.urin;
 import java.net.URI;
 
 import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
-import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.EmptySegments.emptySegments;
+import static net.sourceforge.urin.RelativeSegments.relativeSegments;
 
 public abstract class RelativeReference {
 
@@ -27,18 +28,18 @@ public abstract class RelativeReference {
     }
 
     public static RelativeReference relativeReference() {
-        return new RelativeReferenceNoAuthority(segments());
+        return new RelativeReferenceNoAuthority(emptySegments());
     }
 
     public static RelativeReference relativeReference(final Authority authority) {
-        return new RelativeReferenceWithAuthority(authority, segments());
+        return new RelativeReferenceWithAuthority(authority, emptySegments());
     }
 
     public static RelativeReference relativeReferenceRootless(final Segment... segments) {
-        return relativeReferenceRootless(segments(segments));
+        return relativeReferenceRootless(relativeSegments(segments));
     }
 
-    public static RelativeReference relativeReferenceRootless(final Segments segments) {
+    public static RelativeReference relativeReferenceRootless(final RelativeSegments segments) {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }
@@ -47,10 +48,10 @@ public abstract class RelativeReference {
     }
 
     public static RelativeReference relativeReferenceAbsolute(final Segment... segments) {
-        return relativeReferenceAbsolute(segments(segments));
+        return relativeReferenceAbsolute(absoluteSegments(segments));
     }
 
-    public static RelativeReference relativeReferenceAbsolute(final Segments segments) {
+    public static RelativeReference relativeReferenceAbsolute(final AbsoluteSegments segments) {
         if (segments.firstPartIsSuppliedButIsEmpty()) {
             throw new IllegalArgumentException("If supplied, first segment must be non-empty");
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.net.URI;
 
+import static net.sourceforge.urin.AbsoluteSegments.absoluteSegments;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
@@ -24,9 +25,9 @@ import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.RelativeReference.relativeReferenceAbsolute;
 import static net.sourceforge.urin.RelativeReference.relativeReferenceRootless;
+import static net.sourceforge.urin.RelativeSegments.relativeSegments;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segment.*;
-import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -114,20 +115,20 @@ public class Rfc3986UriExamplesTest {
     @Test
     public void removeDotSegmentsExample1() throws Exception {
         assertThat(
-                relativeReferenceAbsolute(segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asString(),
+                relativeReferenceAbsolute(absoluteSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asString(),
                 equalTo("/a/g"));
         assertThat(
-                relativeReferenceAbsolute(segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asUri(),
+                relativeReferenceAbsolute(absoluteSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asUri(),
                 equalTo(new URI("/a/g")));
     }
 
     @Test
     public void removeDotSegmentsExample2() throws Exception {
         assertThat(
-                relativeReferenceRootless(segments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asString(),
+                relativeReferenceRootless(relativeSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asString(),
                 equalTo("mid/6"));
         assertThat(
-                relativeReferenceRootless(segments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asUri(),
+                relativeReferenceRootless(relativeSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asUri(),
                 equalTo(new URI("mid/6")));
     }
 }

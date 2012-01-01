@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -14,28 +14,28 @@ import org.junit.Test;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.MoreRandomStringUtils.*;
+import static net.sourceforge.urin.RelativeSegments.relativeSegments;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
-import static net.sourceforge.urin.Segments.segments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
 
-public class SegmentsTest {
+public class RelativeSegmentsTest {
     @Test
     public void aSegmentsIsEqualToAnotherSegmentsWithTheSameMembers() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(segments(firstSegment, secondSegment), equalTo(segments(firstSegment, secondSegment)));
-        assertThat(segments(firstSegment, secondSegment).hashCode(), equalTo(segments(firstSegment, secondSegment).hashCode()));
+        assertThat(relativeSegments(firstSegment, secondSegment), equalTo(relativeSegments(firstSegment, secondSegment)));
+        assertThat(relativeSegments(firstSegment, secondSegment).hashCode(), equalTo(relativeSegments(firstSegment, secondSegment).hashCode()));
     }
 
     @Test
     public void aSegmentsUsingVarargsFactoryIsEqualToWithTheSameMembersMadeUsingIterableFactory() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(segments(firstSegment, secondSegment), equalTo(segments(asList(firstSegment, secondSegment))));
-        assertThat(segments(firstSegment, secondSegment).hashCode(), equalTo(segments(asList(firstSegment, secondSegment)).hashCode()));
+        assertThat(relativeSegments(firstSegment, secondSegment), equalTo(relativeSegments(asList(firstSegment, secondSegment))));
+        assertThat(relativeSegments(firstSegment, secondSegment).hashCode(), equalTo(relativeSegments(asList(firstSegment, secondSegment)).hashCode()));
     }
 
     @Test
@@ -44,66 +44,55 @@ public class SegmentsTest {
         Segment firstSegment = segment(firstSegmentValue);
         String secondSegmentValue = aString();
         Segment secondSegment = segment(secondSegmentValue);
-        assertThat(segments(firstSegment, secondSegment), equalTo(segments(firstSegmentValue, secondSegmentValue)));
-        assertThat(segments(firstSegment, secondSegment).hashCode(), equalTo(segments(firstSegmentValue, secondSegmentValue).hashCode()));
+        assertThat(relativeSegments(firstSegment, secondSegment), equalTo(relativeSegments(firstSegmentValue, secondSegmentValue)));
+        assertThat(relativeSegments(firstSegment, secondSegment).hashCode(), equalTo(relativeSegments(firstSegmentValue, secondSegmentValue).hashCode()));
     }
 
     @Test
     public void aSegmentsIsNotEqualToAnotherSegmentsWithDifferentMembers() throws Exception {
-        assertThat(segments(aSegment(), aSegment()), not(equalTo(segments(aSegment(), aSegment()))));
+        assertThat(relativeSegments(aSegment(), aSegment()), not(equalTo(relativeSegments(aSegment(), aSegment()))));
     }
 
     @Test
     public void aSegmentsToStringIsCorrect() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(segments(firstSegment, secondSegment).toString(), equalTo("[" + firstSegment + ", " + secondSegment + "]"));
+        assertThat(relativeSegments(firstSegment, secondSegment).toString(), equalTo("[" + firstSegment + ", " + secondSegment + "]"));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() throws Exception {
-        assertThat(segments(EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
+        assertThat(relativeSegments(EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartUnsupplied() throws Exception {
-        assertThat(segments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(relativeSegments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartNonEmpty() throws Exception {
-        assertThat(segments(aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(relativeSegments(aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartContainingColon() throws Exception {
-        assertThat(segments(segment(aStringIncluding(':'))).firstPartIsSuppliedButContainsColon(), equalTo(true));
+        assertThat(relativeSegments(segment(aStringIncluding(':'))).firstPartIsSuppliedButContainsColon(), equalTo(true));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartDoesNotContainColon() throws Exception {
-        assertThat(segments(segment(aStringExcluding(':'))).firstPartIsSuppliedButContainsColon(), equalTo(false));
-    }
-
-    @Test
-    public void addsAnEmptyPartOntoAnEmptySegments() throws Exception {
-        assertThat(segments().prefixWithEmptySegment(), equalTo(segments(EMPTY)));
-    }
-
-    @Test
-    public void addsAnEmptyPartOntoANonEmptySegments() throws Exception {
-        Segment segment = aSegment();
-        assertThat(segments(segment).prefixWithEmptySegment(), equalTo(segments(EMPTY, segment)));
+        assertThat(relativeSegments(segment(aStringExcluding(':'))).firstPartIsSuppliedButContainsColon(), equalTo(false));
     }
 
     @Test
     public void addsADotSegmentOntoSegments() throws Exception {
         Segment segment = aSegment();
-        assertThat(segments(segment).prefixWithDotSegment().asString(), equalTo("./" + segment.asString()));
+        assertThat(relativeSegments(segment).prefixWithDotSegment().asString(), equalTo("./" + segment.asString()));
     }
 
     @Test
     public void removesDotSegments() throws Exception {
-        assertThat(segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(segments(segment("a"), segment("g"))));
+        assertThat(relativeSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(relativeSegments(segment("a"), segment("g"))));
     }
 }
