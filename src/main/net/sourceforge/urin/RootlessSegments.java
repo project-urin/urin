@@ -16,7 +16,7 @@ import java.util.LinkedList;
 
 import static net.sourceforge.urin.Segment.*;
 
-class RootlessSegments extends Segments {
+final class RootlessSegments extends Segments {
 
     private final Collection<Segment> segments;
 

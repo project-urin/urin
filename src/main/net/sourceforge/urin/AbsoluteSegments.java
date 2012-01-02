@@ -16,7 +16,7 @@ import java.util.LinkedList;
 
 import static net.sourceforge.urin.Segment.*;
 
-public class AbsoluteSegments extends Segments {
+public final class AbsoluteSegments extends Segments {
 
     private final Collection<Segment> segments;
 

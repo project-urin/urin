@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-class EmptySegments extends Segments {
+final class EmptySegments extends Segments {
 
     EmptySegments() {
     }
