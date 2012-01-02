@@ -18,6 +18,8 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.RootlessSegments.rootlessSegments;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
+import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
+import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -56,7 +58,7 @@ public class RootlessSegmentsTest {
         Segment[] segments = {firstSegment, secondSegment};
         Segments relativeSegments = Segments.rootlessSegments(segments);
         segments[0] = aSegment();
-        assertThat(relativeSegments.asString(true), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeSegments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
@@ -94,13 +96,13 @@ public class RootlessSegmentsTest {
     @Test
     public void addsADotSegmentOntoSegmentsWhenFirstSegmentContainsColonAndColonNotAllowed() throws Exception {
         Segment segment = segment(aStringIncluding(':'));
-        assertThat(rootlessSegments(segment).asString(false), equalTo("./" + segment.asString()));
+        assertThat(rootlessSegments(segment).asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON), equalTo("./" + segment.asString()));
     }
 
     @Test
     public void doesNotAddADotSegmentOntoSegmentsWhenFirstSegmentContainsColonAndColonAllowed() throws Exception {
         Segment segment = segment(aStringIncluding(':'));
-        assertThat(rootlessSegments(segment).asString(true), equalTo(segment.asString()));
+        assertThat(rootlessSegments(segment).asString(NEVER_PREFIX_WITH_DOT_SEGMENT), equalTo(segment.asString()));
     }
 
     @Test

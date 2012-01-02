@@ -46,13 +46,14 @@ final class RootlessSegments extends Segments {
         return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
     }
 
-    private boolean firstPartIsSuppliedButContainsColon() {
+    @Override
+    boolean firstPartIsSuppliedButContainsColon() {
         return !segments.isEmpty() && segments.iterator().next().containsColon();
     }
 
-    String asString(final boolean allowColonInFirstSegment) {
+    String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         StringBuilder result = new StringBuilder();
-        if (firstPartIsSuppliedButContainsColon() && !allowColonInFirstSegment) {
+        if (prefixWithDotSegmentCriteria.matches(this)) {
             result.append("./");
         }
         Iterator<Segment> segmentIterator = segments.iterator();

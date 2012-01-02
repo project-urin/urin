@@ -23,7 +23,12 @@ final class EmptySegments extends Segments {
         return true;
     }
 
-    String asString(final boolean allowColonInFirstSegment) {
+    @Override
+    boolean firstPartIsSuppliedButContainsColon() {
+        return false;
+    }
+
+    String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         return "";
     }
 

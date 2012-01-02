@@ -17,6 +17,7 @@ import static net.sourceforge.urin.AbsoluteSegments.segments;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
+import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -55,7 +56,7 @@ public class AbsoluteSegmentsTest {
         Segment[] segments = {firstSegment, secondSegment};
         AbsoluteSegments absoluteSegments = Segments.segments(segments);
         segments[0] = aSegment();
-        assertThat(absoluteSegments.asString(true), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(absoluteSegments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test

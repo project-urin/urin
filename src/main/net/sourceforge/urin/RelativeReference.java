@@ -12,6 +12,9 @@ package net.sourceforge.urin;
 
 import java.net.URI;
 
+import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
+import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON;
+
 public abstract class RelativeReference {
 
     private RelativeReference() {
@@ -54,7 +57,7 @@ public abstract class RelativeReference {
 
         @Override
         public String asString() {
-            return segments.asString(false);
+            return segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON);
         }
 
         @Override
@@ -98,7 +101,7 @@ public abstract class RelativeReference {
         public String asString() {
             return new StringBuilder("//")
                     .append(authority.asString())
-                    .append(segments.asString(true))
+                    .append(segments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
                     .toString();
         }
 

@@ -58,8 +58,32 @@ public abstract class Segments {
 
     abstract boolean firstPartIsSuppliedButIsEmpty();
 
-    abstract String asString(final boolean allowColonInFirstSegment);
+    abstract String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria);
 
     abstract boolean isEmpty();
 
+    abstract boolean firstPartIsSuppliedButContainsColon();
+
+    static enum PrefixWithDotSegmentCriteria {
+        NEVER_PREFIX_WITH_DOT_SEGMENT {
+            @Override
+            boolean matches(final Segments segments) {
+                return false;
+            }
+        },
+        PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON {
+            @Override
+            boolean matches(final Segments segments) {
+                return segments.firstPartIsSuppliedButContainsColon();
+            }
+        },
+        PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY {
+            @Override
+            boolean matches(final Segments segments) {
+                return segments.firstPartIsSuppliedButIsEmpty();
+            }
+        };
+
+        abstract boolean matches(final Segments segments);
+    }
 }

@@ -10,6 +10,9 @@
 
 package net.sourceforge.urin;
 
+import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
+import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
+
 public abstract class HierarchicalPart {
 
     private HierarchicalPart() {
@@ -26,9 +29,6 @@ public abstract class HierarchicalPart {
     }
 
     public static HierarchicalPart hierarchicalPart(final Segments segments) {
-        if (segments.firstPartIsSuppliedButIsEmpty()) {
-            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
-        }
         return new HierarchicalPartNoAuthority(segments);
     }
 
@@ -48,7 +48,7 @@ public abstract class HierarchicalPart {
 
         @Override
         String asString() {
-            return segments.asString(true);
+            return segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY);
         }
 
         @Override
@@ -92,7 +92,7 @@ public abstract class HierarchicalPart {
         String asString() {
             return new StringBuilder("//")
                     .append(authority.asString())
-                    .append(segments.asString(true))
+                    .append(segments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
                     .toString();
         }
 

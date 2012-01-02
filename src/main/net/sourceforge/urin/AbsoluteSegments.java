@@ -47,8 +47,16 @@ public final class AbsoluteSegments extends Segments {
         return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
     }
 
-    String asString(final boolean allowColonInFirstSegment) {
+    @Override
+    boolean firstPartIsSuppliedButContainsColon() {
+        return !segments.isEmpty() && segments.iterator().next().containsColon();
+    }
+
+    String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         StringBuilder result = new StringBuilder("/");
+        if (prefixWithDotSegmentCriteria.matches(this)) {
+            result.append("./");
+        }
         Iterator<Segment> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
             result.append(segmentIterator.next().asString());
