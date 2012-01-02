@@ -28,16 +28,16 @@ public class RootlessSegmentsTest {
     public void aSegmentsIsEqualToAnotherSegmentsWithTheSameMembers() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(RootlessSegments.rootlessSegments(firstSegment, secondSegment), equalTo(RootlessSegments.rootlessSegments(firstSegment, secondSegment)));
-        assertThat(RootlessSegments.rootlessSegments(firstSegment, secondSegment).hashCode(), equalTo(RootlessSegments.rootlessSegments(firstSegment, secondSegment).hashCode()));
+        assertThat(rootlessSegments(firstSegment, secondSegment), equalTo(rootlessSegments(firstSegment, secondSegment)));
+        assertThat(rootlessSegments(firstSegment, secondSegment).hashCode(), equalTo(rootlessSegments(firstSegment, secondSegment).hashCode()));
     }
 
     @Test
     public void aSegmentsUsingVarargsFactoryIsEqualToWithTheSameMembersMadeUsingIterableFactory() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(RootlessSegments.rootlessSegments(firstSegment, secondSegment), equalTo(RootlessSegments.rootlessSegments(asList(firstSegment, secondSegment))));
-        assertThat(RootlessSegments.rootlessSegments(firstSegment, secondSegment).hashCode(), equalTo(RootlessSegments.rootlessSegments(asList(firstSegment, secondSegment)).hashCode()));
+        assertThat(rootlessSegments(firstSegment, secondSegment), equalTo(rootlessSegments(asList(firstSegment, secondSegment))));
+        assertThat(rootlessSegments(firstSegment, secondSegment).hashCode(), equalTo(rootlessSegments(asList(firstSegment, secondSegment)).hashCode()));
     }
 
     @Test
@@ -46,8 +46,8 @@ public class RootlessSegmentsTest {
         Segment firstSegment = segment(firstSegmentValue);
         String secondSegmentValue = aString();
         Segment secondSegment = segment(secondSegmentValue);
-        assertThat(RootlessSegments.rootlessSegments(firstSegment, secondSegment), equalTo(rootlessSegments(firstSegmentValue, secondSegmentValue)));
-        assertThat(RootlessSegments.rootlessSegments(firstSegment, secondSegment).hashCode(), equalTo(rootlessSegments(firstSegmentValue, secondSegmentValue).hashCode()));
+        assertThat(rootlessSegments(firstSegment, secondSegment), equalTo(rootlessSegments(firstSegmentValue, secondSegmentValue)));
+        assertThat(rootlessSegments(firstSegment, secondSegment).hashCode(), equalTo(rootlessSegments(firstSegmentValue, secondSegmentValue).hashCode()));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class RootlessSegmentsTest {
 
     @Test
     public void aSegmentsIsNotEqualToAnotherSegmentsWithDifferentMembers() throws Exception {
-        assertThat(RootlessSegments.rootlessSegments(aSegment(), aSegment()), not(equalTo(RootlessSegments.rootlessSegments(aSegment(), aSegment()))));
+        assertThat(rootlessSegments(aSegment(), aSegment()), not(equalTo(rootlessSegments(aSegment(), aSegment()))));
     }
 
     @Test
@@ -74,38 +74,38 @@ public class RootlessSegmentsTest {
     public void aSegmentsToStringIsCorrect() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(RootlessSegments.rootlessSegments(firstSegment, secondSegment).toString(), equalTo("[" + firstSegment + ", " + secondSegment + "]"));
+        assertThat(rootlessSegments(firstSegment, secondSegment).toString(), equalTo("[" + firstSegment + ", " + secondSegment + "]"));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() throws Exception {
-        assertThat(RootlessSegments.rootlessSegments(EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
+        assertThat(rootlessSegments(EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartUnsupplied() throws Exception {
-        assertThat(RootlessSegments.rootlessSegments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(rootlessSegments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartNonEmpty() throws Exception {
-        assertThat(RootlessSegments.rootlessSegments(aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(rootlessSegments(aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
     public void addsADotSegmentOntoSegmentsWhenFirstSegmentContainsColonAndColonNotAllowed() throws Exception {
         Segment segment = segment(aStringIncluding(':'));
-        assertThat(RootlessSegments.rootlessSegments(segment).asString(false), equalTo("./" + segment.asString()));
+        assertThat(rootlessSegments(segment).asString(false), equalTo("./" + segment.asString()));
     }
 
     @Test
     public void doesNotAddADotSegmentOntoSegmentsWhenFirstSegmentContainsColonAndColonAllowed() throws Exception {
         Segment segment = segment(aStringIncluding(':'));
-        assertThat(RootlessSegments.rootlessSegments(segment).asString(true), equalTo(segment.asString()));
+        assertThat(rootlessSegments(segment).asString(true), equalTo(segment.asString()));
     }
 
     @Test
     public void removesDotSegments() throws Exception {
-        assertThat(RootlessSegments.rootlessSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(RootlessSegments.rootlessSegments(segment("a"), segment("g"))));
+        assertThat(rootlessSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(rootlessSegments(segment("a"), segment("g"))));
     }
 }
