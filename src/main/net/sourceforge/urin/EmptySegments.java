@@ -19,10 +19,6 @@ class EmptySegments extends Segments {
         return false;
     }
 
-    boolean firstPartIsSuppliedButContainsColon() {
-        return false;
-    }
-
     boolean isEmpty() {
         return true;
     }
