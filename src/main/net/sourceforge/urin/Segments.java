@@ -28,15 +28,19 @@ public abstract class Segments {
         for (String segment : segments) {
             segmentList.add(segment(segment));
         }
-        return new RelativeSegments(segmentList);
+        return rootlessSegments(segmentList);
     }
 
     public static Segments rootlessSegments(final Segment... segments) {
-        return new RelativeSegments(asList(segments));
+        return rootlessSegments(asList(segments));
     }
 
     public static Segments rootlessSegments(final Iterable<Segment> segments) {
-        return new RelativeSegments(segments);
+        if (segments.iterator().hasNext()) {
+            return new RootlessSegments(segments);
+        } else {
+            return new EmptySegments();
+        }
     }
 
     public static AbsoluteSegments segments(final String firstSegment, final String... segments) {
@@ -45,11 +49,11 @@ public abstract class Segments {
         for (String segment : segments) {
             segmentList.add(segment(segment));
         }
-        return new AbsoluteSegments(segmentList);
+        return segments(segmentList);
     }
 
     public static AbsoluteSegments segments(final Segment... segments) {
-        return new AbsoluteSegments(asList(segments));
+        return segments(asList(segments));
     }
 
     public static AbsoluteSegments segments(final Iterable<Segment> segments) {

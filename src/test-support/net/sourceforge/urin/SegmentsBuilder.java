@@ -32,7 +32,7 @@ public class SegmentsBuilder {
         for (int i = 0; i < tailSegments.length; i++) {
             tailSegments[i] = aSegment();
         }
-        return RelativeSegments.rootlessSegments(tailSegments);
+        return RootlessSegments.rootlessSegments(tailSegments);
     }
 
     public static Segments segments() {

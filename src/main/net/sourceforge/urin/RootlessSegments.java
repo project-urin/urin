@@ -16,11 +16,11 @@ import java.util.LinkedList;
 
 import static net.sourceforge.urin.Segment.*;
 
-class RelativeSegments extends Segments {
+class RootlessSegments extends Segments {
 
     private final Collection<Segment> segments;
 
-    RelativeSegments(final Iterable<Segment> segments) {
+    RootlessSegments(final Iterable<Segment> segments) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
         for (Segment segment : segments) {
             if (segment == null) {
@@ -70,7 +70,7 @@ class RelativeSegments extends Segments {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RelativeSegments segments1 = (RelativeSegments) o;
+        RootlessSegments segments1 = (RootlessSegments) o;
         return segments.equals(segments1.segments);
     }
 

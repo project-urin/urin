@@ -70,21 +70,21 @@ public class Rfc3986UriExamplesTest {
     public void mailtoExample() throws Exception {
         Urin urin = urin(
                 scheme("mailto"),
-                HierarchicalPart.hierarchicalPart(RelativeSegments.rootlessSegments(segment("John.Doe@example.com"))));
+                HierarchicalPart.hierarchicalPart(RootlessSegments.rootlessSegments(segment("John.Doe@example.com"))));
         assertThat(urin.asString(), equalTo("mailto:John.Doe@example.com"));
         assertThat(urin.asUri(), equalTo(new URI("mailto:John.Doe@example.com")));
     }
 
     @Test
     public void newsExample() throws Exception {
-        Urin urin = urin(scheme("news"), HierarchicalPart.hierarchicalPart(RelativeSegments.rootlessSegments(segment("comp.infosystems.www.servers.unix"))));
+        Urin urin = urin(scheme("news"), HierarchicalPart.hierarchicalPart(RootlessSegments.rootlessSegments(segment("comp.infosystems.www.servers.unix"))));
         assertThat(urin.asString(), equalTo("news:comp.infosystems.www.servers.unix"));
         assertThat(urin.asUri(), equalTo(new URI("news:comp.infosystems.www.servers.unix")));
     }
 
     @Test
     public void telExample() throws Exception {
-        Urin urin = urin(scheme("tel"), HierarchicalPart.hierarchicalPart(RelativeSegments.rootlessSegments(segment("+1-816-555-1212"))));
+        Urin urin = urin(scheme("tel"), HierarchicalPart.hierarchicalPart(RootlessSegments.rootlessSegments(segment("+1-816-555-1212"))));
         assertThat(urin.asString(), equalTo("tel:+1-816-555-1212"));
         assertThat(urin.asUri(), equalTo(new URI("tel:+1-816-555-1212")));
     }
@@ -103,7 +103,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void urnExample() throws Exception {
-        Urin urin = urin(scheme("urn"), HierarchicalPart.hierarchicalPart(RelativeSegments.rootlessSegments(segment("oasis:names:specification:docbook:dtd:xml:4.1.2"))));
+        Urin urin = urin(scheme("urn"), HierarchicalPart.hierarchicalPart(RootlessSegments.rootlessSegments(segment("oasis:names:specification:docbook:dtd:xml:4.1.2"))));
         assertThat(urin.asString(), equalTo("urn:oasis:names:specification:docbook:dtd:xml:4.1.2"));
         assertThat(urin.asUri(), equalTo(new URI("urn:oasis:names:specification:docbook:dtd:xml:4.1.2")));
     }
@@ -121,10 +121,10 @@ public class Rfc3986UriExamplesTest {
     @Test
     public void removeDotSegmentsExample2() throws Exception {
         assertThat(
-                RelativeReference.relativeReference(RelativeSegments.rootlessSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asString(),
+                RelativeReference.relativeReference(RootlessSegments.rootlessSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asString(),
                 equalTo("mid/6"));
         assertThat(
-                RelativeReference.relativeReference(RelativeSegments.rootlessSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asUri(),
+                RelativeReference.relativeReference(RootlessSegments.rootlessSegments(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asUri(),
                 equalTo(new URI("mid/6")));
     }
 }
