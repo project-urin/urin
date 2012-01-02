@@ -17,7 +17,7 @@ import static net.sourceforge.urin.SegmentBuilder.aSegment;
 public class SegmentsBuilder {
     private static final Random RANDOM = new Random();
 
-    public static AbsoluteSegments absoluteSegments() {
+    public static AbsoluteSegments anAbsoluteSegments() {
         int numberOfSegments = RANDOM.nextInt(5);
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
@@ -26,7 +26,7 @@ public class SegmentsBuilder {
         return Segments.segments(tailSegments);
     }
 
-    public static Segments relativeSegments() {
+    public static Segments aRelativeSegments() {
         int numberOfSegments = RANDOM.nextInt(5);
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
@@ -35,14 +35,14 @@ public class SegmentsBuilder {
         return RootlessSegments.rootlessSegments(tailSegments);
     }
 
-    public static Segments segments() {
+    public static Segments aSegments() {
         final Segments segments;
         switch (RANDOM.nextInt(2)) {
             case 0:
-                segments = absoluteSegments();
+                segments = anAbsoluteSegments();
                 break;
             case 1:
-                segments = relativeSegments();
+                segments = aRelativeSegments();
                 break;
             default:
                 throw new Defect("Attempted to switch on more cases than are defined");

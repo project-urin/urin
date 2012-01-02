@@ -17,7 +17,7 @@ import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
-import static net.sourceforge.urin.SegmentsBuilder.segments;
+import static net.sourceforge.urin.SegmentsBuilder.aSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -42,7 +42,7 @@ public class HierarchicalPartTest {
 
     @Test
     public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
-        Segments segments = segments();
+        Segments segments = aSegments();
         assertThat(hierarchicalPart(segments).asString(), equalTo(segments.asString(true)));
     }
 
@@ -71,19 +71,19 @@ public class HierarchicalPartTest {
 
     @Test
     public void aSimpleAbsolutePathIsEqualToAnotherWithTheSamePath() throws Exception {
-        Segments segments = segments();
+        Segments segments = aSegments();
         assertThat(hierarchicalPart(segments), equalTo(hierarchicalPart(segments)));
         assertThat(hierarchicalPart(segments).hashCode(), equalTo(hierarchicalPart(segments).hashCode()));
     }
 
     @Test
     public void aSimpleAbsolutePathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(hierarchicalPart(segments()), not(equalTo(hierarchicalPart(segments()))));
+        assertThat(hierarchicalPart(aSegments()), not(equalTo(hierarchicalPart(aSegments()))));
     }
 
     @Test
     public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
-        Segments segments = segments();
+        Segments segments = aSegments();
         assertThat(hierarchicalPart(segments).toString(), equalTo("HierarchicalPart{segments=" + segments + "}"));
     }
 

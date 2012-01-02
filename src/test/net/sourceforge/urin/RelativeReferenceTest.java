@@ -23,7 +23,7 @@ import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
-import static net.sourceforge.urin.SegmentsBuilder.absoluteSegments;
+import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -80,19 +80,19 @@ public class RelativeReferenceTest {
 
     @Test
     public void aSimpleAbsolutePathIsEqualToAnotherWithTheSamePath() throws Exception {
-        Segments segments = SegmentsBuilder.segments();
+        Segments segments = SegmentsBuilder.aSegments();
         assertThat(relativeReference(segments), equalTo(relativeReference(segments)));
         assertThat(relativeReference(segments).hashCode(), equalTo(relativeReference(segments).hashCode()));
     }
 
     @Test
     public void aSimpleAbsolutePathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(relativeReference(SegmentsBuilder.segments()), not(equalTo(relativeReference(SegmentsBuilder.segments()))));
+        assertThat(relativeReference(SegmentsBuilder.aSegments()), not(equalTo(relativeReference(SegmentsBuilder.aSegments()))));
     }
 
     @Test
     public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
-        Segments segments = SegmentsBuilder.segments();
+        Segments segments = SegmentsBuilder.aSegments();
         assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
     }
 
@@ -130,19 +130,19 @@ public class RelativeReferenceTest {
 
     @Test
     public void aSimpleRootlessPathIsEqualToAnotherWithTheSamePath() throws Exception {
-        Segments segments = SegmentsBuilder.segments();
+        Segments segments = SegmentsBuilder.aSegments();
         assertThat(relativeReference(segments), equalTo(relativeReference(segments)));
         assertThat(relativeReference(segments).hashCode(), equalTo(relativeReference(segments).hashCode()));
     }
 
     @Test
     public void aSimpleRootlessPathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(relativeReference(SegmentsBuilder.segments()), not(equalTo(relativeReference(SegmentsBuilder.segments()))));
+        assertThat(relativeReference(SegmentsBuilder.aSegments()), not(equalTo(relativeReference(SegmentsBuilder.aSegments()))));
     }
 
     @Test
     public void aSimpleRootlessPathToStringIsCorrect() throws Exception {
-        Segments segments = SegmentsBuilder.segments();
+        Segments segments = SegmentsBuilder.aSegments();
         assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
     }
 
@@ -191,20 +191,20 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithAuthorityAndPathIsEqualToAnotherWithTheSameAuthorityAndPath() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = absoluteSegments();
+        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
         assertThat(relativeReference(authority, absoluteSegments), equalTo(relativeReference(authority, absoluteSegments)));
         assertThat(relativeReference(authority, absoluteSegments).hashCode(), equalTo(relativeReference(authority, absoluteSegments).hashCode()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPath() throws Exception {
-        assertThat(relativeReference(anAuthority(), absoluteSegments()), not(equalTo(relativeReference(anAuthority(), absoluteSegments()))));
+        assertThat(relativeReference(anAuthority(), anAbsoluteSegments()), not(equalTo(relativeReference(anAuthority(), anAbsoluteSegments()))));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = absoluteSegments();
+        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
         assertThat(relativeReference(authority, absoluteSegments).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + "}"));
     }
 
@@ -214,7 +214,7 @@ public class RelativeReferenceTest {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 Authority authority = null;
-                relativeReference(authority, absoluteSegments());
+                relativeReference(authority, anAbsoluteSegments());
             }
         });
         assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
