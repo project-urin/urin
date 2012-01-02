@@ -18,10 +18,6 @@ import static net.sourceforge.urin.Segment.segment;
 
 public abstract class Segments {
 
-    public static Segments emptySegments() {
-        return new EmptySegments();
-    }
-
     public static Segments rootlessSegments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
         segmentList.add(segment(firstSegment));

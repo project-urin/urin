@@ -18,7 +18,6 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.RootlessSegments.rootlessSegments;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
-import static net.sourceforge.urin.Segments.emptySegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -67,7 +66,7 @@ public class RootlessSegmentsTest {
 
     @Test
     public void zeroRootlessSegmentsEqualToEmptySegments() throws Exception {
-        assertThat(rootlessSegments(), equalTo(emptySegments()));
+        assertThat(rootlessSegments(), equalTo((Segments) new EmptySegments()));
     }
 
     @Test

@@ -12,25 +12,24 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.Segments.emptySegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class EmptySegmentsTest {
     @Test
     public void anEmptySegmentsIsEqualToAnotherEmptySegments() throws Exception {
-        assertThat(emptySegments(), equalTo(emptySegments()));
-        assertThat(emptySegments().hashCode(), equalTo(emptySegments().hashCode()));
+        assertThat(new EmptySegments(), equalTo(new EmptySegments()));
+        assertThat(new EmptySegments().hashCode(), equalTo(new EmptySegments().hashCode()));
     }
 
     @Test
     public void aSegmentsToStringIsCorrect() throws Exception {
-        assertThat(emptySegments().toString(), equalTo("EmptySegments"));
+        assertThat(new EmptySegments().toString(), equalTo("EmptySegments"));
     }
 
     @Test
     public void correctlyIdentifiesFirstPartUnsupplied() throws Exception {
-        assertThat(emptySegments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(new EmptySegments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
 }

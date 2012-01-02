@@ -12,8 +12,6 @@ package net.sourceforge.urin;
 
 import java.net.URI;
 
-import static net.sourceforge.urin.Segments.emptySegments;
-
 public abstract class RelativeReference {
 
     private RelativeReference() {
@@ -26,11 +24,11 @@ public abstract class RelativeReference {
     }
 
     public static RelativeReference relativeReference() {
-        return new RelativeReferenceNoAuthority(emptySegments());
+        return new RelativeReferenceNoAuthority(new EmptySegments());
     }
 
     public static RelativeReference relativeReference(final Authority authority) {
-        return new RelativeReferenceWithAuthority(authority, emptySegments());
+        return new RelativeReferenceWithAuthority(authority, new EmptySegments());
     }
 
     public static RelativeReference relativeReference(final Segments segments) {

@@ -10,8 +10,6 @@
 
 package net.sourceforge.urin;
 
-import static net.sourceforge.urin.Segments.emptySegments;
-
 public abstract class HierarchicalPart {
 
     private HierarchicalPart() {
@@ -20,11 +18,11 @@ public abstract class HierarchicalPart {
     abstract String asString();
 
     public static HierarchicalPart hierarchicalPart() {
-        return new HierarchicalPartNoAuthority(emptySegments());
+        return new HierarchicalPartNoAuthority(new EmptySegments());
     }
 
     public static HierarchicalPart hierarchicalPart(final Authority authority) {
-        return new HierarchicalPartWithAuthority(authority, emptySegments());
+        return new HierarchicalPartWithAuthority(authority, new EmptySegments());
     }
 
     public static HierarchicalPart hierarchicalPart(final Segments segments) {
