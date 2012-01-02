@@ -13,7 +13,7 @@ package net.sourceforge.urin;
 import java.net.URI;
 
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
-import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON;
+import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 
 public abstract class RelativeReference {
 
@@ -35,9 +35,6 @@ public abstract class RelativeReference {
     }
 
     public static RelativeReference relativeReference(final Segments segments) {
-        if (segments.firstPartIsSuppliedButIsEmpty()) {
-            throw new IllegalArgumentException("If supplied, first segment must be non-empty");
-        }
         return new RelativeReferenceNoAuthority(segments);
     }
 
@@ -57,7 +54,7 @@ public abstract class RelativeReference {
 
         @Override
         public String asString() {
-            return segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON);
+            return segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON);
         }
 
         @Override

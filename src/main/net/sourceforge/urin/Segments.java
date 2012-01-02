@@ -82,6 +82,12 @@ public abstract class Segments {
             boolean matches(final Segments segments) {
                 return segments.firstPartIsSuppliedButIsEmpty();
             }
+        },
+        PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON {
+            @Override
+            boolean matches(final Segments segments) {
+                return segments.firstPartIsSuppliedButIsEmpty() || segments.firstPartIsSuppliedButContainsColon();
+            }
         };
 
         abstract boolean matches(final Segments segments);

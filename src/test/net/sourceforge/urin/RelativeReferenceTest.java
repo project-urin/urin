@@ -27,7 +27,6 @@ import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class RelativeReferenceTest {
     @Test
@@ -59,12 +58,7 @@ public class RelativeReferenceTest {
     public void aSimpleAbsolutePathRejectsAnEmptyFirstSegment() throws Exception {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
-        try {
-            relativeReference(segments(firstSegment, secondSegment)).asString();
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
-        }
+        assertThat(relativeReference(segments(firstSegment, secondSegment)).asString(), equalTo("/./" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
@@ -108,12 +102,7 @@ public class RelativeReferenceTest {
     public void aSimpleRootlessPathRejectsAnEmptyFirstSegment() throws Exception {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
-        try {
-            relativeReference(rootlessSegments(firstSegment, secondSegment)).asString();
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("If supplied, first segment must be non-empty"));
-        }
+        assertThat(relativeReference(rootlessSegments(firstSegment, secondSegment)).asString(), equalTo("./" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
