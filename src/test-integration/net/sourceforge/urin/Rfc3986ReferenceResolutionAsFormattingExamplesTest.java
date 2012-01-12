@@ -28,7 +28,7 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
 
     @Test
     public void normalExamples() throws Exception {
-        assertThat(urin(scheme("g"), hierarchicalPart(Segments.rootlessSegments("h"))).asString(), equalTo("g:h"));
+        assertThat(urin(scheme("g"), hierarchicalPart(rootlessSegments("h"))).asString(), equalTo("g:h"));
         assertThat(relativeReference(rootlessSegments(segment("g"))).asString(), equalTo("g"));
         assertThat(relativeReference(rootlessSegments(DOT, segment("g"))).asString(), equalTo("g"));
         assertThat(relativeReference(rootlessSegments("g", "")).asString(), equalTo("g/"));
@@ -53,24 +53,22 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
         assertThat(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT, segment("g"))).asString(), equalTo("../../g"));
     }
 
-    //    "../../../g"    =  "http://a/g"
-    //    "../../../../g" =  "http://a/g"
-    //    "/./g"          =  "http://a/g"
-    //    "/../g"         =  "http://a/g"
-    //    "g."            =  "http://a/b/c/g."
-    //    ".g"            =  "http://a/b/c/.g"
-    //    "g.."           =  "http://a/b/c/g.."
-    //    "..g"           =  "http://a/b/c/..g"
-    //    "./../g"        =  "http://a/b/g"
-    //    "./g/."         =  "http://a/b/c/g/"
-    //    "g/./h"         =  "http://a/b/c/g/h"
-    //    "g/../h"        =  "http://a/b/c/h"
-    //    "g;x=1/./y"     =  "http://a/b/c/g;x=1/y"
-    //    "g;x=1/../y"    =  "http://a/b/c/y"
-    //    "g?y/./x"       =  "http://a/b/c/g?y/./x"
-    //    "g?y/../x"      =  "http://a/b/c/g?y/../x"
-    //    "g#s/./x"       =  "http://a/b/c/g#s/./x"
-    //    "g#s/../x"      =  "http://a/b/c/g#s/../x"
-    //    "http:g"        =  "http:g"         ; for strict parsers
-    //                    /  "http://a/b/c/g" ; for backward compatibility
+    @Test
+    public void abnormalExamples() throws Exception {
+        assertThat(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT, DOT_DOT, segment("g"))).asString(), equalTo("../../../g"));
+        assertThat(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT, DOT_DOT, DOT_DOT, segment("g"))).asString(), equalTo("../../../../g"));
+        assertThat(relativeReference(segments(DOT, segment("g"))).asString(), equalTo("/g"));
+        assertThat(relativeReference(segments(DOT_DOT, segment("g"))).asString(), equalTo("/g"));
+        assertThat(relativeReference(rootlessSegments("g.")).asString(), equalTo("g."));
+        assertThat(relativeReference(rootlessSegments(DOT, DOT_DOT, segment("g"))).asString(), equalTo("../g"));
+        assertThat(relativeReference(rootlessSegments(DOT, segment("g"), DOT)).asString(), equalTo("g"));
+        assertThat(relativeReference(rootlessSegments(segment("g"), DOT_DOT, segment("h"))).asString(), equalTo("h"));
+        assertThat(relativeReference(rootlessSegments(segment("g;x=1"), DOT, segment("y"))).asString(), equalTo("g;x=1/y"));
+        assertThat(relativeReference(rootlessSegments(segment("g;x=1"), DOT_DOT, segment("y"))).asString(), equalTo("y"));
+        assertThat(relativeReference(rootlessSegments("g"), query("y/./x")).asString(), equalTo("g?y/./x"));
+        assertThat(relativeReference(rootlessSegments("g"), query("y/../x")).asString(), equalTo("g?y/../x"));
+        assertThat(relativeReference(rootlessSegments("g"), fragment("s/./x")).asString(), equalTo("g#s/./x"));
+        assertThat(relativeReference(rootlessSegments("g"), fragment("s/../x")).asString(), equalTo("g#s/../x"));
+        assertThat(urin(scheme("http"), hierarchicalPart(rootlessSegments("g"))).asString(), equalTo("http:g"));
+    }
 }

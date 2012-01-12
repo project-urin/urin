@@ -27,14 +27,8 @@ final class RootlessSegments extends Segments {
                 throw new NullPointerException("Segment cannot be null");
             } else {
                 if (!DOT.equals(segment)) {
-                    if (DOT_DOT.equals(segment)) {
-                        if ((newSegments.size() == 1 && newSegments.getLast().isEmpty())) {
-
-                        } else if (newSegments.size() > 1) {
-                            newSegments.removeLast();
-                        } else {
-                            newSegments.add(segment);
-                        }
+                    if (DOT_DOT.equals(segment) && !newSegments.isEmpty() && !DOT_DOT.equals(newSegments.getLast())) {
+                        newSegments.removeLast();
                     } else {
                         newSegments.add(segment);
                     }
