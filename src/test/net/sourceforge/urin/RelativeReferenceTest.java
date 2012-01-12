@@ -351,6 +351,55 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void makesRelativeReferenceWithAuthorityAndFragment() throws Exception {
+        Authority authority = anAuthority();
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(authority, fragment).asString(), equalTo("//" + authority.asString() + "#" + fragment.asString()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndFragmentIsEqualToAnotherWithTheSameAuthorityAndFragment() throws Exception {
+        Authority authority = anAuthority();
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(authority, fragment), equalTo(relativeReference(authority, fragment)));
+        assertThat(relativeReference(authority, fragment).hashCode(), equalTo(relativeReference(authority, fragment).hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndFragmentIsNotEqualToAnotherWithTheADifferentAuthority() throws Exception {
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(anAuthority(), fragment), not(equalTo(relativeReference(anAuthority(), fragment))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndFragmentIsNotEqualToAnotherWithTheADifferentFragment() throws Exception {
+        Authority authority = anAuthority();
+        assertThat(relativeReference(authority, aFragment()), not(equalTo(relativeReference(authority, aFragment()))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndFragmentToStringIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(authority, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=EmptySegments, fragment=" + fragment + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndFragment() throws Exception {
+        assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference(null, aFragment());
+            }
+        });
+        assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                relativeReference(anAuthority(), (Fragment) null);
+            }
+        });
+    }
+
+    @Test
     public void makesRelativeReferenceWithAuthorityAndNonEmptyPath() throws Exception {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();

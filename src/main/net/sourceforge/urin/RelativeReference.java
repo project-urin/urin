@@ -62,10 +62,10 @@ public abstract class RelativeReference {
         return new RelativeReferenceNoAuthorityWithFragment(new EmptySegments(), fragment);
     }
 
-//    public static RelativeReference relativeReference(final Authority authority, final Fragment fragment) {
-//        return new RelativeReferenceWithAuthorityAndFragment(authority, new EmptySegments(), fragment);
-//    }
-//
+    public static RelativeReference relativeReference(final Authority authority, final Fragment fragment) {
+        return new RelativeReferenceWithAuthorityAndFragment(authority, new EmptySegments(), fragment);
+    }
+
 //    public static RelativeReference relativeReference(final Segments segments, final Fragment fragment) {
 //        return new RelativeReferenceNoAuthorityWithFragment(segments, fragment);
 //    }
@@ -341,6 +341,69 @@ public abstract class RelativeReference {
                     "authority=" + authority +
                     ", segments=" + segments +
                     ", query=" + query +
+                    '}';
+        }
+    }
+
+    private static final class RelativeReferenceWithAuthorityAndFragment extends RelativeReference {
+        private final Authority authority;
+        private final Segments segments;
+        private final Fragment fragment;
+
+        RelativeReferenceWithAuthorityAndFragment(final Authority authority, final Segments segments, final Fragment fragment) {
+            if (authority == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
+            }
+            this.authority = authority;
+            if (segments == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null segments");
+            }
+            this.segments = segments;
+            if (fragment == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
+            }
+            this.fragment = fragment;
+        }
+
+        @Override
+        public String asString() {
+            return new StringBuilder("//")
+                    .append(authority.asString())
+                    .append(segments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
+                    .append('#')
+                    .append(fragment.asString())
+                    .toString();
+        }
+
+        @Override
+        Authority resolveAuthority(final Authority baseAuthority) {
+            return authority;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            RelativeReferenceWithAuthorityAndFragment that = (RelativeReferenceWithAuthorityAndFragment) o;
+
+            return authority.equals(that.authority) && fragment.equals(that.fragment) && segments.equals(that.segments);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = authority.hashCode();
+            result = 31 * result + segments.hashCode();
+            result = 31 * result + fragment.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "RelativeReference{" +
+                    "authority=" + authority +
+                    ", segments=" + segments +
+                    ", fragment=" + fragment +
                     '}';
         }
     }
