@@ -23,6 +23,7 @@ import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.SegmentsBuilder.aSegments;
 import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -136,6 +137,12 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithNoAuthorityResolveAuthorityToTheBase() throws Exception {
+        Authority baseAuthority = anAuthority();
+        assertThat(relativeReference(aSegments()).resolveAuthority(baseAuthority), equalTo(baseAuthority));
+    }
+
+    @Test
     public void makesRelativeReferenceWithAuthorityAndEmptyPath() throws Exception {
         Authority authority = anAuthority();
         assertThat(relativeReference(authority).asString(), equalTo("//" + authority.asString()));
@@ -195,6 +202,12 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         AbsoluteSegments absoluteSegments = anAbsoluteSegments();
         assertThat(relativeReference(authority, absoluteSegments).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + "}"));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityResolveAuthorityToTheRelative() throws Exception {
+        Authority relativeAuthority = anAuthority();
+        assertThat(relativeReference(relativeAuthority, anAbsoluteSegments()).resolveAuthority(anAuthority()), equalTo(relativeAuthority));
     }
 
     @Test

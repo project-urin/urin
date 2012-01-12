@@ -42,6 +42,8 @@ public abstract class RelativeReference {
         return new RelativeReferenceWithAuthority(authority, segments);
     }
 
+    abstract Authority resolveAuthority(final Authority baseAuthority);
+
     private static final class RelativeReferenceNoAuthority extends RelativeReference {
         private final Segments segments;
 
@@ -55,6 +57,11 @@ public abstract class RelativeReference {
         @Override
         public String asString() {
             return segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON);
+        }
+
+        @Override
+        Authority resolveAuthority(final Authority baseAuthority) {
+            return baseAuthority;
         }
 
         @Override
@@ -100,6 +107,11 @@ public abstract class RelativeReference {
                     .append(authority.asString())
                     .append(segments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
                     .toString();
+        }
+
+        @Override
+        Authority resolveAuthority(final Authority baseAuthority) {
+            return authority;
         }
 
         @Override

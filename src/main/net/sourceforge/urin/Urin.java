@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -23,6 +23,8 @@ public abstract class Urin {
     public URI asUri() {
         return URI.create(asString());
     }
+
+    public abstract Urin resolve(final RelativeReference relativeReference);
 
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
         return new UrinWithHierarchicalPart(scheme, hierarchicalPart);
@@ -75,6 +77,11 @@ public abstract class Urin {
                     .append('#')
                     .append(fragment.asString())
                     .toString();
+        }
+
+        @Override
+        public Urin resolve(final RelativeReference relativeReference) {
+            return new UrinWithHierarchicalPartAndQueryAndFragment(scheme, hierarchicalPart, query, fragment);
         }
 
         @Override
@@ -140,6 +147,11 @@ public abstract class Urin {
         }
 
         @Override
+        public Urin resolve(final RelativeReference relativeReference) {
+            return new UrinWithHierarchicalPartAndQuery(scheme, hierarchicalPart, query);
+        }
+
+        @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -199,6 +211,11 @@ public abstract class Urin {
         }
 
         @Override
+        public Urin resolve(final RelativeReference relativeReference) {
+            return new UrinWithHierarchicalPartAndFragment(scheme, hierarchicalPart, fragment);
+        }
+
+        @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -248,6 +265,11 @@ public abstract class Urin {
                     .append(':')
                     .append(hierarchicalPart.asString())
                     .toString();
+        }
+
+        @Override
+        public Urin resolve(final RelativeReference relativeReference) {
+            return new UrinWithHierarchicalPart(scheme, hierarchicalPart);
         }
 
         @Override
