@@ -70,9 +70,9 @@ public abstract class RelativeReference {
         return new RelativeReferenceNoAuthorityWithFragment(segments, fragment);
     }
 
-//    public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments, final Fragment fragment) {
-//        return new RelativeReferenceWithAuthorityAndFragment(authority, segments, fragment);
-//    }
+    public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments, final Fragment fragment) {
+        return new RelativeReferenceWithAuthorityAndFragment(authority, segments, fragment);
+    }
 
     abstract Authority resolveAuthority(final Authority baseAuthority);
 
