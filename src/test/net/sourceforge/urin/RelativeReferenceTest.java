@@ -214,6 +214,56 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void makesRelativeReferenceWithAuthorityAndQuery() throws Exception {
+        Authority authority = anAuthority();
+        Query query = aQuery();
+        assertThat(relativeReference(authority, query).asString(), equalTo("//" + authority.asString() + "?" + query.asString()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndQueryIsEqualToAnotherWithTheSameAuthorityAndQuery() throws Exception {
+        Authority authority = anAuthority();
+        Query query = aQuery();
+        assertThat(relativeReference(authority, query), equalTo(relativeReference(authority, query)));
+        assertThat(relativeReference(authority, query).hashCode(), equalTo(relativeReference(authority, query).hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndQueryIsNotEqualToAnotherWithTheADifferentAuthority() throws Exception {
+        Query query = aQuery();
+        assertThat(relativeReference(anAuthority(), query), not(equalTo(relativeReference(anAuthority(), query))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndQueryIsNotEqualToAnotherWithTheADifferentQuery() throws Exception {
+        Authority authority = anAuthority();
+        assertThat(relativeReference(authority, aQuery()), not(equalTo(relativeReference(authority, aQuery()))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndQueryToStringIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        Query query = aQuery();
+        assertThat(relativeReference(authority, query).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=EmptySegments, query=" + query + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndQuery() throws Exception {
+        assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference(null, aQuery());
+            }
+        });
+        assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference(anAuthority(), (Query) null);
+            }
+        });
+    }
+
+    @Test
     public void makesRelativeReferenceWithAuthorityAndNonEmptyPath() throws Exception {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();

@@ -46,10 +46,10 @@ public abstract class RelativeReference {
         return new RelativeReferenceNoAuthorityWithQuery(new EmptySegments(), query);
     }
 
-//    public static RelativeReference relativeReference(final Authority authority, final Query query) {
-//        return new RelativeReferenceWithAuthorityAndQuery(authority, new EmptySegments(), query);
-//    }
-//
+    public static RelativeReference relativeReference(final Authority authority, final Query query) {
+        return new RelativeReferenceWithAuthorityAndQuery(authority, new EmptySegments(), query);
+    }
+
 //    public static RelativeReference relativeReference(final Segments segments, final Query query) {
 //        return new RelativeReferenceNoAuthorityWithQuery(segments, query);
 //    }
@@ -214,6 +214,7 @@ public abstract class RelativeReference {
     private static final class RelativeReferenceWithAuthorityAndQuery extends RelativeReference {
         private final Authority authority;
         private final Segments segments;
+        private final Query query;
 
         RelativeReferenceWithAuthorityAndQuery(final Authority authority, final Segments segments, final Query query) {
             if (authority == null) {
@@ -224,6 +225,10 @@ public abstract class RelativeReference {
                 throw new NullPointerException("Cannot instantiate RelativeReference with null segments");
             }
             this.segments = segments;
+            if (query == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
+            }
+            this.query = query;
         }
 
         @Override
@@ -231,6 +236,8 @@ public abstract class RelativeReference {
             return new StringBuilder("//")
                     .append(authority.asString())
                     .append(segments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
+                    .append('?')
+                    .append(query.asString())
                     .toString();
         }
 
@@ -244,15 +251,16 @@ public abstract class RelativeReference {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RelativeReferenceWithAuthority that = (RelativeReferenceWithAuthority) o;
-            return authority.equals(that.authority)
-                    && segments.equals(that.segments);
+            RelativeReferenceWithAuthorityAndQuery that = (RelativeReferenceWithAuthorityAndQuery) o;
+
+            return authority.equals(that.authority) && query.equals(that.query) && segments.equals(that.segments);
         }
 
         @Override
         public int hashCode() {
             int result = authority.hashCode();
             result = 31 * result + segments.hashCode();
+            result = 31 * result + query.hashCode();
             return result;
         }
 
@@ -261,6 +269,7 @@ public abstract class RelativeReference {
             return "RelativeReference{" +
                     "authority=" + authority +
                     ", segments=" + segments +
+                    ", query=" + query +
                     '}';
         }
     }
