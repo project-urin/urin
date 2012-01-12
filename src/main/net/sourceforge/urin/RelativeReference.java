@@ -86,9 +86,9 @@ public abstract class RelativeReference {
         return new RelativeReferenceNoAuthorityWithQueryAndFragment(segments, query, fragment);
     }
 
-//    public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments, final Query query, final Fragment fragment) {
-//        return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, segments, query, fragment);
-//    }
+    public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments, final Query query, final Fragment fragment) {
+        return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, segments, query, fragment);
+    }
 
     abstract Authority resolveAuthority(final Authority baseAuthority);
 
