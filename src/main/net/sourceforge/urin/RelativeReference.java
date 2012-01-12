@@ -50,10 +50,10 @@ public abstract class RelativeReference {
         return new RelativeReferenceWithAuthorityAndQuery(authority, new EmptySegments(), query);
     }
 
-//    public static RelativeReference relativeReference(final Segments segments, final Query query) {
-//        return new RelativeReferenceNoAuthorityWithQuery(segments, query);
-//    }
-//
+    public static RelativeReference relativeReference(final Segments segments, final Query query) {
+        return new RelativeReferenceNoAuthorityWithQuery(segments, query);
+    }
+
 //    public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments, final Query query) {
 //        return new RelativeReferenceWithAuthorityAndQuery(authority, segments, query);
 //    }

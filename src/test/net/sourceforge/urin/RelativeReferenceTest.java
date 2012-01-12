@@ -22,6 +22,7 @@ import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
+import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.SegmentsBuilder.aSegments;
@@ -85,6 +86,57 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithPathAndQueryAsStringIsCorrect() throws Exception {
+        Segments segments = aSegments();
+        Query query = aQuery();
+        assertThat(relativeReference(segments, query).asString(), equalTo(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString()));
+        assertThat(relativeReference(segments, query).asUri(), equalTo(URI.create(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString())));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndQueryIsEqualToAnotherRelativeReferenceWithPathAndQuery() throws Exception {
+        Segments segments = aSegments();
+        Query query = aQuery();
+        assertThat(relativeReference(segments, query), equalTo(relativeReference(segments, query)));
+        assertThat(relativeReference(segments, query).hashCode(), equalTo(relativeReference(segments, query).hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndQueryIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
+        Query query = aQuery();
+        assertThat(relativeReference(aSegments(), query), not(equalTo(relativeReference(aSegments(), query))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndQueryIsNotEqualToAnotherWithTheADifferentQuery() throws Exception {
+        Segments segments = aSegments();
+        assertThat(relativeReference(segments, aQuery()), not(equalTo(relativeReference(segments, aQuery()))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndQueryToStringIsCorrect() throws Exception {
+        Segments segments = aSegments();
+        Query query = aQuery();
+        assertThat(relativeReference(segments, query).toString(), equalTo("RelativeReference{segments=" + segments.toString() + ", query=" + query.toString() + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForARelativeReferenceWithPathAndQuery() throws Exception {
+        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference((Segments) null, aQuery());
+            }
+        });
+        assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference(aSegments(), null);
+            }
+        });
+    }
+
+    @Test
     public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
@@ -93,7 +145,7 @@ public class RelativeReferenceTest {
     }
 
     @Test
-    public void aSimpleAbsolutePathRejectsAnEmptyFirstSegment() throws Exception {
+    public void aSimpleAbsolutePathPrefixesAnEmptyFirstSegmentWithADotSegment() throws Exception {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
         assertThat(relativeReference(segments(firstSegment, secondSegment)).asString(), equalTo("/./" + firstSegment.asString() + "/" + secondSegment.asString()));
@@ -251,13 +303,11 @@ public class RelativeReferenceTest {
     public void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndQuery() throws Exception {
         assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                relativeReference(null, aQuery());
+                relativeReference((Authority) null, aQuery());
             }
         });
         assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
-                //noinspection NullableProblems
                 relativeReference(anAuthority(), (Query) null);
             }
         });
