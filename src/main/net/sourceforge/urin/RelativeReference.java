@@ -78,10 +78,10 @@ public abstract class RelativeReference {
         return new RelativeReferenceNoAuthorityWithQueryAndFragment(new EmptySegments(), query, fragment);
     }
 
-//    public static RelativeReference relativeReference(final Authority authority, final Query query, final Fragment fragment) {
-//        return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, new EmptySegments(), query, fragment);
-//    }
-//
+    public static RelativeReference relativeReference(final Authority authority, final Query query, final Fragment fragment) {
+        return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, new EmptySegments(), query, fragment);
+    }
+
 //    public static RelativeReference relativeReference(final Segments segments, final Query query, final Fragment fragment) {
 //        return new RelativeReferenceNoAuthorityWithQueryAndFragment(segments, query, fragment);
 //    }
@@ -482,6 +482,78 @@ public abstract class RelativeReference {
             return "RelativeReference{" +
                     "authority=" + authority +
                     ", segments=" + segments +
+                    ", fragment=" + fragment +
+                    '}';
+        }
+    }
+
+    private static final class RelativeReferenceWithAuthorityAndQueryAndFragment extends RelativeReference {
+        private final Authority authority;
+        private final Segments segments;
+        private final Query query;
+        private final Fragment fragment;
+
+        RelativeReferenceWithAuthorityAndQueryAndFragment(final Authority authority, final Segments segments, final Query query, final Fragment fragment) {
+            if (authority == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
+            }
+            this.authority = authority;
+            if (segments == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null segments");
+            }
+            this.segments = segments;
+            if (query == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
+            }
+            this.query = query;
+            if (fragment == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
+            }
+            this.fragment = fragment;
+        }
+
+        @Override
+        public String asString() {
+            return new StringBuilder("//")
+                    .append(authority.asString())
+                    .append(segments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
+                    .append('?')
+                    .append(query.asString())
+                    .append('#')
+                    .append(fragment.asString())
+                    .toString();
+        }
+
+        @Override
+        Authority resolveAuthority(final Authority baseAuthority) {
+            return authority;
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            RelativeReferenceWithAuthorityAndQueryAndFragment that = (RelativeReferenceWithAuthorityAndQueryAndFragment) o;
+
+            return authority.equals(that.authority) && fragment.equals(that.fragment) && query.equals(that.query) && segments.equals(that.segments);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = authority.hashCode();
+            result = 31 * result + segments.hashCode();
+            result = 31 * result + query.hashCode();
+            result = 31 * result + fragment.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "RelativeReference{" +
+                    "authority=" + authority +
+                    ", segments=" + segments +
+                    ", query=" + query +
                     ", fragment=" + fragment +
                     '}';
         }
