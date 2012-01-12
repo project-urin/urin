@@ -123,6 +123,59 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithEmptyPathWithQueryAndFragmentAsStringIsCorrect() throws Exception {
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(query, fragment).asString(), equalTo("?" + query.asString() + "#" + fragment.asString()));
+        assertThat(relativeReference(query, fragment).asUri(), equalTo(URI.create("?" + query.asString() + "#" + fragment.asString())));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithQueryAndFragmentIsEqualToAnotherRelativeReferenceWithEmptyPath() throws Exception {
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(query, fragment), equalTo(relativeReference(query, fragment)));
+        assertThat(relativeReference(query, fragment).hashCode(), equalTo(relativeReference(query, fragment).hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithQueryAndFragmentIsNotEqualToAnotherWithTheADifferentQuery() throws Exception {
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(aQuery(), fragment), not(equalTo(relativeReference(aQuery(), fragment))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithQueryAndFragmentIsNotEqualToAnotherWithTheADifferentFragment() throws Exception {
+        Query query = aQuery();
+        assertThat(relativeReference(query, aFragment()), not(equalTo(relativeReference(query, aFragment()))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithQueryAndFragmentToStringIsCorrect() throws Exception {
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(query, fragment).toString(), equalTo("RelativeReference{segments=EmptySegments, query=" + query + ", fragment=" + fragment + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithQueryAndFragment() throws Exception {
+        assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Query query = null;
+                relativeReference(query, aFragment());
+            }
+        });
+        assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Fragment fragment = null;
+                relativeReference(aQuery(), fragment);
+            }
+        });
+    }
+
+    @Test
     public void aRelativeReferenceWithPathAndQueryAsStringIsCorrect() throws Exception {
         Segments segments = aSegments();
         Query query = aQuery();

@@ -74,6 +74,22 @@ public abstract class RelativeReference {
         return new RelativeReferenceWithAuthorityAndFragment(authority, segments, fragment);
     }
 
+    public static RelativeReference relativeReference(final Query query, final Fragment fragment) {
+        return new RelativeReferenceNoAuthorityWithQueryAndFragment(new EmptySegments(), query, fragment);
+    }
+
+//    public static RelativeReference relativeReference(final Authority authority, final Query query, final Fragment fragment) {
+//        return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, new EmptySegments(), query, fragment);
+//    }
+//
+//    public static RelativeReference relativeReference(final Segments segments, final Query query, final Fragment fragment) {
+//        return new RelativeReferenceNoAuthorityWithQueryAndFragment(segments, query, fragment);
+//    }
+//
+//    public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments, final Query query, final Fragment fragment) {
+//        return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, segments, query, fragment);
+//    }
+
     abstract Authority resolveAuthority(final Authority baseAuthority);
 
     private static final class RelativeReferenceNoAuthority extends RelativeReference {
@@ -223,6 +239,69 @@ public abstract class RelativeReference {
         public String toString() {
             return "RelativeReference{" +
                     "segments=" + segments +
+                    ", fragment=" + fragment +
+                    '}';
+        }
+    }
+
+    private static final class RelativeReferenceNoAuthorityWithQueryAndFragment extends RelativeReference {
+        private final Segments segments;
+        private final Fragment fragment;
+        private final Query query;
+
+        RelativeReferenceNoAuthorityWithQueryAndFragment(final Segments segments, final Query query, final Fragment fragment) {
+            if (segments == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null segments");
+            }
+            this.segments = segments;
+            if (query == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
+            }
+            this.query = query;
+            if (fragment == null) {
+                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
+            }
+            this.fragment = fragment;
+        }
+
+        @Override
+        public String asString() {
+            return new StringBuilder(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON))
+                    .append('?')
+                    .append(query.asString())
+                    .append('#')
+                    .append(fragment.asString())
+                    .toString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            RelativeReferenceNoAuthorityWithQueryAndFragment that = (RelativeReferenceNoAuthorityWithQueryAndFragment) o;
+
+            return fragment.equals(that.fragment) && query.equals(that.query) && segments.equals(that.segments);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = segments.hashCode();
+            result = 31 * result + fragment.hashCode();
+            result = 31 * result + query.hashCode();
+            return result;
+        }
+
+        @Override
+        Authority resolveAuthority(final Authority baseAuthority) {
+            return baseAuthority;
+        }
+
+        @Override
+        public String toString() {
+            return "RelativeReference{" +
+                    "segments=" + segments +
+                    ", query=" + query +
                     ", fragment=" + fragment +
                     '}';
         }
