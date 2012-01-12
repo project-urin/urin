@@ -66,10 +66,10 @@ public abstract class RelativeReference {
         return new RelativeReferenceWithAuthorityAndFragment(authority, new EmptySegments(), fragment);
     }
 
-//    public static RelativeReference relativeReference(final Segments segments, final Fragment fragment) {
-//        return new RelativeReferenceNoAuthorityWithFragment(segments, fragment);
-//    }
-//
+    public static RelativeReference relativeReference(final Segments segments, final Fragment fragment) {
+        return new RelativeReferenceNoAuthorityWithFragment(segments, fragment);
+    }
+
 //    public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments, final Fragment fragment) {
 //        return new RelativeReferenceWithAuthorityAndFragment(authority, segments, fragment);
 //    }

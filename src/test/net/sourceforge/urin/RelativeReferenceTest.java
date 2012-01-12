@@ -168,7 +168,58 @@ public class RelativeReferenceTest {
         assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(aSegments(), null);
+                relativeReference(aSegments(), (Query) null);
+            }
+        });
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndFragmentAsStringIsCorrect() throws Exception {
+        Segments segments = aSegments();
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(segments, fragment).asString(), equalTo(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "#" + fragment.asString()));
+        assertThat(relativeReference(segments, fragment).asUri(), equalTo(URI.create(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "#" + fragment.asString())));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndFragmentIsEqualToAnotherRelativeReferenceWithPathAndFragment() throws Exception {
+        Segments segments = aSegments();
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(segments, fragment), equalTo(relativeReference(segments, fragment)));
+        assertThat(relativeReference(segments, fragment).hashCode(), equalTo(relativeReference(segments, fragment).hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndFragmentIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(aSegments(), fragment), not(equalTo(relativeReference(aSegments(), fragment))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndFragmentIsNotEqualToAnotherWithTheADifferentFragment() throws Exception {
+        Segments segments = aSegments();
+        assertThat(relativeReference(segments, aFragment()), not(equalTo(relativeReference(segments, aFragment()))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndFragmentToStringIsCorrect() throws Exception {
+        Segments segments = aSegments();
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(segments, fragment).toString(), equalTo("RelativeReference{segments=" + segments.toString() + ", fragment=" + fragment.toString() + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForARelativeReferenceWithPathAndFragment() throws Exception {
+        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference((Segments) null, aFragment());
+            }
+        });
+        assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference(aSegments(), (Fragment) null);
             }
         });
     }
@@ -389,7 +440,7 @@ public class RelativeReferenceTest {
         assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(null, aFragment());
+                relativeReference((Authority) null, aFragment());
             }
         });
         assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
