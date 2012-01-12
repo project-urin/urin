@@ -15,6 +15,7 @@ import org.junit.Test;
 import java.net.URI;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
+import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
@@ -81,6 +82,42 @@ public class RelativeReferenceTest {
                 //noinspection NullableProblems
                 Query query = null;
                 relativeReference(query);
+            }
+        });
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithFragmentAsStringIsCorrect() throws Exception {
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(fragment).asString(), equalTo("#" + fragment.asString()));
+        assertThat(relativeReference(fragment).asUri(), equalTo(URI.create("#" + fragment.asString())));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithFragmentIsEqualToAnotherRelativeReferenceWithEmptyPath() throws Exception {
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(fragment), equalTo(relativeReference(fragment)));
+        assertThat(relativeReference(fragment).hashCode(), equalTo(relativeReference(fragment).hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithFragmentIsNotEqualToAnotherWithTheADifferentFragment() throws Exception {
+        assertThat(relativeReference(aFragment()), not(equalTo(relativeReference(aFragment()))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithFragmentToStringIsCorrect() throws Exception {
+        Fragment fragment = aFragment();
+        assertThat(relativeReference(fragment).toString(), equalTo("RelativeReference{segments=EmptySegments, fragment=" + fragment.toString() + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithFragment() throws Exception {
+        assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Fragment fragment = null;
+                relativeReference(fragment);
             }
         });
     }
