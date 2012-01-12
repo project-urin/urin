@@ -164,19 +164,19 @@ public class RelativeReferenceTest {
 
     @Test
     public void aSimpleAbsolutePathIsEqualToAnotherWithTheSamePath() throws Exception {
-        Segments segments = SegmentsBuilder.aSegments();
+        Segments segments = aSegments();
         assertThat(relativeReference(segments), equalTo(relativeReference(segments)));
         assertThat(relativeReference(segments).hashCode(), equalTo(relativeReference(segments).hashCode()));
     }
 
     @Test
     public void aSimpleAbsolutePathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(relativeReference(SegmentsBuilder.aSegments()), not(equalTo(relativeReference(SegmentsBuilder.aSegments()))));
+        assertThat(relativeReference(aSegments()), not(equalTo(relativeReference(aSegments()))));
     }
 
     @Test
     public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
-        Segments segments = SegmentsBuilder.aSegments();
+        Segments segments = aSegments();
         assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
     }
 
@@ -209,19 +209,19 @@ public class RelativeReferenceTest {
 
     @Test
     public void aSimpleRootlessPathIsEqualToAnotherWithTheSamePath() throws Exception {
-        Segments segments = SegmentsBuilder.aSegments();
+        Segments segments = aSegments();
         assertThat(relativeReference(segments), equalTo(relativeReference(segments)));
         assertThat(relativeReference(segments).hashCode(), equalTo(relativeReference(segments).hashCode()));
     }
 
     @Test
     public void aSimpleRootlessPathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(relativeReference(SegmentsBuilder.aSegments()), not(equalTo(relativeReference(SegmentsBuilder.aSegments()))));
+        assertThat(relativeReference(aSegments()), not(equalTo(relativeReference(aSegments()))));
     }
 
     @Test
     public void aSimpleRootlessPathToStringIsCorrect() throws Exception {
-        Segments segments = SegmentsBuilder.aSegments();
+        Segments segments = aSegments();
         assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
     }
 
