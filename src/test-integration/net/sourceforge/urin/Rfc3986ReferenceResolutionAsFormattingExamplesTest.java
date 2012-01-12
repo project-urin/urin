@@ -17,8 +17,7 @@ import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.Scheme.scheme;
-import static net.sourceforge.urin.Segment.DOT;
-import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.Urin.urin;
@@ -46,12 +45,12 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
         assertThat(relativeReference().asString(), equalTo(""));
         assertThat(relativeReference(rootlessSegments(DOT)).asString(), equalTo(""));
         assertThat(relativeReference(rootlessSegments(DOT, segment(""))).asString(), equalTo("./"));
-//        assertThat(relativeReference(rootlessSegments(DOT_DOT)).asString(), equalTo(".."));
-//        assertThat(relativeReference(rootlessSegments(DOT_DOT, segment(""))).asString(), equalTo("../"));
-//        assertThat(relativeReference(rootlessSegments(DOT_DOT, segment("g"))).asString(), equalTo("../g"));
-//        assertThat(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT)).asString(), equalTo("../.."));
-//        assertThat(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT, segment(""))).asString(), equalTo("../../"));
-//        assertThat(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT, segment("g"))).asString(), equalTo("../../g"));
+        assertThat(relativeReference(rootlessSegments(DOT_DOT)).asString(), equalTo(".."));
+        assertThat(relativeReference(rootlessSegments(DOT_DOT, segment(""))).asString(), equalTo("../"));
+        assertThat(relativeReference(rootlessSegments(DOT_DOT, segment("g"))).asString(), equalTo("../g"));
+        assertThat(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT)).asString(), equalTo("../.."));
+        assertThat(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT, segment(""))).asString(), equalTo("../../"));
+        assertThat(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT, segment("g"))).asString(), equalTo("../../g"));
     }
 
     //    "../../../g"    =  "http://a/g"

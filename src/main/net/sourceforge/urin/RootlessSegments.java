@@ -32,6 +32,8 @@ final class RootlessSegments extends Segments {
 
                         } else if (newSegments.size() > 1) {
                             newSegments.removeLast();
+                        } else {
+                            newSegments.add(segment);
                         }
                     } else {
                         newSegments.add(segment);
