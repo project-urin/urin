@@ -342,7 +342,7 @@ public class RelativeReferenceTest {
     }
 
     @Test
-    public void aRelativeReferenceWithAuthorityResolveAuthorityToTheRelative() throws Exception {
+    public void aRelativeReferenceWithAuthorityResolvesAuthorityToTheRelative() throws Exception {
         Authority relativeAuthority = anAuthority();
         assertThat(relativeReference(relativeAuthority, anAbsoluteSegments()).resolveAuthority(anAuthority()), equalTo(relativeAuthority));
     }
@@ -361,6 +361,56 @@ public class RelativeReferenceTest {
                 //noinspection NullableProblems
                 AbsoluteSegments absoluteSegments = null;
                 relativeReference(anAuthority(), absoluteSegments);
+            }
+        });
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndPathAndQueryIsEqualToAnotherWithTheSameAuthorityAndPathAndQuery() throws Exception {
+        Authority authority = anAuthority();
+        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        Query query = aQuery();
+        assertThat(relativeReference(authority, absoluteSegments, query), equalTo(relativeReference(authority, absoluteSegments, query)));
+        assertThat(relativeReference(authority, absoluteSegments, query).hashCode(), equalTo(relativeReference(authority, absoluteSegments, query).hashCode()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPathAndQuery() throws Exception {
+        assertThat(relativeReference(anAuthority(), anAbsoluteSegments(), aQuery()), not(equalTo(relativeReference(anAuthority(), anAbsoluteSegments(), aQuery()))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndPathAndQueryToStringIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        Query query = aQuery();
+        assertThat(relativeReference(authority, absoluteSegments, query).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + ", query=" + query + "}"));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndQueryResolvesAuthorityToTheRelative() throws Exception {
+        Authority relativeAuthority = anAuthority();
+        assertThat(relativeReference(relativeAuthority, anAbsoluteSegments(), aQuery()).resolveAuthority(anAuthority()), equalTo(relativeAuthority));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPathAndQuery() throws Exception {
+        assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference(null, anAbsoluteSegments(), aQuery());
+            }
+        });
+        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference(anAuthority(), null, aQuery());
+            }
+        });
+        assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                relativeReference(anAuthority(), anAbsoluteSegments(), null);
             }
         });
     }
