@@ -613,10 +613,10 @@ public class RelativeReferenceTest {
         Scheme baseScheme = aScheme();
         HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
         Authority relativeReferenceAuthority = anAuthority();
-        Query query = aQuery();
+        Query relativeReferenceQuery = aQuery();
         assertThat(
-                relativeReference(relativeReferenceAuthority).resolve(baseScheme, baseHierarchicalPart, query),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), query)));
+                relativeReference(relativeReferenceAuthority, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceQuery)));
     }
 
     @Test
@@ -703,6 +703,54 @@ public class RelativeReferenceTest {
                 relativeReference(anAuthority(), (Fragment) null);
             }
         });
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Authority relativeReferenceAuthority = anAuthority();
+        Fragment relativeReferenceFragment = aFragment();
+        assertThat(
+                relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceFragment)));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Query baseQuery = aQuery();
+        Authority relativeReferenceAuthority = anAuthority();
+        Fragment relativeReferenceFragment = aFragment();
+        assertThat(
+                relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), baseQuery, relativeReferenceFragment)));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeAndAuthorityAndFragmentToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Fragment baseFragment = aFragment();
+        Authority relativeReferenceAuthority = anAuthority();
+        Fragment relativeReferenceFragment = aFragment();
+        assertThat(
+                relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceFragment)));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Query baseQuery = aQuery();
+        Fragment baseFragment = aFragment();
+        Authority relativeReferenceAuthority = anAuthority();
+        Fragment relativeReferenceFragment = aFragment();
+        assertThat(
+                relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), baseQuery, relativeReferenceFragment)));
     }
 
     @Test
