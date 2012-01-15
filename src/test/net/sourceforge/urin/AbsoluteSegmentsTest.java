@@ -18,6 +18,8 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
+import static net.sourceforge.urin.SegmentsBuilder.aRootlessSegments;
+import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -89,5 +91,25 @@ public class AbsoluteSegmentsTest {
     @Test
     public void removesDotSegments() throws Exception {
         assertThat(AbsoluteSegments.segments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(AbsoluteSegments.segments(segment("a"), segment("g"))));
+    }
+
+    @Test
+    public void resolvesEmptySegments() throws Exception {
+        AbsoluteSegments segments = anAbsoluteSegments();
+        assertThat(segments.resolveRelativeTo(new EmptySegments()), equalTo((Segments) segments));
+    }
+
+    @Test
+    public void resolvesAbsoluteSegments() throws Exception {
+        AbsoluteSegments segments = anAbsoluteSegments();
+        Segments baseSegments = anAbsoluteSegments();
+        assertThat(segments.resolveRelativeTo(baseSegments), equalTo((Segments) segments));
+    }
+
+    @Test
+    public void resolvesRootlessSegments() throws Exception {
+        AbsoluteSegments segments = anAbsoluteSegments();
+        Segments baseSegments = aRootlessSegments();
+        assertThat(segments.resolveRelativeTo(baseSegments), equalTo((Segments) segments));
     }
 }

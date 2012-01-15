@@ -60,8 +60,12 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
         assertThat(relativeReference(segments(DOT, segment("g"))).asString(), equalTo("/g"));
         assertThat(relativeReference(segments(DOT_DOT, segment("g"))).asString(), equalTo("/g"));
         assertThat(relativeReference(rootlessSegments("g.")).asString(), equalTo("g."));
+        assertThat(relativeReference(rootlessSegments(".g")).asString(), equalTo(".g"));
+        assertThat(relativeReference(rootlessSegments("g..")).asString(), equalTo("g.."));
+        assertThat(relativeReference(rootlessSegments("..g")).asString(), equalTo("..g"));
         assertThat(relativeReference(rootlessSegments(DOT, DOT_DOT, segment("g"))).asString(), equalTo("../g"));
         assertThat(relativeReference(rootlessSegments(DOT, segment("g"), DOT)).asString(), equalTo("g"));
+        assertThat(relativeReference(rootlessSegments(segment("g"), DOT, segment("h"))).asString(), equalTo("g/h"));
         assertThat(relativeReference(rootlessSegments(segment("g"), DOT_DOT, segment("h"))).asString(), equalTo("h"));
         assertThat(relativeReference(rootlessSegments(segment("g;x=1"), DOT, segment("y"))).asString(), equalTo("g;x=1/y"));
         assertThat(relativeReference(rootlessSegments(segment("g;x=1"), DOT_DOT, segment("y"))).asString(), equalTo("y"));

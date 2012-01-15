@@ -21,6 +21,7 @@ import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_P
 import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.SegmentsBuilder.aSegments;
+import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -53,6 +54,13 @@ public class HierarchicalPartTest {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
         assertThat(hierarchicalPart(segments(firstSegment, secondSegment)).asString(), equalTo("/./" + firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aHierarchicalPartWithOnlyPathResolvesSegmentsToAHierarchicalPartWithOnlyPath() throws Exception {
+        Segments baseSegments = aSegments();
+        Segments relativeReferenceSegments = aSegments();
+        assertThat(hierarchicalPart(baseSegments).resolve(relativeReferenceSegments), equalTo(hierarchicalPart(relativeReferenceSegments.resolveRelativeTo(baseSegments))));
     }
 
     @Test
@@ -190,6 +198,14 @@ public class HierarchicalPartTest {
         Authority authority = anAuthority();
         AbsoluteSegments absoluteSegments = segments();
         assertThat(hierarchicalPart(authority, absoluteSegments).toString(), equalTo("HierarchicalPart{authority=" + authority + ", segments=" + absoluteSegments + "}"));
+    }
+
+    @Test
+    public void aHierarchicalPartWithAuthorityResolvesSegmentsToAHierarchicalPartWithTheSameAuthority() throws Exception {
+        Authority baseAuthority = anAuthority();
+        AbsoluteSegments baseSegments = anAbsoluteSegments();
+        Segments relativeReferenceSegments = aSegments();
+        assertThat(hierarchicalPart(baseAuthority, baseSegments).resolve(relativeReferenceSegments), equalTo(hierarchicalPart(baseAuthority, (AbsoluteSegments) relativeReferenceSegments.resolveRelativeTo(baseSegments))));
     }
 
     @Test

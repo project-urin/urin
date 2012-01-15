@@ -36,6 +36,8 @@ public abstract class HierarchicalPart {
         return new HierarchicalPartWithAuthority(authority, segments);
     }
 
+    abstract HierarchicalPart resolve(final Segments relativeReferenceSegments);
+
     private static final class HierarchicalPartNoAuthority extends HierarchicalPart {
         private final Segments segments;
 
@@ -49,6 +51,11 @@ public abstract class HierarchicalPart {
         @Override
         String asString() {
             return segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY);
+        }
+
+        @Override
+        HierarchicalPart resolve(final Segments relativeReferenceSegments) {
+            return hierarchicalPart(relativeReferenceSegments.resolveRelativeTo(segments));
         }
 
         @Override
@@ -94,6 +101,11 @@ public abstract class HierarchicalPart {
                     .append(authority.asString())
                     .append(segments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
                     .toString();
+        }
+
+        @Override
+        HierarchicalPart resolve(final Segments relativeReferenceSegments) {
+            return new HierarchicalPartWithAuthority(authority, relativeReferenceSegments.resolveRelativeTo(segments));
         }
 
         @Override

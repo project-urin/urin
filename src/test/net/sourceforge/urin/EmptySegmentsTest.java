@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import static net.sourceforge.urin.SegmentsBuilder.aRootlessSegments;
+import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -32,4 +34,20 @@ public class EmptySegmentsTest {
         assertThat(new EmptySegments().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
+    @Test
+    public void resolvesEmptySegments() throws Exception {
+        assertThat(new EmptySegments().resolveRelativeTo(new EmptySegments()), equalTo((Segments) new EmptySegments()));
+    }
+
+    @Test
+    public void resolvesAbsoluteSegments() throws Exception {
+        Segments baseSegments = anAbsoluteSegments();
+        assertThat(new EmptySegments().resolveRelativeTo(baseSegments), equalTo(baseSegments));
+    }
+
+    @Test
+    public void resolvesRootlessSegments() throws Exception {
+        Segments baseSegments = aRootlessSegments();
+        assertThat(new EmptySegments().resolveRelativeTo(baseSegments), equalTo(baseSegments));
+    }
 }

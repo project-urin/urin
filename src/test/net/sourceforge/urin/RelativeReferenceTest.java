@@ -16,10 +16,12 @@ import java.net.URI;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
+import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
@@ -28,6 +30,7 @@ import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.SegmentsBuilder.aSegments;
 import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
+import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -436,9 +439,47 @@ public class RelativeReferenceTest {
     }
 
     @Test
-    public void aRelativeReferenceWithNoAuthorityResolveAuthorityToTheBase() throws Exception {
-        Authority baseAuthority = anAuthority();
-        assertThat(relativeReference(aSegments()).resolveAuthority(baseAuthority), equalTo(baseAuthority));
+    public void aRelativeReferenceWithOnlySegmentsResolvesSchemeAndAuthorityToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Segments relativeReferenceSegments = aSegments();
+        assertThat(
+                relativeReference(relativeReferenceSegments).resolve(baseScheme, baseHierarchicalPart),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments))));
+    }
+
+    @Test
+    public void aRelativeReferenceWithOnlySegmentsResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Segments relativeReferenceSegments = aSegments();
+        Query baseQuery = aQuery();
+        assertThat(
+                relativeReference(relativeReferenceSegments).resolve(baseScheme, baseHierarchicalPart, baseQuery),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), baseQuery)));
+    }
+
+    @Test
+    public void aRelativeReferenceWithOnlySegmentsResolvesSchemeAndAuthorityAndFragmentToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Segments relativeReferenceSegments = aSegments();
+        Fragment baseFragment = aFragment();
+        assertThat(
+                relativeReference(relativeReferenceSegments).resolve(baseScheme, baseHierarchicalPart, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), baseFragment)));
+    }
+
+    @Test
+    public void aRelativeReferenceWithOnlySegmentsResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Segments relativeReferenceSegments = aSegments();
+        Query baseQuery = aQuery();
+        Fragment baseFragment = aFragment();
+        assertThat(
+                relativeReference(relativeReferenceSegments).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), baseQuery, baseFragment)));
     }
 
     @Test
@@ -669,12 +710,6 @@ public class RelativeReferenceTest {
     }
 
     @Test
-    public void aRelativeReferenceWithAuthorityResolvesAuthorityToTheRelative() throws Exception {
-        Authority relativeAuthority = anAuthority();
-        assertThat(relativeReference(relativeAuthority, anAbsoluteSegments()).resolveAuthority(anAuthority()), equalTo(relativeAuthority));
-    }
-
-    @Test
     public void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPath() throws Exception {
         assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
@@ -712,12 +747,6 @@ public class RelativeReferenceTest {
         AbsoluteSegments absoluteSegments = anAbsoluteSegments();
         Query query = aQuery();
         assertThat(relativeReference(authority, absoluteSegments, query).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + ", query=" + query + "}"));
-    }
-
-    @Test
-    public void aRelativeReferenceWithAuthorityAndQueryResolvesAuthorityToTheRelative() throws Exception {
-        Authority relativeAuthority = anAuthority();
-        assertThat(relativeReference(relativeAuthority, anAbsoluteSegments(), aQuery()).resolveAuthority(anAuthority()), equalTo(relativeAuthority));
     }
 
     @Test
@@ -765,12 +794,6 @@ public class RelativeReferenceTest {
     }
 
     @Test
-    public void aRelativeReferenceWithAuthorityAndFragmentResolvesAuthorityToTheRelative() throws Exception {
-        Authority relativeAuthority = anAuthority();
-        assertThat(relativeReference(relativeAuthority, anAbsoluteSegments(), aFragment()).resolveAuthority(anAuthority()), equalTo(relativeAuthority));
-    }
-
-    @Test
     public void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPathAndFragment() throws Exception {
         assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
@@ -814,12 +837,6 @@ public class RelativeReferenceTest {
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(relativeReference(authority, absoluteSegments, query, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + ", query=" + query + ", fragment=" + fragment + "}"));
-    }
-
-    @Test
-    public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesAuthorityToTheRelative() throws Exception {
-        Authority relativeAuthority = anAuthority();
-        assertThat(relativeReference(relativeAuthority, anAbsoluteSegments(), aQuery(), aFragment()).resolveAuthority(anAuthority()), equalTo(relativeAuthority));
     }
 
     @Test

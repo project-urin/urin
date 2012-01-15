@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.SegmentsHelper.appendSegmentsTo;
 
 public final class AbsoluteSegments extends Segments {
 
@@ -50,6 +51,16 @@ public final class AbsoluteSegments extends Segments {
     @Override
     boolean firstPartIsSuppliedButContainsColon() {
         return !segments.isEmpty() && segments.iterator().next().containsColon();
+    }
+
+    @Override
+    AbsoluteSegments resolveRelativeTo(final Segments baseSegments) {
+        return this;
+    }
+
+    @Override
+    Segments replaceLastSegmentWith(final Iterable<Segment> segments) {
+        return new AbsoluteSegments(appendSegmentsTo(this.segments, segments));
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {

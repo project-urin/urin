@@ -81,7 +81,7 @@ public abstract class Urin {
 
         @Override
         public Urin resolve(final RelativeReference relativeReference) {
-            return new UrinWithHierarchicalPartAndQueryAndFragment(scheme, hierarchicalPart, query, fragment);
+            return relativeReference.resolve(scheme, hierarchicalPart, query, fragment);
         }
 
         @Override
@@ -148,7 +148,7 @@ public abstract class Urin {
 
         @Override
         public Urin resolve(final RelativeReference relativeReference) {
-            return new UrinWithHierarchicalPartAndQuery(scheme, hierarchicalPart, query);
+            return relativeReference.resolve(scheme, hierarchicalPart, query);
         }
 
         @Override
@@ -212,7 +212,7 @@ public abstract class Urin {
 
         @Override
         public Urin resolve(final RelativeReference relativeReference) {
-            return new UrinWithHierarchicalPartAndFragment(scheme, hierarchicalPart, fragment);
+            return relativeReference.resolve(scheme, hierarchicalPart, fragment);
         }
 
         @Override
@@ -269,7 +269,7 @@ public abstract class Urin {
 
         @Override
         public Urin resolve(final RelativeReference relativeReference) {
-            return new UrinWithHierarchicalPart(scheme, hierarchicalPart);
+            return relativeReference.resolve(scheme, hierarchicalPart);
         }
 
         @Override

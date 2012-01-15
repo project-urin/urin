@@ -20,6 +20,8 @@ import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON;
+import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.SegmentsBuilder.aRootlessSegments;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -108,5 +110,33 @@ public class RootlessSegmentsTest {
     @Test
     public void removesDotSegments() throws Exception {
         assertThat(rootlessSegments(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(rootlessSegments(segment("a"), segment("g"))));
+    }
+
+    @Test
+    public void resolvesEmptySegments() throws Exception {
+        Segments segments = aRootlessSegments();
+        assertThat(segments.resolveRelativeTo(new EmptySegments()), equalTo(segments));
+    }
+
+    @Test
+    public void resolvesAbsoluteSegments() throws Exception {
+        Segment rootlessSegmentOne = aSegment();
+        Segment rootlessSegmentTwo = aSegment();
+        Segments segments = rootlessSegments(rootlessSegmentOne, rootlessSegmentTwo);
+        Segment baseSegmentOne = aSegment();
+        Segment baseSegmentTwo = aSegment();
+        Segments baseSegments = segments(baseSegmentOne, baseSegmentTwo);
+        assertThat(segments.resolveRelativeTo(baseSegments), equalTo((Segments) segments(baseSegmentOne, rootlessSegmentOne, rootlessSegmentTwo)));
+    }
+
+    @Test
+    public void resolvesRootlessSegments() throws Exception {
+        Segment rootlessSegmentOne = aSegment();
+        Segment rootlessSegmentTwo = aSegment();
+        Segments segments = rootlessSegments(rootlessSegmentOne, rootlessSegmentTwo);
+        Segment baseSegmentOne = aSegment();
+        Segment baseSegmentTwo = aSegment();
+        Segments baseSegments = segments(baseSegmentOne, baseSegmentTwo);
+        assertThat(segments.resolveRelativeTo(baseSegments), equalTo((Segments) segments(baseSegmentOne, rootlessSegmentOne, rootlessSegmentTwo)));
     }
 }

@@ -14,6 +14,7 @@ import java.net.URI;
 
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
+import static net.sourceforge.urin.Urin.urin;
 
 public abstract class RelativeReference {
 
@@ -90,7 +91,13 @@ public abstract class RelativeReference {
         return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, segments, query, fragment);
     }
 
-    abstract Authority resolveAuthority(final Authority baseAuthority);
+    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart);
+
+    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query);
+
+    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment);
+
+    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment);
 
     private static final class RelativeReferenceNoAuthority extends RelativeReference {
         private final Segments segments;
@@ -108,8 +115,23 @@ public abstract class RelativeReference {
         }
 
         @Override
-        Authority resolveAuthority(final Authority baseAuthority) {
-            return baseAuthority;
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            return urin(scheme, hierarchicalPart.resolve(segments));
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            return urin(scheme, hierarchicalPart.resolve(segments), query);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            return urin(scheme, hierarchicalPart.resolve(segments), fragment);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            return urin(scheme, hierarchicalPart.resolve(segments), query, fragment);
         }
 
         @Override
@@ -158,8 +180,23 @@ public abstract class RelativeReference {
         }
 
         @Override
-        Authority resolveAuthority(final Authority baseAuthority) {
-            return baseAuthority;
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
@@ -213,8 +250,23 @@ public abstract class RelativeReference {
         }
 
         @Override
-        Authority resolveAuthority(final Authority baseAuthority) {
-            return baseAuthority;
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
@@ -293,8 +345,23 @@ public abstract class RelativeReference {
         }
 
         @Override
-        Authority resolveAuthority(final Authority baseAuthority) {
-            return baseAuthority;
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
@@ -331,8 +398,23 @@ public abstract class RelativeReference {
         }
 
         @Override
-        Authority resolveAuthority(final Authority baseAuthority) {
-            return authority;
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
@@ -392,8 +474,23 @@ public abstract class RelativeReference {
         }
 
         @Override
-        Authority resolveAuthority(final Authority baseAuthority) {
-            return authority;
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
@@ -455,8 +552,23 @@ public abstract class RelativeReference {
         }
 
         @Override
-        Authority resolveAuthority(final Authority baseAuthority) {
-            return authority;
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override
@@ -525,8 +637,23 @@ public abstract class RelativeReference {
         }
 
         @Override
-        Authority resolveAuthority(final Authority baseAuthority) {
-            return authority;
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            return null;  //To change body of implemented methods use File | Settings | File Templates.
         }
 
         @Override

@@ -28,6 +28,16 @@ final class EmptySegments extends Segments {
         return false;
     }
 
+    @Override
+    Segments resolveRelativeTo(final Segments baseSegments) {
+        return baseSegments;
+    }
+
+    @Override
+    Segments replaceLastSegmentWith(final Iterable<Segment> segments) {
+        return rootlessSegments(segments);
+    }
+
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         return "";
     }

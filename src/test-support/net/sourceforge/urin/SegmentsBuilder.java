@@ -26,7 +26,7 @@ public class SegmentsBuilder {
         return Segments.segments(tailSegments);
     }
 
-    public static Segments aRelativeSegments() {
+    public static Segments aRootlessSegments() {
         int numberOfSegments = RANDOM.nextInt(5);
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
@@ -42,7 +42,7 @@ public class SegmentsBuilder {
                 segments = anAbsoluteSegments();
                 break;
             case 1:
-                segments = aRelativeSegments();
+                segments = aRootlessSegments();
                 break;
             default:
                 throw new Defect("Attempted to switch on more cases than are defined");

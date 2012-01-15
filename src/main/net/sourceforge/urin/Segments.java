@@ -64,6 +64,10 @@ public abstract class Segments {
 
     abstract boolean firstPartIsSuppliedButContainsColon();
 
+    abstract Segments resolveRelativeTo(final Segments baseSegments);
+
+    abstract Segments replaceLastSegmentWith(final Iterable<Segment> segments);
+
     static enum PrefixWithDotSegmentCriteria {
         NEVER_PREFIX_WITH_DOT_SEGMENT {
             @Override

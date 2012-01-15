@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.SegmentsHelper.appendSegmentsTo;
 
 final class RootlessSegments extends Segments {
 
@@ -45,6 +46,16 @@ final class RootlessSegments extends Segments {
     @Override
     boolean firstPartIsSuppliedButContainsColon() {
         return !segments.isEmpty() && segments.iterator().next().containsColon();
+    }
+
+    @Override
+    Segments resolveRelativeTo(final Segments baseSegments) {
+        return baseSegments.replaceLastSegmentWith(segments);
+    }
+
+    @Override
+    RootlessSegments replaceLastSegmentWith(final Iterable<Segment> segments) {
+        return new RootlessSegments(appendSegmentsTo(this.segments, segments));
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
