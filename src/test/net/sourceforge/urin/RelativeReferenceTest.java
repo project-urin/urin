@@ -230,6 +230,54 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithPathAndQueryResolvesSchemeToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Segments relativeReferenceSegments = aSegments();
+        Query relativeReferenceQuery = aQuery();
+        assertThat(
+                relativeReference(relativeReferenceSegments, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery)));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Query baseQuery = aQuery();
+        Segments relativeReferenceSegments = aSegments();
+        Query relativeReferenceQuery = aQuery();
+        assertThat(
+                relativeReference(relativeReferenceSegments, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery)));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndFragmentToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Fragment baseFragment = aFragment();
+        Segments relativeReferenceSegments = aSegments();
+        Query relativeReferenceQuery = aQuery();
+        assertThat(
+                relativeReference(relativeReferenceSegments, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery, baseFragment)));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
+        Scheme baseScheme = aScheme();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        Query baseQuery = aQuery();
+        Fragment baseFragment = aFragment();
+        Segments relativeReferenceSegments = aSegments();
+        Query relativeReferenceQuery = aQuery();
+        assertThat(
+                relativeReference(relativeReferenceSegments, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery, baseFragment)));
+    }
+
+    @Test
     public void aRelativeReferenceWithPathAndFragmentAsStringIsCorrect() throws Exception {
         Segments segments = aSegments();
         Fragment fragment = aFragment();

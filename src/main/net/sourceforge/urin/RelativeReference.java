@@ -181,22 +181,22 @@ public abstract class RelativeReference {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return null;  //To change body of implemented methods use File | Settings | File Templates.
+            return urin(scheme, hierarchicalPart.resolve(segments), query);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return null;  //To change body of implemented methods use File | Settings | File Templates.
+            return urin(scheme, hierarchicalPart.resolve(segments), this.query);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
-            return null;  //To change body of implemented methods use File | Settings | File Templates.
+            return urin(scheme, hierarchicalPart.resolve(segments), query, fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return null;  //To change body of implemented methods use File | Settings | File Templates.
+            return urin(scheme, hierarchicalPart.resolve(segments), this.query, fragment);
         }
 
         @Override
