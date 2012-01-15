@@ -212,7 +212,7 @@ public abstract class Urin {
 
         @Override
         public Urin resolve(final RelativeReference relativeReference) {
-            return relativeReference.resolve(scheme, hierarchicalPart, fragment);
+            return relativeReference.resolve(scheme, hierarchicalPart);
         }
 
         @Override
