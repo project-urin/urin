@@ -64,6 +64,14 @@ public class HierarchicalPartTest {
     }
 
     @Test
+    public void aHierarchicalPartWithOnlyPathResolvesAuthorityAndSegmentsToAHierarchicalPartWithSuppliedAuthorityAndMergedSegments() throws Exception {
+        Segments baseSegments = aSegments();
+        Segments relativeReferenceSegments = anAbsoluteSegments();
+        Authority relativeReferenceAuthority = anAuthority();
+        assertThat(hierarchicalPart(baseSegments).resolve(relativeReferenceAuthority, relativeReferenceSegments), equalTo(hierarchicalPart(relativeReferenceAuthority, (AbsoluteSegments) relativeReferenceSegments.resolveRelativeTo(baseSegments))));
+    }
+
+    @Test
     public void rejectsNullInFactoryForASimplePath() throws Exception {
         assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
@@ -206,6 +214,15 @@ public class HierarchicalPartTest {
         AbsoluteSegments baseSegments = anAbsoluteSegments();
         Segments relativeReferenceSegments = aSegments();
         assertThat(hierarchicalPart(baseAuthority, baseSegments).resolve(relativeReferenceSegments), equalTo(hierarchicalPart(baseAuthority, (AbsoluteSegments) relativeReferenceSegments.resolveRelativeTo(baseSegments))));
+    }
+
+    @Test
+    public void aHierarchicalPartWithAuthorityResolvesAuthorityAndSegmentsToAHierarchicalPartWithSuppliedAuthorityAndMergedSegments() throws Exception {
+        Authority baseAuthority = anAuthority();
+        AbsoluteSegments baseSegments = anAbsoluteSegments();
+        Authority relativeReferenceAuthority = anAuthority();
+        Segments relativeReferenceSegments = aSegments();
+        assertThat(hierarchicalPart(baseAuthority, baseSegments).resolve(relativeReferenceAuthority, relativeReferenceSegments), equalTo(hierarchicalPart(relativeReferenceAuthority, (AbsoluteSegments) relativeReferenceSegments.resolveRelativeTo(baseSegments))));
     }
 
     @Test

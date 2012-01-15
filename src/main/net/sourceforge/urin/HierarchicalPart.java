@@ -38,6 +38,8 @@ public abstract class HierarchicalPart {
 
     abstract HierarchicalPart resolve(final Segments relativeReferenceSegments);
 
+    abstract HierarchicalPart resolve(final Authority relativeReferenceAuthority, final Segments relativeReferenceSegments);
+
     private static final class HierarchicalPartNoAuthority extends HierarchicalPart {
         private final Segments segments;
 
@@ -56,6 +58,11 @@ public abstract class HierarchicalPart {
         @Override
         HierarchicalPart resolve(final Segments relativeReferenceSegments) {
             return hierarchicalPart(relativeReferenceSegments.resolveRelativeTo(segments));
+        }
+
+        @Override
+        HierarchicalPart resolve(final Authority relativeReferenceAuthority, final Segments relativeReferenceSegments) {
+            return new HierarchicalPartWithAuthority(relativeReferenceAuthority, relativeReferenceSegments.resolveRelativeTo(segments));
         }
 
         @Override
@@ -106,6 +113,11 @@ public abstract class HierarchicalPart {
         @Override
         HierarchicalPart resolve(final Segments relativeReferenceSegments) {
             return new HierarchicalPartWithAuthority(authority, relativeReferenceSegments.resolveRelativeTo(segments));
+        }
+
+        @Override
+        HierarchicalPart resolve(final Authority relativeReferenceAuthority, final Segments relativeReferenceSegments) {
+            return new HierarchicalPartWithAuthority(relativeReferenceAuthority, relativeReferenceSegments.resolveRelativeTo(segments));
         }
 
         @Override
