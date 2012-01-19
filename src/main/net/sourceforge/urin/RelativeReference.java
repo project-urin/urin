@@ -119,12 +119,20 @@ public abstract class RelativeReference {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(segments), query);
+            if (segments.isEmpty()) {
+                return urin(scheme, hierarchicalPart.resolve(segments), query);
+            } else {
+                return urin(scheme, hierarchicalPart.resolve(segments));
+            }
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(segments), query, fragment);
+            if (segments.isEmpty()) {
+                return urin(scheme, hierarchicalPart.resolve(segments), query, fragment);
+            } else {
+                return urin(scheme, hierarchicalPart.resolve(segments));
+            }
         }
 
         @Override
@@ -184,7 +192,11 @@ public abstract class RelativeReference {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(segments), this.query, fragment);
+            if (segments.isEmpty()) {
+                return urin(scheme, hierarchicalPart.resolve(segments), this.query, fragment);
+            } else {
+                return urin(scheme, hierarchicalPart.resolve(segments), this.query);
+            }
         }
 
         @Override
@@ -244,12 +256,20 @@ public abstract class RelativeReference {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(segments), query, fragment);
+            if (segments.isEmpty()) {
+                return urin(scheme, hierarchicalPart.resolve(segments), query, fragment);
+            } else {
+                return urin(scheme, hierarchicalPart.resolve(segments), fragment);
+            }
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(segments), query, this.fragment);
+            if (segments.isEmpty()) {
+                return urin(scheme, hierarchicalPart.resolve(segments), query, this.fragment);
+            } else {
+                return urin(scheme, hierarchicalPart.resolve(segments), this.fragment);
+            }
         }
 
         @Override
@@ -382,12 +402,12 @@ public abstract class RelativeReference {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, segments), query);
+            return urin(scheme, hierarchicalPart.resolve(authority, segments));
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, segments), query, fragment);
+            return urin(scheme, hierarchicalPart.resolve(authority, segments));
         }
 
         @Override
@@ -458,7 +478,7 @@ public abstract class RelativeReference {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, segments), this.query, fragment);
+            return urin(scheme, hierarchicalPart.resolve(authority, segments), this.query);
         }
 
         @Override
@@ -526,12 +546,12 @@ public abstract class RelativeReference {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, segments), query, fragment);
+            return urin(scheme, hierarchicalPart.resolve(authority, segments), fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, segments), query, this.fragment);
+            return urin(scheme, hierarchicalPart.resolve(authority, segments), this.fragment);
         }
 
         @Override

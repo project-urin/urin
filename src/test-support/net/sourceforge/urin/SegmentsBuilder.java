@@ -18,7 +18,7 @@ public class SegmentsBuilder {
     private static final Random RANDOM = new Random();
 
     public static AbsoluteSegments anAbsoluteSegments() {
-        int numberOfSegments = RANDOM.nextInt(5);
+        int numberOfSegments = RANDOM.nextInt(4) + 1;
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
             tailSegments[i] = aSegment();
@@ -27,7 +27,7 @@ public class SegmentsBuilder {
     }
 
     public static Segments aRootlessSegments() {
-        int numberOfSegments = RANDOM.nextInt(5);
+        int numberOfSegments = RANDOM.nextInt(4) + 1;
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
             tailSegments[i] = aSegment();
@@ -49,4 +49,5 @@ public class SegmentsBuilder {
         }
         return segments;
     }
+
 }
