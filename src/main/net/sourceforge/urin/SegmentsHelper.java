@@ -14,7 +14,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class SegmentsHelper {
+final class SegmentsHelper {
+
+    private SegmentsHelper() {
+        // deliberately empty
+    }
+
     static Iterable<Segment> appendSegmentsTo(final Collection<Segment> baseSegments, final Iterable<Segment> appendedSegments) {
         return new ArrayList<Segment>() {{
             Iterator<Segment> baseSegmentsIterator = baseSegments.iterator();
