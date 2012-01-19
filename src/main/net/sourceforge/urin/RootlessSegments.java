@@ -23,15 +23,42 @@ final class RootlessSegments extends Segments {
 
     RootlessSegments(final Iterable<Segment> segments) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
-        for (Segment segment : segments) {
+        Iterator<Segment> segmentIterator = segments.iterator();
+        while (segmentIterator.hasNext()) {
+            Segment segment = segmentIterator.next();
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
             } else {
                 if (!DOT.equals(segment)) {
                     if (DOT_DOT.equals(segment) && !newSegments.isEmpty() && !DOT_DOT.equals(newSegments.getLast())) {
-                        newSegments.removeLast();
+                        Segment removedSegment = newSegments.removeLast();
+                        if (DOT.equals(removedSegment)) {
+                            if (!newSegments.isEmpty() && !DOT_DOT.equals(newSegments.getLast())) {
+                                newSegments.removeLast();
+                                if (!segmentIterator.hasNext()) {
+                                    newSegments.add(EMPTY);
+                                }
+                            } else {
+                                newSegments.add(DOT_DOT);
+                            }
+                        } else {
+                            if (!segmentIterator.hasNext()) {
+                                newSegments.add(EMPTY);
+                            }
+                        }
                     } else {
+                        if (!newSegments.isEmpty() && DOT.equals(newSegments.getLast())) {
+                            newSegments.removeLast();
+                        }
                         newSegments.add(segment);
+                    }
+                } else {
+                    if (newSegments.isEmpty()) {
+                        newSegments.add(DOT);
+                    } else {
+                        if (!segmentIterator.hasNext()) {
+                            newSegments.add(EMPTY);
+                        }
                     }
                 }
             }

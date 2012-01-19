@@ -12,8 +12,10 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.Scheme.scheme;
@@ -33,7 +35,7 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
         assertThat(relativeReference(rootlessSegments(DOT, segment("g"))).asString(), equalTo("g"));
         assertThat(relativeReference(rootlessSegments("g", "")).asString(), equalTo("g/"));
         assertThat(relativeReference(segments("g")).asString(), equalTo("/g"));
-        assertThat(relativeReference(segments("", "g")).asString(), equalTo("/.//g"));
+        assertThat(relativeReference(authority(registeredName("g"))).asString(), equalTo("//g"));
         assertThat(relativeReference(query("y")).asString(), equalTo("?y"));
         assertThat(relativeReference(rootlessSegments("g"), query("y")).asString(), equalTo("g?y"));
         assertThat(relativeReference(fragment("s")).asString(), equalTo("#s"));
@@ -43,7 +45,7 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
         assertThat(relativeReference(rootlessSegments("g;x")).asString(), equalTo("g;x"));
         assertThat(relativeReference(rootlessSegments("g;x"), query("y"), fragment("s")).asString(), equalTo("g;x?y#s"));
         assertThat(relativeReference().asString(), equalTo(""));
-        assertThat(relativeReference(rootlessSegments(DOT)).asString(), equalTo(""));
+        assertThat(relativeReference(rootlessSegments(DOT)).asString(), equalTo("."));
         assertThat(relativeReference(rootlessSegments(DOT, segment(""))).asString(), equalTo("./"));
         assertThat(relativeReference(rootlessSegments(DOT_DOT)).asString(), equalTo(".."));
         assertThat(relativeReference(rootlessSegments(DOT_DOT, segment(""))).asString(), equalTo("../"));
@@ -64,7 +66,7 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
         assertThat(relativeReference(rootlessSegments("g..")).asString(), equalTo("g.."));
         assertThat(relativeReference(rootlessSegments("..g")).asString(), equalTo("..g"));
         assertThat(relativeReference(rootlessSegments(DOT, DOT_DOT, segment("g"))).asString(), equalTo("../g"));
-        assertThat(relativeReference(rootlessSegments(DOT, segment("g"), DOT)).asString(), equalTo("g"));
+        assertThat(relativeReference(rootlessSegments(DOT, segment("g"), DOT)).asString(), equalTo("g/"));
         assertThat(relativeReference(rootlessSegments(segment("g"), DOT, segment("h"))).asString(), equalTo("g/h"));
         assertThat(relativeReference(rootlessSegments(segment("g"), DOT_DOT, segment("h"))).asString(), equalTo("h"));
         assertThat(relativeReference(rootlessSegments(segment("g;x=1"), DOT, segment("y"))).asString(), equalTo("g;x=1/y"));

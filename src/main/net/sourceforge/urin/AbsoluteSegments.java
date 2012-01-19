@@ -23,19 +23,26 @@ public final class AbsoluteSegments extends Segments {
 
     AbsoluteSegments(final Iterable<Segment> segments) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
-        for (Segment segment : segments) {
+        Iterator<Segment> segmentIterator = segments.iterator();
+        while (segmentIterator.hasNext()) {
+            Segment segment = segmentIterator.next();
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
             } else {
                 if (!DOT.equals(segment)) {
                     if (DOT_DOT.equals(segment)) {
-                        if ((newSegments.size() == 1 && newSegments.getLast().isEmpty())) {
-
-                        } else if (newSegments.size() > 1) {
+                        if (!newSegments.isEmpty()) {
                             newSegments.removeLast();
+                            if (!segmentIterator.hasNext()) {
+                                newSegments.add(EMPTY);
+                            }
                         }
                     } else {
                         newSegments.add(segment);
+                    }
+                } else {
+                    if (!segmentIterator.hasNext()) {
+                        newSegments.add(EMPTY);
                     }
                 }
             }

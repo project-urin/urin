@@ -10,9 +10,9 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
+import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Query.query;
@@ -29,7 +29,6 @@ public class Rfc3986ReferenceResolutionExamplesTest {
     private static final Urin BASE_URI = http(registeredName("a"), segments(segment("b"), segment("c"), segment("d;p")), query("q"));
 
     @Test
-    @Ignore
     public void normalExamples() throws Exception {
         // "g:h"           =  "g:h"
         // is g:h a valid relative reference?
@@ -38,7 +37,7 @@ public class Rfc3986ReferenceResolutionExamplesTest {
         assertThat(BASE_URI.resolve(relativeReference(rootlessSegments(DOT, segment("g")))).asString(), equalTo("http://a/b/c/g"));
         assertThat(BASE_URI.resolve(relativeReference(rootlessSegments("g", ""))).asString(), equalTo("http://a/b/c/g/"));
         assertThat(BASE_URI.resolve(relativeReference(segments("g"))).asString(), equalTo("http://a/g"));
-        assertThat(BASE_URI.resolve(relativeReference(segments("", "g"))).asString(), equalTo("http://g"));
+        assertThat(BASE_URI.resolve(relativeReference(authority(registeredName("g")))).asString(), equalTo("http://g"));
         assertThat(BASE_URI.resolve(relativeReference(query("y"))).asString(), equalTo("http://a/b/c/d;p?y"));
         assertThat(BASE_URI.resolve(relativeReference(rootlessSegments("g"), query("y"))).asString(), equalTo("http://a/b/c/g?y"));
         assertThat(BASE_URI.resolve(relativeReference(fragment("s"))).asString(), equalTo("http://a/b/c/d;p?q#s"));
@@ -59,7 +58,6 @@ public class Rfc3986ReferenceResolutionExamplesTest {
     }
 
     @Test
-    @Ignore
     public void abnormalExamples() throws Exception {
         assertThat(BASE_URI.resolve(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT, DOT_DOT, segment("g")))).asString(), equalTo("http://a/g"));
         assertThat(BASE_URI.resolve(relativeReference(rootlessSegments(DOT_DOT, DOT_DOT, DOT_DOT, DOT_DOT, segment("g")))).asString(), equalTo("http://a/g"));
