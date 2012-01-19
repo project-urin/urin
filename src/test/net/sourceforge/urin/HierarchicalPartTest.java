@@ -217,12 +217,12 @@ public class HierarchicalPartTest {
     }
 
     @Test
-    public void aHierarchicalPartWithAuthorityResolvesAuthorityAndSegmentsToAHierarchicalPartWithSuppliedAuthorityAndMergedSegments() throws Exception {
+    public void aHierarchicalPartWithAuthorityResolvesAuthorityAndSegmentsToAHierarchicalPartWithSuppliedAuthorityAndSegments() throws Exception {
         Authority baseAuthority = anAuthority();
         AbsoluteSegments baseSegments = anAbsoluteSegments();
         Authority relativeReferenceAuthority = anAuthority();
-        Segments relativeReferenceSegments = aSegments();
-        assertThat(hierarchicalPart(baseAuthority, baseSegments).resolve(relativeReferenceAuthority, relativeReferenceSegments), equalTo(hierarchicalPart(relativeReferenceAuthority, (AbsoluteSegments) relativeReferenceSegments.resolveRelativeTo(baseSegments))));
+        Segments relativeReferenceSegments = anAbsoluteSegments();
+        assertThat(hierarchicalPart(baseAuthority, baseSegments).resolve(relativeReferenceAuthority, relativeReferenceSegments), equalTo(hierarchicalPart(relativeReferenceAuthority, (AbsoluteSegments) relativeReferenceSegments)));
     }
 
     @Test
