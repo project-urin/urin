@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -126,6 +126,14 @@ public abstract class Host {
         return new IpVFutureAddress(version, address);
     }
 
+    static Host parse(final String hostString) throws ParseException {
+        if (IpV4Address.isValid(hostString)) {
+            return IpV4Address.parse(hostString);
+        } else {
+            throw new ParseException("Not a valid host :" + hostString);
+        }
+    }
+
     private static interface ElidableAsStringable {
         String asString();
 
@@ -233,6 +241,20 @@ public abstract class Host {
                     ", thirdOctet=" + thirdOctet +
                     ", fourthOctet=" + fourthOctet +
                     '}';
+        }
+
+        static boolean isValid(final String hostString) {
+            String[] split = hostString.split("\\.");
+            return split.length == 4 && Octet.isValid(split[0]) && Octet.isValid(split[1]) && Octet.isValid(split[2]) && Octet.isValid(split[3]);
+        }
+
+        static IpV4Address parse(final String hostString) throws ParseException {
+            if (!isValid(hostString)) {
+                throw new ParseException("Invalid Host String [" + hostString + "]");
+            } else {
+                String[] split = hostString.split("\\.");
+                return new IpV4Address(Octet.parse(split[0]), Octet.parse(split[1]), Octet.parse(split[2]), Octet.parse(split[3]));
+            }
         }
     }
 

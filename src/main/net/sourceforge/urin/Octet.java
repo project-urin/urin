@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -23,4 +23,21 @@ public final class Octet extends UnaryStringValue {
         return new Octet(Integer.toString(octet));
     }
 
+    static boolean isValid(final String octetString) {
+        final int octetInt;
+        try {
+            octetInt = Integer.parseInt(octetString);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return !(octetInt < 0 || octetInt > 255);
+    }
+
+    static Octet parse(final String octetString) throws ParseException {
+        if (isValid(octetString)) {
+            return new Octet(octetString);
+        } else {
+            throw new ParseException("Invalid Octet String [" + octetString + "]");
+        }
+    }
 }

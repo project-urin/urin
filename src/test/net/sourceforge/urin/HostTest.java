@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -17,6 +17,7 @@ import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
 import static net.sourceforge.urin.Host.*;
+import static net.sourceforge.urin.HostBuilder.anIpV4Address;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
@@ -135,6 +136,12 @@ public class HostTest {
                 ipV4Address(anOctet(), anOctet(), anOctet(), null);
             }
         });
+    }
+
+    @Test
+    public void parsesAnIpV4Address() throws Exception {
+        Host host = anIpV4Address();
+        assertThat(parse(host.asString()), equalTo(host));
     }
 
     @Test

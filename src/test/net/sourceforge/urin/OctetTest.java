@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -38,6 +38,50 @@ public class OctetTest {
             fail("Should have thrown IllegalArgumentException");
         } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [256]"));
+        }
+    }
+
+    @Test
+    public void isValidAcceptsBoundaryCases() throws Exception {
+        assertThat(Octet.isValid("0"), equalTo(true));
+        assertThat(Octet.isValid("255"), equalTo(true));
+    }
+
+    @Test
+    public void isValidRejectsOutsideBoundaryCases() throws Exception {
+        assertThat(Octet.isValid("-1"), equalTo(false));
+        assertThat(Octet.isValid("256"), equalTo(false));
+    }
+
+    @Test
+    public void isValidRejectsNonIntegerCases() throws Exception {
+        assertThat(Octet.isValid("1.0"), equalTo(false));
+        assertThat(Octet.isValid("Hello"), equalTo(false));
+        assertThat(Octet.isValid(""), equalTo(false));
+        //noinspection NullableProblems
+        assertThat(Octet.isValid(null), equalTo(false));
+    }
+
+    @Test
+    public void parseAcceptsBoundaryCases() throws Exception {
+        assertThat(Octet.parse("0"), equalTo(octet(0)));
+        assertThat(Octet.parse("255"), equalTo(octet(255)));
+    }
+
+    @Test
+    public void parseRejectsInvalidOctetStrings() throws Exception {
+        try {
+            Octet.parse("-1");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Invalid Octet String [-1]"));
+        }
+        try {
+            //noinspection NullableProblems
+            Octet.parse(null);
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Invalid Octet String [null]"));
         }
     }
 }
