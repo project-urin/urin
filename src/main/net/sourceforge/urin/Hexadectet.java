@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -25,6 +25,30 @@ public final class Hexadectet extends UnaryValue<Integer> {
             throw new IllegalArgumentException("Argument must be in the range 0x0-0xFFFF but was [" + (hexadectet >= 0 ? "" : "-") + "0x" + absoluteHexValue + "]");
         }
         return new Hexadectet(hexadectet, hexadectet == 0);
+    }
+
+    static Hexadectet parse(final String hexadectetString) throws ParseException {
+        final int hexadectetInt;
+        try {
+            hexadectetInt = Integer.parseInt(hexadectetString, 16);
+        } catch (NumberFormatException e) {
+            throw new ParseException("Invalid Hexadectet String [" + hexadectetString + "]", e);
+        }
+        if (hexadectetInt < 0x0 || hexadectetInt > 0xFFFF) {
+            throw new ParseException("Invalid Hexadectet String [" + hexadectetString + "]");
+        } else {
+            return hexadectet(hexadectetInt);
+        }
+    }
+
+    static boolean isValid(final String octetString) {
+        final int hexadectetInt;
+        try {
+            hexadectetInt = Integer.parseInt(octetString, 16);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return !(hexadectetInt < 0x0 || hexadectetInt > 0xFFFF);
     }
 
     private Hexadectet(final int hexadecimalHexadectet, final boolean isElidable) {

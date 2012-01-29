@@ -17,7 +17,7 @@ import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
 import static net.sourceforge.urin.Host.*;
-import static net.sourceforge.urin.HostBuilder.anIpV4Address;
+import static net.sourceforge.urin.HostBuilder.*;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
@@ -237,6 +237,47 @@ public class HostTest {
     }
 
     @Test
+    public void parsesAnIpV6Address() throws Exception {
+        Host host = anIpV6Address();
+        assertThat(parse(host.asString()), equalTo(host));
+    }
+
+    @Test
+    public void parsesAnIpV6AddressWithElidedParts() throws Exception {
+        Host host = ipV6Address(
+                aHexadectet(),
+                ZERO,
+                ZERO,
+                aHexadectet(),
+                aHexadectet(),
+                aHexadectet(),
+                aHexadectet(),
+                aHexadectet()
+        );
+        assertThat(parse(host.asString()), equalTo(host));
+    }
+
+    @Test
+    public void parsingAnIpV6HostWithMultipleElidedPartsThrowsParseException() throws Exception {
+        try {
+            parse("[1::1::1]");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :[1::1::1]"));
+        }
+    }
+
+    @Test
+    public void parsingAnIpV6HostWithTooFewPartsThrowsParseException() throws Exception {
+        try {
+            parse("[1:1:1]");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :[1:1:1]"));
+        }
+    }
+
+    @Test
     public void rejectsNullInFactoryForAnIpV6Address() throws Exception {
         assertThrowsNullPointerException("Null firstHexadectet should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
@@ -390,6 +431,49 @@ public class HostTest {
         Octet thirdOctet = anOctet();
         Octet fourthOctet = anOctet();
         assertThat(ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet).toString(), equalTo("Host{firstHexadectet=" + firstHexadectet + ", secondHexadectet=" + secondHexadectet + ", thirdHexadectet=" + thirdHexadectet + ", fourthHexadectet=" + fourthHexadectet + ", fifthHexadectet=" + fifthHexadectet + ", sixthHexadectet=" + sixthHexadectet + ", firstOctet=" + firstOctet + ", secondOctet=" + secondOctet + ", thirdOctet=" + thirdOctet + ", fourthOctet=" + fourthOctet + "}"));
+    }
+
+    @Test
+    public void parsesAnIpV6AddressWithTrailingIpV4Address() throws Exception {
+        Host host = anIpV6AddressWithTrailingIpV4Address();
+        assertThat(parse(host.asString()), equalTo(host));
+    }
+
+    @Test
+    public void parsesAnIpV6AddressWithTrailingIpV4AddressWithElidedParts() throws Exception {
+        Host host = ipV6Address(
+                aHexadectet(),
+                ZERO,
+                ZERO,
+                aHexadectet(),
+                aHexadectet(),
+                aHexadectet(),
+                anOctet(),
+                anOctet(),
+                anOctet(),
+                anOctet()
+        );
+        assertThat(parse(host.asString()), equalTo(host));
+    }
+
+    @Test
+    public void parsingAnIpV6AddressWithTrailingIpV4AddressWithMultipleElidedPartsThrowsParseException() throws Exception {
+        try {
+            parse("[1::1::1:1.1.1.1]");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :[1::1::1:1.1.1.1]"));
+        }
+    }
+
+    @Test
+    public void parsingAnIpV6AddressWithTrailingIpV4AddressWithTooFewPartsThrowsParseException() throws Exception {
+        try {
+            parse("[1:1:1.1.1]");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :[1:1:1.1.1]"));
+        }
     }
 
     @Test

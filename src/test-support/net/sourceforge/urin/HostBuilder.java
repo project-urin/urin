@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -25,7 +25,7 @@ public class HostBuilder {
 
     public static Host aHost() {
         final Host host;
-        switch (RANDOM.nextInt(4)) {
+        switch (RANDOM.nextInt(5)) {
             case 0:
                 host = aRegisteredName();
                 break;
@@ -36,6 +36,9 @@ public class HostBuilder {
                 host = anIpV6Address();
                 break;
             case 3:
+                host = anIpV6AddressWithTrailingIpV4Address();
+                break;
+            case 4:
                 host = anIpVFutureAddress();
                 break;
             default:
@@ -54,6 +57,10 @@ public class HostBuilder {
 
     public static Host anIpV6Address() {
         return ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet());
+    }
+
+    public static Host anIpV6AddressWithTrailingIpV4Address() {
+        return ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
     }
 
     public static Host anIpVFutureAddress() {

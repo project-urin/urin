@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -43,5 +43,50 @@ public class HexadectetTest {
     @Test
     public void toStringIsCorrect() throws Exception {
         assertThat(hexadectet(0xFA).toString(), equalTo("Hexadectet{value=0xFA}"));
+    }
+
+    @Test
+    public void boundaryHexadectetStringsAreValid() throws Exception {
+        assertThat(Hexadectet.isValid(Integer.toString(0x0, 16)), equalTo(true));
+        assertThat(Hexadectet.isValid(Integer.toString(0xFFFF, 16)), equalTo(true));
+    }
+
+    @Test
+    public void outsideBoundaryHexadectetStringsAreNotValid() throws Exception {
+        assertThat(Hexadectet.isValid(Integer.toString(-0x1, 16)), equalTo(false));
+        assertThat(Hexadectet.isValid(Integer.toString(0x10000, 16)), equalTo(false));
+    }
+
+    @Test
+    public void invalidHexadectetStringsAreNotValid() throws Exception {
+        assertThat(Hexadectet.isValid("0.1"), equalTo(false));
+        assertThat(Hexadectet.isValid("hello"), equalTo(false));
+        assertThat(Hexadectet.isValid(""), equalTo(false));
+        //noinspection NullableProblems
+        assertThat(Hexadectet.isValid(null), equalTo(false));
+    }
+
+    @Test
+    public void parsesValidBoundaryHexadectetStrings() throws Exception {
+        assertThat(Hexadectet.parse(Integer.toString(0x0, 16)), equalTo(hexadectet(0x0)));
+        assertThat(Hexadectet.parse(Integer.toString(0xFFFF, 16)), equalTo(hexadectet(0xFFFF)));
+    }
+
+    @Test
+    public void parsingOutsideBoundaryHexadectetStringsThrowsParseException() throws Exception {
+        final String minusOneHexAsString = Integer.toString(-0x1, 16);
+        try {
+            Hexadectet.parse(minusOneHexAsString);
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Invalid Hexadectet String [" + minusOneHexAsString + "]"));
+        }
+        String tenThousandHexAsString = Integer.toString(0x10000, 16);
+        try {
+            Hexadectet.parse(tenThousandHexAsString);
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Invalid Hexadectet String [" + tenThousandHexAsString + "]"));
+        }
     }
 }

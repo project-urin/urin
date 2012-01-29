@@ -10,6 +10,9 @@
 
 package net.sourceforge.urin;
 
+import java.util.Iterator;
+
+import static java.util.Arrays.asList;
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
@@ -129,6 +132,10 @@ public abstract class Host {
     static Host parse(final String hostString) throws ParseException {
         if (IpV4Address.isValid(hostString)) {
             return IpV4Address.parse(hostString);
+        } else if (IpV6Address.isValid(hostString)) {
+            return IpV6Address.parse(hostString);
+        } else if (IpV6AddressWithTrailingIpV4Address.isValid(hostString)) {
+            return IpV6AddressWithTrailingIpV4Address.parse(hostString);
         } else {
             throw new ParseException("Not a valid host :" + hostString);
         }
@@ -183,19 +190,19 @@ public abstract class Host {
 
         IpV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
             if (firstOctet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null firstOctet");
+                throw new NullPointerException("Cannot instantiate Host with null firstOctet");
             }
             this.firstOctet = firstOctet;
             if (secondOctet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null secondOctet");
+                throw new NullPointerException("Cannot instantiate Host with null secondOctet");
             }
             this.secondOctet = secondOctet;
             if (thirdOctet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null thirdOctet");
+                throw new NullPointerException("Cannot instantiate Host with null thirdOctet");
             }
             this.thirdOctet = thirdOctet;
             if (fourthOctet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fourthOctet");
+                throw new NullPointerException("Cannot instantiate Host with null fourthOctet");
             }
             this.fourthOctet = fourthOctet;
         }
@@ -270,35 +277,35 @@ public abstract class Host {
 
         IpV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
             if (firstHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null firstHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null firstHexadectet");
             }
             this.firstHexadectet = firstHexadectet;
             if (secondHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null secondHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null secondHexadectet");
             }
             this.secondHexadectet = secondHexadectet;
             if (thirdHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null thirdHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null thirdHexadectet");
             }
             this.thirdHexadectet = thirdHexadectet;
             if (fourthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fourthHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null fourthHexadectet");
             }
             this.fourthHexadectet = fourthHexadectet;
             if (fifthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fifthHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null fifthHexadectet");
             }
             this.fifthHexadectet = fifthHexadectet;
             if (sixthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null sixthHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null sixthHexadectet");
             }
             this.sixthHexadectet = sixthHexadectet;
             if (seventhHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null seventhHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null seventhHexadectet");
             }
             this.seventhHexadectet = seventhHexadectet;
             if (eighthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null eighthHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null eighthHexadectet");
             }
             this.eighthHexadectet = eighthHexadectet;
         }
@@ -359,6 +366,68 @@ public abstract class Host {
                     ", eighthHexadectet=" + eighthHexadectet +
                     '}';
         }
+
+        static boolean isValid(final String hostString) {
+            if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
+                return false;
+            } else {
+                String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":");
+                int elidedSectionCount = 0;
+                for (String elidableHexadectetString : elidableHexadectetStrings) {
+                    if (elidableHexadectetString.isEmpty()) {
+                        elidedSectionCount++;
+                    }
+                }
+                if (elidedSectionCount > 1) {
+                    return false;
+                }
+                if (elidedSectionCount == 0 && elidableHexadectetStrings.length != 8) {
+                    return false;
+                }
+                if (elidedSectionCount == 1 && elidableHexadectetStrings.length > 8) {
+                    return false;
+                }
+                for (String elidableHexadectetString : elidableHexadectetStrings) {
+                    if (!elidableHexadectetString.isEmpty() && !Hexadectet.isValid(elidableHexadectetString)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        static IpV6Address parse(final String hostString) throws ParseException {
+            String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":");
+            Hexadectet[] hexadectets = new Hexadectet[8];
+            int i = 0;
+            boolean gotElidedPart = false;
+            for (String hexadectetString : elidableHexadectetStrings) {
+                if (hexadectetString.isEmpty()) {
+                    if (gotElidedPart) {
+                        throw new ParseException("Invalid IP v6 String [" + hostString + "]: more than one elided part");
+                    }
+                    gotElidedPart = true;
+                    final int elidedTotal = 8 - elidableHexadectetStrings.length;
+                    for (int elided = 0; elided <= elidedTotal; elided++) {
+                        hexadectets[i] = Hexadectet.ZERO;
+                        i++;
+                    }
+                } else {
+                    hexadectets[i] = Hexadectet.parse(hexadectetString);
+                    i++;
+                }
+            }
+            return new IpV6Address(
+                    hexadectets[0],
+                    hexadectets[1],
+                    hexadectets[2],
+                    hexadectets[3],
+                    hexadectets[4],
+                    hexadectets[5],
+                    hexadectets[6],
+                    hexadectets[7]
+            );
+        }
     }
 
     private static class IpV6AddressWithTrailingIpV4Address extends Host {
@@ -375,45 +444,121 @@ public abstract class Host {
 
         public IpV6AddressWithTrailingIpV4Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
             if (firstHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null firstHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null firstHexadectet");
             }
             this.firstHexadectet = firstHexadectet;
             if (secondHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null secondHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null secondHexadectet");
             }
             this.secondHexadectet = secondHexadectet;
             if (thirdHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null thirdHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null thirdHexadectet");
             }
             this.thirdHexadectet = thirdHexadectet;
             if (fourthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fourthHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null fourthHexadectet");
             }
             this.fourthHexadectet = fourthHexadectet;
             if (fifthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fifthHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null fifthHexadectet");
             }
             this.fifthHexadectet = fifthHexadectet;
             if (sixthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null sixthHexadectet");
+                throw new NullPointerException("Cannot instantiate Host with null sixthHexadectet");
             }
             this.sixthHexadectet = sixthHexadectet;
             if (firstOctet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null firstOctet");
+                throw new NullPointerException("Cannot instantiate Host with null firstOctet");
             }
             this.firstOctet = firstOctet;
             if (secondOctet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null secondOctet");
+                throw new NullPointerException("Cannot instantiate Host with null secondOctet");
             }
             this.secondOctet = secondOctet;
             if (thirdOctet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null thirdOctet");
+                throw new NullPointerException("Cannot instantiate Host with null thirdOctet");
             }
             this.thirdOctet = thirdOctet;
             if (fourthOctet == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null fourthOctet");
+                throw new NullPointerException("Cannot instantiate Host with null fourthOctet");
             }
             this.fourthOctet = fourthOctet;
+        }
+
+        static boolean isValid(final String hostString) {
+            if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
+                return false;
+            } else {
+                String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":");
+                int elidedSectionCount = 0;
+                for (String elidableHexadectetString : elidableHexadectetStrings) {
+                    if (elidableHexadectetString.isEmpty()) {
+                        elidedSectionCount++;
+                    }
+                }
+                if (elidedSectionCount > 1) {
+                    return false;
+                }
+                if (elidedSectionCount == 0 && elidableHexadectetStrings.length != 7) {
+                    return false;
+                }
+                if (elidedSectionCount == 1 && elidableHexadectetStrings.length > 7) {
+                    return false;
+                }
+                Iterator<String> elidableHexadectetStringsIterator = asList(elidableHexadectetStrings).iterator();
+                while (elidableHexadectetStringsIterator.hasNext()) {
+                    String elidableHexadectetString = elidableHexadectetStringsIterator.next();
+                    if (!elidableHexadectetStringsIterator.hasNext()) {
+                        return IpV4Address.isValid(elidableHexadectetString);
+                    } else if (!elidableHexadectetString.isEmpty() && !Hexadectet.isValid(elidableHexadectetString)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        static IpV6AddressWithTrailingIpV4Address parse(final String hostString) throws ParseException {
+            String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":");
+            Hexadectet[] hexadectets = new Hexadectet[6];
+            int i = 0;
+            boolean gotElidedPart = false;
+            IpV4Address ipV4AddressPart = null;
+            Iterator<String> elidableHexadectetStringsIterator = asList(elidableHexadectetStrings).iterator();
+            while (elidableHexadectetStringsIterator.hasNext()) {
+                String hexadectetString = elidableHexadectetStringsIterator.next();
+                if (!elidableHexadectetStringsIterator.hasNext()) {
+                    ipV4AddressPart = IpV4Address.parse(hexadectetString);
+                } else if (hexadectetString.isEmpty()) {
+                    if (gotElidedPart) {
+                        throw new ParseException("Invalid IP v6 String [" + hostString + "]: more than one elided part");
+                    }
+                    gotElidedPart = true;
+                    final int elidedTotal = 7 - elidableHexadectetStrings.length;
+                    for (int elided = 0; elided <= elidedTotal; elided++) {
+                        hexadectets[i] = Hexadectet.ZERO;
+                        i++;
+                    }
+                } else {
+                    hexadectets[i] = Hexadectet.parse(hexadectetString);
+                    i++;
+                }
+            }
+            if (ipV4AddressPart == null) {
+                throw new ParseException("Invalid IP v6 String [" + hostString + "]: no trailing IP v4 address.");
+            }
+            return new IpV6AddressWithTrailingIpV4Address(
+                    hexadectets[0],
+                    hexadectets[1],
+                    hexadectets[2],
+                    hexadectets[3],
+                    hexadectets[4],
+                    hexadectets[5],
+                    ipV4AddressPart.firstOctet,
+                    ipV4AddressPart.secondOctet,
+                    ipV4AddressPart.thirdOctet,
+                    ipV4AddressPart.fourthOctet
+            );
         }
 
         @Override
