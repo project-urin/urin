@@ -570,6 +570,58 @@ public class HostTest {
     }
 
     @Test
+    public void parsesAnIpVFuture() throws Exception {
+        Host host = anIpVFutureAddress();
+        assertThat(parse(host.asString()), equalTo(host));
+    }
+
+    @Test
+    public void parsingAnIpVFutureAddressWithNonHexVersionThrowsParseException() throws Exception {
+        try {
+            parse("[vi.abc]");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :[vi.abc]"));
+        }
+        try {
+            parse("[v.abc]");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :[v.abc]"));
+        }
+    }
+
+    @Test
+    public void parsingAnIpVFutureAddressWithNoDotThrowsParseException() throws Exception {
+        try {
+            parse("[viabc]");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :[viabc]"));
+        }
+    }
+
+    @Test
+    public void parsingAnIpVFutureAddressWithLessThanOneAddressCharacterThrowsParseException() throws Exception {
+        try {
+            parse("[v1.]");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :[v1.]"));
+        }
+    }
+
+    @Test
+    public void parsingAnIpVFutureAddressWithAnInvalidAddressCharacterThrowsParseException() throws Exception {
+        try {
+            parse("[v1.%]");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :[v1.%]"));
+        }
+    }
+
+    @Test
     public void ipVFutureRejectsInvalidCharactersInVersion() throws Exception {
         try {
             ipVFutureAddress("a", aValidIpVFutureAddress());

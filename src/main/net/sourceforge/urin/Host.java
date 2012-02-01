@@ -136,6 +136,8 @@ public abstract class Host {
             return IpV6Address.parse(hostString);
         } else if (IpV6AddressWithTrailingIpV4Address.isValid(hostString)) {
             return IpV6AddressWithTrailingIpV4Address.parse(hostString);
+        } else if (IpVFutureAddress.isValid(hostString)) {
+            return IpVFutureAddress.parse(hostString);
         } else {
             throw new ParseException("Not a valid host :" + hostString);
         }
@@ -639,6 +641,23 @@ public abstract class Host {
         IpVFutureAddress(final String version, final String address) {
             this.version = version;
             this.address = address.toLowerCase(ENGLISH);
+        }
+
+        static boolean isValid(final String hostString) {
+            if (!(hostString.startsWith("[v") && hostString.endsWith("]"))) {
+                return false;
+            } else {
+                String[] parts = hostString.substring(2, hostString.length() - 1).split("\\.");
+                return
+                        parts.length == 2
+                                && !(parts[0].isEmpty() || !CharacterSetMembershipFunction.HEX_DIGIT.areMembers(parts[0]))
+                                && !(parts[1].isEmpty() || !ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION.areMembers(parts[1]));
+            }
+        }
+
+        static IpVFutureAddress parse(final String hostString) throws ParseException {
+            String[] parts = hostString.substring(2, hostString.length() - 1).split("\\.");
+            return new IpVFutureAddress(parts[0], parts[1]);
         }
 
         @Override
