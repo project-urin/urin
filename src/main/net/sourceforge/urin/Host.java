@@ -18,11 +18,6 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
 public abstract class Host {
 
-    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(or(
-            UNRESERVED,
-            SUB_DELIMITERS
-    ));
-
     private static final CharacterSetMembershipFunction ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,
             ALPHA_UPPERCASE,
@@ -138,6 +133,8 @@ public abstract class Host {
             return IpV6AddressWithTrailingIpV4Address.parse(hostString);
         } else if (IpVFutureAddress.isValid(hostString)) {
             return IpVFutureAddress.parse(hostString);
+        } else if (RegisteredName.isValid(hostString)) {
+            return RegisteredName.parse(hostString);
         } else {
             throw new ParseException("Not a valid host :" + hostString);
         }
@@ -150,9 +147,15 @@ public abstract class Host {
     }
 
     private static final class RegisteredName extends Host {
+        private static final CharacterSetMembershipFunction REGISTERED_NAME_CHARACTER_SET = or(
+                UNRESERVED,
+                SUB_DELIMITERS
+        );
+        private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(REGISTERED_NAME_CHARACTER_SET);
+        private static final PercentEncodedCharacterSetMembershipFunction PERCENT_ENCODED_CHARACTER_SET_MEMBERSHIP_FUNCTION = new PercentEncodedCharacterSetMembershipFunction(REGISTERED_NAME_CHARACTER_SET);
         private final String registeredName;
 
-        RegisteredName(final String registeredName) {
+        RegisteredName(final String registeredName) { // TODO determine whether empty String is a valid registered name
             this.registeredName = registeredName.toLowerCase(ENGLISH); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
         }
 
@@ -182,6 +185,15 @@ public abstract class Host {
                     '}';
 
         }
+
+        public static boolean isValid(final String hostString) {
+            return PERCENT_ENCODED_CHARACTER_SET_MEMBERSHIP_FUNCTION.isMember(hostString);
+        }
+
+        static RegisteredName parse(final String hostString) throws ParseException {
+            return new RegisteredName(PERCENT_ENCODED_CHARACTER_SET_MEMBERSHIP_FUNCTION.decode(hostString));
+        }
+
     }
 
     private static final class IpV4Address extends Host {

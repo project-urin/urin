@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.*;
@@ -73,6 +74,48 @@ public class HostTest {
                 registeredName(null);
             }
         });
+    }
+
+    @Test
+    public void parsesARegisteredName() throws Exception {
+        Host host = aRegisteredName();
+        assertThat(parse(host.asString()), equalTo(host));
+    }
+
+    @Test
+    public void parsingAnEmptyRegisteredName() throws Exception {
+        assertThat(parse(""), equalTo(registeredName("")));
+    }
+
+    @Test
+    public void parsingARegisteredNameWithNonPercentEncodedDisallowedCharactersThrowsParseException() throws Exception {
+        try {
+            parse("?");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :?"));
+        }
+    }
+
+    @Test
+    @Ignore
+    public void parsingAnRegisteredNameWithInvalidPercentEncodingThrowsParseException() throws Exception {
+        try {
+            parse("%20%20"); // TODO - determine an invalid percent encoding
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :%20%20"));
+        }
+    }
+
+    @Test
+    public void parsingAnRegisteredNameWithIncompletePercentEncodingThrowsParseException() throws Exception {
+        try {
+            parse("%2");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Not a valid host :%2"));
+        }
     }
 
     @Test

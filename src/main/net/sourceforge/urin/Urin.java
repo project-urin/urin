@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
-import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Scheme.scheme;
 
 public abstract class Urin {
@@ -48,22 +47,37 @@ public abstract class Urin {
         return new UrinWithHierarchicalPartAndQueryAndFragment(scheme, hierarchicalPart, query, fragment);
     }
 
-    public static Urin parse(final String uriString) {
+    public static Urin parse(final String uriString) throws ParseException {
         return parse(URI.create(uriString));
     }
 
-    public static Urin parse(final URI uri) {
-        return urin(
-                scheme(uri.getScheme()),
-                hierarchicalPart(authority(registeredName(uri.getHost())), Segments.segments(new ArrayList<Segment>() {{
-                    boolean isFirst = true;
-                    for (String segmentString : uri.getRawPath().split("/")) {
-                        if (!isFirst) {
-                            add(Segment.segment(segmentString));
+    public static Urin parse(final URI uri) throws ParseException {
+        String host = uri.getHost();
+        if (host == null) {
+            return urin(
+                    scheme(uri.getScheme()),
+                    hierarchicalPart(Segments.segments(new ArrayList<Segment>() {{
+                        boolean isFirst = true;
+                        for (String segmentString : uri.getRawPath().split("/")) {
+                            if (!isFirst) {
+                                add(Segment.segment(segmentString));
+                            }
+                            isFirst = false;
                         }
-                        isFirst = false;
-                    }
-                }})));
+                    }})));
+        } else {
+            return urin(
+                    scheme(uri.getScheme()),
+                    hierarchicalPart(authority(Host.parse(host)), Segments.segments(new ArrayList<Segment>() {{
+                        boolean isFirst = true;
+                        for (String segmentString : uri.getRawPath().split("/")) {
+                            if (!isFirst) {
+                                add(Segment.segment(segmentString));
+                            }
+                            isFirst = false;
+                        }
+                    }})));
+        }
     }
 
     private static final class UrinWithHierarchicalPartAndQueryAndFragment extends Urin {
