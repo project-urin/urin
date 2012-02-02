@@ -53,31 +53,56 @@ public abstract class Urin {
 
     public static Urin parse(final URI uri) throws ParseException {
         String host = uri.getHost();
-        if (host == null) {
-            return urin(
-                    scheme(uri.getScheme()),
-                    hierarchicalPart(Segments.segments(new ArrayList<Segment>() {{
-                        boolean isFirst = true;
-                        for (String segmentString : uri.getRawPath().split("/")) {
-                            if (!isFirst) {
-                                add(Segment.segment(segmentString));
-                            }
-                            isFirst = false;
-                        }
-                    }})));
+        String query = uri.getQuery();
+        int port = uri.getPort();
+        if (port == -1) {
+            if (host == null && query == null) {
+                return urin(
+                        scheme(uri.getScheme()),
+                        hierarchicalPart(toSegments(uri.getRawPath())));
+            } else if (host != null && query == null) {
+                return urin(
+                        scheme(uri.getScheme()),
+                        hierarchicalPart(authority(Host.parse(host)), toSegments(uri.getRawPath())));
+            } else if (host == null) {
+                return urin(
+                        scheme(uri.getScheme()),
+                        hierarchicalPart(toSegments(uri.getRawPath())),
+                        Query.query(query));
+            } else {
+                return urin(
+                        scheme(uri.getScheme()),
+                        hierarchicalPart(authority(Host.parse(host)), toSegments(uri.getRawPath())),
+                        Query.query(query));
+            }
         } else {
-            return urin(
-                    scheme(uri.getScheme()),
-                    hierarchicalPart(authority(Host.parse(host)), Segments.segments(new ArrayList<Segment>() {{
-                        boolean isFirst = true;
-                        for (String segmentString : uri.getRawPath().split("/")) {
-                            if (!isFirst) {
-                                add(Segment.segment(segmentString));
-                            }
-                            isFirst = false;
-                        }
-                    }})));
+            if (host == null && query == null) {
+                throw new ParseException("Specifying port is invalid without a host");
+            } else if (host != null && query == null) {
+                return urin(
+                        scheme(uri.getScheme()),
+                        hierarchicalPart(authority(Host.parse(host), Port.port(port)), toSegments(uri.getRawPath())));
+            } else if (host == null) {
+                throw new ParseException("Specifying port is invalid without a host");
+            } else {
+                return urin(
+                        scheme(uri.getScheme()),
+                        hierarchicalPart(authority(Host.parse(host), Port.port(port)), toSegments(uri.getRawPath())),
+                        Query.query(query));
+            }
         }
+    }
+
+    private static AbsoluteSegments toSegments(final String rawPath) {
+        return Segments.segments(new ArrayList<Segment>() {{
+            boolean isFirst = true;
+            for (String segmentString : rawPath.split("/")) {
+                if (!isFirst) {
+                    add(Segment.segment(segmentString));
+                }
+                isFirst = false;
+            }
+        }});
     }
 
     private static final class UrinWithHierarchicalPartAndQueryAndFragment extends Urin {
