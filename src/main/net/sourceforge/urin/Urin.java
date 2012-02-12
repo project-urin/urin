@@ -12,12 +12,16 @@ package net.sourceforge.urin;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Scheme.scheme;
 
 public abstract class Urin {
+
+    private static final Pattern URI_REFERENCE_PATTERN = Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
 
     private Urin() {
         // deliberately empty
@@ -48,6 +52,19 @@ public abstract class Urin {
     }
 
     public static Urin parse(final String uriString) throws ParseException {
+        Matcher matcher = URI_REFERENCE_PATTERN.matcher(uriString);
+        matcher.matches();
+        final String scheme = matcher.group(2);
+        final String authority = matcher.group(4);
+        final String path = matcher.group(5);
+        final String query = matcher.group(7);
+        final String fragment = matcher.group(9);
+        if (authority == null && query == null) {
+            return urin(
+                    scheme(scheme),
+                    hierarchicalPart((path == null || !path.startsWith("/")) ? toRootlessSegments(path) : toSegments(path))
+            );
+        }
         return parse(URI.create(uriString));
     }
 
@@ -91,6 +108,14 @@ public abstract class Urin {
                         Query.query(query));
             }
         }
+    }
+
+    private static Segments toRootlessSegments(final String rawPath) {
+        return Segments.rootlessSegments(rawPath == null ? new ArrayList<Segment>() : new ArrayList<Segment>() {{
+            for (String segmentString : rawPath.split("/")) {
+                add(Segment.segment(segmentString));
+            }
+        }});
     }
 
     private static AbsoluteSegments toSegments(final String rawPath) {

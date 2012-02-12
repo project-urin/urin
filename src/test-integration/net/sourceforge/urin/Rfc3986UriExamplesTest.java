@@ -35,7 +35,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void ftpExample() throws Exception {
-        assertAsStringAndAsUri("ftp://ftp.is.co.za/rfc/rfc1808.txt", urin(
+        assertAsStringAsUriAndParse("ftp://ftp.is.co.za/rfc/rfc1808.txt", urin(
                 scheme("ftp"),
                 hierarchicalPart(
                         authority(registeredName("ftp.is.co.za")),
@@ -45,7 +45,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void httpExample() throws Exception {
-        assertAsStringAndAsUri("http://www.ietf.org/rfc/rfc2396.txt", urin(
+        assertAsStringAsUriAndParse("http://www.ietf.org/rfc/rfc2396.txt", urin(
                 scheme("http"),
                 hierarchicalPart(
                         authority(registeredName("www.ietf.org")),
@@ -55,7 +55,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void ldapExample() throws Exception {
-        assertAsStringAndAsUri("ldap://[2001:db8::7]/c=GB?objectClass?one", urin(
+        assertAsStringAsUriAndParse("ldap://[2001:db8::7]/c=GB?objectClass?one", urin(
                 scheme("ldap"),
                 hierarchicalPart(
                         authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
@@ -66,14 +66,14 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void mailtoExample() throws Exception {
-        assertAsStringAndAsUri("mailto:John.Doe@example.com", urin(
+        assertAsStringAsUriAndParse("mailto:John.Doe@example.com", urin(
                 scheme("mailto"),
                 hierarchicalPart(rootlessSegments(segment("John.Doe@example.com")))));
     }
 
     @Test
     public void newsExample() throws Exception {
-        assertAsStringAndAsUri("news:comp.infosystems.www.servers.unix", urin(
+        assertAsStringAsUriAndParse("news:comp.infosystems.www.servers.unix", urin(
                 scheme("news"),
                 hierarchicalPart(
                         rootlessSegments(segment("comp.infosystems.www.servers.unix")))));
@@ -81,14 +81,14 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void telExample() throws Exception {
-        assertAsStringAndAsUri("tel:+1-816-555-1212", urin(
+        assertAsStringAsUriAndParse("tel:+1-816-555-1212", urin(
                 scheme("tel"),
                 hierarchicalPart(rootlessSegments(segment("+1-816-555-1212")))));
     }
 
     @Test
     public void telnetExample() throws Exception {
-        assertAsStringAndAsUri("telnet://192.0.2.16:80/", urin(
+        assertAsStringAsUriAndParse("telnet://192.0.2.16:80/", urin(
                 scheme("telnet"),
                 hierarchicalPart(
                         authority(ipV4Address(octet(192), octet(0), octet(2), octet(16)), port("80")),
@@ -98,7 +98,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void urnExample() throws Exception {
-        assertAsStringAndAsUri("urn:oasis:names:specification:docbook:dtd:xml:4.1.2", urin(
+        assertAsStringAsUriAndParse("urn:oasis:names:specification:docbook:dtd:xml:4.1.2", urin(
                 scheme("urn"),
                 hierarchicalPart(rootlessSegments(segment("oasis:names:specification:docbook:dtd:xml:4.1.2")))));
     }
@@ -123,8 +123,9 @@ public class Rfc3986UriExamplesTest {
                 equalTo(new URI("mid/6")));
     }
 
-    private static void assertAsStringAndAsUri(final String expected, final Urin actual) throws URISyntaxException {
-        assertThat(actual.asString(), equalTo(expected));
-        assertThat(actual.asUri(), equalTo(new URI(expected)));
+    private static void assertAsStringAsUriAndParse(final String stringRepresentation, final Urin urinRepresentation) throws URISyntaxException, ParseException {
+        assertThat(urinRepresentation.asString(), equalTo(stringRepresentation));
+        assertThat(urinRepresentation.asUri(), equalTo(new URI(stringRepresentation)));
+        assertThat(Urin.parse(stringRepresentation), equalTo(urinRepresentation));
     }
 }
