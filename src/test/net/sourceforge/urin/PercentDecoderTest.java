@@ -12,28 +12,13 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
-import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.ALL_CHARACTERS;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class PercentDecoderTest {
-
-    @Test
-    public void nonPercentEncodedStringWithAllCharactersMembersIsMember() throws Exception {
-        assertThat(new PercentDecoder(singleMemberCharacterSet('a')).isMember("aa"), equalTo(true));
-    }
-
-    @Test
-    public void emptyStringIsMember() throws Exception {
-        assertThat(new PercentDecoder(NO_CHARACTERS).isMember(""), equalTo(true));
-    }
-
-    @Test
-    public void percentEncodedStringIsMember() throws Exception {
-        PercentEncoder encodeEverythingEncoder = new PercentEncoder(NO_CHARACTERS);
-        assertThat(new PercentDecoder(NO_CHARACTERS).isMember(encodeEverythingEncoder.encode(aString())), equalTo(true));
-    }
 
     @Test
     public void emptyStringIsDecodedToEmptyString() throws Exception {

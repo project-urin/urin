@@ -10,53 +10,18 @@
 
 package net.sourceforge.urin;
 
+import java.math.BigInteger;
 import java.nio.charset.Charset;
 
-import static net.sourceforge.urin.CharacterSetMembershipFunction.HEX_DIGIT;
-
 final class PercentDecoder {
+    private static final byte BINARY_1000_0000 = -128;
+    private static final byte BINARY_1100_0000 = -64;
+    private static final byte BINARY_1110_0000 = -32;
+    private static final byte BINARY_1111_0000 = -16;
     private final CharacterSetMembershipFunction characterSetMembershipFunction;
 
     PercentDecoder(final CharacterSetMembershipFunction characterSetMembershipFunction) {
         this.characterSetMembershipFunction = characterSetMembershipFunction;
-    }
-
-    boolean isMember(String candidateString) {
-        boolean result = true;
-        char[] candidateChars = candidateString.toCharArray();
-        for (int i = 0; result && i < candidateChars.length; i++) {
-            char candidateChar = candidateChars[i];
-            if (isByte(candidateChars, i)) {
-                byte firstByte = getByte(candidateChars, i);
-                i = i + 2;
-                if (firstByte < 0) {
-                    i = i + 1;
-                    if (isByte(candidateChars, i)) {
-                        byte secondByte = getByte(candidateChars, i);
-                        i = i + 2;
-                        i = i + 1;
-                        if (secondByte < 0) {
-                            result = isByte(candidateChars, i);
-                            i = i + 2;
-                        } else {
-                            result = true;
-                        }
-                    } else {
-                        result = false;
-                    }
-                } else {
-                    result = true;
-                }
-            } else {
-                result = characterSetMembershipFunction.isMember(candidateChar);
-            }
-        }
-        return result;
-    }
-
-    private static boolean isByte(char[] source, int startIndex) throws IllegalArgumentException {
-        return !((source.length <= startIndex + 2) || !('%' == source[startIndex]))
-                && HEX_DIGIT.isMember(source[startIndex + 1]) && HEX_DIGIT.isMember(source[startIndex + 2]);
     }
 
     private static byte getByte(char[] source, int startIndex) throws IllegalArgumentException {
@@ -69,32 +34,39 @@ final class PercentDecoder {
 
     String decode(String encoded) throws IllegalArgumentException {
         StringBuilder result = new StringBuilder();
-        byte[] buffer = new byte[3];
+        byte[] buffer = new byte[4];
         char[] candidateChars = encoded.toCharArray();
         for (int i = 0; i < candidateChars.length; i++) {
             char candidateChar = candidateChars[i];
             if ('%' == candidateChar) {
                 buffer[0] = getByte(candidateChars, i);
-                i = i + 2;
-                if (buffer[0] < 0) {
-                    i = i + 1;
-                    buffer[1] = getByte(candidateChars, i);
-                    i = i + 2;
-                    if (buffer[1] < 0) {
-                        i = i + 1;
-                        buffer[2] = getByte(candidateChars, i);
-                        i = i + 2;
-                        result.append(new String(buffer, 0, 3, Charset.forName("UTF-8")));
-                    } else {
-                        result.append(new String(buffer, 0, 2, Charset.forName("UTF-8")));
-                    }
+                toBits(buffer[0]);
+                final int byteCount;
+                if ((buffer[0] & BINARY_1000_0000) == 0) {
+                    byteCount = 1;
+                } else if ((buffer[0] & BINARY_1111_0000) == BINARY_1111_0000) {
+                    byteCount = 4;
+                } else if ((buffer[0] & BINARY_1110_0000) == BINARY_1110_0000) {
+                    byteCount = 3;
+                } else if ((buffer[0] & BINARY_1100_0000) == BINARY_1100_0000) {
+                    byteCount = 2;
                 } else {
-                    result.append(new String(buffer, 0, 1, Charset.forName("UTF-8")));
+                    throw new IllegalArgumentException("First byte of a percent encoded character must begin 0, 11, 111, or 1111, but was " + buffer[0]);
                 }
+                for (int j = 1; j < byteCount; j++) {
+                    buffer[j] = getByte(candidateChars, i + (3 * j));
+                }
+                i = i + (3 * byteCount) - 1;
+                result.append(new String(buffer, 0, byteCount, Charset.forName("UTF-8")));
             } else {
                 result.append(candidateChar);
             }
         }
         return result.toString();
+    }
+
+    private static String toBits(final byte b) {
+        BigInteger bigInteger = new BigInteger(new byte[]{0, b});
+        return bigInteger.toString(2);
     }
 }

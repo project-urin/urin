@@ -133,10 +133,8 @@ public abstract class Host {
             return IpV6AddressWithTrailingIpV4Address.parse(hostString);
         } else if (IpVFutureAddress.isValid(hostString)) {
             return IpVFutureAddress.parse(hostString);
-        } else if (RegisteredName.isValid(hostString)) {
-            return RegisteredName.parse(hostString);
         } else {
-            throw new ParseException("Not a valid host :" + hostString);
+            return RegisteredName.parse(hostString);
         }
     }
 
@@ -184,10 +182,6 @@ public abstract class Host {
                     "registeredName='" + registeredName + '\'' +
                     '}';
 
-        }
-
-        public static boolean isValid(final String hostString) {
-            return PERCENT_DECODER.isMember(hostString);
         }
 
         static RegisteredName parse(final String hostString) throws ParseException {
