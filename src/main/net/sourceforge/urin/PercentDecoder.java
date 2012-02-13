@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin;
 
-import java.math.BigInteger;
 import java.nio.charset.Charset;
 
 final class PercentDecoder {
@@ -40,7 +39,6 @@ final class PercentDecoder {
             char candidateChar = candidateChars[i];
             if ('%' == candidateChar) {
                 buffer[0] = getByte(candidateChars, i);
-                toBits(buffer[0]);
                 final int byteCount;
                 if ((buffer[0] & BINARY_1000_0000) == 0) {
                     byteCount = 1;
@@ -65,8 +63,4 @@ final class PercentDecoder {
         return result.toString();
     }
 
-    private static String toBits(final byte b) {
-        BigInteger bigInteger = new BigInteger(new byte[]{0, b});
-        return bigInteger.toString(2);
-    }
 }
