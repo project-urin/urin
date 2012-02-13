@@ -52,18 +52,31 @@ public abstract class Urin {
     }
 
     public static Urin parse(final String uriString) throws ParseException {
-        Matcher matcher = URI_REFERENCE_PATTERN.matcher(uriString);
+        final Matcher matcher = URI_REFERENCE_PATTERN.matcher(uriString);
         matcher.matches();
-        final String scheme = matcher.group(2);
+        final Scheme scheme = scheme(matcher.group(2));
         final String authority = matcher.group(4);
         final String path = matcher.group(5);
         final String query = matcher.group(7);
         final String fragment = matcher.group(9);
-        if (authority == null && query == null) {
-            return urin(
-                    scheme(scheme),
-                    hierarchicalPart((path == null || !path.startsWith("/")) ? toRootlessSegments(path) : toSegments(path))
-            );
+        final Urin result;
+        if (authority == null) {
+            final HierarchicalPart hierarchicalPart = hierarchicalPart((path == null || !path.startsWith("/")) ? toRootlessSegments(path) : toSegments(path));
+            if (query == null) {
+                if (fragment == null) {
+                    result = urin(
+                            scheme,
+                            hierarchicalPart
+                    );
+                } else {
+                    result = urin(
+                            scheme,
+                            hierarchicalPart,
+                            Fragment.parse(fragment)
+                    );
+                }
+                return result;
+            }
         }
         return parse(URI.create(uriString));
     }

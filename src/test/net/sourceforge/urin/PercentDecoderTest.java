@@ -17,39 +17,39 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class PercentEncodedCharacterSetMembershipFunctionTest {
+public class PercentDecoderTest {
 
     @Test
     public void nonPercentEncodedStringWithAllCharactersMembersIsMember() throws Exception {
-        assertThat(new PercentEncodedCharacterSetMembershipFunction(singleMemberCharacterSet('a')).isMember("aa"), equalTo(true));
+        assertThat(new PercentDecoder(singleMemberCharacterSet('a')).isMember("aa"), equalTo(true));
     }
 
     @Test
     public void emptyStringIsMember() throws Exception {
-        assertThat(new PercentEncodedCharacterSetMembershipFunction(NO_CHARACTERS).isMember(""), equalTo(true));
+        assertThat(new PercentDecoder(NO_CHARACTERS).isMember(""), equalTo(true));
     }
 
     @Test
     public void percentEncodedStringIsMember() throws Exception {
         PercentEncoder encodeEverythingEncoder = new PercentEncoder(NO_CHARACTERS);
-        assertThat(new PercentEncodedCharacterSetMembershipFunction(NO_CHARACTERS).isMember(encodeEverythingEncoder.encode(aString())), equalTo(true));
+        assertThat(new PercentDecoder(NO_CHARACTERS).isMember(encodeEverythingEncoder.encode(aString())), equalTo(true));
     }
 
     @Test
     public void emptyStringIsDecodedToEmptyString() throws Exception {
-        assertThat(new PercentEncodedCharacterSetMembershipFunction(NO_CHARACTERS).decode(""), equalTo(""));
+        assertThat(new PercentDecoder(NO_CHARACTERS).decode(""), equalTo(""));
     }
 
     @Test
     public void unencodedStringIsDecodedToItself() throws Exception {
         String string = aString();
-        assertThat(new PercentEncodedCharacterSetMembershipFunction(ALL_CHARACTERS).decode(string), equalTo(string));
+        assertThat(new PercentDecoder(ALL_CHARACTERS).decode(string), equalTo(string));
     }
 
     @Test
     public void singleByteEncodedStringIsDecodedCorrectly() throws Exception {
         assertThat(
-                new PercentEncodedCharacterSetMembershipFunction(ALL_CHARACTERS).decode(
+                new PercentDecoder(ALL_CHARACTERS).decode(
                         "%20"
                 ), equalTo(" "));
     }
@@ -57,7 +57,7 @@ public class PercentEncodedCharacterSetMembershipFunctionTest {
     @Test
     public void repeatedSingleByteEncodedStringIsDecodedCorrectly() throws Exception {
         assertThat(
-                new PercentEncodedCharacterSetMembershipFunction(ALL_CHARACTERS).decode(
+                new PercentDecoder(ALL_CHARACTERS).decode(
                         "%20%20"
                 ), equalTo("  "));
     }
@@ -66,7 +66,7 @@ public class PercentEncodedCharacterSetMembershipFunctionTest {
     public void encodedStringIsDecodedCorrectly() throws Exception {
         String string = aString();
         assertThat(
-                new PercentEncodedCharacterSetMembershipFunction(NO_CHARACTERS).decode(
+                new PercentDecoder(NO_CHARACTERS).decode(
                         new PercentEncoder(NO_CHARACTERS).encode(string)
                 ), equalTo(string));
     }

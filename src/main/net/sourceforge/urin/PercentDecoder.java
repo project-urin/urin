@@ -14,10 +14,10 @@ import java.nio.charset.Charset;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.HEX_DIGIT;
 
-final class PercentEncodedCharacterSetMembershipFunction {
+final class PercentDecoder {
     private final CharacterSetMembershipFunction characterSetMembershipFunction;
 
-    PercentEncodedCharacterSetMembershipFunction(final CharacterSetMembershipFunction characterSetMembershipFunction) {
+    PercentDecoder(final CharacterSetMembershipFunction characterSetMembershipFunction) {
         this.characterSetMembershipFunction = characterSetMembershipFunction;
     }
 

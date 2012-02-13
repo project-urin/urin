@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -16,6 +16,7 @@ import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 public final class Fragment extends PercentEncodedUnaryValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
+    private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
 
     private Fragment(final String fragment) {
         super(percentEncodableString(fragment), PERCENT_ENCODER);
@@ -23,5 +24,9 @@ public final class Fragment extends PercentEncodedUnaryValue {
 
     public static Fragment fragment(final String fragment) {
         return new Fragment(fragment);
+    }
+
+    public static Fragment parse(final String fragment) {
+        return new Fragment(PERCENT_DECODER.decode(fragment));
     }
 }

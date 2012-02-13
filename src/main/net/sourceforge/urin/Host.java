@@ -152,7 +152,7 @@ public abstract class Host {
                 SUB_DELIMITERS
         );
         private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(REGISTERED_NAME_CHARACTER_SET);
-        private static final PercentEncodedCharacterSetMembershipFunction PERCENT_ENCODED_CHARACTER_SET_MEMBERSHIP_FUNCTION = new PercentEncodedCharacterSetMembershipFunction(REGISTERED_NAME_CHARACTER_SET);
+        private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(REGISTERED_NAME_CHARACTER_SET);
         private final String registeredName;
 
         RegisteredName(final String registeredName) { // TODO determine whether empty String is a valid registered name
@@ -187,11 +187,11 @@ public abstract class Host {
         }
 
         public static boolean isValid(final String hostString) {
-            return PERCENT_ENCODED_CHARACTER_SET_MEMBERSHIP_FUNCTION.isMember(hostString);
+            return PERCENT_DECODER.isMember(hostString);
         }
 
         static RegisteredName parse(final String hostString) throws ParseException {
-            return new RegisteredName(PERCENT_ENCODED_CHARACTER_SET_MEMBERSHIP_FUNCTION.decode(hostString));
+            return new RegisteredName(PERCENT_DECODER.decode(hostString));
         }
 
     }
