@@ -57,12 +57,12 @@ public abstract class Urin {
         final Scheme scheme = scheme(matcher.group(2));
         final String authority = matcher.group(4);
         final String path = matcher.group(5);
-        final String query = matcher.group(7);
+        final String queryString = matcher.group(7);
         final String fragment = matcher.group(9);
         final Urin result;
         if (authority == null) {
             final HierarchicalPart hierarchicalPart = hierarchicalPart((path == null || !path.startsWith("/")) ? parseRootlessSegments(path) : parseSegments(path));
-            if (query == null) {
+            if (queryString == null) {
                 if (fragment == null) {
                     result = urin(
                             scheme,
@@ -75,8 +75,24 @@ public abstract class Urin {
                             Fragment.parse(fragment)
                     );
                 }
-                return result;
+            } else {
+                Query query = Query.parse(queryString);
+                if (fragment == null) {
+                    result = urin(
+                            scheme,
+                            hierarchicalPart,
+                            query
+                    );
+                } else {
+                    result = urin(
+                            scheme,
+                            hierarchicalPart,
+                            query,
+                            Fragment.parse(fragment)
+                    );
+                }
             }
+            return result;
         }
         return parse(URI.create(uriString));
     }
