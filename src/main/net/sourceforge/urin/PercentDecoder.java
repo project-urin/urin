@@ -57,10 +57,22 @@ final class PercentDecoder {
                 i = i + (3 * byteCount) - 1;
                 result.append(new String(buffer, 0, byteCount, Charset.forName("UTF-8")));
             } else {
-                result.append(candidateChar);
+                if (characterSetMembershipFunction.isMember(candidateChar)) {
+                    result.append(candidateChar);
+                } else {
+                    throw new IllegalArgumentException("Invalid character [" + candidateChar + "] - must be " + characterSetMembershipFunction.describe());
+                }
             }
         }
         return result.toString();
     }
 
+    public boolean isMember(final String hostString) {
+        try {
+            decode(hostString);
+            return true;
+        } catch (final IllegalArgumentException e) {
+            return false;
+        }
+    }
 }
