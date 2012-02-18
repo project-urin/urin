@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -48,6 +48,36 @@ public class SegmentTest {
     @Test
     public void explicitDotDotSegmentIsNotEncoded() throws Exception {
         assertThat(DOT_DOT.asString(), equalTo(".."));
+    }
+
+    @Test
+    public void parsesUnreservedCharacters() throws Exception {
+        assertThat(Segment.parse(P_CHARS), equalTo(Segment.segment(P_CHARS)));
+    }
+
+    @Test
+    public void parsePercentDecodesNonUnreservedCharacters() throws Exception {
+        assertThat(Segment.parse(".%23.%5B.%5D.%20."), equalTo(Segment.segment(".#.[.]. .")));
+    }
+
+    @Test
+    public void parsesPercentEncodedDotSegment() throws Exception {
+        assertThat(Segment.parse("%2E"), equalTo(Segment.segment(".")));
+    }
+
+    @Test
+    public void parsesPercentEncodedDotDotSegment() throws Exception {
+        assertThat(Segment.parse("%2E%2E"), equalTo(Segment.segment("..")));
+    }
+
+    @Test
+    public void unencodedDotBecomesExplicitDotSegment() throws Exception {
+        assertThat(Segment.parse("."), equalTo(DOT));
+    }
+
+    @Test
+    public void unencodedDotDotBecomesExplicitDotDotSegment() throws Exception {
+        assertThat(Segment.parse(".."), equalTo(DOT_DOT));
     }
 
 }

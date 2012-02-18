@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -17,6 +17,7 @@ import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
 
 public abstract class Segment extends PercentEncodedUnaryValue {
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
+    private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(P_CHAR);
     public static final Segment EMPTY = segment("");
     public static final Segment DOT = new Segment(percentEncodableString("."), ENCODE_NOTHING) {
     };
@@ -39,5 +40,15 @@ public abstract class Segment extends PercentEncodedUnaryValue {
 
     boolean containsColon() {
         return this.value.containsColon();
+    }
+
+    public static Segment parse(final String encodedSegment) {
+        if (".".equals(encodedSegment)) {
+            return DOT;
+        } else if ("..".equals(encodedSegment)) {
+            return DOT_DOT;
+        } else {
+            return segment(PERCENT_DECODER.decode(encodedSegment));
+        }
     }
 }

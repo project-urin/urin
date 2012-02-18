@@ -61,7 +61,7 @@ public abstract class Urin {
         final String fragment = matcher.group(9);
         final Urin result;
         if (authority == null) {
-            final HierarchicalPart hierarchicalPart = hierarchicalPart((path == null || !path.startsWith("/")) ? toRootlessSegments(path) : toSegments(path));
+            final HierarchicalPart hierarchicalPart = hierarchicalPart((path == null || !path.startsWith("/")) ? parseRootlessSegments(path) : parseSegments(path));
             if (query == null) {
                 if (fragment == null) {
                     result = urin(
@@ -89,20 +89,20 @@ public abstract class Urin {
             if (host == null && query == null) {
                 return urin(
                         scheme(uri.getScheme()),
-                        hierarchicalPart(toSegments(uri.getRawPath())));
+                        hierarchicalPart(parseSegments(uri.getRawPath())));
             } else if (host != null && query == null) {
                 return urin(
                         scheme(uri.getScheme()),
-                        hierarchicalPart(authority(Host.parse(host)), toSegments(uri.getRawPath())));
+                        hierarchicalPart(authority(Host.parse(host)), parseSegments(uri.getRawPath())));
             } else if (host == null) {
                 return urin(
                         scheme(uri.getScheme()),
-                        hierarchicalPart(toSegments(uri.getRawPath())),
+                        hierarchicalPart(parseSegments(uri.getRawPath())),
                         Query.query(query));
             } else {
                 return urin(
                         scheme(uri.getScheme()),
-                        hierarchicalPart(authority(Host.parse(host)), toSegments(uri.getRawPath())),
+                        hierarchicalPart(authority(Host.parse(host)), parseSegments(uri.getRawPath())),
                         Query.query(query));
             }
         } else {
@@ -111,32 +111,32 @@ public abstract class Urin {
             } else if (host != null && query == null) {
                 return urin(
                         scheme(uri.getScheme()),
-                        hierarchicalPart(authority(Host.parse(host), Port.port(port)), toSegments(uri.getRawPath())));
+                        hierarchicalPart(authority(Host.parse(host), Port.port(port)), parseSegments(uri.getRawPath())));
             } else if (host == null) {
                 throw new ParseException("Specifying port is invalid without a host");
             } else {
                 return urin(
                         scheme(uri.getScheme()),
-                        hierarchicalPart(authority(Host.parse(host), Port.port(port)), toSegments(uri.getRawPath())),
+                        hierarchicalPart(authority(Host.parse(host), Port.port(port)), parseSegments(uri.getRawPath())),
                         Query.query(query));
             }
         }
     }
 
-    private static Segments toRootlessSegments(final String rawPath) {
+    private static Segments parseRootlessSegments(final String rawPath) {
         return Segments.rootlessSegments(rawPath == null ? new ArrayList<Segment>() : new ArrayList<Segment>() {{
             for (String segmentString : rawPath.split("/")) {
-                add(Segment.segment(segmentString));
+                add(Segment.parse(segmentString));
             }
         }});
     }
 
-    private static AbsoluteSegments toSegments(final String rawPath) {
+    private static AbsoluteSegments parseSegments(final String rawPath) {
         return Segments.segments(new ArrayList<Segment>() {{
             boolean isFirst = true;
             for (String segmentString : rawPath.split("/")) {
                 if (!isFirst) {
-                    add(Segment.segment(segmentString));
+                    add(Segment.parse(segmentString));
                 }
                 isFirst = false;
             }
