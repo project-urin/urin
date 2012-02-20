@@ -24,7 +24,7 @@ final class PercentDecoder {
     }
 
     private static byte getByte(char[] source, int startIndex) throws IllegalArgumentException {
-        if (!('%' == source[startIndex]) || (source.length <= startIndex + 2)) {
+        if ((source.length <= startIndex + 2) || !('%' == source[startIndex])) {
             throw new IllegalArgumentException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]");
         } else {
             return (byte) Integer.parseInt(new String(source, startIndex + 1, 2), 16);

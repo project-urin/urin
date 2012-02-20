@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.*;
@@ -98,13 +97,12 @@ public class HostTest {
     }
 
     @Test
-    @Ignore
     public void parsingAnRegisteredNameWithInvalidPercentEncodingThrowsParseException() throws Exception {
         try {
-            parse("%20%20"); // TODO - determine an invalid percent encoding
+            parse("%F5");
             fail("Should have thrown ParseException");
         } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :%20%20"));
+            assertThat(e.getMessage(), equalTo("Not a valid host :%F5"));
         }
     }
 
