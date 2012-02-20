@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -20,6 +20,7 @@ import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class AuthorityTest {
     @Test
@@ -193,6 +194,11 @@ public class AuthorityTest {
         Host host = aHost();
         Port port = aPort();
         assertThat(authority(userInfo, host, port).toString(), equalTo("Authority{userInfo=" + userInfo + ", host=" + host + ", port=" + port + "}"));
+    }
+
+    @Test
+    public void hasTestsForParsing() throws Exception {
+        fail("Add some parsing tests!");
     }
 
 }

@@ -60,41 +60,44 @@ public abstract class Urin {
         final String queryString = matcher.group(7);
         final String fragment = matcher.group(9);
         final Urin result;
+        final HierarchicalPart hierarchicalPart;
         if (authority == null) {
-            final HierarchicalPart hierarchicalPart = hierarchicalPart((path == null || !path.startsWith("/")) ? parseRootlessSegments(path) : parseSegments(path));
-            if (queryString == null) {
-                if (fragment == null) {
-                    result = urin(
-                            scheme,
-                            hierarchicalPart
-                    );
-                } else {
-                    result = urin(
-                            scheme,
-                            hierarchicalPart,
-                            Fragment.parse(fragment)
-                    );
-                }
-            } else {
-                Query query = Query.parse(queryString);
-                if (fragment == null) {
-                    result = urin(
-                            scheme,
-                            hierarchicalPart,
-                            query
-                    );
-                } else {
-                    result = urin(
-                            scheme,
-                            hierarchicalPart,
-                            query,
-                            Fragment.parse(fragment)
-                    );
-                }
-            }
-            return result;
+            hierarchicalPart = hierarchicalPart((path == null || !path.startsWith("/")) ? parseRootlessSegments(path) : parseSegments(path));
+        } else {
+
+            hierarchicalPart = hierarchicalPart(Authority.parse(authority), parseSegments(path));
         }
-        return parse(URI.create(uriString));
+        if (queryString == null) {
+            if (fragment == null) {
+                result = urin(
+                        scheme,
+                        hierarchicalPart
+                );
+            } else {
+                result = urin(
+                        scheme,
+                        hierarchicalPart,
+                        Fragment.parse(fragment)
+                );
+            }
+        } else {
+            final Query query = Query.parse(queryString);
+            if (fragment == null) {
+                result = urin(
+                        scheme,
+                        hierarchicalPart,
+                        query
+                );
+            } else {
+                result = urin(
+                        scheme,
+                        hierarchicalPart,
+                        query,
+                        Fragment.parse(fragment)
+                );
+            }
+        }
+        return result;
     }
 
     public static Urin parse(final URI uri) throws ParseException {
