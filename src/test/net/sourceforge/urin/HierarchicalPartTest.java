@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.HierarchicalPart.parse;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
@@ -240,6 +241,38 @@ public class HierarchicalPartTest {
                 hierarchicalPart(anAuthority(), null);
             }
         });
+    }
+
+    @Test
+    public void parsesAHierarchicalPartWithEmptyPath() throws Exception {
+        assertThat(parse(""), equalTo(hierarchicalPart()));
+    }
+
+    @Test
+    public void parsesASimpleAbsolutePath() throws Exception {
+        Segments segments = aSegments();
+        assertThat(parse(segments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT)), equalTo(hierarchicalPart(segments)));
+    }
+
+    @Test
+    public void parsesASimpleRootlessPath() throws Exception {
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(parse(firstSegment.asString() + "/" + secondSegment.asString()), equalTo(hierarchicalPart(rootlessSegments(firstSegment, secondSegment))));
+    }
+
+    @Test
+    public void parsesHierarchicalPartWithAuthorityAndEmptyPath() throws Exception {
+        Authority authority = anAuthority();
+        assertThat(parse("//" + authority.asString()), equalTo(hierarchicalPart(authority)));
+    }
+
+    @Test
+    public void parsesHierarchicalPartWithAuthorityAndNonEmptyPath() throws Exception {
+        Authority authority = anAuthority();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
+        assertThat(parse("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()), equalTo(hierarchicalPart(authority, segments(firstSegment, secondSegment))));
     }
 
 }

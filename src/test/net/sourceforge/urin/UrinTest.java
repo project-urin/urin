@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -17,6 +17,7 @@ import static net.sourceforge.urin.HierarchicalPartBuilder.aHierarchicalPart;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
+import static net.sourceforge.urin.Urin.parse;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -233,4 +234,37 @@ public class UrinTest {
             }
         });
     }
+
+    @Test
+    public void parsesUrinWithAllParts() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(Urin.parse(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString() + "#" + fragment.asString()), equalTo(urin(scheme, hierarchicalPart, query, fragment)));
+    }
+
+    @Test
+    public void parsesUrinWithNoFragment() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        assertThat(parse(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString()), equalTo(urin(scheme, hierarchicalPart, query)));
+    }
+
+    @Test
+    public void parsesUrinWithNoQuery() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Fragment fragment = aFragment();
+        assertThat(parse(scheme.asString() + ":" + hierarchicalPart.asString() + "#" + fragment.asString()), equalTo(urin(scheme, hierarchicalPart, fragment)));
+    }
+
+    @Test
+    public void parsesUrinWithNoQueryAndNoFragment() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        assertThat(parse(scheme.asString() + ":" + hierarchicalPart.asString()), equalTo(urin(scheme, hierarchicalPart)));
+    }
+
 }
