@@ -13,6 +13,7 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.Authority.parse;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.PortBuilder.aPort;
@@ -20,7 +21,6 @@ import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class AuthorityTest {
     @Test
@@ -197,8 +197,31 @@ public class AuthorityTest {
     }
 
     @Test
-    public void hasTestsForParsing() throws Exception {
-        fail("Add some parsing tests!");
+    public void parsesAuthorityWithNoUserInfoOrPort() throws Exception {
+        Host host = aHost();
+        assertThat(parse(host.asString()), equalTo(authority(host)));
+    }
+
+    @Test
+    public void parsesAuthorityWithNoPort() throws Exception {
+        UserInfo userInfo = aUserInfo();
+        Host host = aHost();
+        assertThat(parse(userInfo.asString() + "@" + host.asString()), equalTo(authority(userInfo, host)));
+    }
+
+    @Test
+    public void parsesAuthorityWithNoUserInfo() throws Exception {
+        Host host = aHost();
+        Port port = aPort();
+        assertThat(parse(host.asString() + ":" + port.asString()), equalTo(authority(host, port)));
+    }
+
+    @Test
+    public void parsesAuthorityWithAllOptionsSpecified() throws Exception {
+        UserInfo userInfo = aUserInfo();
+        Host host = aHost();
+        Port port = aPort();
+        assertThat(parse(userInfo.asString() + "@" + host.asString() + ":" + port.asString()), equalTo(authority(userInfo, host, port)));
     }
 
 }
