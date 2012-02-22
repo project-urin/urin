@@ -617,6 +617,11 @@ public class HostTest {
     }
 
     @Test
+    public void parsesAnIpVFutureWithDotInAddress() throws Exception {
+        assertThat(parse("[vABCDE.ab.ab]"), equalTo(ipVFutureAddress("ABCDE", "ab.ab")));
+    }
+
+    @Test
     public void parsingAnIpVFutureAddressWithNonHexVersionThrowsParseException() throws Exception {
         try {
             parse("[vi.abc]");
@@ -769,6 +774,21 @@ public class HostTest {
                 ipVFutureAddress(anIpVFutureAddressVersion(), null);
             }
         });
+    }
+
+    @Test
+    public void localHostIsExpectedString() throws Exception {
+        assertThat(LOCAL_HOST.asString(), equalTo("localhost"));
+    }
+
+    @Test
+    public void loopbackIpV4AddressIsExpectedString() throws Exception {
+        assertThat(LOOPBACK_ADDRESS_IP_V4.asString(), equalTo("127.0.0.1"));
+    }
+
+    @Test
+    public void loopbackIpV6AddressIsExpectedString() throws Exception {
+        assertThat(LOOPBACK_ADDRESS_IP_V6.asString(), equalTo("[::1]"));
     }
 
     private static String aValidIpVFutureAddress() {

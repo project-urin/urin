@@ -11,10 +11,15 @@
 package net.sourceforge.urin;
 
 import java.util.Iterator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
+import static net.sourceforge.urin.Hexadectet.ZERO;
+import static net.sourceforge.urin.Hexadectet.hexadectet;
+import static net.sourceforge.urin.Octet.octet;
 
 public abstract class Host {
 
@@ -46,6 +51,8 @@ public abstract class Host {
     abstract String asString();
 
     public static final Host LOCAL_HOST = registeredName("localhost");
+    public static final Host LOOPBACK_ADDRESS_IP_V4 = ipV4Address(octet(127), octet(0), octet(0), octet(1));
+    public static final Host LOOPBACK_ADDRESS_IP_V6 = ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(1));
 
     public static Host registeredName(final String registeredName) {
         return new RegisteredName(registeredName);
@@ -422,7 +429,7 @@ public abstract class Host {
                     gotElidedPart = true;
                     final int elidedTotal = 8 - elidableHexadectetStrings.length;
                     for (int elided = 0; elided <= elidedTotal; elided++) {
-                        hexadectets[i] = Hexadectet.ZERO;
+                        hexadectets[i] = ZERO;
                         i++;
                     }
                 } else {
@@ -549,7 +556,7 @@ public abstract class Host {
                     gotElidedPart = true;
                     final int elidedTotal = 7 - elidableHexadectetStrings.length;
                     for (int elided = 0; elided <= elidedTotal; elided++) {
-                        hexadectets[i] = Hexadectet.ZERO;
+                        hexadectets[i] = ZERO;
                         i++;
                     }
                 } else {
@@ -646,6 +653,8 @@ public abstract class Host {
     }
 
     private static final class IpVFutureAddress extends Host {
+        private static final Pattern IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN = Pattern.compile("^\\[v([\\dABCDEF]+)\\.([^/?#]+)\\]");
+
         private final String version;
         private final String address;
 
@@ -655,20 +664,16 @@ public abstract class Host {
         }
 
         static boolean isValid(final String hostString) {
-            if (!(hostString.startsWith("[v") && hostString.endsWith("]"))) {
-                return false;
-            } else {
-                String[] parts = hostString.substring(2, hostString.length() - 1).split("\\.");
-                return
-                        parts.length == 2
-                                && !(parts[0].isEmpty() || !CharacterSetMembershipFunction.HEX_DIGIT.areMembers(parts[0]))
-                                && !(parts[1].isEmpty() || !ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION.areMembers(parts[1]));
-            }
+            Matcher matcher = IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN.matcher(hostString);
+            return matcher.matches()
+                    && CharacterSetMembershipFunction.HEX_DIGIT.areMembers(matcher.group(1))
+                    && ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION.areMembers(matcher.group(2));
         }
 
         static IpVFutureAddress parse(final String hostString) throws ParseException {
-            String[] parts = hostString.substring(2, hostString.length() - 1).split("\\.");
-            return new IpVFutureAddress(parts[0], parts[1]);
+            Matcher matcher = IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN.matcher(hostString);
+            matcher.matches();
+            return new IpVFutureAddress(matcher.group(1), matcher.group(2));
         }
 
         @Override
