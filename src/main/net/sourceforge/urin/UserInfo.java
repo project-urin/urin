@@ -20,6 +20,11 @@ public final class UserInfo extends PercentEncodedUnaryValue {
             SUB_DELIMITERS,
             singleMemberCharacterSet(':')
     ));
+    private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(or(
+            UNRESERVED,
+            SUB_DELIMITERS,
+            singleMemberCharacterSet(':')
+    ));
 
     private UserInfo(final String userInfo) {
         super(percentEncodableString(userInfo), PERCENT_ENCODER);
@@ -30,6 +35,6 @@ public final class UserInfo extends PercentEncodedUnaryValue {
     }
 
     static UserInfo parse(final String userinfoString) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        return userInfo(PERCENT_DECODER.decode(userinfoString));
     }
 }

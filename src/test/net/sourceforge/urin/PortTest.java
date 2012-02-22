@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.DIGIT;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
+import static net.sourceforge.urin.Port.parse;
 import static net.sourceforge.urin.Port.port;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -93,7 +94,50 @@ public class PortTest {
     }
 
     @Test
-    public void hasTestsForParsing() throws Exception {
-        fail("Add some parsing tests!");
+    public void parsesFullRangeOfValidCharacters() throws Exception {
+        Port.parse(DIGIT);
     }
+
+    @Test
+    public void parsedPortIsCorrect() throws Exception {
+        assertThat(Port.parse("123"), equalTo(port("123")));
+    }
+
+    @Test
+    public void cannotParseAPortUsingANegativeInt() throws Exception {
+        try {
+            Port.parse("-123");
+            fail("Expected a ParseException to be thrown");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Port -123 is not valid; must be 0-9"));
+        }
+    }
+
+    @Test
+    public void normalisesLeadingZerosOnParsedPort() throws Exception {
+        assertThat(Port.parse("01"), equalTo(port(1)));
+    }
+
+    @Test
+    public void parseRejectsInvalidCharacters() throws Exception {
+        try {
+            parse("a");
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Port a is not valid; must be 0-9"));
+        }
+        try {
+            parse("/");
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Port / is not valid; must be 0-9"));
+        }
+        try {
+            parse(":");
+            fail("Expected an IllegalArgumentException to be thrown");
+        } catch (ParseException e) {
+            assertThat(e.getMessage(), equalTo("Port : is not valid; must be 0-9"));
+        }
+    }
+
 }

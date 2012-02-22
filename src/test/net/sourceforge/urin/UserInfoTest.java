@@ -16,7 +16,6 @@ import static net.sourceforge.urin.CharacterSets.SUB_DELIMS;
 import static net.sourceforge.urin.CharacterSets.UNRESERVED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class UserInfoTest {
     @Test
@@ -31,8 +30,14 @@ public class UserInfoTest {
     }
 
     @Test
-    public void hasTestsForParsing() throws Exception {
-        fail("Add some parsing tests!");
+    public void parsesUnreservedCharacters() throws Exception {
+        String nonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS + ":";
+        assertThat(UserInfo.parse(nonPercentEncodedCharacters), equalTo(UserInfo.userInfo(nonPercentEncodedCharacters)));
+    }
+
+    @Test
+    public void parsesNonUnreservedCharacters() throws Exception {
+        assertThat(UserInfo.parse(".%40.%23.%5B.%5D.%20."), equalTo(UserInfo.userInfo(".@.#.[.]. .")));
     }
 
 }
