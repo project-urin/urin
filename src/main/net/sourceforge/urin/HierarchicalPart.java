@@ -10,12 +10,57 @@
 
 package net.sourceforge.urin;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
 
 public abstract class HierarchicalPart {
 
+    private static final Pattern HIERARCHICAL_PART_REFERENCE_PATTERN = Pattern.compile("^(//([^/?#]*))?([^?#]*)");
+
     private HierarchicalPart() {
+    }
+
+    static HierarchicalPart parse(final String hierarchicalPartString) throws ParseException {
+        final Matcher matcher = HIERARCHICAL_PART_REFERENCE_PATTERN.matcher(hierarchicalPartString);
+        matcher.matches();
+        final String authorityString = matcher.group(2);
+        final String path = matcher.group(3);
+        HierarchicalPart hierarchicalPart;
+        if (authorityString == null) {
+            if (path == null || "".equals(path)) {
+                hierarchicalPart = hierarchicalPart();
+            } else {
+                hierarchicalPart = hierarchicalPart(!path.startsWith("/") ? parseRootlessSegments(path) : parseSegments(path));
+            }
+        } else {
+            Authority authority = Authority.parse(authorityString);
+            hierarchicalPart = (path == null || "".equals(path)) ? hierarchicalPart(authority) : hierarchicalPart(authority, parseSegments(path));
+        }
+        return hierarchicalPart;
+    }
+
+    static Segments parseRootlessSegments(final String rawPath) {
+        return Segments.rootlessSegments(rawPath == null ? new ArrayList<Segment>() : new ArrayList<Segment>() {{
+            for (String segmentString : rawPath.split("/")) {
+                add(Segment.parse(segmentString));
+            }
+        }});
+    }
+
+    static AbsoluteSegments parseSegments(final String rawPath) {
+        return Segments.segments(new ArrayList<Segment>() {{
+            boolean isFirst = true;
+            for (String segmentString : rawPath.split("/")) {
+                if (!isFirst) {
+                    add(Segment.parse(segmentString));
+                }
+                isFirst = false;
+            }
+        }});
     }
 
     abstract String asString();

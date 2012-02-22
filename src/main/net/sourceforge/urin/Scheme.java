@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -35,5 +35,9 @@ public final class Scheme extends UnaryStringValue {
         verify(ALPHA, name, "scheme", 0, 1);
         verify(TRAILING_CHARACTER_MEMBERSHIP_FUNCTION, name, "scheme", 1);
         return new Scheme(name.toLowerCase(ENGLISH));
+    }
+
+    static Scheme parse(final String name) {
+        return scheme(name);
     }
 }

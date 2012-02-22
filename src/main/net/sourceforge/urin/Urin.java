@@ -11,17 +11,12 @@
 package net.sourceforge.urin;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static net.sourceforge.urin.Authority.authority;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
-import static net.sourceforge.urin.Scheme.scheme;
-
 public abstract class Urin {
 
-    private static final Pattern URI_REFERENCE_PATTERN = Pattern.compile("^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\\?([^#]*))?(#(.*))?");
+    private static final Pattern URI_REFERENCE_PATTERN = Pattern.compile("^(([^:/?#]+):)?((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
     private Urin() {
         // deliberately empty
@@ -54,19 +49,11 @@ public abstract class Urin {
     public static Urin parse(final String uriString) throws ParseException {
         final Matcher matcher = URI_REFERENCE_PATTERN.matcher(uriString);
         matcher.matches();
-        final Scheme scheme = scheme(matcher.group(2));
-        final String authority = matcher.group(4);
-        final String path = matcher.group(5);
-        final String queryString = matcher.group(7);
-        final String fragment = matcher.group(9);
+        final Scheme scheme = Scheme.parse(matcher.group(2));
+        final HierarchicalPart hierarchicalPart = HierarchicalPart.parse(matcher.group(3));
+        final String queryString = matcher.group(8);
+        final String fragment = matcher.group(10);
         final Urin result;
-        final HierarchicalPart hierarchicalPart;
-        if (authority == null) {
-            hierarchicalPart = hierarchicalPart((path == null || !path.startsWith("/")) ? parseRootlessSegments(path) : parseSegments(path));
-        } else {
-
-            hierarchicalPart = hierarchicalPart(Authority.parse(authority), parseSegments(path));
-        }
         if (queryString == null) {
             if (fragment == null) {
                 result = urin(
@@ -101,65 +88,7 @@ public abstract class Urin {
     }
 
     public static Urin parse(final URI uri) throws ParseException {
-        String host = uri.getHost();
-        String query = uri.getQuery();
-        int port = uri.getPort();
-        if (port == -1) {
-            if (host == null && query == null) {
-                return urin(
-                        scheme(uri.getScheme()),
-                        hierarchicalPart(parseSegments(uri.getRawPath())));
-            } else if (host != null && query == null) {
-                return urin(
-                        scheme(uri.getScheme()),
-                        hierarchicalPart(authority(Host.parse(host)), parseSegments(uri.getRawPath())));
-            } else if (host == null) {
-                return urin(
-                        scheme(uri.getScheme()),
-                        hierarchicalPart(parseSegments(uri.getRawPath())),
-                        Query.query(query));
-            } else {
-                return urin(
-                        scheme(uri.getScheme()),
-                        hierarchicalPart(authority(Host.parse(host)), parseSegments(uri.getRawPath())),
-                        Query.query(query));
-            }
-        } else {
-            if (host == null && query == null) {
-                throw new ParseException("Specifying port is invalid without a host");
-            } else if (host != null && query == null) {
-                return urin(
-                        scheme(uri.getScheme()),
-                        hierarchicalPart(authority(Host.parse(host), Port.port(port)), parseSegments(uri.getRawPath())));
-            } else if (host == null) {
-                throw new ParseException("Specifying port is invalid without a host");
-            } else {
-                return urin(
-                        scheme(uri.getScheme()),
-                        hierarchicalPart(authority(Host.parse(host), Port.port(port)), parseSegments(uri.getRawPath())),
-                        Query.query(query));
-            }
-        }
-    }
-
-    private static Segments parseRootlessSegments(final String rawPath) {
-        return Segments.rootlessSegments(rawPath == null ? new ArrayList<Segment>() : new ArrayList<Segment>() {{
-            for (String segmentString : rawPath.split("/")) {
-                add(Segment.parse(segmentString));
-            }
-        }});
-    }
-
-    private static AbsoluteSegments parseSegments(final String rawPath) {
-        return Segments.segments(new ArrayList<Segment>() {{
-            boolean isFirst = true;
-            for (String segmentString : rawPath.split("/")) {
-                if (!isFirst) {
-                    add(Segment.parse(segmentString));
-                }
-                isFirst = false;
-            }
-        }});
+        return parse(uri.toASCIIString());
     }
 
     private static final class UrinWithHierarchicalPartAndQueryAndFragment extends Urin {

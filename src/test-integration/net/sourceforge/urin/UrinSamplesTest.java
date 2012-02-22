@@ -17,22 +17,22 @@ import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Urin.urin;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static net.sourceforge.urin.UrinAssert.assertAsStringAndParse;
+import static net.sourceforge.urin.UrinAssert.assertAsStringAsUriAndParse;
 
 public class UrinSamplesTest {
     @Test
     public void canMakeAUrinWithEmptyPath() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
-        assertThat(urin(scheme, hierarchicalPart(authority)).asString(), equalTo(scheme.asString() + "://" + authority.asString()));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString(), urin(scheme, hierarchicalPart(authority)));
     }
 
     @Test
     public void canMakeAUrinWithAuthorityAndPathToRoot() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
-        assertThat(urin(scheme, hierarchicalPart(authority, Segments.segments())).asString(), equalTo(scheme.asString() + "://" + authority.asString() + "/"));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/", urin(scheme, hierarchicalPart(authority, Segments.segments())));
     }
 
     @Test
@@ -40,12 +40,12 @@ public class UrinSamplesTest {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
         Segment segment = aSegment();
-        assertThat(urin(scheme, hierarchicalPart(authority, Segments.segments(segment))).asString(), equalTo(scheme.asString() + "://" + authority.asString() + "/" + segment.asString()));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), urin(scheme, hierarchicalPart(authority, Segments.segments(segment))));
     }
 
     @Test
     public void canMakeAUrinWithPathToRoot() throws Exception {
         Scheme scheme = aScheme();
-        assertThat(urin(scheme, hierarchicalPart(Segments.segments())).asString(), equalTo(scheme.asString() + ":/"));
+        assertAsStringAsUriAndParse(scheme.asString() + ":/", urin(scheme, hierarchicalPart(Segments.segments())));
     }
 }
