@@ -181,7 +181,7 @@ public abstract class RelativeReference extends UrinReference {
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment);
 
     static boolean isValidRelativeReferenceString(final String uriReferenceString) {
-        return true;
+        return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
     }
 
     private static final class RelativeReferenceNoAuthority extends RelativeReference {

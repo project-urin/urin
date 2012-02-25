@@ -10,12 +10,14 @@
 
 package net.sourceforge.urin;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.sourceforge.urin.RelativeReferenceBuilder.aRelativeReference;
 import static net.sourceforge.urin.UrinBuilder.aUrin;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.fail;
 
 public class UrinReferenceTest {
 
@@ -29,5 +31,15 @@ public class UrinReferenceTest {
     public void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
         RelativeReference relativeReference = aRelativeReference();
         assertThat(UrinReference.parse(relativeReference.asString()), equalTo((UrinReference) relativeReference));
+    }
+
+    @Test
+    @Ignore
+    public void anInvalidStringThrowsAParseException() throws Exception {
+        try {
+            UrinReference.parse("////");
+            fail("Should have thrown a ParseException");
+        } catch (ParseException e) {
+        }
     }
 }

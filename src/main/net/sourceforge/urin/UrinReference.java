@@ -28,7 +28,7 @@ public abstract class UrinReference {
         } else if (RelativeReference.isValidRelativeReferenceString(uriReferenceString)) {
             return RelativeReference.parse(uriReferenceString);
         }
-        return null;
+        throw new ParseException("Given String is neither a valid URI nor a valid relative reference [" + uriReferenceString + "].");
     }
 
     public static UrinReference parse(final URI uriReference) throws ParseException {
