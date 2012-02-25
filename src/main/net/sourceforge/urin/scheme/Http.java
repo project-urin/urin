@@ -25,7 +25,7 @@ import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Urin.urin;
 
-public class Http {
+public final class Http {
 
     private static final Scheme HTTP_SCHEME = scheme("http");
     private static final Port DEFAULT_HTTP_PORT = port(80);
