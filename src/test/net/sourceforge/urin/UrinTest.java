@@ -19,6 +19,7 @@ import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Urin.parse;
 import static net.sourceforge.urin.Urin.urin;
+import static net.sourceforge.urin.UrinBuilder.aUrin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -267,4 +268,9 @@ public class UrinTest {
         assertThat(parse(scheme.asString() + ":" + hierarchicalPart.asString()), equalTo(urin(scheme, hierarchicalPart)));
     }
 
+    @Test
+    public void ResolvesAUrinToItself() throws Exception {
+        Urin urinReference = aUrin();
+        assertThat(aUrin().resolve(urinReference), equalTo(urinReference));
+    }
 }

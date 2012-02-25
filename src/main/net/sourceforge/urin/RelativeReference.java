@@ -178,12 +178,6 @@ public abstract class RelativeReference extends UrinReference {
         return parse(uri.toASCIIString());
     }
 
-    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart);
-
-    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query);
-
-    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment);
-
     static boolean isValidRelativeReferenceString(final String uriReferenceString) {
         return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
     }

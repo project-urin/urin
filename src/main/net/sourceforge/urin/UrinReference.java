@@ -34,4 +34,10 @@ public abstract class UrinReference {
     public static UrinReference parse(final URI uriReference) throws ParseException {
         return parse(uriReference.toASCIIString());
     }
+
+    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart);
+
+    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query);
+
+    abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment);
 }
