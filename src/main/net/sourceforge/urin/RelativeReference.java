@@ -174,6 +174,10 @@ public abstract class RelativeReference extends UrinReference {
         return result;
     }
 
+    public static RelativeReference parse(URI uri) throws ParseException {
+        return parse(uri.toASCIIString());
+    }
+
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart);
 
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query);

@@ -30,7 +30,7 @@ public final class Query extends PercentEncodedUnaryValue {
         return new Query(query);
     }
 
-    public static Query parse(final String queryString) {
+    static Query parse(final String queryString) {
         return query(PERCENT_DECODER.decode(queryString));
     }
 }
