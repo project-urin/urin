@@ -103,20 +103,8 @@ public abstract class RelativeReference extends UrinReference {
         final RelativeReference result;
         final String authorityString = matcher.group(3);
         final String path = matcher.group(4);
-//        HierarchicalPart hierarchicalPart;
-//        if (authorityString == null) {
-//            if (path == null || "".equals(path)) {
-//                hierarchicalPart = hierarchicalPart();
-//            } else {
-//                hierarchicalPart = hierarchicalPart(!path.startsWith("/") ? Segments.parseRootlessSegments(path) : Segments.parseSegments(path));
-//            }
-//        } else {
-//            Authority authority = Authority.parse(authorityString);
-//            hierarchicalPart = (path == null || "".equals(path)) ? hierarchicalPart(authority) : hierarchicalPart(authority, Segments.parseSegments(path));
-//        }
-//        return hierarchicalPart;
         if (authorityString == null) {
-            if (path == null) {
+            if (path == null || "".equals(path)) {
                 if (queryString == null) {
                     if (fragment == null) {
                         result = relativeReference();
@@ -132,7 +120,7 @@ public abstract class RelativeReference extends UrinReference {
                     }
                 }
             } else {
-                final Segments segments = Segments.parseRootlessSegments(path);
+                final Segments segments = !path.startsWith("/") ? Segments.parseRootlessSegments(path) : Segments.parseSegments(path);
                 if (queryString == null) {
                     if (fragment == null) {
                         result = relativeReference(segments);
@@ -150,7 +138,7 @@ public abstract class RelativeReference extends UrinReference {
             }
         } else {
             final Authority authority = Authority.parse(authorityString);
-            if (path == null) {
+            if (path == null || "".equals(path)) {
                 if (queryString == null) {
                     if (fragment == null) {
                         result = relativeReference(authority);
