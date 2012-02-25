@@ -14,14 +14,19 @@ import com.google.common.base.Supplier;
 
 import java.util.Random;
 
+import static java.lang.System.arraycopy;
+
 public final class RandomSupplierSwitcher<T> implements Supplier<T> {
 
     private static final Random RANDOM = new Random();
 
     private final Supplier<T>[] suppliers;
 
-    public RandomSupplierSwitcher(final Supplier<T>... suppliers) {
-        this.suppliers = suppliers;
+    public RandomSupplierSwitcher(final Supplier<T> supplier, final Supplier<T>... suppliers) {
+        //noinspection unchecked
+        this.suppliers = new Supplier[suppliers.length + 1];
+        this.suppliers[0] = supplier;
+        arraycopy(suppliers, 0, this.suppliers, 1, suppliers.length);
     }
 
     public T get() {

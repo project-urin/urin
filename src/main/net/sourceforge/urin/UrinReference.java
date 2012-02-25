@@ -25,6 +25,8 @@ public abstract class UrinReference {
     public static UrinReference parse(final String uriReferenceString) throws ParseException {
         if (Urin.isValidUrinString(uriReferenceString)) {
             return Urin.parse(uriReferenceString);
+        } else if (RelativeReference.isValidRelativeReferenceString(uriReferenceString)) {
+            return RelativeReference.parse(uriReferenceString);
         }
         return null;
     }

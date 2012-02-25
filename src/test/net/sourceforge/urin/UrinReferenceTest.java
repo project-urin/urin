@@ -12,6 +12,7 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import static net.sourceforge.urin.RelativeReferenceBuilder.aRelativeReference;
 import static net.sourceforge.urin.UrinBuilder.aUrin;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -22,5 +23,11 @@ public class UrinReferenceTest {
     public void aUriAsStringParsesToAUri() throws Exception {
         Urin urin = aUrin();
         assertThat(UrinReference.parse(urin.asString()), equalTo((UrinReference) urin));
+    }
+
+    @Test
+    public void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
+        RelativeReference relativeReference = aRelativeReference();
+        assertThat(UrinReference.parse(relativeReference.asString()), equalTo((UrinReference) relativeReference));
     }
 }
