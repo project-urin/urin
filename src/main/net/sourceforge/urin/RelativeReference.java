@@ -16,7 +16,7 @@ import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_P
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 import static net.sourceforge.urin.Urin.urin;
 
-public abstract class RelativeReference {
+public abstract class RelativeReference extends UrinReference {
 
     private RelativeReference() {
     }

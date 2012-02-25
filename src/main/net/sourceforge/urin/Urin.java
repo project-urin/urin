@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Urin {
+public abstract class Urin extends UrinReference {
 
     private static final Pattern URI_REFERENCE_PATTERN = Pattern.compile("^(([^:/?#]+):)?((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
@@ -22,8 +22,7 @@ public abstract class Urin {
         // deliberately empty
     }
 
-    public abstract String asString();
-
+    @Override
     public URI asUri() {
         return URI.create(asString());
     }
