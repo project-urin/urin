@@ -10,10 +10,10 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
 import static net.sourceforge.urin.MoreRandomStringUtils.*;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
@@ -23,11 +23,11 @@ import static net.sourceforge.urin.PercentEncoder.ENCODE_EVERYTHING;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
 
 public class PercentEncodableTest {
 
-    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(UNRESERVED);
+    private static final PercentEncoder RESERVED_PERCENT_ENCODER = new PercentEncoder(UNRESERVED);
+    private static final PercentEncoder EVERYTHING_PERCENT_ENCODER = new PercentEncoder(NO_CHARACTERS);
 
     @Test
     public void twoPercentEncodableStringValuesOfTheSameClassWithTheSameValueAreEqual() throws Exception {
@@ -51,7 +51,7 @@ public class PercentEncodableTest {
     @Test
     public void encodesPercentEncodableStringValueCorrectly() throws Exception {
         String aString = aString();
-        assertThat(percentEncodableString(aString).encode(PERCENT_ENCODER), equalTo(PERCENT_ENCODER.encode(aString)));
+        assertThat(percentEncodableString(aString).encode(RESERVED_PERCENT_ENCODER), equalTo(RESERVED_PERCENT_ENCODER.encode(aString)));
     }
 
     @Test
@@ -100,12 +100,12 @@ public class PercentEncodableTest {
 
     @Test
     public void encodesPercentEncodableDelimitedValueWithNoSubDelimitersCorrectly() throws Exception {
-        assertThat(percentEncodableDelimitedValue('&', percentEncodableString(CharacterSets.UNRESERVED), percentEncodableString(CharacterSets.UNRESERVED)).encode(PERCENT_ENCODER), equalTo(CharacterSets.UNRESERVED + "&" + CharacterSets.UNRESERVED));
+        assertThat(percentEncodableDelimitedValue('&', percentEncodableString(CharacterSets.UNRESERVED), percentEncodableString(CharacterSets.UNRESERVED)).encode(RESERVED_PERCENT_ENCODER), equalTo(CharacterSets.UNRESERVED + "&" + CharacterSets.UNRESERVED));
     }
 
     @Test
     public void encodesPercentEncodableDelimitedValueWithSubDelimitersCorrectly() throws Exception {
-        assertThat(percentEncodableDelimitedValue('&', percentEncodableString(". ./.&."), percentEncodableString(". ./.&.")).encode(PERCENT_ENCODER), equalTo(".%20.%2F.%26." + "&" + ".%20.%2F.%26."));
+        assertThat(percentEncodableDelimitedValue('&', percentEncodableString(". ./.&."), percentEncodableString(". ./.&.")).encode(RESERVED_PERCENT_ENCODER), equalTo(".%20.%2F.%26." + "&" + ".%20.%2F.%26."));
     }
 
     @Test
@@ -175,7 +175,7 @@ public class PercentEncodableTest {
 
     @Test
     public void encodesPercentEncodableSubstitutedValueCorrectly() throws Exception {
-        assertThat(percentEncodableSubstitutedValue(' ', '+', ". .+.").encode(PERCENT_ENCODER), equalTo(".+.%2B."));
+        assertThat(percentEncodableSubstitutedValue(' ', '+', ". .+.").encode(RESERVED_PERCENT_ENCODER), equalTo(".+.%2B."));
     }
 
     @Test
@@ -201,12 +201,10 @@ public class PercentEncodableTest {
     }
 
     @Test
-    @Ignore
     public void encodesPercentEncodableSpecifiedValuesCorrectly() throws Exception {
-        fail("Needs an entirely percent encoded string to work (could contain non-percent encoded characters");
         String aString = aString();
-        assertThat(percentEncodableSpecifiedValue(aString, percentEncodableString(aString)).encode(PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(ENCODE_EVERYTHING)));
-        assertThat(percentEncodableSpecifiedValue(aStringDifferentTo(aString), percentEncodableString(aString)).encode(PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(PERCENT_ENCODER)));
+        assertThat(percentEncodableSpecifiedValue(aString, percentEncodableString(aString)).encode(EVERYTHING_PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(ENCODE_EVERYTHING)));
+        assertThat(percentEncodableSpecifiedValue(aStringDifferentTo(aString), percentEncodableString(aString)).encode(RESERVED_PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(RESERVED_PERCENT_ENCODER)));
     }
 
     @Test
