@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;
@@ -22,6 +23,7 @@ import static net.sourceforge.urin.PercentEncoder.ENCODE_EVERYTHING;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class PercentEncodableTest {
 
@@ -199,7 +201,9 @@ public class PercentEncodableTest {
     }
 
     @Test
+    @Ignore
     public void encodesPercentEncodableSpecifiedValuesCorrectly() throws Exception {
+        fail("Needs an entirely percent encoded string to work (could contain non-percent encoded characters");
         String aString = aString();
         assertThat(percentEncodableSpecifiedValue(aString, percentEncodableString(aString)).encode(PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(ENCODE_EVERYTHING)));
         assertThat(percentEncodableSpecifiedValue(aStringDifferentTo(aString), percentEncodableString(aString)).encode(PERCENT_ENCODER), equalTo(percentEncodableString(aString).encode(PERCENT_ENCODER)));
