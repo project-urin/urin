@@ -56,6 +56,26 @@ public abstract class Segments {
         return new AbsoluteSegments(segments);
     }
 
+    static Segments parseRootlessSegments(final String rawPath) {
+        return rootlessSegments(rawPath == null ? new ArrayList<Segment>() : new ArrayList<Segment>() {{
+            for (String segmentString : rawPath.split("/")) {
+                add(Segment.parse(segmentString));
+            }
+        }});
+    }
+
+    static AbsoluteSegments parseSegments(final String rawPath) {
+        return segments(new ArrayList<Segment>() {{
+            boolean isFirst = true;
+            for (String segmentString : rawPath.split("/")) {
+                if (!isFirst) {
+                    add(Segment.parse(segmentString));
+                }
+                isFirst = false;
+            }
+        }});
+    }
+
     abstract boolean firstPartIsSuppliedButIsEmpty();
 
     abstract String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria);

@@ -11,12 +11,16 @@
 package net.sourceforge.urin;
 
 import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 import static net.sourceforge.urin.Urin.urin;
 
 public abstract class RelativeReference extends UrinReference {
+
+    private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
     private RelativeReference() {
     }
@@ -89,6 +93,97 @@ public abstract class RelativeReference extends UrinReference {
 
     public static RelativeReference relativeReference(final Authority authority, final AbsoluteSegments segments, final Query query, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, segments, query, fragment);
+    }
+
+    public static RelativeReference parse(final String uriString) throws ParseException {
+        final Matcher matcher = RELATIVE_REFERENCE_PATTERN.matcher(uriString);
+        matcher.matches();
+        final String queryString = matcher.group(6);
+        final String fragment = matcher.group(8);
+        final RelativeReference result;
+        final String authorityString = matcher.group(3);
+        final String path = matcher.group(4);
+//        HierarchicalPart hierarchicalPart;
+//        if (authorityString == null) {
+//            if (path == null || "".equals(path)) {
+//                hierarchicalPart = hierarchicalPart();
+//            } else {
+//                hierarchicalPart = hierarchicalPart(!path.startsWith("/") ? Segments.parseRootlessSegments(path) : Segments.parseSegments(path));
+//            }
+//        } else {
+//            Authority authority = Authority.parse(authorityString);
+//            hierarchicalPart = (path == null || "".equals(path)) ? hierarchicalPart(authority) : hierarchicalPart(authority, Segments.parseSegments(path));
+//        }
+//        return hierarchicalPart;
+        if (authorityString == null) {
+            if (path == null) {
+                if (queryString == null) {
+                    if (fragment == null) {
+                        result = relativeReference();
+                    } else {
+                        result = relativeReference(Fragment.parse(fragment));
+                    }
+                } else {
+                    final Query query = Query.parse(queryString);
+                    if (fragment == null) {
+                        result = relativeReference(query);
+                    } else {
+                        result = relativeReference(query, Fragment.parse(fragment));
+                    }
+                }
+            } else {
+                final Segments segments = Segments.parseRootlessSegments(path);
+                if (queryString == null) {
+                    if (fragment == null) {
+                        result = relativeReference(segments);
+                    } else {
+                        result = relativeReference(segments, Fragment.parse(fragment));
+                    }
+                } else {
+                    final Query query = Query.parse(queryString);
+                    if (fragment == null) {
+                        result = relativeReference(segments, query);
+                    } else {
+                        result = relativeReference(segments, query, Fragment.parse(fragment));
+                    }
+                }
+            }
+        } else {
+            final Authority authority = Authority.parse(authorityString);
+            if (path == null) {
+                if (queryString == null) {
+                    if (fragment == null) {
+                        result = relativeReference(authority);
+                    } else {
+                        result = relativeReference(authority, Fragment.parse(fragment));
+                    }
+                } else {
+                    final Query query = Query.parse(queryString);
+                    if (fragment == null) {
+                        result = relativeReference(authority, query);
+                    } else {
+                        result = relativeReference(authority, query, Fragment.parse(fragment));
+                    }
+                }
+            } else {
+                final AbsoluteSegments segments = Segments.parseSegments(path);
+                if (queryString == null) {
+                    if (fragment == null) {
+                        result = relativeReference(authority, segments);
+                    } else {
+                        result = relativeReference(authority, segments, Fragment.parse(fragment));
+                    }
+                } else {
+                    final Query query = Query.parse(queryString);
+                    if (fragment == null) {
+                        result = relativeReference(authority, segments, query);
+                    } else {
+                        result = relativeReference(authority, segments, query, Fragment.parse(fragment));
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart);

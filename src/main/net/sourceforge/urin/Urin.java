@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public abstract class Urin extends UrinReference {
 
-    private static final Pattern URI_REFERENCE_PATTERN = Pattern.compile("^(([^:/?#]+):)?((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
+    private static final Pattern URI_PATTERN = Pattern.compile("^(([^:/?#]+):)((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
     private Urin() {
         // deliberately empty
@@ -46,7 +46,7 @@ public abstract class Urin extends UrinReference {
     }
 
     public static Urin parse(final String uriString) throws ParseException {
-        final Matcher matcher = URI_REFERENCE_PATTERN.matcher(uriString);
+        final Matcher matcher = URI_PATTERN.matcher(uriString);
         matcher.matches();
         final Scheme scheme = Scheme.parse(matcher.group(2));
         final HierarchicalPart hierarchicalPart = HierarchicalPart.parse(matcher.group(3));

@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,33 +33,13 @@ public abstract class HierarchicalPart {
             if (path == null || "".equals(path)) {
                 hierarchicalPart = hierarchicalPart();
             } else {
-                hierarchicalPart = hierarchicalPart(!path.startsWith("/") ? parseRootlessSegments(path) : parseSegments(path));
+                hierarchicalPart = hierarchicalPart(!path.startsWith("/") ? Segments.parseRootlessSegments(path) : Segments.parseSegments(path));
             }
         } else {
             Authority authority = Authority.parse(authorityString);
-            hierarchicalPart = (path == null || "".equals(path)) ? hierarchicalPart(authority) : hierarchicalPart(authority, parseSegments(path));
+            hierarchicalPart = (path == null || "".equals(path)) ? hierarchicalPart(authority) : hierarchicalPart(authority, Segments.parseSegments(path));
         }
         return hierarchicalPart;
-    }
-
-    static Segments parseRootlessSegments(final String rawPath) {
-        return Segments.rootlessSegments(rawPath == null ? new ArrayList<Segment>() : new ArrayList<Segment>() {{
-            for (String segmentString : rawPath.split("/")) {
-                add(Segment.parse(segmentString));
-            }
-        }});
-    }
-
-    static AbsoluteSegments parseSegments(final String rawPath) {
-        return Segments.segments(new ArrayList<Segment>() {{
-            boolean isFirst = true;
-            for (String segmentString : rawPath.split("/")) {
-                if (!isFirst) {
-                    add(Segment.parse(segmentString));
-                }
-                isFirst = false;
-            }
-        }});
     }
 
     abstract String asString();
