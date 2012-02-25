@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-import java.util.Random;
+import com.google.common.base.Supplier;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
@@ -19,27 +19,32 @@ import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
 
 public class HierarchicalPartBuilder {
 
-    private static final Random RANDOM = new Random();
+    @SuppressWarnings({"unchecked"})
+    private static final RandomSupplierSwitcher<HierarchicalPart> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<HierarchicalPart>(
+            new Supplier<HierarchicalPart>() {
+                public HierarchicalPart get() {
+                    return HierarchicalPart.hierarchicalPart();
+                }
+            },
+            new Supplier<HierarchicalPart>() {
+                public HierarchicalPart get() {
+                    return aHierarchicalPartWithAuthorityAndNoPath();
+                }
+            },
+            new Supplier<HierarchicalPart>() {
+                public HierarchicalPart get() {
+                    return aHierarchicalPartWithNoAuthority();
+                }
+            },
+            new Supplier<HierarchicalPart>() {
+                public HierarchicalPart get() {
+                    return aHierarchicalPartAbsoluteWithAuthority();
+                }
+            }
+    );
 
     public static HierarchicalPart aHierarchicalPart() {
-        final HierarchicalPart hierarchicalPart;
-        switch (RANDOM.nextInt(4)) {
-            case 0:
-                hierarchicalPart = HierarchicalPart.hierarchicalPart();
-                break;
-            case 1:
-                hierarchicalPart = aHierarchicalPartWithAuthorityAndNoPath();
-                break;
-            case 2:
-                hierarchicalPart = aHierarchicalPartWithNoAuthority();
-                break;
-            case 3:
-                hierarchicalPart = aHierarchicalPartAbsoluteWithAuthority();
-                break;
-            default:
-                throw new Defect("Attempted to switch on more cases than are defined");
-        }
-        return hierarchicalPart;
+        return RANDOM_SUPPLIER_SWITCHER.get();
     }
 
     public static HierarchicalPart aHierarchicalPartWithAuthorityAndNoPath() {

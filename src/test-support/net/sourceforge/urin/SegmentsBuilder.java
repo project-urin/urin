@@ -10,11 +10,27 @@
 
 package net.sourceforge.urin;
 
+import com.google.common.base.Supplier;
+
 import java.util.Random;
 
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
 public class SegmentsBuilder {
+
+    @SuppressWarnings({"unchecked"})
+    private static final RandomSupplierSwitcher<Segments> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Segments>(
+            new Supplier<Segments>() {
+                public Segments get() {
+                    return anAbsoluteSegments();
+                }
+            },
+            new Supplier<Segments>() {
+                public Segments get() {
+                    return aRootlessSegments();
+                }
+            }
+    );
     private static final Random RANDOM = new Random();
 
     public static AbsoluteSegments anAbsoluteSegments() {
@@ -36,18 +52,7 @@ public class SegmentsBuilder {
     }
 
     public static Segments aSegments() {
-        final Segments segments;
-        switch (RANDOM.nextInt(2)) {
-            case 0:
-                segments = anAbsoluteSegments();
-                break;
-            case 1:
-                segments = aRootlessSegments();
-                break;
-            default:
-                throw new Defect("Attempted to switch on more cases than are defined");
-        }
-        return segments;
+        return RANDOM_SUPPLIER_SWITCHER.get();
     }
 
 }

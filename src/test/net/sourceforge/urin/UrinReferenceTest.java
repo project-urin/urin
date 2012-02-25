@@ -10,26 +10,17 @@
 
 package net.sourceforge.urin;
 
-import java.net.URI;
+import org.junit.Test;
 
-public abstract class UrinReference {
+import static net.sourceforge.urin.UrinBuilder.aUrin;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
-    UrinReference() {
-        // deliberately empty
-    }
+public class UrinReferenceTest {
 
-    public abstract String asString();
-
-    public abstract URI asUri();
-
-    public static UrinReference parse(final String uriReferenceString) throws ParseException {
-        if (Urin.isValidUrinString(uriReferenceString)) {
-            return Urin.parse(uriReferenceString);
-        }
-        return null;
-    }
-
-    public static UrinReference parse(final URI uriReference) throws ParseException {
-        return parse(uriReference.toASCIIString());
+    @Test
+    public void aUriAsStringParsesToAUri() throws Exception {
+        Urin urin = aUrin();
+        assertThat(UrinReference.parse(urin.asString()), equalTo((UrinReference) urin));
     }
 }

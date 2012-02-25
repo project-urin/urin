@@ -90,6 +90,10 @@ public abstract class Urin extends UrinReference {
         return parse(uri.toASCIIString());
     }
 
+    static boolean isValidUrinString(final String uriReferenceString) {
+        return URI_PATTERN.matcher(uriReferenceString).matches();
+    }
+
     private static final class UrinWithHierarchicalPartAndQueryAndFragment extends Urin {
         private final Scheme scheme;
         private final HierarchicalPart hierarchicalPart;

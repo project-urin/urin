@@ -10,26 +10,21 @@
 
 package net.sourceforge.urin;
 
-import java.net.URI;
+import com.google.common.base.Supplier;
 
-public abstract class UrinReference {
+import java.util.Random;
 
-    UrinReference() {
-        // deliberately empty
+public final class RandomSupplierSwitcher<T> implements Supplier<T> {
+
+    private static final Random RANDOM = new Random();
+
+    private final Supplier<T>[] suppliers;
+
+    public RandomSupplierSwitcher(final Supplier<T>... suppliers) {
+        this.suppliers = suppliers;
     }
 
-    public abstract String asString();
-
-    public abstract URI asUri();
-
-    public static UrinReference parse(final String uriReferenceString) throws ParseException {
-        if (Urin.isValidUrinString(uriReferenceString)) {
-            return Urin.parse(uriReferenceString);
-        }
-        return null;
-    }
-
-    public static UrinReference parse(final URI uriReference) throws ParseException {
-        return parse(uriReference.toASCIIString());
+    public T get() {
+        return suppliers[RANDOM.nextInt(suppliers.length)].get();
     }
 }

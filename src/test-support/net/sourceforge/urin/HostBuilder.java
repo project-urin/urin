@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-import java.util.Random;
+import com.google.common.base.Supplier;
 
 import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
@@ -21,30 +21,37 @@ import static org.apache.commons.lang3.RandomStringUtils.random;
 
 public class HostBuilder {
 
-    private static final Random RANDOM = new Random();
+    @SuppressWarnings({"unchecked"})
+    private static final RandomSupplierSwitcher<Host> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Host>(
+            new Supplier<Host>() {
+                public Host get() {
+                    return aRegisteredName();
+                }
+            },
+            new Supplier<Host>() {
+                public Host get() {
+                    return anIpV4Address();
+                }
+            },
+            new Supplier<Host>() {
+                public Host get() {
+                    return anIpV6Address();
+                }
+            },
+            new Supplier<Host>() {
+                public Host get() {
+                    return anIpV6AddressWithTrailingIpV4Address();
+                }
+            },
+            new Supplier<Host>() {
+                public Host get() {
+                    return anIpVFutureAddress();
+                }
+            }
+    );
 
     public static Host aHost() {
-        final Host host;
-        switch (RANDOM.nextInt(5)) {
-            case 0:
-                host = aRegisteredName();
-                break;
-            case 1:
-                host = anIpV4Address();
-                break;
-            case 2:
-                host = anIpV6Address();
-                break;
-            case 3:
-                host = anIpV6AddressWithTrailingIpV4Address();
-                break;
-            case 4:
-                host = anIpVFutureAddress();
-                break;
-            default:
-                throw new Defect("Attempted to switch on more cases than are defined");
-        }
-        return host;
+        return RANDOM_SUPPLIER_SWITCHER.get();
     }
 
     public static Host aRegisteredName() {
