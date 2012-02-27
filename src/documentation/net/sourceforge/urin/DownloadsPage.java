@@ -51,7 +51,7 @@ final class DownloadsPage {
                         )
                 ),
                 paragraphTag(
-                        xhtmlText("It has no runtime dependencies, and all dependencies used in tests are in Subversion.")
+                        xhtmlText("It has no runtime dependencies, and all dependencies used in tests are in Git.")
                 )
         );
     }
