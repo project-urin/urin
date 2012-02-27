@@ -10,15 +10,14 @@
 
 package net.sourceforge.urin;
 
-import org.sourceforge.xazzle.xhtml.BodyElement;
-import org.sourceforge.xazzle.xhtml.Href;
-import org.sourceforge.xazzle.xhtml.HtmlTag;
+import org.sourceforge.xazzle.xhtml.*;
 
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.scheme.Http.http;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
+import static org.sourceforge.xazzle.xhtml.ClassName.className;
 import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Id.id;
 import static org.sourceforge.xazzle.xhtml.ImageSource.imageSource;
@@ -119,4 +118,27 @@ public class UrinPage {
                 )
         );
     }
+
+    static InlineTag variableName(String name) {
+        return codeTag(xhtmlText(name));
+    }
+
+    static InlineTag methodName(String name) {
+        return codeTag(xhtmlText(name));
+    }
+
+    static InlineTag codeSnippet(String snippet) {
+        return codeTag(xhtmlText(snippet));
+    }
+
+    static BlockLevelTag codeBlock(String someCode) {
+        return divTag(
+                xhtmlText(someCode)
+        ).withClass(className("code"));
+    }
+
+    static InlineTag simpleNameOf(final Class clazz) {
+        return codeTag(xhtmlText(clazz.getSimpleName()));
+    }
+
 }

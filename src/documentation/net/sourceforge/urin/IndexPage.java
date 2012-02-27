@@ -12,7 +12,10 @@ package net.sourceforge.urin;
 
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
+import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.UrinPage.*;
+import static net.sourceforge.urin.scheme.Http.http;
 import static net.sourceforge.urin.scheme.Http.https;
 import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
@@ -33,8 +36,28 @@ final class IndexPage {
                         xhtmlText(".  The "),
                         anchorTag(xhtmlText("javadoc")).withHref(href("javadoc/")),
                         xhtmlText(" is also available online.")
-                )
+                ),
+                h2Tag(xhtmlText("Example")),
+                paragraphTag(xhtmlText("A brief example demonstrates the generation of an HTTP URI:")),
+                codeBlock("http(\n" +
+                        "    registeredName(\"www.example.com\"), \n" +
+                        "    segments(\"music\", \"AC/DC\", \"Back in Black\")\n" +
+                        ").asString();"),
+                paragraphTag(xhtmlText("This produces the "), simpleNameOf(String.class), xhtmlText(" \""), codeSnippet(acDcString()),
+                        xhtmlText("\".  Note that the '"), codeSnippet("/"), xhtmlText("' character in \""), codeSnippet("AC/DC"),
+                        xhtmlText("\" has been encoded as \""), codeSnippet("%2F"), xhtmlText("\", and that the space characters in \""),
+                        codeSnippet("Back in Black"), xhtmlText("\" have been encoded as \""), codeSnippet("%20"), xhtmlText("\".")),
+                paragraphTag(xhtmlText("In the above example, the registered name and segments could be any Java "), simpleNameOf(String.class),
+                        xhtmlText("s we choose; the library will encode them appropriately to the part of the URI where they appear."))
         );
+    }
+
+    private static String acDcString() {
+        return
+                http(
+                        registeredName("www.example.com"),
+                        segments("music", "AC/DC", "Back in Black")
+                ).asString();
     }
 
 }
