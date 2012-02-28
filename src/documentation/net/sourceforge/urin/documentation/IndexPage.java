@@ -15,6 +15,7 @@ import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.documentation.UrinPage.aUrinPage;
 import static net.sourceforge.urin.scheme.Http.http;
 import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
@@ -25,7 +26,7 @@ final class IndexPage {
     }
 
     public static HtmlTag indexPage(final String version) {
-        return UrinPage.aUrinPage(
+        return aUrinPage(
                 h2Tag(xhtmlText("Introduction")),
                 paragraphTag(xhtmlText("Urin is a URI generator and parser for Java.  It is written to make the dynamic generation of " +
                         "URIs easier than it is with Java's built-in URI and URL classes.  It is open source, and free for you to use.")),

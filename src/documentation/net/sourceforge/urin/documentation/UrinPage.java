@@ -15,6 +15,8 @@ import org.sourceforge.xazzle.xhtml.*;
 
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Query.query;
+import static net.sourceforge.urin.RelativeReference.relativeReference;
+import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.scheme.Http.http;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
@@ -30,7 +32,7 @@ import static org.sourceforge.xazzle.xhtml.Relationship.relationship;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 import static org.sourceforge.xazzle.xhtml.XhtmlDimension.pixels;
 
-public class UrinPage {
+final class UrinPage {
     static final Host SOURCEFORGE = registeredName("sourceforge.net");
     static final Host W3_JIGSAW = registeredName("jigsaw.w3.org");
     static final Host W3_WWW = registeredName("www.w3.org");
@@ -68,11 +70,15 @@ public class UrinPage {
                                         unorderedListTag(
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Home"))
-                                                                .withHref(href("index.html"))
+                                                                .withHref(href(relativeReference(rootlessSegments("index.html")).asString()))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Downloads"))
-                                                                .withHref(href("downloads.html"))
+                                                                .withHref(href(relativeReference(rootlessSegments("downloads.html")).asString()))
+                                                ),
+                                                listItemTag(
+                                                        anchorTag(xhtmlText("Support"))
+                                                                .withHref(href(relativeReference(rootlessSegments("support.html")).asString()))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Project Site"))

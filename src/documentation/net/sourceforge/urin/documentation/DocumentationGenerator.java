@@ -21,13 +21,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+import static net.sourceforge.urin.documentation.DownloadsPage.downloadsPage;
+import static net.sourceforge.urin.documentation.IndexPage.indexPage;
+import static net.sourceforge.urin.documentation.SupportPage.supportPage;
+
 public class DocumentationGenerator {
     public static void main(String[] args) throws Exception {
         final File destination = new File(args[0]);
         final String version = versionString();
 
-        writePage(IndexPage.indexPage(version), destination, "index.html");
-        writePage(DownloadsPage.downloadsPage(version), destination, "downloads.html");
+        writePage(indexPage(version), destination, "index.html");
+        writePage(downloadsPage(version), destination, "downloads.html");
+        writePage(supportPage(), destination, "support.html");
     }
 
     private static String versionString() throws IOException {
