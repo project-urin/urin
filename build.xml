@@ -185,7 +185,7 @@
         <copy todir="${location.dist.documentation}">
             <fileset dir="${location.documentation}" excludes="**/*.html"/>
         </copy>
-        <java classname="net.sourceforge.urin.DocumentationGenerator" failonerror="true" fork="true">
+        <java classname="net.sourceforge.urin.documentation.DocumentationGenerator" failonerror="true" fork="true">
             <arg value="${location.dist}/documentation/${version}"/>
             <classpath>
                 <pathelement path="${location.classes}"/>

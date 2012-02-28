@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-package net.sourceforge.urin;
+package net.sourceforge.urin.documentation;
 
 import org.sourceforge.writexml.Document;
 import org.sourceforge.writexml.JaxpXmlWriter;
@@ -21,16 +21,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import static net.sourceforge.urin.DownloadsPage.downloadsPage;
-import static net.sourceforge.urin.IndexPage.indexPage;
-
 public class DocumentationGenerator {
     public static void main(String[] args) throws Exception {
         final File destination = new File(args[0]);
         final String version = versionString();
 
-        writePage(indexPage(version), destination, "index.html");
-        writePage(downloadsPage(version), destination, "downloads.html");
+        writePage(IndexPage.indexPage(version), destination, "index.html");
+        writePage(DownloadsPage.downloadsPage(version), destination, "downloads.html");
     }
 
     private static String versionString() throws IOException {

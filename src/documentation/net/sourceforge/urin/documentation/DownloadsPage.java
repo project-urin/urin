@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-package net.sourceforge.urin;
+package net.sourceforge.urin.documentation;
 
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
@@ -18,7 +18,6 @@ import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.Urin.urin;
-import static net.sourceforge.urin.UrinPage.aUrinPage;
 import static net.sourceforge.urin.scheme.Http.http;
 import static net.sourceforge.urin.scheme.Http.https;
 import static org.sourceforge.xazzle.xhtml.Href.href;
@@ -33,7 +32,7 @@ final class DownloadsPage {
         String standardJarUrl = https(registeredName("sourceforge.net"), segments("projects", "urin", "files", "urin", version, "urin-" + version + ".jar", "download")).asString();
         String smallJarUrl = https(registeredName("sourceforge.net"), segments("projects", "urin", "files", "urin", version, "urin-small-" + version + ".jar", "download")).asString();
         String gitUri = urin(scheme("git"), hierarchicalPart(authority(registeredName("git.code.sf.net")), segments("p", "urin", "code"))).asString();
-        return aUrinPage(
+        return UrinPage.aUrinPage(
                 h2Tag(xhtmlText("Downloads")),
                 paragraphTag(
                         xhtmlText("Urin is available under the "),
