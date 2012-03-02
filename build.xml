@@ -295,12 +295,16 @@
             <artifact:arg value="-X"/>
         </artifact:mvn>
 
-        <!-- close the staging repository, whatever that means -->
+        close the staging repository, whatever that means
         <artifact:mvn>
             <artifact:arg value="nexus:staging-close"/>
             <artifact:arg value="-s${release.directory.maven}/settings.xml"/>
             <artifact:arg value="-Dnexus.serverAuthId=${maven-staging-repository-id}"/>
             <artifact:arg value="-Dnexus.url=https://oss.sonatype.org"/>
+            <artifact:arg value="-Dnexus.repositoryId=https://oss.sonatype.org"/>
+            <artifact:arg value="-Dnexus.artifactId=urin"/>
+            <artifact:arg value="-Dnexus.groupId=net.sourceforge.urin"/>
+            <artifact:arg value="-Dnexus.automatic=true"/>
             <artifact:arg value="-X"/>
         </artifact:mvn>
 
@@ -311,6 +315,8 @@
             <artifact:arg value="-Dnexus.serverAuthId=${maven-staging-repository-id}"/>
             <artifact:arg value="-Dnexus.url=https://oss.sonatype.org"/>
             <artifact:arg value="-Dnexus.promote.autoSelectOverride=true"/>
+            <artifact:arg value="-Dnexus.automatic=true"/>
+            <artifact:arg value="-Dnexus.targetRepositoryId=releases"/>
             <artifact:arg value="-X"/>
         </artifact:mvn>
     </target>
