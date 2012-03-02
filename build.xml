@@ -266,6 +266,7 @@
             <artifact:arg value="-DpomFile=${release.directory.maven}/pom.xml"/>
             <artifact:arg value="-Dfile=${release.directory.maven}/urin-${version}.jar"/>
             <artifact:arg value="-Pgpg"/>
+            <artifact:arg value="-X"/>
         </artifact:mvn>
 
         <!-- sign and deploy the sources artifact -->
@@ -278,6 +279,7 @@
             <artifact:arg value="-Dfile=${release.directory.maven}/urin-${version}-sources.jar"/>
             <artifact:arg value="-Dclassifier=sources"/>
             <artifact:arg value="-Pgpg"/>
+            <artifact:arg value="-X"/>
         </artifact:mvn>
 
         <!-- sign and deploy the javadoc artifact -->
@@ -290,6 +292,7 @@
             <artifact:arg value="-Dfile=${release.directory.maven}/urin-${version}-javadoc.jar"/>
             <artifact:arg value="-Dclassifier=javadoc"/>
             <artifact:arg value="-Pgpg"/>
+            <artifact:arg value="-X"/>
         </artifact:mvn>
 
         <!-- close the staging repository, whatever that means -->
@@ -298,6 +301,7 @@
             <artifact:arg value="-s${release.directory.maven}/settings.xml"/>
             <artifact:arg value="-Dnexus.serverAuthId=${maven-staging-repository-id}"/>
             <artifact:arg value="-Dnexus.url=https://oss.sonatype.org"/>
+            <artifact:arg value="-X"/>
         </artifact:mvn>
 
         <!-- release the staging repository -->
@@ -307,6 +311,7 @@
             <artifact:arg value="-Dnexus.serverAuthId=${maven-staging-repository-id}"/>
             <artifact:arg value="-Dnexus.url=https://oss.sonatype.org"/>
             <artifact:arg value="-Dnexus.promote.autoSelectOverride=true"/>
+            <artifact:arg value="-X"/>
         </artifact:mvn>
     </target>
 
