@@ -295,7 +295,7 @@
             <artifact:arg value="-X"/>
         </artifact:mvn>
 
-        close the staging repository, whatever that means
+        <!--close the staging repository, whatever that means-->
         <artifact:mvn>
             <artifact:arg value="nexus:staging-close"/>
             <artifact:arg value="-s${release.directory.maven}/settings.xml"/>
