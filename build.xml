@@ -239,6 +239,7 @@
         <mkdir dir="${location.dist.binaries}"/>
 
         <antcall target="documentation"/>
+        <antcall target="pom"/>
         <jar basedir="${location.classes}" destfile="${location.dist.binaries}/urin-${version}.jar"/>
         <jar basedir="${location.optimisedclasses}"
              destfile="${location.dist.binaries}/urin-small-${version}.jar"/>
