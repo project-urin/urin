@@ -19,6 +19,7 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.documentation.UrinPage.aUrinPage;
+import static net.sourceforge.urin.documentation.UrinPage.codeBlock;
 import static net.sourceforge.urin.scheme.Http.http;
 import static net.sourceforge.urin.scheme.Http.https;
 import static org.sourceforge.xazzle.xhtml.Href.href;
@@ -38,13 +39,20 @@ final class DownloadsPage {
                 paragraphTag(
                         xhtmlText("Urin is available under the "),
                         anchorTag(xhtmlText("Apache 2 license")).withHref(href(http(registeredName("www.apache.org"), segments("licenses", "LICENSE-2.0")).asString())),
-                        xhtmlText(".  It can be downloaded in three forms:")),
+                        xhtmlText(".  It can be downloaded in four forms:")),
                 unorderedListTag(
                         listItemTag(
                                 xhtmlText("the "), anchorTag(xhtmlText("standard jar")).withHref(href(standardJarUrl)), xhtmlText(", with source code included,")
                         ),
                         listItemTag(
                                 xhtmlText("a "), anchorTag(xhtmlText("compact jar")).withHref(href(smallJarUrl)), xhtmlText(", with no source, and no debug information,")
+                        ),
+                        listItemTag(
+                                xhtmlText("as a Maven dependency from central, using "), codeBlock("<dependency>\n" +
+                                "   <groupId>net.sourceforge.urin</groupId>\n" +
+                                "   <artifactId>urin</artifactId>\n" +
+                                "   <version>" + version + "</version>\n" +
+                                "</dependency>")
                         ),
                         listItemTag(
                                 xhtmlText("or as the full source code including tests etc. using Git from "), codeTag(anchorTag(xhtmlText(gitUri)).withHref(href(gitUri))), xhtmlText(".")
