@@ -120,15 +120,7 @@ public abstract class Host {
     }
 
     public static Host ipVFutureAddress(final String version, final String address) {
-        if (version.isEmpty()) {
-            throw new IllegalArgumentException("Version must contain at least one character");
-        }
-        verify(HEX_DIGIT, version, "version");
-        if (address.isEmpty()) {
-            throw new IllegalArgumentException("Address must contain at least one character");
-        }
-        verify(ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION, address, "address");
-        return new IpVFutureAddress(version, address);
+        return IpVFutureAddress.makeIpVFutureAddress(version, address, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
     }
 
     static Host parse(final String hostString) throws ParseException {
@@ -658,9 +650,21 @@ public abstract class Host {
         private final String version;
         private final String address;
 
-        IpVFutureAddress(final String version, final String address) {
+        private IpVFutureAddress(final String version, final String address) {
             this.version = version;
             this.address = address.toLowerCase(ENGLISH);
+        }
+
+        private static <T extends Exception> IpVFutureAddress makeIpVFutureAddress(final String version, final String address, final ExceptionFactory<T> exceptionFactory) throws T {
+            if (version.isEmpty()) {
+                throw new IllegalArgumentException("Version must contain at least one character");
+            }
+            verify(HEX_DIGIT, version, "version");
+            if (address.isEmpty()) {
+                throw new IllegalArgumentException("Address must contain at least one character");
+            }
+            verify(ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION, address, "address", exceptionFactory);
+            return new IpVFutureAddress(version, address);
         }
 
         static boolean isValid(final String hostString) {
@@ -673,7 +677,7 @@ public abstract class Host {
         static IpVFutureAddress parse(final String hostString) throws ParseException {
             Matcher matcher = IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN.matcher(hostString);
             matcher.matches();
-            return new IpVFutureAddress(matcher.group(1), matcher.group(2));
+            return makeIpVFutureAddress(matcher.group(1), matcher.group(2), PARSE_EXCEPTION_EXCEPTION_FACTORY);
         }
 
         @Override

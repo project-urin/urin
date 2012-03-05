@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static net.sourceforge.urin.RelativeReferenceBuilder.aRelativeReference;
@@ -34,10 +33,9 @@ public class UrinReferenceTest {
     }
 
     @Test
-    @Ignore
     public void anInvalidStringThrowsAParseException() throws Exception {
         try {
-            UrinReference.parse("////");
+            UrinReference.parse("cache_object://");
             fail("Should have thrown a ParseException");
         } catch (ParseException e) {
         }

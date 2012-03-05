@@ -127,6 +127,17 @@ abstract class CharacterSetMembershipFunction {
             return "no character";
         }
     };
+    static final ExceptionFactory<IllegalArgumentException> ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<IllegalArgumentException>() {
+        public IllegalArgumentException makeException(final String message) {
+            return new IllegalArgumentException(message);
+        }
+    };
+
+    static final ExceptionFactory<ParseException> PARSE_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<ParseException>() {
+        public ParseException makeException(final String message) {
+            return new ParseException(message);
+        }
+    };
 
     static CharacterSetMembershipFunction singleMemberCharacterSet(final char member) {
         return new CharacterSetMembershipFunction() {
@@ -175,17 +186,21 @@ abstract class CharacterSetMembershipFunction {
     }
 
     static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName) {
-        verify(characterSetMembershipFunction, value, parameterName, 0);
+        verify(characterSetMembershipFunction, value, parameterName, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
     }
 
-    static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final int startIndex) {
-        verify(characterSetMembershipFunction, value, parameterName, startIndex, value.length());
+    static <T extends Exception> void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final ExceptionFactory<T> exceptionFactory) throws T {
+        verify(characterSetMembershipFunction, value, parameterName, 0, exceptionFactory);
     }
 
-    static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final int startIndex, final int endIndex) {
+    static <T extends Exception> void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final int startIndex, final ExceptionFactory<T> exceptionFactory) throws T {
+        verify(characterSetMembershipFunction, value, parameterName, startIndex, value.length(), exceptionFactory);
+    }
+
+    static <T extends Exception> void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final int startIndex, final int endIndex, final ExceptionFactory<T> exceptionFactory) throws T {
         for (int i = startIndex; i < endIndex; i++) {
             if (!characterSetMembershipFunction.isMember(value.charAt(i))) {
-                throw new IllegalArgumentException("Character " + (i + 1) + " must be " + characterSetMembershipFunction.describe() + " in " + parameterName + " [" + value + "]");
+                throw exceptionFactory.makeException("Character " + (i + 1) + " must be " + characterSetMembershipFunction.describe() + " in " + parameterName + " [" + value + "]");
             }
         }
     }
@@ -214,5 +229,9 @@ abstract class CharacterSetMembershipFunction {
                 return "not " + Character.toString(excludedCharacter) + " and " + CharacterSetMembershipFunction.this.describe();
             }
         };
+    }
+
+    static interface ExceptionFactory<T extends Exception> {
+        T makeException(String message);
     }
 }
