@@ -16,16 +16,39 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.DIGIT;
 import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 
+/**
+ * An non-negative integer port.
+ * Immutable and threadsafe.
+ *
+ * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2.3">RFC 3986 - Port</a>
+ */
 public final class Port extends UnaryStringValue {
 
     private Port(final String port) {
         super(port);
     }
 
+    /**
+     * Factory method for creating ports from non-negative <code>int</code>s.  Note that RFC 3986 permits any non-negative
+     * integer here, but this method limits you to integers up to <code>java.lang.Integer.MAX_VALUE</code>.  For
+     * integers greater than this, use {@link #Port(String)}.
+     *
+     * @param port a non-negative <code>int</code>.
+     * @return a <code>Port</code> representing the given <code>int</code>.
+     * @throws IllegalArgumentException if the given <code>int</code> is negative.
+     */
     public static Port port(final int port) {
         return port(Integer.toString(port));
     }
 
+    /**
+     * Factory method for creating ports from <code>String</code> representations of non-negative integers.  This means
+     * <code>String</code>s consisting solely of the digits 0-9.
+     *
+     * @param port a <code>String</code> consisting solely of the digits 0-9.
+     * @return a Port representing the given <code>String</code>.
+     * @throws IllegalArgumentException if the given <code>String</code> contains characters outside the range 0-9.
+     */
     public static Port port(final String port) {
         return port(port, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
     }

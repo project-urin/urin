@@ -32,7 +32,7 @@ public final class Hexadectet extends UnaryValue<Integer> {
     /**
      * Factory method for creating <code>Hexadectets</code>.
      *
-     * @param hexadectet an <code>int<code> in the range 0 to FFFF (0 to 65535 in decimal).
+     * @param hexadectet an <code>int</code> in the range 0 to FFFF (0 to 65535 in decimal).
      * @return a <code>Hexadectet</code> representing the given <code>int</code>.
      * @throws IllegalArgumentException if the given <code>int</code> is outside the range 0 to FFFF.
      */
