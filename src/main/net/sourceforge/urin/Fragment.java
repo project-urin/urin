@@ -31,7 +31,7 @@ public final class Fragment extends PercentEncodedUnaryValue {
      * Factory method for creating <code>Fragment</code>s.
      *
      * @param fragment any <code>String</code> to represent as a <code>Fragment</code>.
-     * @return a <code>Fragment</code> representing the given String.
+     * @return a <code>Fragment</code> representing the given <code>String</code>.
      */
     public static Fragment fragment(final String fragment) {
         return new Fragment(fragment);
