@@ -127,17 +127,6 @@ abstract class CharacterSetMembershipFunction {
             return "no character";
         }
     };
-    static final ExceptionFactory<IllegalArgumentException> ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<IllegalArgumentException>() {
-        public IllegalArgumentException makeException(final String message) {
-            return new IllegalArgumentException(message);
-        }
-    };
-
-    static final ExceptionFactory<ParseException> PARSE_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<ParseException>() {
-        public ParseException makeException(final String message) {
-            return new ParseException(message);
-        }
-    };
 
     static CharacterSetMembershipFunction singleMemberCharacterSet(final char member) {
         return new CharacterSetMembershipFunction() {
@@ -186,7 +175,7 @@ abstract class CharacterSetMembershipFunction {
     }
 
     static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName) {
-        verify(characterSetMembershipFunction, value, parameterName, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+        verify(characterSetMembershipFunction, value, parameterName, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
     }
 
     static <T extends Exception> void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final ExceptionFactory<T> exceptionFactory) throws T {
@@ -231,7 +220,4 @@ abstract class CharacterSetMembershipFunction {
         };
     }
 
-    static interface ExceptionFactory<T extends Exception> {
-        T makeException(String message);
-    }
 }

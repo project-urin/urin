@@ -74,7 +74,7 @@ public class OctetTest {
             Octet.parse("-1");
             fail("Should have thrown ParseException");
         } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Invalid Octet String [-1]"));
+            assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [-1]"));
         }
         try {
             //noinspection NullableProblems

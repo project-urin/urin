@@ -79,14 +79,14 @@ public class HexadectetTest {
             Hexadectet.parse(minusOneHexAsString);
             fail("Should have thrown ParseException");
         } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Invalid Hexadectet String [" + minusOneHexAsString + "]"));
+            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [-0x1]"));
         }
         String tenThousandHexAsString = Integer.toString(0x10000, 16);
         try {
             Hexadectet.parse(tenThousandHexAsString);
             fail("Should have thrown ParseException");
         } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Invalid Hexadectet String [" + tenThousandHexAsString + "]"));
+            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [0x10000]"));
         }
     }
 }

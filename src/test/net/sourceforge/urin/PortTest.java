@@ -109,7 +109,7 @@ public class PortTest {
             Port.parse("-123");
             fail("Expected a ParseException to be thrown");
         } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Port -123 is not valid; must be 0-9"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [-123]"));
         }
     }
 
@@ -124,19 +124,19 @@ public class PortTest {
             parse("a");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Port a is not valid; must be 0-9"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [a]"));
         }
         try {
             parse("/");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Port / is not valid; must be 0-9"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [/]"));
         }
         try {
             parse(":");
             fail("Expected an IllegalArgumentException to be thrown");
         } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Port : is not valid; must be 0-9"));
+            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [:]"));
         }
     }
 

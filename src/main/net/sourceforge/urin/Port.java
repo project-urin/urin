@@ -13,6 +13,8 @@ package net.sourceforge.urin;
 import java.math.BigInteger;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.DIGIT;
+import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
+import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 
 public final class Port extends UnaryStringValue {
 
@@ -25,19 +27,19 @@ public final class Port extends UnaryStringValue {
     }
 
     public static Port port(final String port) {
+        return port(port, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+    }
+
+    private static <T extends Exception> Port port(final String port, final ExceptionFactory<T> exceptionFactory) throws T {
         for (int i = 0; i < port.length(); i++) {
             if (!DIGIT.isMember(port.charAt(i))) {
-                throw new IllegalArgumentException("Character " + (i + 1) + " must be " + DIGIT.describe() + " in port [" + port + "]");
+                throw exceptionFactory.makeException("Character " + (i + 1) + " must be " + DIGIT.describe() + " in port [" + port + "]");
             }
         }
         return new Port(port.isEmpty() ? port : new BigInteger(port).toString());
     }
 
     static Port parse(final String port) throws ParseException {
-        if (!DIGIT.areMembers(port)) {
-            throw new ParseException("Port " + port + " is not valid; must be " + DIGIT.describe());
-        } else {
-            return port(port);
-        }
+        return port(port, PARSE_EXCEPTION_EXCEPTION_FACTORY);
     }
 }

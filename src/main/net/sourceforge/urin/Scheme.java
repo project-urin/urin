@@ -29,12 +29,12 @@ public final class Scheme extends UnaryStringValue {
     }
 
     public static Scheme scheme(final String name) {
-        verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+        verify(name, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
         return new Scheme(name.toLowerCase(ENGLISH));
     }
 
     static Scheme parse(final String name) throws ParseException {
-        verify(name, PARSE_EXCEPTION_EXCEPTION_FACTORY);
+        verify(name, ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY);
         return scheme(name);
     }
 

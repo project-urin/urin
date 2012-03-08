@@ -12,6 +12,9 @@ package net.sourceforge.urin;
 
 import java.util.Locale;
 
+import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
+import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
+
 public final class Hexadectet extends UnaryValue<Integer> {
 
     private static final Locale NO_LOCALISATION = null;
@@ -20,9 +23,13 @@ public final class Hexadectet extends UnaryValue<Integer> {
     private final boolean isElidable;
 
     public static Hexadectet hexadectet(final int hexadectet) {
+        return hexadectet(hexadectet, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+    }
+
+    private static <T extends Exception> Hexadectet hexadectet(final int hexadectet, final ExceptionFactory<T> exceptionFactory) throws T {
         if (hexadectet < 0x0 || hexadectet > 0xFFFF) {
             String absoluteHexValue = Integer.toHexString(Math.abs(hexadectet));
-            throw new IllegalArgumentException("Argument must be in the range 0x0-0xFFFF but was [" + (hexadectet >= 0 ? "" : "-") + "0x" + absoluteHexValue + "]");
+            throw exceptionFactory.makeException("Argument must be in the range 0x0-0xFFFF but was [" + (hexadectet >= 0 ? "" : "-") + "0x" + absoluteHexValue + "]");
         }
         return new Hexadectet(hexadectet, hexadectet == 0);
     }
@@ -34,11 +41,7 @@ public final class Hexadectet extends UnaryValue<Integer> {
         } catch (NumberFormatException e) {
             throw new ParseException("Invalid Hexadectet String [" + hexadectetString + "]", e);
         }
-        if (hexadectetInt < 0x0 || hexadectetInt > 0xFFFF) {
-            throw new ParseException("Invalid Hexadectet String [" + hexadectetString + "]");
-        } else {
-            return hexadectet(hexadectetInt);
-        }
+        return hexadectet(hexadectetInt, PARSE_EXCEPTION_EXCEPTION_FACTORY);
     }
 
     static boolean isValid(final String octetString) {

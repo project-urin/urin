@@ -10,6 +10,9 @@
 
 package net.sourceforge.urin;
 
+import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
+import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
+
 public final class Octet extends UnaryStringValue {
 
     private Octet(final String octet) {
@@ -17,8 +20,12 @@ public final class Octet extends UnaryStringValue {
     }
 
     public static Octet octet(final int octet) {
+        return octet(octet, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+    }
+
+    private static <T extends Exception> Octet octet(final int octet, final ExceptionFactory<T> exceptionFactory) throws T {
         if (octet < 0 || octet > 255) {
-            throw new IllegalArgumentException("Argument must be in the range 0-255 but was [" + octet + "]");
+            throw exceptionFactory.makeException("Argument must be in the range 0-255 but was [" + octet + "]");
         }
         return new Octet(Integer.toString(octet));
     }
@@ -34,10 +41,12 @@ public final class Octet extends UnaryStringValue {
     }
 
     static Octet parse(final String octetString) throws ParseException {
-        if (isValid(octetString)) {
-            return new Octet(octetString);
-        } else {
-            throw new ParseException("Invalid Octet String [" + octetString + "]");
+        final int octetInt;
+        try {
+            octetInt = Integer.parseInt(octetString);
+        } catch (NumberFormatException e) {
+            throw new ParseException("Invalid Octet String [" + octetString + "]", e);
         }
+        return octet(octetInt, PARSE_EXCEPTION_EXCEPTION_FACTORY);
     }
 }

@@ -17,6 +17,8 @@ import java.util.regex.Pattern;
 import static java.util.Arrays.asList;
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
+import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
+import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
 import static net.sourceforge.urin.Octet.octet;
@@ -657,11 +659,11 @@ public abstract class Host {
 
         private static <T extends Exception> IpVFutureAddress makeIpVFutureAddress(final String version, final String address, final ExceptionFactory<T> exceptionFactory) throws T {
             if (version.isEmpty()) {
-                throw new IllegalArgumentException("Version must contain at least one character");
+                throw exceptionFactory.makeException("Version must contain at least one character");
             }
             verify(HEX_DIGIT, version, "version");
             if (address.isEmpty()) {
-                throw new IllegalArgumentException("Address must contain at least one character");
+                throw exceptionFactory.makeException("Address must contain at least one character");
             }
             verify(ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION, address, "address", exceptionFactory);
             return new IpVFutureAddress(version, address);
