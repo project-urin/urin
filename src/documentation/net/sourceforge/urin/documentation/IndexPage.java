@@ -15,8 +15,8 @@ import org.sourceforge.xazzle.xhtml.HtmlTag;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.documentation.UrinPage.aUrinPage;
+import static net.sourceforge.urin.documentation.UrinPage.standardJarUrin;
 import static net.sourceforge.urin.scheme.Http.http;
-import static net.sourceforge.urin.scheme.Http.https;
 import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
@@ -34,7 +34,7 @@ final class IndexPage {
                         xhtmlText(".  It is open source, and free for you to use.")),
                 paragraphTag(
                         xhtmlText("The latest version of Urin available for download is "),
-                        anchorTag(xhtmlText(version)).withHref(href(https(UrinPage.SOURCEFORGE, segments("projects", "urin", "files", "latest")).asString())),
+                        anchorTag(xhtmlText(version)).withHref(href(standardJarUrin(version).asString())),
                         xhtmlText(".  The "),
                         anchorTag(xhtmlText("javadoc")).withHref(href("javadoc/")),
                         xhtmlText(" is also available online.")

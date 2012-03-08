@@ -11,6 +11,7 @@
 package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.Host;
+import net.sourceforge.urin.Urin;
 import org.sourceforge.xazzle.xhtml.*;
 
 import static net.sourceforge.urin.Host.registeredName;
@@ -19,6 +20,7 @@ import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.Segments.rootlessSegments;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.Http.https;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
 import static org.sourceforge.xazzle.xhtml.ClassName.className;
 import static org.sourceforge.xazzle.xhtml.Href.href;
@@ -148,4 +150,7 @@ final class UrinPage {
         return codeTag(xhtmlText(clazz.getSimpleName()));
     }
 
+    static Urin standardJarUrin(final String version) {
+        return https(registeredName("sourceforge.net"), segments("projects", "urin", "files", "urin", version, "urin-" + version + ".jar", "download"));
+    }
 }
