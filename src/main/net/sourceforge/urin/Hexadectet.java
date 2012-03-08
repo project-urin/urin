@@ -15,13 +15,26 @@ import java.util.Locale;
 import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 
+/**
+ * An integer in the range 0 to FFFF (0 to 65535 in decimal).
+ */
 public final class Hexadectet extends UnaryValue<Integer> {
 
-    private static final Locale NO_LOCALISATION = null;
+    /**
+     * A Hexadectet representing 0.
+     */
     public static final Hexadectet ZERO = hexadectet(0x0);
+    private static final Locale NO_LOCALISATION = null;
 
     private final boolean isElidable;
 
+    /**
+     * Sole factory method for creating Hexadectets.
+     *
+     * @param hexadectet an int in the range 0 to FFFF (0 to 65535 in decimal).
+     * @return a Hexadectet representing the given int.
+     * @throws IllegalArgumentException if the given int is outside the range 0 to FFFF.
+     */
     public static Hexadectet hexadectet(final int hexadectet) {
         return hexadectet(hexadectet, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
     }
