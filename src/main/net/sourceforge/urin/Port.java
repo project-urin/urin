@@ -43,9 +43,9 @@ public final class Port extends UnaryStringValue {
 
     /**
      * Factory method for creating ports from <code>String</code> representations of non-negative integers.  This means
-     * <code>String</code>s consisting solely of the digits 0-9.
+     * <code>String</code>s consisting solely of digits in the range 0-9.
      *
-     * @param port a <code>String</code> consisting solely of the digits 0-9.
+     * @param port a <code>String</code> consisting solely of digits in the range 0-9.
      * @return a Port representing the given <code>String</code>.
      * @throws IllegalArgumentException if the given <code>String</code> contains characters outside the range 0-9.
      */
