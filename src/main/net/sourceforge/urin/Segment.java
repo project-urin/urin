@@ -15,12 +15,31 @@ import static net.sourceforge.urin.PercentEncodable.percentEncodableSpecifiedVal
 import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
 
+/**
+ * A segment of a URI's path.
+ * <p/>
+ * Note that the special segments "." and ".." are defined as constants.  Passing "." or ".." as an argument to the
+ * factory method {@link #segment(String)} is not equivalent, as the argument to this method is a literal String, i.e.
+ * subject to encoding where necessary.
+ *
+ * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
+ */
 public abstract class Segment extends PercentEncodedUnaryValue {
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
     private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(P_CHAR);
+    /**
+     * An empty segment
+     */
     public static final Segment EMPTY = segment("");
+
+    /**
+     * The segment ".", referring to the current location in the path name hierarchy,
+     */
     public static final Segment DOT = new Segment(percentEncodableString("."), ENCODE_NOTHING) {
     };
+    /**
+     * The segment "..", referring to the parent location in the path name hierarchy,
+     */
     public static final Segment DOT_DOT = new Segment(percentEncodableString(".."), ENCODE_NOTHING) {
     };
 
@@ -28,6 +47,12 @@ public abstract class Segment extends PercentEncodedUnaryValue {
         super(percentEncodable, percentEncoder);
     }
 
+    /**
+     * Factory method for creating <code>Segment</code>s.
+     *
+     * @param segment any <code>String</code> to represent as a <code>Segment</code>.
+     * @return a <code>Segment</code> representing the given <code>String</code>.
+     */
     public static Segment segment(final String segment) {
         return new Segment(percentEncodableSpecifiedValue(
                 "..",
