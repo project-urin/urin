@@ -13,12 +13,21 @@ package net.sourceforge.urin;
 import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 
+/**
+ * An integer in the range 0 - 255.
+ */
 public final class Octet extends UnaryStringValue {
 
     private Octet(final String octet) {
         super(octet);
     }
 
+    /**
+     * Sole factory method for creating Octets.
+     *
+     * @param octet an int in the range 0 to 255.
+     * @return an Octet representing the given int.
+     */
     public static Octet octet(final int octet) {
         return octet(octet, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
     }
