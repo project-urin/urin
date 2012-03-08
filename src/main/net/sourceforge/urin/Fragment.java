@@ -13,6 +13,11 @@ package net.sourceforge.urin;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS;
 import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 
+/**
+ * A fragment component of a URI.
+ *
+ * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.5">RFC 3986 - Fragment</a>
+ */
 public final class Fragment extends PercentEncodedUnaryValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
@@ -22,6 +27,12 @@ public final class Fragment extends PercentEncodedUnaryValue {
         super(percentEncodableString(fragment), PERCENT_ENCODER);
     }
 
+    /**
+     * Factory method for creating <code>Fragment</code>s.
+     *
+     * @param fragment any <code>String</code> to represent as a <code>Fragment</code>.
+     * @return a <code>Fragment</code> representing the given String.
+     */
     public static Fragment fragment(final String fragment) {
         return new Fragment(fragment);
     }
