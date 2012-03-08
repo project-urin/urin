@@ -25,11 +25,11 @@ public final class Octet extends UnaryStringValue {
     }
 
     /**
-     * Sole factory method for creating Octets.
+     * Factory method for creating <code>Octet</code>s.
      *
-     * @param octet an int in the range 0 to 255.
-     * @return an Octet representing the given int.
-     * @throws IllegalArgumentException if the given int is outside the range 0 to 255.
+     * @param octet an <code>int</code> in the range 0 to 255.
+     * @return an <code>Octet</code> representing the given <code>int</code>.
+     * @throws IllegalArgumentException if the given <code>int</code> is outside the range 0 to 255.
      */
     public static Octet octet(final int octet) {
         return octet(octet, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
