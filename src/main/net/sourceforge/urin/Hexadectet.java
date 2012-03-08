@@ -17,13 +17,12 @@ import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FA
 
 /**
  * An integer in the range 0 to FFFF (0 to 65535 in decimal).
- * <p/>
  * Immutable and threadsafe.
  */
 public final class Hexadectet extends UnaryValue<Integer> {
 
     /**
-     * A Hexadectet representing 0.
+     * A <code>Hexadectet</code> representing 0.
      */
     public static final Hexadectet ZERO = hexadectet(0x0);
     private static final Locale NO_LOCALISATION = null;
@@ -31,11 +30,11 @@ public final class Hexadectet extends UnaryValue<Integer> {
     private final boolean isElidable;
 
     /**
-     * Sole factory method for creating Hexadectets.
+     * Factory method for creating <code>Hexadectets</code>.
      *
-     * @param hexadectet an int in the range 0 to FFFF (0 to 65535 in decimal).
-     * @return a Hexadectet representing the given int.
-     * @throws IllegalArgumentException if the given int is outside the range 0 to FFFF.
+     * @param hexadectet an <code>int<code> in the range 0 to FFFF (0 to 65535 in decimal).
+     * @return a <code>Hexadectet</code> representing the given <code>int</code>.
+     * @throws IllegalArgumentException if the given <code>int</code> is outside the range 0 to FFFF.
      */
     public static Hexadectet hexadectet(final int hexadectet) {
         return hexadectet(hexadectet, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);

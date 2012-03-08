@@ -15,7 +15,6 @@ import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FA
 
 /**
  * An integer in the range 0 to 255.
- * <p/>
  * Immutable and threadsafe.
  */
 public final class Octet extends UnaryStringValue {
