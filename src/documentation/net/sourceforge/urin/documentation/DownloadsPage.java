@@ -31,7 +31,7 @@ final class DownloadsPage {
 
     static HtmlTag downloadsPage(final String version) {
         String standardJarUrl = standardJarUrin(version).asString();
-        String smallJarUrl = https(registeredName("sourceforge.net"), segments("projects", "urin", "files", "urin", version, "urin-small-" + version + ".jar", "download")).asString();
+        String smallJarUrl = https(registeredName("sourceforge.net"), segments("projects", "urin", "files", version, "urin-small-" + version + ".jar", "download")).asString();
         String gitUri = urin(scheme("git"), hierarchicalPart(authority(registeredName("git.code.sf.net")), segments("p", "urin", "code"))).asString();
         return aUrinPage(
                 h2Tag(xhtmlText("Downloads")),
