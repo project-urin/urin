@@ -50,7 +50,7 @@ final class UrinPage {
                                 .withRelationships(relationship("icon"))
                                 .withMimeType(mimeType("image/png"))
                                 .withHref(href("favicon-32x32.png")),
-                        metaTag(metaName("description"), metaContent("Urin is a replacement for Java's URI and URL classes.  It is free to download and use in your project.")),
+                        metaTag(metaName("description"), metaContent("Urin is a replacement for Java's URI and URL classes.  It implements RFC 3986.  It is free to download and use in your project.")),
                         scriptTag(mimeType("text/javascript"), xhtmlText("  var _gaq = _gaq || [];\n" +
                                 "  _gaq.push(['_setAccount', 'UA-16431822-5']);\n" +
                                 "  _gaq.push(['_trackPageview']);\n" +

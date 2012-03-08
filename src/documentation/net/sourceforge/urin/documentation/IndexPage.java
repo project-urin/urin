@@ -10,13 +10,13 @@
 
 package net.sourceforge.urin.documentation;
 
-import net.sourceforge.urin.scheme.Http;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.documentation.UrinPage.aUrinPage;
 import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.Http.https;
 import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
@@ -29,10 +29,12 @@ final class IndexPage {
         return aUrinPage(
                 h2Tag(xhtmlText("Introduction")),
                 paragraphTag(xhtmlText("Urin is a URI generator and parser for Java.  It is written to make the dynamic generation of " +
-                        "URIs easier than it is with Java's built-in URI and URL classes.  It is open source, and free for you to use.")),
+                        "URIs easier than it is with Java's built-in URI and URL classes, and to provide support for the latest URI standard, "),
+                        anchorTag(xhtmlText("RFC 3986")).withHref(href(http(registeredName("tools.ietf.org"), segments("html", "rfc3986")).asString())),
+                        xhtmlText(".  It is open source, and free for you to use.")),
                 paragraphTag(
                         xhtmlText("The latest version of Urin available for download is "),
-                        anchorTag(xhtmlText(version)).withHref(href(Http.https(UrinPage.SOURCEFORGE, segments("projects", "urin", "files", "latest")).asString())),
+                        anchorTag(xhtmlText(version)).withHref(href(https(UrinPage.SOURCEFORGE, segments("projects", "urin", "files", "latest")).asString())),
                         xhtmlText(".  The "),
                         anchorTag(xhtmlText("javadoc")).withHref(href("javadoc/")),
                         xhtmlText(" is also available online.")
