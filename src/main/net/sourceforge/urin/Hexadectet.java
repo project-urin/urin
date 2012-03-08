@@ -17,6 +17,8 @@ import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FA
 
 /**
  * An integer in the range 0 to FFFF (0 to 65535 in decimal).
+ * <p/>
+ * Immutable and threadsafe.
  */
 public final class Hexadectet extends UnaryValue<Integer> {
 
