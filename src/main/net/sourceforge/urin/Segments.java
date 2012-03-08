@@ -56,7 +56,7 @@ public abstract class Segments {
         return new AbsoluteSegments(segments);
     }
 
-    static Segments parseRootlessSegments(final String rawPath) {
+    static Segments parseRootlessSegments(final String rawPath) throws ParseException {
         return rootlessSegments(rawPath == null ? new ArrayList<Segment>() : new ArrayList<Segment>() {{
             for (String segmentString : rawPath.split("/")) {
                 add(Segment.parse(segmentString));
@@ -64,7 +64,7 @@ public abstract class Segments {
         }});
     }
 
-    static AbsoluteSegments parseSegments(final String rawPath) {
+    static AbsoluteSegments parseSegments(final String rawPath) throws ParseException {
         return segments(new ArrayList<Segment>() {{
             boolean isFirst = true;
             for (String segmentString : rawPath.split("/")) {

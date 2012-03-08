@@ -23,15 +23,15 @@ final class PercentDecoder {
         this.characterSetMembershipFunction = characterSetMembershipFunction;
     }
 
-    private static byte getByte(char[] source, int startIndex) throws IllegalArgumentException {
+    private static byte getByte(char[] source, int startIndex) throws IllegalArgumentException, ParseException {
         if ((source.length <= startIndex + 2) || !('%' == source[startIndex])) {
-            throw new IllegalArgumentException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]");
+            throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]");
         } else {
             return (byte) Integer.parseInt(new String(source, startIndex + 1, 2), 16);
         }
     }
 
-    String decode(String encoded) throws IllegalArgumentException {
+    String decode(String encoded) throws IllegalArgumentException, ParseException {
         StringBuilder result = new StringBuilder();
         byte[] buffer = new byte[4];
         char[] candidateChars = encoded.toCharArray();
@@ -49,7 +49,7 @@ final class PercentDecoder {
                 } else if ((buffer[0] & BINARY_1100_0000) == BINARY_1100_0000) {
                     byteCount = 2;
                 } else {
-                    throw new IllegalArgumentException("First byte of a percent encoded character must begin 0, 11, 111, or 1111, but was " + buffer[0]);
+                    throw new ParseException("First byte of a percent encoded character must begin 0, 11, 111, or 1111, but was " + buffer[0]);
                 }
                 for (int j = 1; j < byteCount; j++) {
                     buffer[j] = getByte(candidateChars, i + (3 * j));
@@ -60,7 +60,7 @@ final class PercentDecoder {
                 if (characterSetMembershipFunction.isMember(candidateChar)) {
                     result.append(candidateChar);
                 } else {
-                    throw new IllegalArgumentException("Invalid character [" + candidateChar + "] - must be " + characterSetMembershipFunction.describe());
+                    throw new ParseException("Invalid character [" + candidateChar + "] - must be " + characterSetMembershipFunction.describe());
                 }
             }
         }
@@ -71,7 +71,7 @@ final class PercentDecoder {
         try {
             decode(hostString);
             return true;
-        } catch (final IllegalArgumentException e) {
+        } catch (final ParseException e) {
             return false;
         }
     }

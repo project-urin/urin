@@ -26,7 +26,7 @@ public final class Fragment extends PercentEncodedUnaryValue {
         return new Fragment(fragment);
     }
 
-    static Fragment parse(final String fragment) {
+    static Fragment parse(final String fragment) throws ParseException {
         return new Fragment(PERCENT_DECODER.decode(fragment));
     }
 }

@@ -42,7 +42,7 @@ public abstract class Segment extends PercentEncodedUnaryValue {
         return this.value.containsColon();
     }
 
-    static Segment parse(final String encodedSegment) {
+    static Segment parse(final String encodedSegment) throws ParseException {
         if (".".equals(encodedSegment)) {
             return DOT;
         } else if ("..".equals(encodedSegment)) {

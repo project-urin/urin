@@ -34,7 +34,7 @@ public final class UserInfo extends PercentEncodedUnaryValue {
         return new UserInfo(userInfo);
     }
 
-    static UserInfo parse(final String userinfoString) {
+    static UserInfo parse(final String userinfoString) throws ParseException {
         return userInfo(PERCENT_DECODER.decode(userinfoString));
     }
 }
