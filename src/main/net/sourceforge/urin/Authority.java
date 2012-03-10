@@ -13,6 +13,13 @@ package net.sourceforge.urin;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * An authority component of a URI.
+ * <p/>
+ * An authority is made up of a host and optional user information and port.
+ *
+ * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2">RFC 3986 - Authority</a>
+ */
 public abstract class Authority {
 
     private static final Pattern AUTHORITY_PATTERN = Pattern.compile("^((.*)@)?(\\[.*\\]|[^:]*)?(:(.*))?");
@@ -22,18 +29,46 @@ public abstract class Authority {
 
     abstract String asString();
 
+    /**
+     * Factory method for creating <code>Authority</code>s with just a host.
+     *
+     * @param host any <code>Host</code>.
+     * @return an <code>Authority</code> representing the given <code>Host</code>.
+     */
     public static Authority authority(final Host host) {
         return new AuthorityWithHost(host);
     }
 
+    /**
+     * Factory method for creating <code>Authority</code>s with user information and host.
+     *
+     * @param userInfo any <code>UserInfo</code>.
+     * @param host     any <code>Host</code>.
+     * @return an <code>Authority</code> representing the given <code>UserInfo</code> and <code>Host</code>.
+     */
     public static Authority authority(final UserInfo userInfo, final Host host) {
         return new AuthorityWithUserInfoAndHost(userInfo, host);
     }
 
+    /**
+     * Factory method for creating <code>Authority</code>s with host and port.
+     *
+     * @param host any <code>Host</code>.
+     * @param port any <code>Port</code>
+     * @return an <code>Authority</code> representing the given <code>Host</code> and <code>Port</code>.
+     */
     public static Authority authority(final Host host, final Port port) {
         return new AuthorityWithHostAndPort(host, port);
     }
 
+    /**
+     * Factory method for creating <code>Authority</code>s with user information, host, and port.
+     *
+     * @param userInfo any <code>UserInfo</code>.
+     * @param host     any <code>Host</code>.
+     * @param port     any <code>Port</code>
+     * @return an <code>Authority</code> representing the given <code>UserInfo</code>, <code>Host</code> and <code>Port</code>
+     */
     public static Authority authority(final UserInfo userInfo, final Host host, final Port port) {
         return new AuthorityWithUserInfoAndHostAndPort(userInfo, host, port);
     }
