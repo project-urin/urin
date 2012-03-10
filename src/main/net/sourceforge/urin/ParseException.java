@@ -10,6 +10,9 @@
 
 package net.sourceforge.urin;
 
+/**
+ * A parse failure.
+ */
 public final class ParseException extends Exception {
     ParseException() {
     }
