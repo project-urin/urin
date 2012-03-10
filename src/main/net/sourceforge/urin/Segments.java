@@ -16,8 +16,18 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.segment;
 
+/**
+ * An ordered collection of <code>Segment</code>s.  Segments can either be absolute (starting with '/'), or rootless (not starting with '/').
+ */
 public abstract class Segments {
 
+    /**
+     * Factory method for creating rootless <code>Segments</code> from <code>String</code>s.
+     *
+     * @param firstSegment a <code>String</code> representing the first segment.
+     * @param segments     any further segments.
+     * @return a <code>Segments</code> representing the given <code>String</code>s.
+     */
     public static Segments rootlessSegments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
         segmentList.add(segment(firstSegment));
@@ -27,10 +37,22 @@ public abstract class Segments {
         return rootlessSegments(segmentList);
     }
 
+    /**
+     * Factory method for creating rootless <code>Segments</code> from <code>Segment</code>s.
+     *
+     * @param segments <code>Segment</code>s that will be represented by this <code>Segments</code>.
+     * @return a <code>Segments</code> representing the given <code>Segment</code>s.
+     */
     public static Segments rootlessSegments(final Segment... segments) {
         return rootlessSegments(asList(segments));
     }
 
+    /**
+     * Factory method for creating rootless <code>Segments</code> from an <code>Iterable</code> of <code>Segment</code>s.
+     *
+     * @param segments <code>Iterable</code> of <code>Segment</code>s that will be represented by this <code>Segments</code>.
+     * @return a <code>Segments</code> representing the given <code>Segment</code>s.
+     */
     public static Segments rootlessSegments(final Iterable<Segment> segments) {
         if (segments.iterator().hasNext()) {
             return new RootlessSegments(segments);
@@ -39,6 +61,13 @@ public abstract class Segments {
         }
     }
 
+    /**
+     * Factory method for creating <code>AbsoluteSegments</code> from <code>String</code>s.
+     *
+     * @param firstSegment a <code>String</code> representing the first segment.
+     * @param segments     any further segments.
+     * @return a <code>AbsoluteSegments</code> representing the given <code>String</code>s.
+     */
     public static AbsoluteSegments segments(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
         segmentList.add(segment(firstSegment));
@@ -48,10 +77,22 @@ public abstract class Segments {
         return segments(segmentList);
     }
 
+    /**
+     * Factory method for creating <code>AbsoluteSegments</code> from <code>Segment</code>s.
+     *
+     * @param segments <code>Segment</code>s that will be represented by this <code>AbsoluteSegments</code>.
+     * @return a <code>AbsoluteSegments</code> representing the given <code>Segment</code>s.
+     */
     public static AbsoluteSegments segments(final Segment... segments) {
         return segments(asList(segments));
     }
 
+    /**
+     * Factory method for creating <code>AbsoluteSegments</code> from an <code>Iterable</code> of <code>Segment</code>s.
+     *
+     * @param segments <code>Iterable</code> of <code>Segment</code>s that will be represented by this <code>AbsoluteSegments</code>.
+     * @return a <code>AbsoluteSegments</code> representing the given <code>Segment</code>s.
+     */
     public static AbsoluteSegments segments(final Iterable<Segment> segments) {
         return new AbsoluteSegments(segments);
     }
