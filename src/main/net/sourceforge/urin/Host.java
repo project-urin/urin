@@ -23,6 +23,17 @@ import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
 import static net.sourceforge.urin.Octet.octet;
 
+/**
+ * A host component of a URI.
+ * <p/>
+ * RFC 3986 specifies four forms of host - registered name, IP version 4 address, IP version 6 address, an a future IP version address.
+ * Note that as pointed out in the RFC, there is an overlap between what is considered a valid IP version 4 address, and what is considered
+ * a valid registered name - for example, <code>Host.registeredName("127.0.0.1")</code> renders identically in a URI to
+ * <code>ipV4Address(octet(127), octet(0), octet(0), octet(1))</code>.  In keeping with the RFC, such a registered name is considered
+ * to be an equivalent IP version 4 address.
+ *
+ * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2.2">RFC 3986 - Host</a>
+ */
 public abstract class Host {
 
     private static final CharacterSetMembershipFunction ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION = or(
@@ -52,24 +63,76 @@ public abstract class Host {
 
     abstract String asString();
 
+    /**
+     * The registered name "localhost".
+     */
     public static final Host LOCAL_HOST = registeredName("localhost");
+
+    /**
+     * The loopback address in IP v4 format, in other words 127.0.0.1
+     */
     public static final Host LOOPBACK_ADDRESS_IP_V4 = ipV4Address(octet(127), octet(0), octet(0), octet(1));
+
+    /**
+     * The loopback address in IP v6 format, in other words ::1
+     */
     public static final Host LOOPBACK_ADDRESS_IP_V6 = ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(1));
 
+    /**
+     * Factory method for creating registered name type <code>Host</code>s.
+     *
+     * @param registeredName any <code>String</code> to represent as a <code>Host</code>.
+     * @return a <code>Host</code> representing the given <code>String</code> as a registered name.
+     */
     public static Host registeredName(final String registeredName) {
+        if (IpV4Address.isValid(registeredName)) {
+            try {
+                return IpV4Address.parse(registeredName);
+            } catch (ParseException e) {
+                throw new IllegalArgumentException("Unexpectedly unable to convert registered name [" + registeredName + "] to an equivalent ipV4Address", e);
+            }
+        }
         return new RegisteredName(registeredName);
     }
 
+    /**
+     * Factory method for creating IP version 4 type <code>Host</code>s.
+     * IP version 4 <code>Host</code>s are made up of four <code>Octet</code>s.
+     *
+     * @return a <code>Host</code> representing the given <code>Octet</code>s as an IP version 4 address.
+     */
     public static Host ipV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
         return new IpV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet);
     }
 
+    /**
+     * Factory method for creating IP version 6 type <code>Host</code>s with all parts specified as <code>Hexadectet</code>s.
+     *
+     * @return a <code>Host</code> representing the given <code>Hexadectet</code>s as an IP version 6 address.
+     */
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
         return new IpV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet);
     }
 
+    /**
+     * Factory method for creating IP version 6 type <code>Host</code>s with the least significant 32 bits specified as in IP version 4 address format.
+     *
+     * @return a <code>Host</code> representing the given <code>Hexadectet</code>s and <code>Octet</code>s as an IP version 6 address.
+     */
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
         return new IpV6AddressWithTrailingIpV4Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet);
+    }
+
+    /**
+     * Factory method for creating IP version future type <code>Host</code>s.
+     *
+     * @param version a <code>String</code> consisting of at least one character, made up solely of hexadecimal digits, namely 0-9 and A-F.
+     * @param address a <code>String</code> consisting of at least one character, made up solely of characters from the Latin alphabet, the digits, and any of '-', '.', '_' , '~' , '!' , '$' , '&' , ''' , '(' , ')' , '*' , '+' , ',' , ';' , '=' , ':'.
+     * @return a <code>Host</code> representing the given <code>Hexadectet</code>s and <code>Octet</code>s as an IP version 6 address.
+     * @throws IllegalArgumentException if the given version or address are empty of contain characters outside the valid set.
+     */
+    public static Host ipVFutureAddress(final String version, final String address) {
+        return IpVFutureAddress.makeIpVFutureAddress(version, address, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
     }
 
     private static ElidableAsStringable asElidableAsStringable(final Hexadectet hexadectet) {
@@ -119,10 +182,6 @@ public abstract class Host {
         return result
                 .append(']')
                 .toString();
-    }
-
-    public static Host ipVFutureAddress(final String version, final String address) {
-        return IpVFutureAddress.makeIpVFutureAddress(version, address, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
     }
 
     static Host parse(final String hostString) throws ParseException {

@@ -20,6 +20,7 @@ import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.HostBuilder.*;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
+import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -789,6 +790,11 @@ public class HostTest {
     @Test
     public void loopbackIpV6AddressIsExpectedString() throws Exception {
         assertThat(LOOPBACK_ADDRESS_IP_V6.asString(), equalTo("[::1]"));
+    }
+
+    @Test
+    public void aRegisteredNameThatIsAValidIpV4AddressIsEqualToTheEquivalentIpV4Address() throws Exception {
+        assertThat(registeredName("127.0.0.1"), equalTo(ipV4Address(octet(127), octet(0), octet(0), octet(1))));
     }
 
     private static String aValidIpVFutureAddress() {
