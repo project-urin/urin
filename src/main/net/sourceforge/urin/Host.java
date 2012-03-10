@@ -26,7 +26,7 @@ import static net.sourceforge.urin.Octet.octet;
 /**
  * A host component of a URI.
  * <p/>
- * RFC 3986 specifies four forms of host - registered name, IP version 4 address, IP version 6 address, an a future IP version address.
+ * RFC 3986 specifies four forms of host - registered name, IP version 4 address, IP version 6 address, and a future IP version address.
  * Note that as pointed out in the RFC, there is an overlap between what is considered a valid IP version 4 address, and what is considered
  * a valid registered name - for example, <code>Host.registeredName("127.0.0.1")</code> renders identically in a URI to
  * <code>ipV4Address(octet(127), octet(0), octet(0), octet(1))</code>.  In keeping with the RFC, such a registered name is considered
