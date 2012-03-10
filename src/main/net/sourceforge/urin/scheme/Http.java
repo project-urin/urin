@@ -175,7 +175,7 @@ public final class Http {
     public static Query queryParameters(final Iterable<QueryParameter> queryParameters) {
         final List<PercentEncodable> percentEncodables = new ArrayList<PercentEncodable>();
         for (QueryParameter queryParameter : queryParameters) {
-            percentEncodables.add(PercentEncodable.percentEncodableDelimitedValue('=', percentEncodableSubstitutedValue(' ', '+', queryParameter.name), percentEncodableSubstitutedValue(' ', '+', queryParameter.value)));
+            percentEncodables.add(percentEncodableDelimitedValue('=', percentEncodableSubstitutedValue(' ', '+', queryParameter.name), percentEncodableSubstitutedValue(' ', '+', queryParameter.value)));
         }
         return query(percentEncodableDelimitedValue(';', percentEncodableDelimitedValue('&', percentEncodables)));
     }
