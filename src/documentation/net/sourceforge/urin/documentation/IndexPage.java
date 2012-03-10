@@ -29,7 +29,7 @@ final class IndexPage {
         return aUrinPage(
                 h2Tag(xhtmlText("Introduction")),
                 paragraphTag(xhtmlText("Urin is a URI generator and parser for Java.  It is written to make the dynamic generation of " +
-                        "URIs easier than it is with Java's built-in URI and URL classes, and to provide support for the latest URI standard, "),
+                        "URIs easier than it is with Java's built-in URI and URL classes, and to provide support for the current URI standard, "),
                         anchorTag(xhtmlText("RFC 3986")).withHref(href(http(registeredName("tools.ietf.org"), segments("html", "rfc3986")).asString())),
                         xhtmlText(".  It is open source, and free for you to use.")),
                 paragraphTag(
