@@ -13,6 +13,11 @@ package net.sourceforge.urin;
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
+/**
+ * A scheme component of a URI.
+ *
+ * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.1">RFC 3986 - Scheme</a>
+ */
 public final class Scheme extends UnaryStringValue {
 
     private static final CharacterSetMembershipFunction TRAILING_CHARACTER_MEMBERSHIP_FUNCTION = or(
@@ -28,6 +33,14 @@ public final class Scheme extends UnaryStringValue {
         super(name);
     }
 
+    /**
+     * Factory method for creating <code>Scheme</code>s.  Schemes must be at least one character long, and are permitted
+     * to contain any character in the Latin alphabet, any digit, and any of the characters '+', '-', and '.'.
+     *
+     * @param name a <code>String</code> containing at least one character, made up of any characters in the Latin alphabet, the digits, and the characters '+', '-', and '.'.
+     * @return a <code>Scheme</code> representing the given <code>String</code>.
+     * @throws IllegalArgumentException if the given <code>String</code> is empty or contains characters not in the Latin alphabet, the digits, or the characters '+', '-', and '.'.
+     */
     public static Scheme scheme(final String name) {
         verify(name, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
         return new Scheme(name.toLowerCase(ENGLISH));
