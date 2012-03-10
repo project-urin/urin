@@ -17,7 +17,7 @@ import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_E
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 
 /**
- * An non-negative integer port.
+ * A non-negative integer port.
  * Immutable and threadsafe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2.3">RFC 3986 - Port</a>
