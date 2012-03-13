@@ -13,7 +13,7 @@ package net.sourceforge.urin.documentation;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import static net.sourceforge.urin.Host.registeredName;
-import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.documentation.UrinPage.aUrinPage;
 import static net.sourceforge.urin.documentation.UrinPage.standardJarUrin;
 import static net.sourceforge.urin.scheme.Http.http;
@@ -30,7 +30,7 @@ final class IndexPage {
                 h2Tag(xhtmlText("Introduction")),
                 paragraphTag(xhtmlText("Urin is a URI generator and parser for Java.  It is written to make the dynamic generation of " +
                         "URIs easier than it is with Java's built-in URI and URL classes, and to provide support for the current URI standard, "),
-                        anchorTag(xhtmlText("RFC 3986")).withHref(href(http(registeredName("tools.ietf.org"), segments("html", "rfc3986")).asString())),
+                        anchorTag(xhtmlText("RFC 3986")).withHref(href(http(registeredName("tools.ietf.org"), path("html", "rfc3986")).asString())),
                         xhtmlText(".  It is open source, and free for you to use.")),
                 paragraphTag(
                         xhtmlText("The latest version of Urin available for download is "),
@@ -43,13 +43,13 @@ final class IndexPage {
                 paragraphTag(xhtmlText("A brief example demonstrates the generation of an HTTP URI:")),
                 UrinPage.codeBlock("http(\n" +
                         "    registeredName(\"www.example.com\"), \n" +
-                        "    segments(\"music\", \"AC/DC\", \"Back in Black\")\n" +
+                        "    path(\"music\", \"AC/DC\", \"Back in Black\")\n" +
                         ").asString();"),
                 paragraphTag(xhtmlText("This produces the "), UrinPage.simpleNameOf(String.class), xhtmlText(" \""), UrinPage.codeSnippet(acDcString()),
                         xhtmlText("\".  Note that the '"), UrinPage.codeSnippet("/"), xhtmlText("' character in \""), UrinPage.codeSnippet("AC/DC"),
                         xhtmlText("\" has been encoded as \""), UrinPage.codeSnippet("%2F"), xhtmlText("\", and that the space characters in \""),
                         UrinPage.codeSnippet("Back in Black"), xhtmlText("\" have been encoded as \""), UrinPage.codeSnippet("%20"), xhtmlText("\".")),
-                paragraphTag(xhtmlText("In the above example, the registered name and segments could be any Java "), UrinPage.simpleNameOf(String.class),
+                paragraphTag(xhtmlText("In the above example, the registered name and path could be any Java "), UrinPage.simpleNameOf(String.class),
                         xhtmlText("s we choose; the library will encode them appropriately to the part of the URI where they appear."))
         );
     }
@@ -58,7 +58,7 @@ final class IndexPage {
         return
                 http(
                         registeredName("www.example.com"),
-                        segments("music", "AC/DC", "Back in Black")
+                        path("music", "AC/DC", "Back in Black")
                 ).asString();
     }
 

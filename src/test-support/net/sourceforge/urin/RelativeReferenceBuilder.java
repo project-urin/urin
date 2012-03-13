@@ -14,10 +14,10 @@ import com.google.common.base.Supplier;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
+import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
-import static net.sourceforge.urin.SegmentsBuilder.aSegments;
-import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
 
 public class RelativeReferenceBuilder {
 
@@ -45,22 +45,22 @@ public class RelativeReferenceBuilder {
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aSegments());
+                    return relativeReference(aPath());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aSegments(), aFragment());
+                    return relativeReference(aPath(), aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aSegments(), aQuery());
+                    return relativeReference(aPath(), aQuery());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aSegments(), aQuery(), aFragment());
+                    return relativeReference(aPath(), aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
@@ -85,22 +85,22 @@ public class RelativeReferenceBuilder {
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), anAbsoluteSegments());
+                    return relativeReference(anAuthority(), anAbsolutePath());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), anAbsoluteSegments(), aFragment());
+                    return relativeReference(anAuthority(), anAbsolutePath(), aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), anAbsoluteSegments(), aQuery());
+                    return relativeReference(anAuthority(), anAbsolutePath(), aQuery());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), anAbsoluteSegments(), aQuery(), aFragment());
+                    return relativeReference(anAuthority(), anAbsolutePath(), aQuery(), aFragment());
                 }
             }
     );

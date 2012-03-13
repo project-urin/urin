@@ -19,6 +19,11 @@ import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
+import static net.sourceforge.urin.Path.rootlessPath;
+import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.RelativeReference.parse;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
@@ -26,12 +31,6 @@ import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
-import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
-import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
-import static net.sourceforge.urin.Segments.rootlessSegments;
-import static net.sourceforge.urin.Segments.segments;
-import static net.sourceforge.urin.SegmentsBuilder.aSegments;
-import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -52,7 +51,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithEmptyPathToStringIsCorrect() throws Exception {
-        assertThat(relativeReference().toString(), equalTo("RelativeReference{segments=EmptySegments}"));
+        assertThat(relativeReference().toString(), equalTo("RelativeReference{path=EmptyPath}"));
     }
 
     @Test
@@ -77,7 +76,7 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithEmptyPathWithQueryToStringIsCorrect() throws Exception {
         Query query = aQuery();
-        assertThat(relativeReference(query).toString(), equalTo("RelativeReference{segments=EmptySegments, query=" + query.toString() + "}"));
+        assertThat(relativeReference(query).toString(), equalTo("RelativeReference{path=EmptyPath, query=" + query.toString() + "}"));
     }
 
     @Test
@@ -113,7 +112,7 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithEmptyPathWithFragmentToStringIsCorrect() throws Exception {
         Fragment fragment = aFragment();
-        assertThat(relativeReference(fragment).toString(), equalTo("RelativeReference{segments=EmptySegments, fragment=" + fragment.toString() + "}"));
+        assertThat(relativeReference(fragment).toString(), equalTo("RelativeReference{path=EmptyPath, fragment=" + fragment.toString() + "}"));
     }
 
     @Test
@@ -159,7 +158,7 @@ public class RelativeReferenceTest {
     public void aRelativeReferenceWithEmptyPathWithQueryAndFragmentToStringIsCorrect() throws Exception {
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(query, fragment).toString(), equalTo("RelativeReference{segments=EmptySegments, query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(relativeReference(query, fragment).toString(), equalTo("RelativeReference{path=EmptyPath, query=" + query + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -182,51 +181,51 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAsStringIsCorrect() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Query query = aQuery();
-        assertThat(relativeReference(segments, query).asString(), equalTo(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString()));
-        assertThat(relativeReference(segments, query).asUri(), equalTo(URI.create(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString())));
+        assertThat(relativeReference(path, query).asString(), equalTo(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString()));
+        assertThat(relativeReference(path, query).asUri(), equalTo(URI.create(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString())));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryIsEqualToAnotherRelativeReferenceWithPathAndQuery() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Query query = aQuery();
-        assertThat(relativeReference(segments, query), equalTo(relativeReference(segments, query)));
-        assertThat(relativeReference(segments, query).hashCode(), equalTo(relativeReference(segments, query).hashCode()));
+        assertThat(relativeReference(path, query), equalTo(relativeReference(path, query)));
+        assertThat(relativeReference(path, query).hashCode(), equalTo(relativeReference(path, query).hashCode()));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
         Query query = aQuery();
-        assertThat(relativeReference(aSegments(), query), not(equalTo(relativeReference(aSegments(), query))));
+        assertThat(relativeReference(aPath(), query), not(equalTo(relativeReference(aPath(), query))));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryIsNotEqualToAnotherWithTheADifferentQuery() throws Exception {
-        Segments segments = aSegments();
-        assertThat(relativeReference(segments, aQuery()), not(equalTo(relativeReference(segments, aQuery()))));
+        Path path = aPath();
+        assertThat(relativeReference(path, aQuery()), not(equalTo(relativeReference(path, aQuery()))));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryToStringIsCorrect() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Query query = aQuery();
-        assertThat(relativeReference(segments, query).toString(), equalTo("RelativeReference{segments=" + segments.toString() + ", query=" + query.toString() + "}"));
+        assertThat(relativeReference(path, query).toString(), equalTo("RelativeReference{path=" + path.toString() + ", query=" + query.toString() + "}"));
     }
 
     @Test
     public void rejectsNullInFactoryForARelativeReferenceWithPathAndQuery() throws Exception {
-        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null path should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference((Segments) null, aQuery());
+                relativeReference((Path) null, aQuery());
             }
         });
         assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(aSegments(), (Query) null);
+                relativeReference(aPath(), (Query) null);
             }
         });
     }
@@ -234,86 +233,86 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
-        Segments relativeReferenceSegments = aSegments();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Path relativeReferencePath = aPath();
         Query relativeReferenceQuery = aQuery();
         assertThat(
-                relativeReference(relativeReferenceSegments, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery)));
+                relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
-        Segments relativeReferenceSegments = aSegments();
+        Path relativeReferencePath = aPath();
         Query relativeReferenceQuery = aQuery();
         assertThat(
-                relativeReference(relativeReferenceSegments, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery)));
+                relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
-        Segments relativeReferenceSegments = aSegments();
+        Path relativeReferencePath = aPath();
         Query relativeReferenceQuery = aQuery();
         assertThat(
-                relativeReference(relativeReferenceSegments, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery)));
+                relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentAsStringIsCorrect() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(segments, fragment).asString(), equalTo(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "#" + fragment.asString()));
-        assertThat(relativeReference(segments, fragment).asUri(), equalTo(URI.create(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "#" + fragment.asString())));
+        assertThat(relativeReference(path, fragment).asString(), equalTo(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "#" + fragment.asString()));
+        assertThat(relativeReference(path, fragment).asUri(), equalTo(URI.create(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "#" + fragment.asString())));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentIsEqualToAnotherRelativeReferenceWithPathAndFragment() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(segments, fragment), equalTo(relativeReference(segments, fragment)));
-        assertThat(relativeReference(segments, fragment).hashCode(), equalTo(relativeReference(segments, fragment).hashCode()));
+        assertThat(relativeReference(path, fragment), equalTo(relativeReference(path, fragment)));
+        assertThat(relativeReference(path, fragment).hashCode(), equalTo(relativeReference(path, fragment).hashCode()));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
         Fragment fragment = aFragment();
-        assertThat(relativeReference(aSegments(), fragment), not(equalTo(relativeReference(aSegments(), fragment))));
+        assertThat(relativeReference(aPath(), fragment), not(equalTo(relativeReference(aPath(), fragment))));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentIsNotEqualToAnotherWithTheADifferentFragment() throws Exception {
-        Segments segments = aSegments();
-        assertThat(relativeReference(segments, aFragment()), not(equalTo(relativeReference(segments, aFragment()))));
+        Path path = aPath();
+        assertThat(relativeReference(path, aFragment()), not(equalTo(relativeReference(path, aFragment()))));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentToStringIsCorrect() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(segments, fragment).toString(), equalTo("RelativeReference{segments=" + segments.toString() + ", fragment=" + fragment.toString() + "}"));
+        assertThat(relativeReference(path, fragment).toString(), equalTo("RelativeReference{path=" + path.toString() + ", fragment=" + fragment.toString() + "}"));
     }
 
     @Test
     public void rejectsNullInFactoryForARelativeReferenceWithPathAndFragment() throws Exception {
-        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null path should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference((Segments) null, aFragment());
+                relativeReference((Path) null, aFragment());
             }
         });
         assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(aSegments(), (Fragment) null);
+                relativeReference(aPath(), (Fragment) null);
             }
         });
     }
@@ -321,104 +320,104 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithPathAndFragmentResolvesSchemeToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
-        Segments relativeReferenceSegments = aSegments();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Path relativeReferencePath = aPath();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
-                relativeReference(relativeReferenceSegments, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceFragment)));
+                relativeReference(relativeReferencePath, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceFragment)));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
-        Segments relativeReferenceSegments = aSegments();
+        Path relativeReferencePath = aPath();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
-                relativeReference(relativeReferenceSegments, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceFragment)));
+                relativeReference(relativeReferencePath, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceFragment)));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
-        Segments relativeReferenceSegments = aSegments();
+        Path relativeReferencePath = aPath();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
-                relativeReference(relativeReferenceSegments, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceFragment)));
+                relativeReference(relativeReferencePath, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceFragment)));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentAsStringIsCorrect() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(segments, query, fragment).asString(), equalTo(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString() + "#" + fragment.asString()));
-        assertThat(relativeReference(segments, query, fragment).asUri(), equalTo(URI.create(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString() + "#" + fragment.asString())));
+        assertThat(relativeReference(path, query, fragment).asString(), equalTo(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString() + "#" + fragment.asString()));
+        assertThat(relativeReference(path, query, fragment).asUri(), equalTo(URI.create(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString() + "#" + fragment.asString())));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentIsEqualToAnotherRelativeReferenceWithPathAndFragment() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(segments, query, fragment), equalTo(relativeReference(segments, query, fragment)));
-        assertThat(relativeReference(segments, query, fragment).hashCode(), equalTo(relativeReference(segments, query, fragment).hashCode()));
+        assertThat(relativeReference(path, query, fragment), equalTo(relativeReference(path, query, fragment)));
+        assertThat(relativeReference(path, query, fragment).hashCode(), equalTo(relativeReference(path, query, fragment).hashCode()));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(aSegments(), query, fragment), not(equalTo(relativeReference(aSegments(), query, fragment))));
+        assertThat(relativeReference(aPath(), query, fragment), not(equalTo(relativeReference(aPath(), query, fragment))));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentIsNotEqualToAnotherWithTheADifferentQuery() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(segments, aQuery(), fragment), not(equalTo(relativeReference(segments, aQuery(), fragment))));
+        assertThat(relativeReference(path, aQuery(), fragment), not(equalTo(relativeReference(path, aQuery(), fragment))));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentIsNotEqualToAnotherWithTheADifferentFragment() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Query query = aQuery();
-        assertThat(relativeReference(segments, query, aFragment()), not(equalTo(relativeReference(segments, query, aFragment()))));
+        assertThat(relativeReference(path, query, aFragment()), not(equalTo(relativeReference(path, query, aFragment()))));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentToStringIsCorrect() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(segments, query, fragment).toString(), equalTo("RelativeReference{segments=" + segments.toString() + ", query=" + query.toString() + ", fragment=" + fragment.toString() + "}"));
+        assertThat(relativeReference(path, query, fragment).toString(), equalTo("RelativeReference{path=" + path.toString() + ", query=" + query.toString() + ", fragment=" + fragment.toString() + "}"));
     }
 
     @Test
     public void rejectsNullInFactoryForARelativeReferenceWithPathAndQueryAndFragment() throws Exception {
-        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null path should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference((Segments) null, aQuery(), aFragment());
+                relativeReference((Path) null, aQuery(), aFragment());
             }
         });
         assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(aSegments(), null, aFragment());
+                relativeReference(aPath(), null, aFragment());
             }
         });
         assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(aSegments(), aQuery(), null);
+                relativeReference(aPath(), aQuery(), null);
             }
         });
     }
@@ -426,55 +425,55 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
-        Segments relativeReferenceSegments = aSegments();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Path relativeReferencePath = aPath();
         Query relativeReferenceQuery = aQuery();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
-                relativeReference(relativeReferenceSegments, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery, relativeReferenceFragment)));
+                relativeReference(relativeReferencePath, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
-        Segments relativeReferenceSegments = aSegments();
+        Path relativeReferencePath = aPath();
         Query relativeReferenceQuery = aQuery();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
-                relativeReference(relativeReferenceSegments, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery, relativeReferenceFragment)));
+                relativeReference(relativeReferencePath, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
-        Segments relativeReferenceSegments = aSegments();
+        Path relativeReferencePath = aPath();
         Query relativeReferenceQuery = aQuery();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
-                relativeReference(relativeReferenceSegments, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments), relativeReferenceQuery, relativeReferenceFragment)));
+                relativeReference(relativeReferencePath, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
     public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(relativeReference(segments(firstSegment, secondSegment)).asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
-        assertThat(relativeReference(segments(firstSegment, secondSegment)).asUri(), equalTo(URI.create("/" + firstSegment.asString() + "/" + secondSegment.asString())));
+        assertThat(relativeReference(Path.path(firstSegment, secondSegment)).asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReference(Path.path(firstSegment, secondSegment)).asUri(), equalTo(URI.create("/" + firstSegment.asString() + "/" + secondSegment.asString())));
     }
 
     @Test
     public void aSimpleAbsolutePathPrefixesAnEmptyFirstSegmentWithADotSegment() throws Exception {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
-        assertThat(relativeReference(segments(firstSegment, secondSegment)).asString(), equalTo("/./" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReference(Path.path(firstSegment, secondSegment)).asString(), equalTo("/./" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
@@ -482,106 +481,106 @@ public class RelativeReferenceTest {
         assertThrowsNullPointerException("Null first segment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Segments segments = null;
-                relativeReference(segments);
+                Path path = null;
+                relativeReference(path);
             }
         });
     }
 
     @Test
     public void aSimpleAbsolutePathIsEqualToAnotherWithTheSamePath() throws Exception {
-        Segments segments = aSegments();
-        assertThat(relativeReference(segments), equalTo(relativeReference(segments)));
-        assertThat(relativeReference(segments).hashCode(), equalTo(relativeReference(segments).hashCode()));
+        Path path = aPath();
+        assertThat(relativeReference(path), equalTo(relativeReference(path)));
+        assertThat(relativeReference(path).hashCode(), equalTo(relativeReference(path).hashCode()));
     }
 
     @Test
     public void aSimpleAbsolutePathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(relativeReference(aSegments()), not(equalTo(relativeReference(aSegments()))));
+        assertThat(relativeReference(aPath()), not(equalTo(relativeReference(aPath()))));
     }
 
     @Test
     public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
-        Segments segments = aSegments();
-        assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
+        Path path = aPath();
+        assertThat(relativeReference(path).toString(), equalTo("RelativeReference{path=" + path + "}"));
     }
 
     @Test
     public void aSimpleRootlessPathAsStringReturnsThePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(relativeReference(rootlessSegments(firstSegment, secondSegment)).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
-        assertThat(relativeReference(rootlessSegments(firstSegment, secondSegment)).asUri(), equalTo(URI.create(firstSegment.asString() + "/" + secondSegment.asString())));
+        assertThat(relativeReference(rootlessPath(firstSegment, secondSegment)).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReference(rootlessPath(firstSegment, secondSegment)).asUri(), equalTo(URI.create(firstSegment.asString() + "/" + secondSegment.asString())));
     }
 
     @Test
     public void aSimpleRootlessPathRejectsAnEmptyFirstSegment() throws Exception {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
-        assertThat(relativeReference(rootlessSegments(firstSegment, secondSegment)).asString(), equalTo("./" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReference(rootlessPath(firstSegment, secondSegment)).asString(), equalTo("./" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
     public void aSimpleRootlessPathPrependsAColonInFirstSegmentWithDotSlash() throws Exception {
         Segment firstSegment = segment(aStringIncluding(':'));
         Segment secondSegment = aSegment();
-        assertThat(relativeReference(rootlessSegments(firstSegment, secondSegment)), equalTo(relativeReference(rootlessSegments(DOT, firstSegment, secondSegment))));
+        assertThat(relativeReference(rootlessPath(firstSegment, secondSegment)), equalTo(relativeReference(rootlessPath(DOT, firstSegment, secondSegment))));
     }
 
     @Test
     public void aSimpleRootlessPathPermitsAColonInTrailingSegments() throws Exception {
-        relativeReference(rootlessSegments(aSegment(), segment(aStringIncluding(':')))).asString();
+        relativeReference(rootlessPath(aSegment(), segment(aStringIncluding(':')))).asString();
     }
 
     @Test
     public void aSimpleRootlessPathIsEqualToAnotherWithTheSamePath() throws Exception {
-        Segments segments = aSegments();
-        assertThat(relativeReference(segments), equalTo(relativeReference(segments)));
-        assertThat(relativeReference(segments).hashCode(), equalTo(relativeReference(segments).hashCode()));
+        Path path = aPath();
+        assertThat(relativeReference(path), equalTo(relativeReference(path)));
+        assertThat(relativeReference(path).hashCode(), equalTo(relativeReference(path).hashCode()));
     }
 
     @Test
     public void aSimpleRootlessPathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(relativeReference(aSegments()), not(equalTo(relativeReference(aSegments()))));
+        assertThat(relativeReference(aPath()), not(equalTo(relativeReference(aPath()))));
     }
 
     @Test
     public void aSimpleRootlessPathToStringIsCorrect() throws Exception {
-        Segments segments = aSegments();
-        assertThat(relativeReference(segments).toString(), equalTo("RelativeReference{segments=" + segments + "}"));
+        Path path = aPath();
+        assertThat(relativeReference(path).toString(), equalTo("RelativeReference{path=" + path + "}"));
     }
 
     @Test
-    public void aRelativeReferenceWithOnlySegmentsResolvesSchemeAndAuthorityToTheBase() throws Exception {
+    public void aRelativeReferenceWithOnlyPathResolvesSchemeAndAuthorityToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
-        Segments relativeReferenceSegments = aSegments();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Path relativeReferencePath = aPath();
         assertThat(
-                relativeReference(relativeReferenceSegments).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments))));
+                relativeReference(relativeReferencePath).resolve(baseScheme, baseHierarchicalPart),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath))));
     }
 
     @Test
-    public void aRelativeReferenceWithOnlySegmentsResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
+    public void aRelativeReferenceWithOnlyPathResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
-        Segments relativeReferenceSegments = aSegments();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Path relativeReferencePath = aPath();
         Query baseQuery = aQuery();
         assertThat(
-                relativeReference(relativeReferenceSegments).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments))));
+                relativeReference(relativeReferencePath).resolve(baseScheme, baseHierarchicalPart, baseQuery),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath))));
     }
 
     @Test
-    public void aRelativeReferenceWithOnlySegmentsResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
+    public void aRelativeReferenceWithOnlyPathResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
-        Segments relativeReferenceSegments = aSegments();
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Path relativeReferencePath = aPath();
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
         assertThat(
-                relativeReference(relativeReferenceSegments).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceSegments))));
+                relativeReference(relativeReferencePath).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath))));
     }
 
     @Test
@@ -615,40 +614,40 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
-        assertThat(relativeReference(authority).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=EmptySegments}"));
+        assertThat(relativeReference(authority).toString(), equalTo("RelativeReference{authority=" + authority + ", path=EmptyPath}"));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Authority relativeReferenceAuthority = anAuthority();
         assertThat(
                 relativeReference(relativeReferenceAuthority).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()))));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Authority relativeReferenceAuthority = anAuthority();
         assertThat(
                 relativeReference(relativeReferenceAuthority).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()))));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
         Authority relativeReferenceAuthority = anAuthority();
         assertThat(
                 relativeReference(relativeReferenceAuthority).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()))));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
     }
 
     @Test
@@ -682,7 +681,7 @@ public class RelativeReferenceTest {
     public void aRelativeReferenceWithAuthorityAndQueryToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
         Query query = aQuery();
-        assertThat(relativeReference(authority, query).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=EmptySegments, query=" + query + "}"));
+        assertThat(relativeReference(authority, query).toString(), equalTo("RelativeReference{authority=" + authority + ", path=EmptyPath, query=" + query + "}"));
     }
 
     @Test
@@ -702,37 +701,37 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryResolvesSchemeToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Authority relativeReferenceAuthority = anAuthority();
         Query relativeReferenceQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceQuery)));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery)));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryResolvesSchemeAndAuthorityToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Authority relativeReferenceAuthority = anAuthority();
         Query relativeReferenceQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceQuery)));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery)));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
         Authority relativeReferenceAuthority = anAuthority();
         Query relativeReferenceQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceQuery)));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery)));
     }
 
     @Test
@@ -766,7 +765,7 @@ public class RelativeReferenceTest {
     public void aRelativeReferenceWithAuthorityAndFragmentToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(authority, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=EmptySegments, fragment=" + fragment + "}"));
+        assertThat(relativeReference(authority, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", path=EmptyPath, fragment=" + fragment + "}"));
     }
 
     @Test
@@ -787,37 +786,37 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Authority relativeReferenceAuthority = anAuthority();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceFragment)));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceFragment)));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Authority relativeReferenceAuthority = anAuthority();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceFragment)));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceFragment)));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
         Authority relativeReferenceAuthority = anAuthority();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceFragment)));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceFragment)));
     }
 
     @Test
@@ -863,7 +862,7 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(authority, query, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=EmptySegments, query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(relativeReference(authority, query, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", path=EmptyPath, query=" + query + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -891,32 +890,32 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesSchemeToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Authority relativeReferenceAuthority = anAuthority();
         Query relativeReferenceQuery = aQuery();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceQuery, relativeReferenceFragment)));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Authority relativeReferenceAuthority = anAuthority();
         Query relativeReferenceQuery = aQuery();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceQuery, relativeReferenceFragment)));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
         Authority relativeReferenceAuthority = anAuthority();
@@ -924,7 +923,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptySegments()), relativeReferenceQuery, relativeReferenceFragment)));
+                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
@@ -932,27 +931,27 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(relativeReference(authority, segments(firstSegment, secondSegment)).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
+        assertThat(relativeReference(authority, Path.path(firstSegment, secondSegment)).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathIsEqualToAnotherWithTheSameAuthorityAndPath() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
-        assertThat(relativeReference(authority, absoluteSegments), equalTo(relativeReference(authority, absoluteSegments)));
-        assertThat(relativeReference(authority, absoluteSegments).hashCode(), equalTo(relativeReference(authority, absoluteSegments).hashCode()));
+        AbsolutePath absolutePath = anAbsolutePath();
+        assertThat(relativeReference(authority, absolutePath), equalTo(relativeReference(authority, absolutePath)));
+        assertThat(relativeReference(authority, absolutePath).hashCode(), equalTo(relativeReference(authority, absolutePath).hashCode()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPath() throws Exception {
-        assertThat(relativeReference(anAuthority(), anAbsoluteSegments()), not(equalTo(relativeReference(anAuthority(), anAbsoluteSegments()))));
+        assertThat(relativeReference(anAuthority(), anAbsolutePath()), not(equalTo(relativeReference(anAuthority(), anAbsolutePath()))));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
-        assertThat(relativeReference(authority, absoluteSegments).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + "}"));
+        AbsolutePath absolutePath = anAbsolutePath();
+        assertThat(relativeReference(authority, absolutePath).toString(), equalTo("RelativeReference{authority=" + authority + ", path=" + absolutePath + "}"));
     }
 
     @Test
@@ -961,14 +960,14 @@ public class RelativeReferenceTest {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 Authority authority = null;
-                relativeReference(authority, anAbsoluteSegments());
+                relativeReference(authority, anAbsolutePath());
             }
         });
-        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null path should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                AbsoluteSegments absoluteSegments = null;
-                relativeReference(anAuthority(), absoluteSegments);
+                AbsolutePath absolutePath = null;
+                relativeReference(anAuthority(), absolutePath);
             }
         });
     }
@@ -976,31 +975,31 @@ public class RelativeReferenceTest {
     @Test
     public void makesRelativeReferenceWithAuthorityAndPathAndQuery() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Query query = aQuery();
-        assertThat(relativeReference(authority, absoluteSegments, query).asString(), equalTo("//" + authority.asString() + absoluteSegments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString()));
+        assertThat(relativeReference(authority, absolutePath, query).asString(), equalTo("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathAndQueryIsEqualToAnotherWithTheSameAuthorityAndPathAndQuery() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Query query = aQuery();
-        assertThat(relativeReference(authority, absoluteSegments, query), equalTo(relativeReference(authority, absoluteSegments, query)));
-        assertThat(relativeReference(authority, absoluteSegments, query).hashCode(), equalTo(relativeReference(authority, absoluteSegments, query).hashCode()));
+        assertThat(relativeReference(authority, absolutePath, query), equalTo(relativeReference(authority, absolutePath, query)));
+        assertThat(relativeReference(authority, absolutePath, query).hashCode(), equalTo(relativeReference(authority, absolutePath, query).hashCode()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPathAndQuery() throws Exception {
-        assertThat(relativeReference(anAuthority(), anAbsoluteSegments(), aQuery()), not(equalTo(relativeReference(anAuthority(), anAbsoluteSegments(), aQuery()))));
+        assertThat(relativeReference(anAuthority(), anAbsolutePath(), aQuery()), not(equalTo(relativeReference(anAuthority(), anAbsolutePath(), aQuery()))));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathAndQueryToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Query query = aQuery();
-        assertThat(relativeReference(authority, absoluteSegments, query).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + ", query=" + query + "}"));
+        assertThat(relativeReference(authority, absolutePath, query).toString(), equalTo("RelativeReference{authority=" + authority + ", path=" + absolutePath + ", query=" + query + "}"));
     }
 
     @Test
@@ -1008,10 +1007,10 @@ public class RelativeReferenceTest {
         assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(null, anAbsoluteSegments(), aQuery());
+                relativeReference(null, anAbsolutePath(), aQuery());
             }
         });
-        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null path should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 relativeReference(anAuthority(), null, aQuery());
@@ -1020,7 +1019,7 @@ public class RelativeReferenceTest {
         assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(anAuthority(), anAbsoluteSegments(), (Query) null);
+                relativeReference(anAuthority(), anAbsolutePath(), (Query) null);
             }
         });
     }
@@ -1028,31 +1027,31 @@ public class RelativeReferenceTest {
     @Test
     public void makesRelativeReferenceWithAuthorityAndPathAndFragment() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(authority, absoluteSegments, fragment).asString(), equalTo("//" + authority.asString() + absoluteSegments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "#" + fragment.asString()));
+        assertThat(relativeReference(authority, absolutePath, fragment).asString(), equalTo("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "#" + fragment.asString()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathAndFragmentIsEqualToAnotherWithTheSameAuthorityAndPathAndFragment() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(authority, absoluteSegments, fragment), equalTo(relativeReference(authority, absoluteSegments, fragment)));
-        assertThat(relativeReference(authority, absoluteSegments, fragment).hashCode(), equalTo(relativeReference(authority, absoluteSegments, fragment).hashCode()));
+        assertThat(relativeReference(authority, absolutePath, fragment), equalTo(relativeReference(authority, absolutePath, fragment)));
+        assertThat(relativeReference(authority, absolutePath, fragment).hashCode(), equalTo(relativeReference(authority, absolutePath, fragment).hashCode()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPathAndFragment() throws Exception {
-        assertThat(relativeReference(anAuthority(), anAbsoluteSegments(), aFragment()), not(equalTo(relativeReference(anAuthority(), anAbsoluteSegments(), aFragment()))));
+        assertThat(relativeReference(anAuthority(), anAbsolutePath(), aFragment()), not(equalTo(relativeReference(anAuthority(), anAbsolutePath(), aFragment()))));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathAndFragmentToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(authority, absoluteSegments, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + ", fragment=" + fragment + "}"));
+        assertThat(relativeReference(authority, absolutePath, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", path=" + absolutePath + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -1060,19 +1059,19 @@ public class RelativeReferenceTest {
         assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(null, anAbsoluteSegments(), aFragment());
+                relativeReference(null, anAbsolutePath(), aFragment());
             }
         });
-        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null path should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(anAuthority(), (AbsoluteSegments) null, aFragment());
+                relativeReference(anAuthority(), (AbsolutePath) null, aFragment());
             }
         });
         assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(anAuthority(), anAbsoluteSegments(), (Fragment) null);
+                relativeReference(anAuthority(), anAbsolutePath(), (Fragment) null);
             }
         });
     }
@@ -1080,34 +1079,34 @@ public class RelativeReferenceTest {
     @Test
     public void makesRelativeReferenceWithAuthorityAndPathAndQueryAndFragment() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(authority, absoluteSegments, query, fragment).asString(), equalTo("//" + authority.asString() + absoluteSegments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()));
+        assertThat(relativeReference(authority, absolutePath, query, fragment).asString(), equalTo("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathAndQueryAndFragmentIsEqualToAnotherWithTheSameAuthorityAndPathAndQueryAndFragment() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(authority, absoluteSegments, query, fragment), equalTo(relativeReference(authority, absoluteSegments, query, fragment)));
-        assertThat(relativeReference(authority, absoluteSegments, query, fragment).hashCode(), equalTo(relativeReference(authority, absoluteSegments, query, fragment).hashCode()));
+        assertThat(relativeReference(authority, absolutePath, query, fragment), equalTo(relativeReference(authority, absolutePath, query, fragment)));
+        assertThat(relativeReference(authority, absolutePath, query, fragment).hashCode(), equalTo(relativeReference(authority, absolutePath, query, fragment).hashCode()));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathIsNotEqualToAnotherWithTheADifferentAuthorityAndPathAndQueryAndFragment() throws Exception {
-        assertThat(relativeReference(anAuthority(), anAbsoluteSegments(), aQuery(), aFragment()), not(equalTo(relativeReference(anAuthority(), anAbsoluteSegments(), aQuery(), aFragment()))));
+        assertThat(relativeReference(anAuthority(), anAbsolutePath(), aQuery(), aFragment()), not(equalTo(relativeReference(anAuthority(), anAbsolutePath(), aQuery(), aFragment()))));
     }
 
     @Test
     public void aRelativeReferenceWithAuthorityAndPathAndQueryAndFragmentToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(relativeReference(authority, absoluteSegments, query, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", segments=" + absoluteSegments + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(relativeReference(authority, absolutePath, query, fragment).toString(), equalTo("RelativeReference{authority=" + authority + ", path=" + absolutePath + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -1115,10 +1114,10 @@ public class RelativeReferenceTest {
         assertThrowsNullPointerException("Null authority should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(null, anAbsoluteSegments(), aQuery(), aFragment());
+                relativeReference(null, anAbsolutePath(), aQuery(), aFragment());
             }
         });
-        assertThrowsNullPointerException("Null segments should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsNullPointerException("Null path should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 relativeReference(anAuthority(), null, aQuery(), aFragment());
@@ -1127,13 +1126,13 @@ public class RelativeReferenceTest {
         assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(anAuthority(), anAbsoluteSegments(), null, aFragment());
+                relativeReference(anAuthority(), anAbsolutePath(), null, aFragment());
             }
         });
         assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                relativeReference(anAuthority(), anAbsoluteSegments(), aQuery(), null);
+                relativeReference(anAuthority(), anAbsolutePath(), aQuery(), null);
             }
         });
     }
@@ -1164,45 +1163,45 @@ public class RelativeReferenceTest {
 
     @Test
     public void parsesARelativeReferenceWithPathAndQuery() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Query query = aQuery();
-        assertThat(parse(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString()), equalTo(relativeReference(segments, query)));
+        assertThat(parse(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString()), equalTo(relativeReference(path, query)));
     }
 
     @Test
     public void parsesARelativeReferenceWithPathAndFragment() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Fragment fragment = aFragment();
-        assertThat(parse(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "#" + fragment.asString()), equalTo(relativeReference(segments, fragment)));
+        assertThat(parse(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "#" + fragment.asString()), equalTo(relativeReference(path, fragment)));
     }
 
     @Test
     public void parsesARelativeReferenceWithPathAndQueryAndFragment() throws Exception {
-        Segments segments = aSegments();
+        Path path = aPath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(parse(segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString() + "#" + fragment.asString()), equalTo(relativeReference(segments, query, fragment)));
+        assertThat(parse(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString() + "#" + fragment.asString()), equalTo(relativeReference(path, query, fragment)));
     }
 
     @Test
     public void parsesASimpleAbsolutePath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(parse("/" + firstSegment.asString() + "/" + secondSegment.asString()), equalTo(relativeReference(segments(firstSegment, secondSegment))));
+        assertThat(parse("/" + firstSegment.asString() + "/" + secondSegment.asString()), equalTo(relativeReference(Path.path(firstSegment, secondSegment))));
     }
 
     @Test
     public void parsesASimpleAbsolutePathPrefixedWithADotSegment() throws Exception {
         Segment firstSegment = segment("");
         Segment secondSegment = aSegment();
-        assertThat(parse("/./" + firstSegment.asString() + "/" + secondSegment.asString()), equalTo(relativeReference(segments(firstSegment, secondSegment))));
+        assertThat(parse("/./" + firstSegment.asString() + "/" + secondSegment.asString()), equalTo(relativeReference(Path.path(firstSegment, secondSegment))));
     }
 
     @Test
     public void parsesASimpleRootlessPath() throws Exception {
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(parse(firstSegment.asString() + "/" + secondSegment.asString()), equalTo(relativeReference(rootlessSegments(firstSegment, secondSegment))));
+        assertThat(parse(firstSegment.asString() + "/" + secondSegment.asString()), equalTo(relativeReference(rootlessPath(firstSegment, secondSegment))));
     }
 
     @Test
@@ -1238,32 +1237,32 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         Segment firstSegment = aSegment();
         Segment secondSegment = aSegment();
-        assertThat(parse("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()), equalTo(relativeReference(authority, segments(firstSegment, secondSegment))));
+        assertThat(parse("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()), equalTo(relativeReference(authority, Path.path(firstSegment, secondSegment))));
     }
 
     @Test
     public void parsesRelativeReferenceWithAuthorityAndPathAndQuery() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Query query = aQuery();
-        assertThat(parse("//" + authority.asString() + absoluteSegments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString()), equalTo(relativeReference(authority, absoluteSegments, query)));
+        assertThat(parse("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString()), equalTo(relativeReference(authority, absolutePath, query)));
     }
 
     @Test
     public void parsesRelativeReferenceWithAuthorityAndPathAndFragment() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(parse("//" + authority.asString() + absoluteSegments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "#" + fragment.asString()), equalTo(relativeReference(authority, absoluteSegments, fragment)));
+        assertThat(parse("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "#" + fragment.asString()), equalTo(relativeReference(authority, absolutePath, fragment)));
     }
 
     @Test
     public void parsesRelativeReferenceWithAuthorityAndPathAndQueryAndFragment() throws Exception {
         Authority authority = anAuthority();
-        AbsoluteSegments absoluteSegments = anAbsoluteSegments();
+        AbsolutePath absolutePath = anAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(parse("//" + authority.asString() + absoluteSegments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()), equalTo(relativeReference(authority, absoluteSegments, query, fragment)));
+        assertThat(parse("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()), equalTo(relativeReference(authority, absolutePath, query, fragment)));
     }
 
 }

@@ -11,14 +11,14 @@
 package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.Host;
+import net.sourceforge.urin.Path;
 import net.sourceforge.urin.Urin;
 import org.sourceforge.xazzle.xhtml.*;
 
 import static net.sourceforge.urin.Host.registeredName;
+import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
-import static net.sourceforge.urin.Segments.rootlessSegments;
-import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.scheme.Http.http;
 import static net.sourceforge.urin.scheme.Http.https;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
@@ -40,7 +40,7 @@ final class UrinPage {
     static final Host W3_WWW = registeredName("www.w3.org");
 
     public static HtmlTag aUrinPage(final BodyElement... body) {
-        final Href projectSiteHref = href(http(SOURCEFORGE, segments("projects", "urin")).asString());
+        final Href projectSiteHref = href(http(SOURCEFORGE, path("projects", "urin")).asString());
         return htmlTag(
                 headTag(
                         titleTag("Urin - A Java library for making URIs"),
@@ -72,15 +72,15 @@ final class UrinPage {
                                         unorderedListTag(
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Home"))
-                                                                .withHref(href(relativeReference(rootlessSegments("index.html")).asString()))
+                                                                .withHref(href(relativeReference(Path.rootlessPath("index.html")).asString()))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Downloads"))
-                                                                .withHref(href(relativeReference(rootlessSegments("downloads.html")).asString()))
+                                                                .withHref(href(relativeReference(Path.rootlessPath("downloads.html")).asString()))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Support"))
-                                                                .withHref(href(relativeReference(rootlessSegments("support.html")).asString()))
+                                                                .withHref(href(relativeReference(Path.rootlessPath("support.html")).asString()))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Project Site"))
@@ -94,7 +94,7 @@ final class UrinPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(http(registeredName("sflogo.sourceforge.net"), segments("sflogo.php"), query("group_id=605761&type=13")).asString()),
+                                                                        imageSource(http(registeredName("sflogo.sourceforge.net"), path("sflogo.php"), query("group_id=605761&type=13")).asString()),
                                                                         alternateText("Get urin at SourceForge.net. Fast, secure and Free Open Source software downloads")
                                                                 )
                                                                         .withHeight(pixels("30"))
@@ -104,22 +104,22 @@ final class UrinPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(http(W3_JIGSAW, segments("css-validator", "images", "vcss")).asString()),
+                                                                        imageSource(http(W3_JIGSAW, path("css-validator", "images", "vcss")).asString()),
                                                                         alternateText("Valid CSS!")
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(http(W3_JIGSAW, segments("css-validator", "check", "referer")).asString()))
+                                                        ).withHref(href(http(W3_JIGSAW, path("css-validator", "check", "referer")).asString()))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(http(W3_WWW, segments("Icons", "valid-xhtml10")).asString()),
+                                                                        imageSource(http(W3_WWW, path("Icons", "valid-xhtml10")).asString()),
                                                                         alternateText("Valid XHTML 1.0 Strict")
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(http(registeredName("validator.w3.org"), segments("check"), query("uri=referer")).asString()))
+                                                        ).withHref(href(http(registeredName("validator.w3.org"), path("check"), query("uri=referer")).asString()))
                                                 )
                                         )
                                 ).withId(id("footer"))
@@ -152,6 +152,6 @@ final class UrinPage {
 
     static Urin standardJarUrin(final String version) {
         // http://sourceforge.net/projects/urin/files/0.48/urin-0.48.jar/download
-        return https(registeredName("sourceforge.net"), segments("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
+        return https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
     }
 }

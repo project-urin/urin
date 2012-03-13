@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-final class SegmentsHelper {
+final class PathHelper {
 
-    private SegmentsHelper() {
+    private PathHelper() {
         // deliberately empty
     }
 

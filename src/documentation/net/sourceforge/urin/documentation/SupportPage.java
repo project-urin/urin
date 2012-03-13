@@ -14,7 +14,7 @@ import net.sourceforge.urin.Host;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import static net.sourceforge.urin.Host.registeredName;
-import static net.sourceforge.urin.Segments.segments;
+import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.documentation.UrinPage.aUrinPage;
 import static net.sourceforge.urin.scheme.Http.https;
 import static org.sourceforge.xazzle.xhtml.Href.href;
@@ -33,16 +33,16 @@ final class SupportPage {
                 h2Tag(xhtmlText("Support")),
                 paragraphTag(
                         xhtmlText("The best way to get help on Urin is via the "),
-                        anchorTag(xhtmlText("help forum")).withHref(href(https(SOURCE_FORGE, segments("p", "urin", "discussion", "help")).asString())),
+                        anchorTag(xhtmlText("help forum")).withHref(href(https(SOURCE_FORGE, path("p", "urin", "discussion", "help")).asString())),
                         xhtmlText(".")),
                 paragraphTag(
                         xhtmlText("Alternatively, report a bug or request a feature by "),
-                        anchorTag(xhtmlText("raising a ticket")).withHref(href(https(SOURCE_FORGE, segments("p", "urin", "tickets")).asString())),
+                        anchorTag(xhtmlText("raising a ticket")).withHref(href(https(SOURCE_FORGE, path("p", "urin", "tickets")).asString())),
                         xhtmlText(".")
                 ),
                 paragraphTag(
                         xhtmlText("Finally, there is an "),
-                        anchorTag(xhtmlText("open discussion forum")).withHref(href(https(SOURCE_FORGE, segments("p", "urin", "discussion", "general")).asString())),
+                        anchorTag(xhtmlText("open discussion forum")).withHref(href(https(SOURCE_FORGE, path("p", "urin", "discussion", "general")).asString())),
                         xhtmlText(" for anything else.")
                 )
         );

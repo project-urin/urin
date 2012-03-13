@@ -14,14 +14,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import static net.sourceforge.urin.PathHelper.appendSegmentsTo;
 import static net.sourceforge.urin.Segment.*;
-import static net.sourceforge.urin.SegmentsHelper.appendSegmentsTo;
 
-final class RootlessSegments extends Segments {
+public final class AbsolutePath extends Path {
 
     private final Collection<Segment> segments;
 
-    RootlessSegments(final Iterable<Segment> segments) {
+    AbsolutePath(final Iterable<Segment> segments) {
         LinkedList<Segment> newSegments = new LinkedList<Segment>();
         Iterator<Segment> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
@@ -30,41 +30,26 @@ final class RootlessSegments extends Segments {
                 throw new NullPointerException("Segment cannot be null");
             } else {
                 if (!DOT.equals(segment)) {
-                    if (DOT_DOT.equals(segment) && !newSegments.isEmpty() && !DOT_DOT.equals(newSegments.getLast())) {
-                        Segment removedSegment = newSegments.removeLast();
-                        if (DOT.equals(removedSegment)) {
-                            if (!newSegments.isEmpty() && !DOT_DOT.equals(newSegments.getLast())) {
-                                newSegments.removeLast();
-                                if (!segmentIterator.hasNext()) {
-                                    newSegments.add(EMPTY);
-                                }
-                            } else {
-                                newSegments.add(DOT_DOT);
-                            }
-                        } else {
+                    if (DOT_DOT.equals(segment)) {
+                        if (!newSegments.isEmpty()) {
+                            newSegments.removeLast();
                             if (!segmentIterator.hasNext()) {
                                 newSegments.add(EMPTY);
                             }
                         }
                     } else {
-                        if (!newSegments.isEmpty() && DOT.equals(newSegments.getLast())) {
-                            newSegments.removeLast();
-                        }
                         newSegments.add(segment);
                     }
                 } else {
-                    if (newSegments.isEmpty()) {
-                        newSegments.add(DOT);
-                    } else {
-                        if (!segmentIterator.hasNext()) {
-                            newSegments.add(EMPTY);
-                        }
+                    if (!segmentIterator.hasNext()) {
+                        newSegments.add(EMPTY);
                     }
                 }
             }
         }
         this.segments = newSegments;
     }
+
 
     boolean firstPartIsSuppliedButIsEmpty() {
         return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
@@ -76,17 +61,17 @@ final class RootlessSegments extends Segments {
     }
 
     @Override
-    Segments resolveRelativeTo(final Segments baseSegments) {
-        return baseSegments.replaceLastSegmentWith(segments);
+    AbsolutePath resolveRelativeTo(final Path basePath) {
+        return this;
     }
 
     @Override
-    RootlessSegments replaceLastSegmentWith(final Iterable<Segment> segments) {
-        return new RootlessSegments(appendSegmentsTo(this.segments, segments));
+    Path replaceLastSegmentWith(final Iterable<Segment> segments) {
+        return new AbsolutePath(appendSegmentsTo(this.segments, segments));
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder("/");
         if (prefixWithDotSegmentCriteria.matches(this)) {
             result.append("./");
         }
@@ -105,8 +90,8 @@ final class RootlessSegments extends Segments {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RootlessSegments segments1 = (RootlessSegments) o;
-        return segments.equals(segments1.segments);
+        AbsolutePath path = (AbsolutePath) o;
+        return segments.equals(path.segments);
     }
 
     @Override

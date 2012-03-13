@@ -14,15 +14,15 @@ import java.util.Random;
 
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
-public class AbsoluteSegmentsBuilder {
+public class AbsolutePathBuilder {
 
     private static final Random RANDOM = new Random();
 
-    public static AbsoluteSegments anAbsoluteSegments() {
+    public static AbsolutePath anAbsolutePath() {
         Segment[] segments = new Segment[RANDOM.nextInt(5)];
         for (int i = 0; i < segments.length; i++) {
             segments[i] = aSegment();
         }
-        return Segments.segments(segments);
+        return Path.path(segments);
     }
 }

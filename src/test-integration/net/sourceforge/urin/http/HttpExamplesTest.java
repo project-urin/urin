@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin.http;
 
-import net.sourceforge.urin.AbsoluteSegments;
+import net.sourceforge.urin.AbsolutePath;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Fragment.fragment;
@@ -22,16 +22,16 @@ import static org.junit.Assert.assertThat;
 public class HttpExamplesTest {
     @Test
     public void canGenerateAnHttpUriWithoutQueryParameters() throws Exception {
-        assertThat(http(registeredName("urin.sourceforge.net"), AbsoluteSegments.segments("javadoc")).asString(), equalTo("http://urin.sourceforge.net/javadoc"));
+        assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc")).asString(), equalTo("http://urin.sourceforge.net/javadoc"));
     }
 
     @Test
     public void canGenerateAnHttpUriWithQueryParameters() throws Exception {
-        assertThat(http(registeredName("urin.sourceforge.net"), AbsoluteSegments.segments("javadoc"), queryParameters(queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
+        assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), queryParameters(queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
     }
 
     @Test
     public void canGenerateAnHttpUriWithAFragment() throws Exception {
-        assertThat(http(registeredName("urin.sourceforge.net"), AbsoluteSegments.segments("javadoc"), fragment("the first bit")).asString(), equalTo("http://urin.sourceforge.net/javadoc#the%20first%20bit"));
+        assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), fragment("the first bit")).asString(), equalTo("http://urin.sourceforge.net/javadoc#the%20first%20bit"));
     }
 }

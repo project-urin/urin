@@ -15,8 +15,8 @@ import org.sourceforge.xazzle.xhtml.HtmlTag;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Host.registeredName;
+import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Scheme.scheme;
-import static net.sourceforge.urin.Segments.segments;
 import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.Http.http;
@@ -31,13 +31,13 @@ final class DownloadsPage {
 
     static HtmlTag downloadsPage(final String version) {
         String standardJarUrl = standardJarUrin(version).asString();
-        String smallJarUrl = https(registeredName("sourceforge.net"), segments("projects", "urin", "files", version, "urin-small-" + version + ".jar", "download")).asString();
-        String gitUri = urin(scheme("git"), hierarchicalPart(authority(registeredName("git.code.sf.net")), segments("p", "urin", "code"))).asString();
+        String smallJarUrl = https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-small-" + version + ".jar", "download")).asString();
+        String gitUri = urin(scheme("git"), hierarchicalPart(authority(registeredName("git.code.sf.net")), path("p", "urin", "code"))).asString();
         return aUrinPage(
                 h2Tag(xhtmlText("Downloads")),
                 paragraphTag(
                         xhtmlText("Urin is available under the "),
-                        anchorTag(xhtmlText("Apache 2 license")).withHref(href(http(registeredName("www.apache.org"), segments("licenses", "LICENSE-2.0")).asString())),
+                        anchorTag(xhtmlText("Apache 2 license")).withHref(href(http(registeredName("www.apache.org"), path("licenses", "LICENSE-2.0")).asString())),
                         xhtmlText(".  It can be downloaded in four forms:")),
                 unorderedListTag(
                         listItemTag(

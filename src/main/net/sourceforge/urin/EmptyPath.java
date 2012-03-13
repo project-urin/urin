@@ -10,9 +10,9 @@
 
 package net.sourceforge.urin;
 
-final class EmptySegments extends Segments {
+final class EmptyPath extends Path {
 
-    EmptySegments() {
+    EmptyPath() {
     }
 
     boolean firstPartIsSuppliedButIsEmpty() {
@@ -29,13 +29,13 @@ final class EmptySegments extends Segments {
     }
 
     @Override
-    Segments resolveRelativeTo(final Segments baseSegments) {
-        return baseSegments;
+    Path resolveRelativeTo(final Path basePath) {
+        return basePath;
     }
 
     @Override
-    Segments replaceLastSegmentWith(final Iterable<Segment> segments) {
-        return rootlessSegments(segments);
+    Path replaceLastSegmentWith(final Iterable<Segment> segments) {
+        return rootlessPath(segments);
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
@@ -54,6 +54,6 @@ final class EmptySegments extends Segments {
 
     @Override
     public String toString() {
-        return "EmptySegments";
+        return "EmptyPath";
     }
 }

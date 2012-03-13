@@ -14,8 +14,8 @@ import com.google.common.base.Supplier;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
-import static net.sourceforge.urin.SegmentsBuilder.aSegments;
-import static net.sourceforge.urin.SegmentsBuilder.anAbsoluteSegments;
+import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 
 public class HierarchicalPartBuilder {
 
@@ -52,11 +52,11 @@ public class HierarchicalPartBuilder {
     }
 
     public static HierarchicalPart aHierarchicalPartWithNoAuthority() {
-        return hierarchicalPart(aSegments());
+        return hierarchicalPart(aPath());
     }
 
     public static HierarchicalPart aHierarchicalPartAbsoluteWithAuthority() {
-        return HierarchicalPart.hierarchicalPart(anAuthority(), anAbsoluteSegments());
+        return HierarchicalPart.hierarchicalPart(anAuthority(), anAbsolutePath());
     }
 
 }

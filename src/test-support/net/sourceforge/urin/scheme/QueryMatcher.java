@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin.scheme;
 
-import net.sourceforge.urin.AbsoluteSegments;
+import net.sourceforge.urin.AbsolutePath;
 import net.sourceforge.urin.Query;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -24,7 +24,7 @@ public class QueryMatcher {
         return new TypeSafeDiagnosingMatcher<Query>() {
             @Override
             protected boolean matchesSafely(final Query query, final Description description) {
-                String rawQuery = http(anIpV4Address(), AbsoluteSegments.segments(), query).asUri().getRawQuery();
+                String rawQuery = http(anIpV4Address(), AbsolutePath.path(), query).asUri().getRawQuery();
                 boolean matches = expected.matches(rawQuery);
                 if (!matches) {
                     description.appendText("got a Query that as uri String is ").appendValue(rawQuery);

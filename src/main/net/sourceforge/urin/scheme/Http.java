@@ -33,131 +33,131 @@ public final class Http {
     private static final Port DEFAULT_HTTPS_PORT = port(443);
 
     public static Urin http(final Host host) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Segments.segments()));
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Path.path()));
     }
 
     public static Urin http(final Host host, final Port port) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), Segments.segments()));
+        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), Path.path()));
     }
 
-    public static Urin http(final Host host, final AbsoluteSegments segments) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), segments));
+    public static Urin http(final Host host, final AbsolutePath path) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path));
     }
 
-    public static Urin http(final Host host, final Port port, final AbsoluteSegments segments) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), segments));
+    public static Urin http(final Host host, final Port port, final AbsolutePath path) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), path));
     }
 
-    public static Urin http(final Host host, final AbsoluteSegments segments, final Query query) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), segments), query);
+    public static Urin http(final Host host, final AbsolutePath path, final Query query) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path), query);
     }
 
-    public static Urin http(final Host host, final Port port, final AbsoluteSegments segments, final Query query) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), segments), query);
+    public static Urin http(final Host host, final Port port, final AbsolutePath path, final Query query) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), path), query);
     }
 
     public static Urin http(final Host host, final Query query) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Segments.segments()), query);
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Path.path()), query);
     }
 
     public static Urin http(final Host host, final Port port, final Query query) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), Segments.segments()), query);
+        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), Path.path()), query);
     }
 
     public static Urin http(final Host host, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Segments.segments()), fragment);
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Path.path()), fragment);
     }
 
     public static Urin http(final Host host, final Port port, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), Segments.segments()), fragment);
+        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), Path.path()), fragment);
     }
 
-    public static Urin http(final Host host, final AbsoluteSegments segments, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), segments), fragment);
+    public static Urin http(final Host host, final AbsolutePath path, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path), fragment);
     }
 
-    public static Urin http(final Host host, final Port port, final AbsoluteSegments segments, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), segments), fragment);
+    public static Urin http(final Host host, final Port port, final AbsolutePath path, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), path), fragment);
     }
 
-    public static Urin http(final Host host, final AbsoluteSegments segments, final Query query, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), segments), query, fragment);
+    public static Urin http(final Host host, final AbsolutePath path, final Query query, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path), query, fragment);
     }
 
-    public static Urin http(final Host host, final Port port, final AbsoluteSegments segments, final Query query, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), segments), query, fragment);
+    public static Urin http(final Host host, final Port port, final AbsolutePath path, final Query query, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), path), query, fragment);
     }
 
     public static Urin http(final Host host, final Query query, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Segments.segments()), query, fragment);
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Path.path()), query, fragment);
     }
 
     public static Urin http(final Host host, final Port port, final Query query, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), Segments.segments()), query, fragment);
+        return urin(HTTP_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTP_PORT), Path.path()), query, fragment);
     }
 
     public static Urin https(final Host host) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Segments.segments()));
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Path.path()));
     }
 
     public static Urin https(final Host host, final Port port) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), Segments.segments()));
+        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), Path.path()));
     }
 
-    public static Urin https(final Host host, final AbsoluteSegments segments) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), segments));
+    public static Urin https(final Host host, final AbsolutePath path) {
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), path));
     }
 
-    public static Urin https(final Host host, final Port port, final AbsoluteSegments segments) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), segments));
+    public static Urin https(final Host host, final Port port, final AbsolutePath path) {
+        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), path));
     }
 
-    public static Urin https(final Host host, final AbsoluteSegments segments, final Query query) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), segments), query);
+    public static Urin https(final Host host, final AbsolutePath path, final Query query) {
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), path), query);
     }
 
-    public static Urin https(final Host host, final Port port, final AbsoluteSegments segments, final Query query) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), segments), query);
+    public static Urin https(final Host host, final Port port, final AbsolutePath path, final Query query) {
+        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), path), query);
     }
 
     public static Urin https(final Host host, final Query query) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Segments.segments()), query);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Path.path()), query);
     }
 
     public static Urin https(final Host host, final Port port, final Query query) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), Segments.segments()), query);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), Path.path()), query);
     }
 
     public static Urin https(final Host host, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Segments.segments()), fragment);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Path.path()), fragment);
     }
 
     public static Urin https(final Host host, final Port port, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), Segments.segments()), fragment);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), Path.path()), fragment);
     }
 
-    public static Urin https(final Host host, final AbsoluteSegments segments, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), segments), fragment);
+    public static Urin https(final Host host, final AbsolutePath path, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), path), fragment);
     }
 
-    public static Urin https(final Host host, final Port port, final AbsoluteSegments segments, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), segments), fragment);
+    public static Urin https(final Host host, final Port port, final AbsolutePath path, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), path), fragment);
     }
 
-    public static Urin https(final Host host, final AbsoluteSegments segments, final Query query, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), segments), query, fragment);
+    public static Urin https(final Host host, final AbsolutePath path, final Query query, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), path), query, fragment);
     }
 
-    public static Urin https(final Host host, final Port port, final AbsoluteSegments segments, final Query query, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), segments), query, fragment);
+    public static Urin https(final Host host, final Port port, final AbsolutePath path, final Query query, final Fragment fragment) {
+        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), path), query, fragment);
     }
 
     public static Urin https(final Host host, final Query query, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Segments.segments()), query, fragment);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Path.path()), query, fragment);
     }
 
     public static Urin https(final Host host, final Port port, final Query query, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), Segments.segments()), query, fragment);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authorityWithNormalisedDefaultPort(host, port, DEFAULT_HTTPS_PORT), Path.path()), query, fragment);
     }
 
     private static Authority authorityWithNormalisedDefaultPort(final Host host, final Port port, final Port defaultPort) {

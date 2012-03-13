@@ -32,7 +32,7 @@ public class UrinSamplesTest {
     public void canMakeAUrinWithAuthorityAndPathToRoot() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
-        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/", urin(scheme, hierarchicalPart(authority, Segments.segments())));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/", urin(scheme, hierarchicalPart(authority, Path.path())));
     }
 
     @Test
@@ -40,12 +40,12 @@ public class UrinSamplesTest {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
         Segment segment = aSegment();
-        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), urin(scheme, hierarchicalPart(authority, Segments.segments(segment))));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), urin(scheme, hierarchicalPart(authority, Path.path(segment))));
     }
 
     @Test
     public void canMakeAUrinWithPathToRoot() throws Exception {
         Scheme scheme = aScheme();
-        assertAsStringAsUriAndParse(scheme.asString() + ":/", urin(scheme, hierarchicalPart(Segments.segments())));
+        assertAsStringAsUriAndParse(scheme.asString() + ":/", urin(scheme, hierarchicalPart(Path.path())));
     }
 }

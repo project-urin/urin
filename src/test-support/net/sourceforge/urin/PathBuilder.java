@@ -16,42 +16,42 @@ import java.util.Random;
 
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
-public class SegmentsBuilder {
+public class PathBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Segments> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Segments>(
-            new Supplier<Segments>() {
-                public Segments get() {
-                    return anAbsoluteSegments();
+    private static final RandomSupplierSwitcher<Path> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Path>(
+            new Supplier<Path>() {
+                public Path get() {
+                    return anAbsolutePath();
                 }
             },
-            new Supplier<Segments>() {
-                public Segments get() {
-                    return aRootlessSegments();
+            new Supplier<Path>() {
+                public Path get() {
+                    return aRootlessPath();
                 }
             }
     );
     private static final Random RANDOM = new Random();
 
-    public static AbsoluteSegments anAbsoluteSegments() {
+    public static AbsolutePath anAbsolutePath() {
         int numberOfSegments = RANDOM.nextInt(4) + 1;
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
             tailSegments[i] = aSegment();
         }
-        return Segments.segments(tailSegments);
+        return Path.path(tailSegments);
     }
 
-    public static Segments aRootlessSegments() {
+    public static Path aRootlessPath() {
         int numberOfSegments = RANDOM.nextInt(4) + 1;
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
             tailSegments[i] = aSegment();
         }
-        return RootlessSegments.rootlessSegments(tailSegments);
+        return RootlessPath.rootlessPath(tailSegments);
     }
 
-    public static Segments aSegments() {
+    public static Path aPath() {
         return RANDOM_SUPPLIER_SWITCHER.get();
     }
 

@@ -13,14 +13,14 @@ package net.sourceforge.urin;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
-import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
 
 /**
  * A hierarchical part component of a URI.
  * <p/>
- * A hierarchical part always has an optional {@link Authority} component, and a mandatory {@link Segments} component,
- * though that may implicitly be the empty path.  If an {@code Authority} is specified, the {@code Segments} must be
+ * A hierarchical part always has an optional {@link Authority} component, and a mandatory {@link Path} component,
+ * though that may implicitly be the empty path.  If an {@code Authority} is specified, the {@code Path} must be
  * absolute.
  * <p/>
  * Immutable and threadsafe.
@@ -44,11 +44,11 @@ public abstract class HierarchicalPart {
             if (path == null || "".equals(path)) {
                 hierarchicalPart = hierarchicalPart();
             } else {
-                hierarchicalPart = hierarchicalPart(!path.startsWith("/") ? Segments.parseRootlessSegments(path) : Segments.parseSegments(path));
+                hierarchicalPart = hierarchicalPart(!path.startsWith("/") ? Path.parseRootlessPath(path) : Path.parseParse(path));
             }
         } else {
             Authority authority = Authority.parse(authorityString);
-            hierarchicalPart = (path == null || "".equals(path)) ? hierarchicalPart(authority) : hierarchicalPart(authority, Segments.parseSegments(path));
+            hierarchicalPart = (path == null || "".equals(path)) ? hierarchicalPart(authority) : hierarchicalPart(authority, Path.parseParse(path));
         }
         return hierarchicalPart;
     }
@@ -56,45 +56,45 @@ public abstract class HierarchicalPart {
     abstract String asString();
 
     public static HierarchicalPart hierarchicalPart() {
-        return new HierarchicalPartNoAuthority(new EmptySegments());
+        return new HierarchicalPartNoAuthority(new EmptyPath());
     }
 
     public static HierarchicalPart hierarchicalPart(final Authority authority) {
-        return new HierarchicalPartWithAuthority(authority, new EmptySegments());
+        return new HierarchicalPartWithAuthority(authority, new EmptyPath());
     }
 
-    public static HierarchicalPart hierarchicalPart(final Segments segments) {
-        return new HierarchicalPartNoAuthority(segments);
+    public static HierarchicalPart hierarchicalPart(final Path path) {
+        return new HierarchicalPartNoAuthority(path);
     }
 
-    public static HierarchicalPart hierarchicalPart(final Authority authority, final AbsoluteSegments segments) {
-        return new HierarchicalPartWithAuthority(authority, segments);
+    public static HierarchicalPart hierarchicalPart(final Authority authority, final AbsolutePath path) {
+        return new HierarchicalPartWithAuthority(authority, path);
     }
 
-    abstract HierarchicalPart resolve(final Segments relativeReferenceSegments);
+    abstract HierarchicalPart resolve(final Path relativeReferencePath);
 
-    final HierarchicalPart resolve(final Authority relativeReferenceAuthority, final Segments relativeReferenceSegments) {
-        return new HierarchicalPartWithAuthority(relativeReferenceAuthority, relativeReferenceSegments);
+    final HierarchicalPart resolve(final Authority relativeReferenceAuthority, final Path relativeReferencePath) {
+        return new HierarchicalPartWithAuthority(relativeReferenceAuthority, relativeReferencePath);
     }
 
     private static final class HierarchicalPartNoAuthority extends HierarchicalPart {
-        private final Segments segments;
+        private final Path path;
 
-        HierarchicalPartNoAuthority(final Segments segments) {
-            if (segments == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null segments");
+        HierarchicalPartNoAuthority(final Path path) {
+            if (path == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null path");
             }
-            this.segments = segments;
+            this.path = path;
         }
 
         @Override
         String asString() {
-            return segments.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY);
+            return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY);
         }
 
         @Override
-        HierarchicalPart resolve(final Segments relativeReferenceSegments) {
-            return hierarchicalPart(relativeReferenceSegments.resolveRelativeTo(segments));
+        HierarchicalPart resolve(final Path relativeReferencePath) {
+            return hierarchicalPart(relativeReferencePath.resolveRelativeTo(path));
         }
 
         @Override
@@ -103,48 +103,48 @@ public abstract class HierarchicalPart {
             if (o == null || getClass() != o.getClass()) return false;
 
             HierarchicalPartNoAuthority that = (HierarchicalPartNoAuthority) o;
-            return segments.equals(that.segments);
+            return path.equals(that.path);
         }
 
         @Override
         public int hashCode() {
-            return segments.hashCode();
+            return path.hashCode();
         }
 
         @Override
         public String toString() {
             return "HierarchicalPart{" +
-                    "segments=" + segments +
+                    "path=" + path +
                     '}';
         }
     }
 
     private static final class HierarchicalPartWithAuthority extends HierarchicalPart {
         private final Authority authority;
-        private final Segments segments;
+        private final Path path;
 
-        HierarchicalPartWithAuthority(final Authority authority, final Segments segments) {
+        HierarchicalPartWithAuthority(final Authority authority, final Path path) {
             if (authority == null) {
                 throw new NullPointerException("Cannot instantiate HierarchicalPart with null authority");
             }
             this.authority = authority;
-            if (segments == null) {
-                throw new NullPointerException("Cannot instantiate HierarchicalPart with null segments");
+            if (path == null) {
+                throw new NullPointerException("Cannot instantiate HierarchicalPart with null path");
             }
-            this.segments = segments;
+            this.path = path;
         }
 
         @Override
         String asString() {
             return new StringBuilder("//")
                     .append(authority.asString())
-                    .append(segments.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
+                    .append(path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
                     .toString();
         }
 
         @Override
-        HierarchicalPart resolve(final Segments relativeReferenceSegments) {
-            return new HierarchicalPartWithAuthority(authority, relativeReferenceSegments.resolveRelativeTo(segments));
+        HierarchicalPart resolve(final Path relativeReferencePath) {
+            return new HierarchicalPartWithAuthority(authority, relativeReferencePath.resolveRelativeTo(path));
         }
 
         @Override
@@ -154,13 +154,13 @@ public abstract class HierarchicalPart {
 
             HierarchicalPartWithAuthority that = (HierarchicalPartWithAuthority) o;
             return authority.equals(that.authority)
-                    && segments.equals(that.segments);
+                    && path.equals(that.path);
         }
 
         @Override
         public int hashCode() {
             int result = authority.hashCode();
-            result = 31 * result + segments.hashCode();
+            result = 31 * result + path.hashCode();
             return result;
         }
 
@@ -168,7 +168,7 @@ public abstract class HierarchicalPart {
         public String toString() {
             return "HierarchicalPart{" +
                     "authority=" + authority +
-                    ", segments=" + segments +
+                    ", path=" + path +
                     '}';
         }
     }
