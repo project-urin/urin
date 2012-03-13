@@ -31,6 +31,8 @@ import static net.sourceforge.urin.Octet.octet;
  * a valid registered name - for example, <code>Host.registeredName("127.0.0.1")</code> renders identically in a URI to
  * <code>ipV4Address(octet(127), octet(0), octet(0), octet(1))</code>.  In keeping with the RFC, such a registered name is considered
  * to be an equivalent IP version 4 address.
+ * <p/>
+ * Immutable and threadsafe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2.2">RFC 3986 - Host</a>
  */

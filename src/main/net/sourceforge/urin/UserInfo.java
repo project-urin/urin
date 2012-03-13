@@ -15,6 +15,7 @@ import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 
 /**
  * A user information component of a URI.
+ * Immutable and threadsafe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2.1">RFC 3986 - User Information</a>
  */

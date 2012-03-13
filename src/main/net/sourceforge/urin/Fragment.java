@@ -15,6 +15,7 @@ import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 
 /**
  * A fragment component of a URI.
+ * Immutable and threadsafe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.5">RFC 3986 - Fragment</a>
  */

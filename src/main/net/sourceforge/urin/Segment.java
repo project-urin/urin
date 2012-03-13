@@ -21,6 +21,8 @@ import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
  * Note that the special segments "." and ".." are defined as constants.  Passing "." or ".." as an argument to the
  * factory method {@link #segment(String)} is not equivalent, as the argument to this method is a literal string, i.e.
  * subject to encoding where necessary.
+ * <p/>
+ * Immutable and threadsafe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
  */
