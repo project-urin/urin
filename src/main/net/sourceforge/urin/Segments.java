@@ -17,7 +17,8 @@ import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.segment;
 
 /**
- * An ordered collection of <code>Segment</code>s.  Segments can either be absolute (starting with '/'), or rootless (not starting with '/').
+ * An ordered collection of <code>Segment</code>s.
+ * Segments can either be absolute (starting with '/'), or rootless (not starting with '/').
  * <p/>
  * Immutable and threadsafe.
  */

@@ -16,6 +16,17 @@ import java.util.regex.Pattern;
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Segments.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
 
+/**
+ * A hierarchical part component of a URI.
+ * <p/>
+ * A hierarchical part always has an optional {@link Authority} component, and a mandatory {@link Segments} component,
+ * though that may implicitly be the empty path.  If an {@code Authority} is specified, the {@code Segments} must be
+ * absolute.
+ * <p/>
+ * Immutable and threadsafe.
+ *
+ * @see <a href="http://tools.ietf.org/html/rfc3986#section-3">RFC 3986 - Syntax Components</a>
+ */
 public abstract class HierarchicalPart {
 
     private static final Pattern HIERARCHICAL_PART_REFERENCE_PATTERN = Pattern.compile("^(//([^/?#]*))?([^?#]*)");
