@@ -18,6 +18,14 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFI
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 import static net.sourceforge.urin.Urin.urin;
 
+/**
+ * A relative reference.
+ * <p/>
+ * A relative reference has a mandatory relative part component, that is made up of an optional authority, and a
+ * mandatory path, and optional query and fragment parts.  The mandatory path may implicitly be the empty path.
+ *
+ * @see <a href="http://tools.ietf.org/html/rfc3986#section-4.2">RFC 3986 - Relative Reference</a>
+ */
 public abstract class RelativeReference extends UrinReference {
 
     private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
@@ -25,72 +33,191 @@ public abstract class RelativeReference extends UrinReference {
     private RelativeReference() {
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with just an empty path.
+     *
+     * @return a {@code RelativeReference} with an empty path.
+     */
     public static RelativeReference relativeReference() {
         return new RelativeReferenceNoAuthority(new EmptyPath());
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with an authority and an empty path.
+     *
+     * @param authority any {@code Authority} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Authority} and an empty path.
+     */
     public static RelativeReference relativeReference(final Authority authority) {
         return new RelativeReferenceWithAuthority(authority, new EmptyPath());
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with just a path.
+     *
+     * @param path any {@code Path} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Path}.
+     */
     public static RelativeReference relativeReference(final Path path) {
         return new RelativeReferenceNoAuthority(path);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with an authority and a path.
+     *
+     * @param authority any {@code Authority} to use in this {@code RelativeReference}.
+     * @param path      any {@code AbsolutePath} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Authority} and {@code Path}.
+     */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path) {
         return new RelativeReferenceWithAuthority(authority, path);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with a query and an empty path.
+     *
+     * @param query any {@code Query} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Query} and an empty path.
+     */
     public static RelativeReference relativeReference(final Query query) {
         return new RelativeReferenceNoAuthorityWithQuery(new EmptyPath(), query);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with an authority, a query and an empty path.
+     *
+     * @param authority any {@code Authority} to use in this {@code RelativeReference}.
+     * @param query     any {@code Query} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Authority} and {@code Query}, and an empty path.
+     */
     public static RelativeReference relativeReference(final Authority authority, final Query query) {
         return new RelativeReferenceWithAuthorityAndQuery(authority, new EmptyPath(), query);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with a path and a query.
+     *
+     * @param path  any {@code Path} to use in this {@code RelativeReference}.
+     * @param query any {@code Query} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Path} and {@code Query}.
+     */
     public static RelativeReference relativeReference(final Path path, final Query query) {
         return new RelativeReferenceNoAuthorityWithQuery(path, query);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with an authority, a path, and a query.
+     *
+     * @param authority any {@code Authority} to use in this {@code RelativeReference}.
+     * @param path      any {@code Path} to use in this {@code RelativeReference}.
+     * @param query     any {@code Query} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Query}.
+     */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query) {
         return new RelativeReferenceWithAuthorityAndQuery(authority, path, query);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with a fragment and an empty path.
+     *
+     * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Fragment} and an empty path.
+     */
     public static RelativeReference relativeReference(final Fragment fragment) {
         return new RelativeReferenceNoAuthorityWithFragment(new EmptyPath(), fragment);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with an authority, a fragment, and an empty path.
+     *
+     * @param authority any {@code Authority} to use in this {@code RelativeReference}.
+     * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Authority} and {@code Fragment}, and an empty path.
+     */
     public static RelativeReference relativeReference(final Authority authority, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndFragment(authority, new EmptyPath(), fragment);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with a path and a fragment.
+     *
+     * @param path     any {@code Path} to use in this {@code RelativeReference}.
+     * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Path} and {@code Fragment}.
+     */
     public static RelativeReference relativeReference(final Path path, final Fragment fragment) {
         return new RelativeReferenceNoAuthorityWithFragment(path, fragment);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with an authority, a path, and fragment.
+     *
+     * @param authority any {@code Authority} to use in this {@code RelativeReference}.
+     * @param path      any {@code AbsolutePath} to use in this {@code RelativeReference}.
+     * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Fragment}.
+     */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndFragment(authority, path, fragment);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with a query, a fragment, and an empty path.
+     *
+     * @param query    any {@code Query} to use in this {@code RelativeReference}.
+     * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Query} and {@code Fragment}, and an empty path.
+     */
     public static RelativeReference relativeReference(final Query query, final Fragment fragment) {
         return new RelativeReferenceNoAuthorityWithQueryAndFragment(new EmptyPath(), query, fragment);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with an authority, a query, a fragment, and an empty path.
+     *
+     * @param authority any {@code Authority} to use in this {@code RelativeReference}.
+     * @param query     any {@code Query} to use in this {@code RelativeReference}.
+     * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Authority}, {@code Query} and {@code Fragment}, and an empty path.
+     */
     public static RelativeReference relativeReference(final Authority authority, final Query query, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, new EmptyPath(), query, fragment);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with a path, a query, and a fragment.
+     *
+     * @param path     any {@code Path} to use in this {@code RelativeReference}.
+     * @param query    any {@code Query} to use in this {@code RelativeReference}.
+     * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Path}, {@code Query} and {@code Fragment}.
+     */
     public static RelativeReference relativeReference(final Path path, final Query query, final Fragment fragment) {
         return new RelativeReferenceNoAuthorityWithQueryAndFragment(path, query, fragment);
     }
 
+    /**
+     * Factory method for creating {@code RelativeReference}s with an authority, a path, a query, and a fragment.
+     *
+     * @param authority any {@code Authority} to use in this {@code RelativeReference}.
+     * @param path      any {@code AbsolutePath} to use in this {@code RelativeReference}.
+     * @param query     any {@code Query} to use in this {@code RelativeReference}.
+     * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
+     * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path}, {@code Query} and {@code Fragment}.
+     */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, path, query, fragment);
     }
 
-    public static RelativeReference parse(final String uriString) throws ParseException {
-        final Matcher matcher = RELATIVE_REFERENCE_PATTERN.matcher(uriString);
+    /**
+     * Parses the given {@code String} as a relative reference.
+     *
+     * @param relativeReferenceString a {@code String} that represents a relative reference.
+     * @return a {@code UrinReference} representing the relative reference represented by the given {@code String}.
+     * @throws ParseException if the given {@code String} is not a valid relative reference.
+     */
+    public static RelativeReference parse(final String relativeReferenceString) throws ParseException {
+        final Matcher matcher = RELATIVE_REFERENCE_PATTERN.matcher(relativeReferenceString);
         matcher.matches();
         final String queryString = matcher.group(6);
         final String fragment = matcher.group(8);
@@ -168,6 +295,13 @@ public abstract class RelativeReference extends UrinReference {
         return result;
     }
 
+    /**
+     * Parses the given {@code URI} to produce a {@code RelativeReference}.
+     *
+     * @param uri a {@code URI} representing a relative reference to parse.
+     * @return a {@code RelativeReference} representing the RFC 3986 relative reference represented by the given {@code URI}.
+     * @throws ParseException if the given {@code URI} is not a valid RFC 3986 relative reference.
+     */
     public static RelativeReference parse(URI uri) throws ParseException {
         return parse(uri.toASCIIString());
     }
