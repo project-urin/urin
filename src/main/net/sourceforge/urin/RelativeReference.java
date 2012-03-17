@@ -27,10 +27,6 @@ public abstract class RelativeReference extends UrinReference {
 
     public abstract String asString();
 
-    public URI asUri() {
-        return URI.create(asString());
-    }
-
     public static RelativeReference relativeReference() {
         return new RelativeReferenceNoAuthority(new EmptyPath());
     }

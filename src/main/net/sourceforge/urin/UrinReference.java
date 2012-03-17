@@ -20,7 +20,9 @@ public abstract class UrinReference {
 
     public abstract String asString();
 
-    public abstract URI asUri();
+    public final URI asUri() {
+        return URI.create(asString());
+    }
 
     public static UrinReference parse(final String uriReferenceString) throws ParseException {
         if (Urin.isValidUrinString(uriReferenceString)) {
