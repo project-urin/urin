@@ -25,8 +25,6 @@ public abstract class RelativeReference extends UrinReference {
     private RelativeReference() {
     }
 
-    public abstract String asString();
-
     public static RelativeReference relativeReference() {
         return new RelativeReferenceNoAuthority(new EmptyPath());
     }
