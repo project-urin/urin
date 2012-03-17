@@ -17,6 +17,11 @@ import java.util.LinkedList;
 import static net.sourceforge.urin.PathHelper.appendSegmentsTo;
 import static net.sourceforge.urin.Segment.*;
 
+/**
+ * A path that begins with a '/' - typically representing a path relative to root.
+ * <p/>
+ * To create instances, see {@link Path}.
+ */
 public final class AbsolutePath extends Path {
 
     private final Collection<Segment> segments;
