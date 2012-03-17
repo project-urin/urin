@@ -19,7 +19,7 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH
 /**
  * A hierarchical part component of a URI.
  * <p/>
- * A hierarchical part always has an optional {@link Authority} component, and a mandatory {@link Path} component,
+ * A hierarchical part has an optional {@link Authority} component, and a mandatory {@link Path} component,
  * though that may implicitly be the empty path.  If an {@code Authority} is specified, the {@code Path} must be
  * absolute.
  * <p/>
