@@ -29,25 +29,25 @@ public final class Port extends UnaryStringValue {
     }
 
     /**
-     * Factory method for creating ports from non-negative <code>int</code>s.  Note that RFC 3986 permits any non-negative
-     * integer here, but this method limits you to integers up to <code>java.lang.Integer.MAX_VALUE</code>.  For
+     * Factory method for creating ports from non-negative {@code int}s.  Note that RFC 3986 permits any non-negative
+     * integer here, but this method limits you to integers up to {@code java.lang.Integer.MAX_VALUE}.  For
      * integers greater than this, use {@link #Port(String)}.
      *
-     * @param port a non-negative <code>int</code>.
-     * @return a <code>Port</code> representing the given <code>int</code>.
-     * @throws IllegalArgumentException if the given <code>int</code> is negative.
+     * @param port a non-negative {@code int}.
+     * @return a {@code Port} representing the given {@code int}.
+     * @throws IllegalArgumentException if the given {@code int} is negative.
      */
     public static Port port(final int port) {
         return port(Integer.toString(port));
     }
 
     /**
-     * Factory method for creating ports from <code>String</code> representations of non-negative integers.  This means
-     * <code>String</code>s consisting solely of digits in the range 0-9.
+     * Factory method for creating ports from {@code String} representations of non-negative integers.  This means
+     * {@code String}s consisting solely of digits in the range 0-9.
      *
-     * @param port a <code>String</code> consisting solely of digits in the range 0-9.
-     * @return a Port representing the given <code>String</code>.
-     * @throws IllegalArgumentException if the given <code>String</code> contains characters outside the range 0-9.
+     * @param port a {@code String} consisting solely of digits in the range 0-9.
+     * @return a Port representing the given {@code String}.
+     * @throws IllegalArgumentException if the given {@code String} contains characters outside the range 0-9.
      */
     public static Port port(final String port) {
         return port(port, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);

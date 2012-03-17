@@ -56,40 +56,40 @@ public abstract class HierarchicalPart {
     abstract String asString();
 
     /**
-     * Factory method for creating <code>HierarchicalPart</code>s with just an empty path.
+     * Factory method for creating {@code HierarchicalPart}s with just an empty path.
      *
-     * @return a <code>HierarchicalPart</code> with an empty path.
+     * @return a {@code HierarchicalPart} with an empty path.
      */
     public static HierarchicalPart hierarchicalPart() {
         return new HierarchicalPartNoAuthority(new EmptyPath());
     }
 
     /**
-     * Factory method for creating <code>HierarchicalPart</code>s with an {@code Authority} and an empty path.
+     * Factory method for creating {@code HierarchicalPart}s with an {@code Authority} and an empty path.
      *
      * @param authority any {@code Authority} to include in this {@code HierarchicalPart}.
-     * @return a <code>HierarchicalPart</code> with the given {@code Authority} and an empty path.
+     * @return a {@code HierarchicalPart} with the given {@code Authority} and an empty path.
      */
     public static HierarchicalPart hierarchicalPart(final Authority authority) {
         return new HierarchicalPartWithAuthority(authority, new EmptyPath());
     }
 
     /**
-     * Factory method for creating <code>HierarchicalPart</code>s with a <code>Path</code> and no {@code Authority}.
+     * Factory method for creating {@code HierarchicalPart}s with a {@code Path} and no {@code Authority}.
      *
      * @param path any {@code Path} to use in this {@code HierarchicalPart}.
-     * @return a <code>HierarchicalPart</code> with the given {@code Path} and no {@code Authority}.
+     * @return a {@code HierarchicalPart} with the given {@code Path} and no {@code Authority}.
      */
     public static HierarchicalPart hierarchicalPart(final Path path) {
         return new HierarchicalPartNoAuthority(path);
     }
 
     /**
-     * Factory method for creating <code>HierarchicalPart</code>s with an {@code Authority} and <code>Path</code>.
+     * Factory method for creating {@code HierarchicalPart}s with an {@code Authority} and {@code Path}.
      *
      * @param authority any {@code Authority} to include in this {@code HierarchicalPart}.
      * @param path      any {@code AbsolutePath} to use in this {@code HierarchicalPart}.
-     * @return a <code>HierarchicalPart</code> with the given {@code Authority} and {@code Path}.
+     * @return a {@code HierarchicalPart} with the given {@code Authority} and {@code Path}.
      */
     public static HierarchicalPart hierarchicalPart(final Authority authority, final AbsolutePath path) {
         return new HierarchicalPartWithAuthority(authority, path);

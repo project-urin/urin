@@ -29,20 +29,20 @@ public final class Query extends PercentEncodedUnaryValue {
     }
 
     /**
-     * Factory method for creating <code>Query</code>s.
+     * Factory method for creating {@code Query}s.
      *
-     * @param query any <code>String</code> to represent as a <code>Query</code>.
-     * @return a <code>Query</code> representing the given <code>String</code>.
+     * @param query any {@code String} to represent as a {@code Query}.
+     * @return a {@code Query} representing the given {@code String}.
      */
     public static Query query(final String query) {
         return new Query(percentEncodableString(query));
     }
 
     /**
-     * Factory method for creating <code>Query</code>s with scheme specific percent encoding of characters beyond that specified for generic URI <code>Query</code>s.
+     * Factory method for creating {@code Query}s with scheme specific percent encoding of characters beyond that specified for generic URI {@code Query}s.
      *
-     * @param query a <code>PercentEncodable</code> specifying the query and the additional scheme specific percent encoding.
-     * @return a <code>Query</code> representing the given <code>PercentEncodable</code> that will use the additional percent encoding specified when used in a URI.
+     * @param query a {@code PercentEncodable} specifying the query and the additional scheme specific percent encoding.
+     * @return a {@code Query} representing the given {@code PercentEncodable} that will use the additional percent encoding specified when used in a URI.
      */
     public static Query query(final PercentEncodable query) {
         return new Query(query);

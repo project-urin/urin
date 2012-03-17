@@ -50,10 +50,10 @@ public abstract class Segment extends PercentEncodedUnaryValue {
     }
 
     /**
-     * Factory method for creating <code>Segment</code>s.
+     * Factory method for creating {@code Segment}s.
      *
-     * @param segment any <code>String</code> to represent as a <code>Segment</code>.
-     * @return a <code>Segment</code> representing the given <code>String</code>.
+     * @param segment any {@code String} to represent as a {@code Segment}.
+     * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment segment(final String segment) {
         return new Segment(percentEncodableSpecifiedValue(

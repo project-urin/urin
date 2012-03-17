@@ -30,44 +30,44 @@ public abstract class Authority {
     abstract String asString();
 
     /**
-     * Factory method for creating <code>Authority</code>s with just a host.
+     * Factory method for creating {@code Authority}s with just a host.
      *
-     * @param host any <code>Host</code>.
-     * @return an <code>Authority</code> representing the given <code>Host</code>.
+     * @param host any {@code Host}.
+     * @return an {@code Authority} representing the given {@code Host}.
      */
     public static Authority authority(final Host host) {
         return new AuthorityWithHost(host);
     }
 
     /**
-     * Factory method for creating <code>Authority</code>s with user information and host.
+     * Factory method for creating {@code Authority}s with user information and host.
      *
-     * @param userInfo any <code>UserInfo</code>.
-     * @param host     any <code>Host</code>.
-     * @return an <code>Authority</code> representing the given <code>UserInfo</code> and <code>Host</code>.
+     * @param userInfo any {@code UserInfo}.
+     * @param host     any {@code Host}.
+     * @return an {@code Authority} representing the given {@code UserInfo} and {@code Host}.
      */
     public static Authority authority(final UserInfo userInfo, final Host host) {
         return new AuthorityWithUserInfoAndHost(userInfo, host);
     }
 
     /**
-     * Factory method for creating <code>Authority</code>s with host and port.
+     * Factory method for creating {@code Authority}s with host and port.
      *
-     * @param host any <code>Host</code>.
-     * @param port any <code>Port</code>
-     * @return an <code>Authority</code> representing the given <code>Host</code> and <code>Port</code>.
+     * @param host any {@code Host}.
+     * @param port any {@code Port}
+     * @return an {@code Authority} representing the given {@code Host} and {@code Port}.
      */
     public static Authority authority(final Host host, final Port port) {
         return new AuthorityWithHostAndPort(host, port);
     }
 
     /**
-     * Factory method for creating <code>Authority</code>s with user information, host, and port.
+     * Factory method for creating {@code Authority}s with user information, host, and port.
      *
-     * @param userInfo any <code>UserInfo</code>.
-     * @param host     any <code>Host</code>.
-     * @param port     any <code>Port</code>
-     * @return an <code>Authority</code> representing the given <code>UserInfo</code>, <code>Host</code> and <code>Port</code>
+     * @param userInfo any {@code UserInfo}.
+     * @param host     any {@code Host}.
+     * @param port     any {@code Port}
+     * @return an {@code Authority} representing the given {@code UserInfo}, {@code Host} and {@code Port}
      */
     public static Authority authority(final UserInfo userInfo, final Host host, final Port port) {
         return new AuthorityWithUserInfoAndHostAndPort(userInfo, host, port);

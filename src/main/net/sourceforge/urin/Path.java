@@ -17,7 +17,7 @@ import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.segment;
 
 /**
- * An ordered collection of <code>Segment</code>s.
+ * An ordered collection of {@code Segment}s.
  * {@code Path}s can either be absolute (starting with '/'), or rootless (not starting with '/').
  * <p/>
  * Immutable and threadsafe.
@@ -27,11 +27,11 @@ import static net.sourceforge.urin.Segment.segment;
 public abstract class Path {
 
     /**
-     * Factory method for creating rootless <code>Path</code>s from <code>String</code>s.
+     * Factory method for creating rootless {@code Path}s from {@code String}s.
      *
-     * @param firstSegment a <code>String</code> representing the first segment.
+     * @param firstSegment a {@code String} representing the first segment.
      * @param segments     any further segments.
-     * @return a <code>Path</code> representing the given <code>String</code>s.
+     * @return a {@code Path} representing the given {@code String}s.
      */
     public static Path rootlessPath(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
@@ -43,20 +43,20 @@ public abstract class Path {
     }
 
     /**
-     * Factory method for creating rootless <code>Path</code>s from <code>Segment</code>s.
+     * Factory method for creating rootless {@code Path}s from {@code Segment}s.
      *
-     * @param segments <code>Segment</code>s that will be represented by this <code>Path</code>.
-     * @return a <code>Path</code> representing the given <code>Segment</code>s.
+     * @param segments {@code Segment}s that will be represented by this {@code Path}.
+     * @return a {@code Path} representing the given {@code Segment}s.
      */
     public static Path rootlessPath(final Segment... segments) {
         return rootlessPath(asList(segments));
     }
 
     /**
-     * Factory method for creating rootless <code>Path</code>s from an <code>Iterable</code> of <code>Segment</code>s.
+     * Factory method for creating rootless {@code Path}s from an {@code Iterable} of {@code Segment}s.
      *
-     * @param segments <code>Iterable</code> of <code>Segment</code>s that will be represented by this <code>Path</code>.
-     * @return a <code>Path</code> representing the given <code>Segment</code>s.
+     * @param segments {@code Iterable} of {@code Segment}s that will be represented by this {@code Path}.
+     * @return a {@code Path} representing the given {@code Segment}s.
      */
     public static Path rootlessPath(final Iterable<Segment> segments) {
         if (segments.iterator().hasNext()) {
@@ -67,11 +67,11 @@ public abstract class Path {
     }
 
     /**
-     * Factory method for creating <code>AbsolutePath</code>s from <code>String</code>s.
+     * Factory method for creating {@code AbsolutePath}s from {@code String}s.
      *
-     * @param firstSegment a <code>String</code> representing the first segment.
+     * @param firstSegment a {@code String} representing the first segment.
      * @param segments     any further segments.
-     * @return a <code>AbsolutePath</code> representing the given <code>String</code>s.
+     * @return a {@code AbsolutePath} representing the given {@code String}s.
      */
     public static AbsolutePath path(final String firstSegment, final String... segments) {
         final List<Segment> segmentList = new ArrayList<Segment>(segments.length + 1);
@@ -83,20 +83,20 @@ public abstract class Path {
     }
 
     /**
-     * Factory method for creating <code>AbsolutePath</code>s from <code>Segment</code>s.
+     * Factory method for creating {@code AbsolutePath}s from {@code Segment}s.
      *
-     * @param segments <code>Segment</code>s that will be represented by this <code>AbsolutePath</code>.
-     * @return a <code>AbsolutePath</code> representing the given <code>Segment</code>s.
+     * @param segments {@code Segment}s that will be represented by this {@code AbsolutePath}.
+     * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
     public static AbsolutePath path(final Segment... segments) {
         return path(asList(segments));
     }
 
     /**
-     * Factory method for creating <code>AbsolutePath</code>s from an <code>Iterable</code> of <code>Segment</code>s.
+     * Factory method for creating {@code AbsolutePath}s from an {@code Iterable} of {@code Segment}s.
      *
-     * @param segments <code>Iterable</code> of <code>Segment</code>s that will be represented by this <code>AbsolutePath</code>.
-     * @return a <code>AbsolutePath</code> representing the given <code>Segment</code>s.
+     * @param segments {@code Iterable} of {@code Segment}s that will be represented by this {@code AbsolutePath}.
+     * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
     public static AbsolutePath path(final Iterable<Segment> segments) {
         return new AbsolutePath(segments);

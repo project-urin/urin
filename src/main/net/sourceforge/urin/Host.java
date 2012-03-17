@@ -28,8 +28,8 @@ import static net.sourceforge.urin.Octet.octet;
  * <p/>
  * RFC 3986 specifies four forms of host - registered name, IP version 4 address, IP version 6 address, and a future IP version address.
  * Note that as pointed out in the RFC, there is an overlap between what is considered a valid IP version 4 address, and what is considered
- * a valid registered name - for example, <code>Host.registeredName("127.0.0.1")</code> renders identically in a URI to
- * <code>ipV4Address(octet(127), octet(0), octet(0), octet(1))</code>.  In keeping with the RFC, such a registered name is considered
+ * a valid registered name - for example, {@code Host.registeredName("127.0.0.1")} renders identically in a URI to
+ * {@code ipV4Address(octet(127), octet(0), octet(0), octet(1))}.  In keeping with the RFC, such a registered name is considered
  * to be an equivalent IP version 4 address.
  * <p/>
  * Immutable and threadsafe.
@@ -81,10 +81,10 @@ public abstract class Host {
     public static final Host LOOPBACK_ADDRESS_IP_V6 = ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(1));
 
     /**
-     * Factory method for creating registered name type <code>Host</code>s.
+     * Factory method for creating registered name type {@code Host}s.
      *
-     * @param registeredName any <code>String</code> to represent as a <code>Host</code>.
-     * @return a <code>Host</code> representing the given <code>String</code> as a registered name.
+     * @param registeredName any {@code String} to represent as a {@code Host}.
+     * @return a {@code Host} representing the given {@code String} as a registered name.
      */
     public static Host registeredName(final String registeredName) {
         if (IpV4Address.isValid(registeredName)) {
@@ -98,39 +98,39 @@ public abstract class Host {
     }
 
     /**
-     * Factory method for creating IP version 4 type <code>Host</code>s.
-     * IP version 4 <code>Host</code>s are made up of four <code>Octet</code>s.
+     * Factory method for creating IP version 4 type {@code Host}s.
+     * IP version 4 {@code Host}s are made up of four {@code Octet}s.
      *
-     * @return a <code>Host</code> representing the given <code>Octet</code>s as an IP version 4 address.
+     * @return a {@code Host} representing the given {@code Octet}s as an IP version 4 address.
      */
     public static Host ipV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
         return new IpV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet);
     }
 
     /**
-     * Factory method for creating IP version 6 type <code>Host</code>s with all parts specified as <code>Hexadectet</code>s.
+     * Factory method for creating IP version 6 type {@code Host}s with all parts specified as {@code Hexadectet}s.
      *
-     * @return a <code>Host</code> representing the given <code>Hexadectet</code>s as an IP version 6 address.
+     * @return a {@code Host} representing the given {@code Hexadectet}s as an IP version 6 address.
      */
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
         return new IpV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet);
     }
 
     /**
-     * Factory method for creating IP version 6 type <code>Host</code>s with the least significant 32 bits specified as in IP version 4 address format.
+     * Factory method for creating IP version 6 type {@code Host}s with the least significant 32 bits specified as in IP version 4 address format.
      *
-     * @return a <code>Host</code> representing the given <code>Hexadectet</code>s and <code>Octet</code>s as an IP version 6 address.
+     * @return a {@code Host} representing the given {@code Hexadectet}s and {@code Octet}s as an IP version 6 address.
      */
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
         return new IpV6AddressWithTrailingIpV4Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet);
     }
 
     /**
-     * Factory method for creating IP version future type <code>Host</code>s.
+     * Factory method for creating IP version future type {@code Host}s.
      *
-     * @param version a <code>String</code> consisting of at least one character, made up solely of hexadecimal digits, namely 0-9 and A-F.
-     * @param address a <code>String</code> consisting of at least one character, made up solely of characters from the Latin alphabet, the digits, and any of '-', '.', '_' , '~' , '!' , '$' , '&' , ''' , '(' , ')' , '*' , '+' , ',' , ';' , '=' , ':'.
-     * @return a <code>Host</code> representing the given <code>Hexadectet</code>s and <code>Octet</code>s as an IP version 6 address.
+     * @param version a {@code String} consisting of at least one character, made up solely of hexadecimal digits, namely 0-9 and A-F.
+     * @param address a {@code String} consisting of at least one character, made up solely of characters from the Latin alphabet, the digits, and any of '-', '.', '_' , '~' , '!' , '$' , '&' , ''' , '(' , ')' , '*' , '+' , ',' , ';' , '=' , ':'.
+     * @return a {@code Host} representing the given {@code Hexadectet}s and {@code Octet}s as an IP version 6 address.
      * @throws IllegalArgumentException if the given version or address are empty of contain characters outside the valid set.
      */
     public static Host ipVFutureAddress(final String version, final String address) {

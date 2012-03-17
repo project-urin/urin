@@ -37,10 +37,10 @@ public final class UserInfo extends PercentEncodedUnaryValue {
     }
 
     /**
-     * Factory method for creating <code>UserInfo</code>s.
+     * Factory method for creating {@code UserInfo}s.
      *
-     * @param userInfo any <code>String</code> to represent as a <code>UserInfo</code>.
-     * @return a <code>UserInfo</code> representing the given <code>String</code>.
+     * @param userInfo any {@code String} to represent as a {@code UserInfo}.
+     * @return a {@code UserInfo} representing the given {@code String}.
      */
     public static UserInfo userInfo(final String userInfo) {
         return new UserInfo(userInfo);
