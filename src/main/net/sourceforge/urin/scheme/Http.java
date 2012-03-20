@@ -13,7 +13,6 @@ package net.sourceforge.urin.scheme;
 import net.sourceforge.urin.*;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Authority.authority;
@@ -21,7 +20,6 @@ import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.PercentEncodable.percentEncodableDelimitedValue;
 import static net.sourceforge.urin.PercentEncodable.percentEncodableSubstitutedValue;
 import static net.sourceforge.urin.Port.port;
-import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Urin.urin;
 
@@ -173,11 +171,12 @@ public final class Http {
     }
 
     public static Query queryParameters(final Iterable<QueryParameter> queryParameters) {
-        final List<PercentEncodable> percentEncodables = new ArrayList<PercentEncodable>();
-        for (QueryParameter queryParameter : queryParameters) {
-            percentEncodables.add(percentEncodableDelimitedValue('=', percentEncodableSubstitutedValue(' ', '+', queryParameter.name), percentEncodableSubstitutedValue(' ', '+', queryParameter.value)));
-        }
-        return query(percentEncodableDelimitedValue(';', percentEncodableDelimitedValue('&', percentEncodables)));
+        return new Query(percentEncodableDelimitedValue(';', percentEncodableDelimitedValue('&', new ArrayList<PercentEncodable>() {{
+            for (QueryParameter queryParameter : queryParameters) {
+                add(percentEncodableDelimitedValue('=', percentEncodableSubstitutedValue(' ', '+', queryParameter.name), percentEncodableSubstitutedValue(' ', '+', queryParameter.value)));
+            }
+        }}))) {
+        };
     }
 
     public static final class QueryParameter {

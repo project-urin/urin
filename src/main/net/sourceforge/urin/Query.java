@@ -19,12 +19,17 @@ import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.4">RFC 3986 - Query</a>
  */
-public final class Query extends PercentEncodedUnaryValue {
+public class Query extends PercentEncodedUnaryValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
     private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
 
-    private Query(final PercentEncodable value) {
+    /**
+     * Constructor for subclasses of {@code Query} with scheme specific percent encoding of characters beyond that specified for generic URI {@code Query}s.
+     *
+     * @param value a {@code PercentEncodable} specifying the query and the additional scheme specific percent encoding.
+     */
+    protected Query(final PercentEncodable value) {
         super(value, PERCENT_ENCODER);
     }
 
@@ -36,16 +41,6 @@ public final class Query extends PercentEncodedUnaryValue {
      */
     public static Query query(final String query) {
         return new Query(percentEncodableString(query));
-    }
-
-    /**
-     * Factory method for creating {@code Query}s with scheme specific percent encoding of characters beyond that specified for generic URI {@code Query}s.
-     *
-     * @param query a {@code PercentEncodable} specifying the query and the additional scheme specific percent encoding.
-     * @return a {@code Query} representing the given {@code PercentEncodable} that will use the additional percent encoding specified when used in a URI.
-     */
-    public static Query query(final PercentEncodable query) {
-        return new Query(query);
     }
 
     static Query parse(final String queryString) throws ParseException {
