@@ -62,6 +62,14 @@
         </classpath>
     </typedef>
 
+    <typedef name="rasterize" classname="org.apache.tools.ant.taskdefs.optional.RasterizerTask">
+        <classpath>
+            <pathelement location="${location.lib}/build/RasterizerTask.jar"/>
+            <pathelement location="${location.lib}/build/batik-all.jar"/>
+            <pathelement location="${location.lib}/build/xml-apis-ext.jar"/>
+        </classpath>
+    </typedef>
+
     <target name="compile" description="compiles all classes">
         <echo message="Starting compile"/>
         <delete dir="${location.classes}"/>
@@ -185,6 +193,8 @@
         <copy todir="${location.dist.documentation}">
             <fileset dir="${location.documentation}" excludes="**/*.html"/>
         </copy>
+        <rasterize result="image/png" src="${location.documentation}/favicon.svg"
+                   dest="${location.dist.documentation}/favicon-32x32.png" classname="jaxp"/>
         <java classname="net.sourceforge.urin.documentation.DocumentationGenerator" failonerror="true" fork="true">
             <arg value="${location.dist}/documentation/${version}"/>
             <classpath>
