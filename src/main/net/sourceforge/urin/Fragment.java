@@ -11,7 +11,6 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS;
-import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 
 /**
  * A fragment component of a URI.
@@ -25,7 +24,7 @@ public final class Fragment extends PercentEncodedUnaryValue {
     private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
 
     private Fragment(final String fragment) {
-        super(percentEncodableString(fragment), PERCENT_ENCODER);
+        super(PercentEncodable.percentEncodableString(fragment), PERCENT_ENCODER);
     }
 
     /**

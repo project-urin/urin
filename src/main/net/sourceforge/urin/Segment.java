@@ -11,8 +11,6 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
-import static net.sourceforge.urin.PercentEncodable.percentEncodableSpecifiedValue;
-import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
 
 /**
@@ -37,12 +35,12 @@ public abstract class Segment extends PercentEncodedUnaryValue {
     /**
      * The segment ".", referring to the current location in the path name hierarchy,
      */
-    public static final Segment DOT = new Segment(percentEncodableString("."), ENCODE_NOTHING) {
+    public static final Segment DOT = new Segment(PercentEncodable.percentEncodableString("."), ENCODE_NOTHING) {
     };
     /**
      * The segment "..", referring to the parent location in the path name hierarchy,
      */
-    public static final Segment DOT_DOT = new Segment(percentEncodableString(".."), ENCODE_NOTHING) {
+    public static final Segment DOT_DOT = new Segment(PercentEncodable.percentEncodableString(".."), ENCODE_NOTHING) {
     };
 
     private Segment(final PercentEncodable percentEncodable, final PercentEncoder percentEncoder) {
@@ -56,11 +54,11 @@ public abstract class Segment extends PercentEncodedUnaryValue {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment segment(final String segment) {
-        return new Segment(percentEncodableSpecifiedValue(
+        return new Segment(PercentEncodable.percentEncodableSpecifiedValue(
                 "..",
-                percentEncodableSpecifiedValue(
+                PercentEncodable.percentEncodableSpecifiedValue(
                         ".",
-                        percentEncodableString(segment))
+                        PercentEncodable.percentEncodableString(segment))
         ), PERCENT_ENCODER) {
         };
     }

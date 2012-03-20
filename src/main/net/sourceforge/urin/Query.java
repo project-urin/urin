@@ -11,7 +11,6 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS;
-import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 
 /**
  * A query component of a URI.
@@ -40,7 +39,7 @@ public class Query extends PercentEncodedUnaryValue {
      * @return a {@code Query} representing the given {@code String}.
      */
     public static Query query(final String query) {
-        return new Query(percentEncodableString(query));
+        return new Query(PercentEncodable.percentEncodableString(query));
     }
 
     static Query parse(final String queryString) throws ParseException {

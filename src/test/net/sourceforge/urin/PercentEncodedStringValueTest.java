@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -15,7 +15,7 @@ import org.junit.Test;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringDifferentTo;
-import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
+import static net.sourceforge.urin.PercentEncodedUnaryValue.PercentEncodable.percentEncodableString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -47,11 +47,11 @@ public class PercentEncodedStringValueTest {
 
     @Test
     public void toStringFormatIsCorrect() throws Exception {
-        PercentEncodable value = percentEncodableString(aString());
+        PercentEncodedUnaryValue.PercentEncodable value = percentEncodableString(aString());
         assertThat(testSingleEncodedValue(value).toString(), equalTo("TestPercentEncodedUnaryValue{value='" + value + "'}"));
     }
 
-    static PercentEncodedUnaryValue testSingleEncodedValue(final PercentEncodable value) {
+    static PercentEncodedUnaryValue testSingleEncodedValue(final PercentEncodedUnaryValue.PercentEncodable value) {
         return new TestPercentEncodedUnaryValue(value);
     }
 

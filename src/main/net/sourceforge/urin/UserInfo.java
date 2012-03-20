@@ -11,7 +11,6 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
-import static net.sourceforge.urin.PercentEncodable.percentEncodableString;
 
 /**
  * A user information component of a URI.
@@ -33,7 +32,7 @@ public final class UserInfo extends PercentEncodedUnaryValue {
     ));
 
     private UserInfo(final String userInfo) {
-        super(percentEncodableString(userInfo), PERCENT_ENCODER);
+        super(PercentEncodable.percentEncodableString(userInfo), PERCENT_ENCODER);
     }
 
     /**
