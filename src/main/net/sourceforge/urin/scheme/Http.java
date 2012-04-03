@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
+import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Urin.urin;
@@ -27,11 +28,15 @@ public final class Http {
     private static final Scheme HTTPS_SCHEME = scheme("https", port(443));
 
     public static Urin http(final Host host) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Path.path()));
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path()));
     }
 
     public static Urin http(final Host host, final Port port) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), Path.path()));
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), path()));
+    }
+
+    public static Urin http(final Authority authority) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority, path()));
     }
 
     public static Urin http(final Host host, final AbsolutePath path) {
@@ -42,6 +47,10 @@ public final class Http {
         return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), path));
     }
 
+    public static Urin http(final Authority authority, final AbsolutePath path) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority, path));
+    }
+
     public static Urin http(final Host host, final AbsolutePath path, final Query query) {
         return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path), query);
     }
@@ -50,20 +59,32 @@ public final class Http {
         return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), path), query);
     }
 
+    public static Urin http(final Authority authority, final AbsolutePath path, final Query query) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority, path), query);
+    }
+
     public static Urin http(final Host host, final Query query) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Path.path()), query);
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path()), query);
     }
 
     public static Urin http(final Host host, final Port port, final Query query) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), Path.path()), query);
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), path()), query);
+    }
+
+    public static Urin http(final Authority authority, final Query query) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority, path()), query);
     }
 
     public static Urin http(final Host host, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Path.path()), fragment);
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path()), fragment);
     }
 
     public static Urin http(final Host host, final Port port, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), Path.path()), fragment);
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), path()), fragment);
+    }
+
+    public static Urin http(final Authority authority, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority, path()), fragment);
     }
 
     public static Urin http(final Host host, final AbsolutePath path, final Fragment fragment) {
@@ -74,6 +95,10 @@ public final class Http {
         return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), path), fragment);
     }
 
+    public static Urin http(final Authority authority, final AbsolutePath path, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority, path), fragment);
+    }
+
     public static Urin http(final Host host, final AbsolutePath path, final Query query, final Fragment fragment) {
         return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path), query, fragment);
     }
@@ -82,20 +107,28 @@ public final class Http {
         return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), path), query, fragment);
     }
 
+    public static Urin http(final Authority authority, final AbsolutePath path, final Query query, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority, path), query, fragment);
+    }
+
     public static Urin http(final Host host, final Query query, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), Path.path()), query, fragment);
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path()), query, fragment);
     }
 
     public static Urin http(final Host host, final Port port, final Query query, final Fragment fragment) {
-        return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), Path.path()), query, fragment);
+        return urin(HTTP_SCHEME, hierarchicalPart(authority(host, port), path()), query, fragment);
+    }
+
+    public static Urin http(final Authority authority, final Query query, final Fragment fragment) {
+        return urin(HTTP_SCHEME, hierarchicalPart(authority, path()), query, fragment);
     }
 
     public static Urin https(final Host host) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Path.path()));
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), path()));
     }
 
     public static Urin https(final Host host, final Port port) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host, port), Path.path()));
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host, port), path()));
     }
 
     public static Urin https(final Host host, final AbsolutePath path) {
@@ -115,19 +148,19 @@ public final class Http {
     }
 
     public static Urin https(final Host host, final Query query) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Path.path()), query);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), path()), query);
     }
 
     public static Urin https(final Host host, final Port port, final Query query) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host, port), Path.path()), query);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host, port), path()), query);
     }
 
     public static Urin https(final Host host, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Path.path()), fragment);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), path()), fragment);
     }
 
     public static Urin https(final Host host, final Port port, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host, port), Path.path()), fragment);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host, port), path()), fragment);
     }
 
     public static Urin https(final Host host, final AbsolutePath path, final Fragment fragment) {
@@ -147,11 +180,11 @@ public final class Http {
     }
 
     public static Urin https(final Host host, final Query query, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), Path.path()), query, fragment);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host), path()), query, fragment);
     }
 
     public static Urin https(final Host host, final Port port, final Query query, final Fragment fragment) {
-        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host, port), Path.path()), query, fragment);
+        return urin(HTTPS_SCHEME, hierarchicalPart(authority(host, port), path()), query, fragment);
     }
 
     public static QueryParameter queryParameter(final String name, final String value) {
