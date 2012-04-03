@@ -38,13 +38,13 @@ public abstract class Scheme {
      * Factory method for creating {@code Scheme}s.  Schemes must be at least one character long, and are permitted
      * to contain any character in the Latin alphabet, any digit, and any of the characters '+', '-', and '.'.
      *
-     * @param scheme a {@code String} containing at least one character, made up of any characters in the Latin alphabet, the digits, and the characters '+', '-', and '.'.
+     * @param name a {@code String} containing at least one character, made up of any characters in the Latin alphabet, the digits, and the characters '+', '-', and '.'.
      * @return a {@code Scheme} representing the given {@code String}.
      * @throws IllegalArgumentException if the given {@code String} is empty or contains characters not in the Latin alphabet, the digits, or the characters '+', '-', and '.'.
      */
-    public static Scheme scheme(final String scheme) {
-        verify(scheme, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new SchemeWithNoDefaultPort(scheme.toLowerCase(ENGLISH));
+    public static Scheme scheme(final String name) {
+        verify(name, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+        return new SchemeWithNoDefaultPort(name.toLowerCase(ENGLISH));
     }
 
     /**
@@ -53,14 +53,14 @@ public abstract class Scheme {
      * <p/>
      * An example of a name that defines a default port is http, which defaults to port 80, meaning {@code http://example.com} is equivalent to, and preferred to {@code http://example.com:80}.
      *
-     * @param scheme      a {@code String} containing at least one character, made up of any characters in the Latin alphabet, the digits, and the characters '+', '-', and '.'.
+     * @param name        a {@code String} containing at least one character, made up of any characters in the Latin alphabet, the digits, and the characters '+', '-', and '.'.
      * @param defaultPort {@code Port} representing the default port for this name.
      * @return a {@code Scheme} representing the given {@code String}, using the given default port.
      * @throws IllegalArgumentException if the given {@code String} is empty or contains characters not in the Latin alphabet, the digits, or the characters '+', '-', and '.'.
      */
-    public static Scheme scheme(final String scheme, final Port defaultPort) {
-        verify(scheme, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new SchemeWithDefaultPort(scheme.toLowerCase(ENGLISH), defaultPort);
+    public static Scheme scheme(final String name, final Port defaultPort) {
+        verify(name, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+        return new SchemeWithDefaultPort(name.toLowerCase(ENGLISH), defaultPort);
     }
 
     static Scheme parse(final String name) throws ParseException {
