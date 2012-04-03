@@ -12,11 +12,17 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.HierarchicalPartBuilder.aHierarchicalPart;
+import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
+import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
+import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
+import static net.sourceforge.urin.SchemeBuilder.aValidSchemeName;
 import static net.sourceforge.urin.Urin.parse;
 import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.UrinBuilder.aUrin;
@@ -56,7 +62,7 @@ public class UrinTest {
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(urin(scheme, hierarchicalPart, query, fragment).toString(), equalTo("Urin{scheme=" + scheme + ", hierarchicalPart=" + hierarchicalPart + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(urin(scheme, hierarchicalPart, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -114,7 +120,7 @@ public class UrinTest {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Query query = aQuery();
-        assertThat(urin(scheme, hierarchicalPart, query).toString(), equalTo("Urin{scheme=" + scheme + ", hierarchicalPart=" + hierarchicalPart + ", query=" + query + "}"));
+        assertThat(urin(scheme, hierarchicalPart, query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart + ", query=" + query + "}"));
     }
 
     @Test
@@ -167,7 +173,7 @@ public class UrinTest {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Fragment fragment = aFragment();
-        assertThat(urin(scheme, hierarchicalPart, fragment).toString(), equalTo("Urin{scheme=" + scheme + ", hierarchicalPart=" + hierarchicalPart + ", fragment=" + fragment + "}"));
+        assertThat(urin(scheme, hierarchicalPart, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -217,7 +223,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrFragmentToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
-        assertThat(urin(scheme, hierarchicalPart).toString(), equalTo("Urin{scheme=" + scheme + ", hierarchicalPart=" + hierarchicalPart + "}"));
+        assertThat(urin(scheme, hierarchicalPart).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart + "}"));
     }
 
     @Test
@@ -272,5 +278,20 @@ public class UrinTest {
     public void ResolvesAUrinToItself() throws Exception {
         Urin urinReference = aUrin();
         assertThat(aUrin().resolve(urinReference), equalTo(urinReference));
+    }
+
+    @Test
+    public void UrinCreatedWithASchemeSpecifyingADefaultPortDifferentToThatUsedIsEqualToIdenticalUrinCreatedWithASchemeWithoutDefaultPort() throws Exception {
+        String schemeName = aValidSchemeName();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        assertThat(urin(scheme(schemeName, aPort()), hierarchicalPart), equalTo(urin(scheme(schemeName), hierarchicalPart)));
+    }
+
+    @Test
+    public void UrinCreatedWithASchemeSpecifyingADefaultPortEqualToThatUsedIsEqualToIdenticalUrinCreatedWithASchemeWithoutDefaultPortAndWithoutPort() throws Exception {
+        String schemeName = aValidSchemeName();
+        Port port = aPort();
+        Host host = aHost();
+        assertThat(urin(scheme(schemeName, port), hierarchicalPart(authority(host, port))), equalTo(urin(scheme(schemeName), hierarchicalPart(authority(host)))));
     }
 }

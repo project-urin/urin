@@ -17,6 +17,7 @@ import static net.sourceforge.urin.Authority.parse;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.PortBuilder.aPort;
+import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
 import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -224,4 +225,46 @@ public class AuthorityTest {
         assertThat(parse(userInfo.asString() + "@" + host.asString() + ":" + port.asString()), equalTo(authority(userInfo, host, port)));
     }
 
+    @Test
+    public void authorityWithNoUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() throws Exception {
+        Authority authority = authority(aHost());
+        assertThat(authority.removePort(aPort()), equalTo(authority));
+    }
+
+    @Test
+    public void authorityWithUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() throws Exception {
+        Authority authority = authority(aUserInfo(), aHost());
+        assertThat(authority.removePort(aPort()), equalTo(authority));
+    }
+
+    @Test
+    public void authorityWithPortIsReturnedUnmolestedFromRemovingDifferentPort() throws Exception {
+        Port port = aPort();
+        Authority authority = authority(aHost(), port);
+        assertThat(authority.removePort(aPortDifferentTo(port)), equalTo(authority));
+    }
+
+    @Test
+    public void authorityWithPortCorrectlyRemovesThatPort() throws Exception {
+        Port port = aPort();
+        Host host = aHost();
+        Authority authority = authority(host, port);
+        assertThat(authority.removePort(port), equalTo(authority(host)));
+    }
+
+    @Test
+    public void authorityWithUserInfoAndPortIsReturnedUnmolestedFromRemovingDifferentPort() throws Exception {
+        Port port = aPort();
+        Authority authority = authority(aUserInfo(), aHost(), port);
+        assertThat(authority.removePort(aPortDifferentTo(port)), equalTo(authority));
+    }
+
+    @Test
+    public void authorityWithUserInfoAndPortCorrectlyRemovesThatPort() throws Exception {
+        UserInfo userInfo = aUserInfo();
+        Host host = aHost();
+        Port port = aPort();
+        Authority authority = authority(userInfo, host, port);
+        assertThat(authority.removePort(port), equalTo(authority(userInfo, host)));
+    }
 }

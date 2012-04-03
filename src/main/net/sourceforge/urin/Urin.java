@@ -49,7 +49,7 @@ public abstract class Urin extends UrinReference {
      * @return a {@code Urin} with the given {@code Scheme} and {@code HierarchicalPart}.
      */
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-        return new UrinWithHierarchicalPart(scheme, hierarchicalPart);
+        return new UrinWithHierarchicalPart(scheme.removeDefaultPort(), hierarchicalPart.normalisePort(scheme));
     }
 
     /**
@@ -61,7 +61,7 @@ public abstract class Urin extends UrinReference {
      * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, and {@code Fragment}.
      */
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
-        return new UrinWithHierarchicalPartAndFragment(scheme, hierarchicalPart, fragment);
+        return new UrinWithHierarchicalPartAndFragment(scheme.removeDefaultPort(), hierarchicalPart.normalisePort(scheme), fragment);
     }
 
     /**
@@ -73,7 +73,7 @@ public abstract class Urin extends UrinReference {
      * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, and {@code Query}.
      */
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-        return new UrinWithHierarchicalPartAndQuery(scheme, hierarchicalPart, query);
+        return new UrinWithHierarchicalPartAndQuery(scheme.removeDefaultPort(), hierarchicalPart.normalisePort(scheme), query);
     }
 
     /**
@@ -86,7 +86,7 @@ public abstract class Urin extends UrinReference {
      * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, {@code Query}, and {@code Fragment}.
      */
     public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-        return new UrinWithHierarchicalPartAndQueryAndFragment(scheme, hierarchicalPart, query, fragment);
+        return new UrinWithHierarchicalPartAndQueryAndFragment(scheme.removeDefaultPort(), hierarchicalPart.normalisePort(scheme), query, fragment);
     }
 
     /**

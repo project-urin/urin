@@ -97,6 +97,8 @@ public abstract class HierarchicalPart {
 
     abstract HierarchicalPart resolve(final Path relativeReferencePath);
 
+    abstract HierarchicalPart normalisePort(final Scheme scheme);
+
     final HierarchicalPart resolve(final Authority relativeReferenceAuthority, final Path relativeReferencePath) {
         return new HierarchicalPartWithAuthority(relativeReferenceAuthority, relativeReferencePath);
     }
@@ -119,6 +121,11 @@ public abstract class HierarchicalPart {
         @Override
         HierarchicalPart resolve(final Path relativeReferencePath) {
             return hierarchicalPart(relativeReferencePath.resolveRelativeTo(path));
+        }
+
+        @Override
+        HierarchicalPart normalisePort(final Scheme scheme) {
+            return this;
         }
 
         @Override
@@ -169,6 +176,11 @@ public abstract class HierarchicalPart {
         @Override
         HierarchicalPart resolve(final Path relativeReferencePath) {
             return new HierarchicalPartWithAuthority(authority, relativeReferencePath.resolveRelativeTo(path));
+        }
+
+        @Override
+        HierarchicalPart normalisePort(final Scheme scheme) {
+            return new HierarchicalPartWithAuthority(scheme.normalise(authority), path);
         }
 
         @Override

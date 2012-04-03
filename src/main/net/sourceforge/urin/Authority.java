@@ -76,18 +76,18 @@ public abstract class Authority {
     static Authority parse(final String authority) throws ParseException {
         Matcher matcher = AUTHORITY_PATTERN.matcher(authority);
         matcher.matches();
-        final String userinfoString = matcher.group(2);
+        final String userInfoString = matcher.group(2);
         final String hostString = matcher.group(3);
         final String port = matcher.group(5);
         final Host host = Host.parse(hostString);
-        if (userinfoString == null) {
+        if (userInfoString == null) {
             if (port == null) {
                 return authority(host);
             } else {
                 return authority(host, Port.parse(port));
             }
         } else {
-            UserInfo userInfo = UserInfo.parse(userinfoString);
+            UserInfo userInfo = UserInfo.parse(userInfoString);
             if (port == null) {
                 return authority(userInfo, host);
             } else {
@@ -95,6 +95,8 @@ public abstract class Authority {
             }
         }
     }
+
+    abstract Authority removePort(final Port port);
 
     private static class AuthorityWithHost extends Authority {
         private final Host host;
@@ -109,6 +111,11 @@ public abstract class Authority {
         @Override
         String asString() {
             return host.asString();
+        }
+
+        @Override
+        Authority removePort(final Port port) {
+            return this;
         }
 
         @Override
@@ -154,6 +161,11 @@ public abstract class Authority {
                     .append('@')
                     .append(host.asString())
                     .toString();
+        }
+
+        @Override
+        Authority removePort(final Port port) {
+            return this;
         }
 
         @Override
@@ -205,6 +217,11 @@ public abstract class Authority {
                     .append(':')
                     .append(port.asString())
                     .toString();
+        }
+
+        @Override
+        Authority removePort(final Port port) {
+            return this.port.equals(port) ? authority(host) : this;
         }
 
         @Override
@@ -261,6 +278,11 @@ public abstract class Authority {
                     .append(':')
                     .append(port.asString())
                     .toString();
+        }
+
+        @Override
+        Authority removePort(final Port port) {
+            return this.port.equals(port) ? authority(userInfo, host) : this;
         }
 
         @Override
