@@ -128,14 +128,6 @@ final class UrinPage {
         );
     }
 
-    static InlineTag variableName(String name) {
-        return codeTag(xhtmlText(name));
-    }
-
-    static InlineTag methodName(String name) {
-        return codeTag(xhtmlText(name));
-    }
-
     static InlineTag codeSnippet(String snippet) {
         return codeTag(xhtmlText(snippet));
     }
