@@ -19,8 +19,7 @@ import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
-import static net.sourceforge.urin.scheme.Http.http;
-import static net.sourceforge.urin.scheme.Http.https;
+import static net.sourceforge.urin.scheme.Http.*;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
 import static org.sourceforge.xazzle.xhtml.ClassName.className;
 import static org.sourceforge.xazzle.xhtml.Href.href;
@@ -94,7 +93,7 @@ final class UrinPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(http(registeredName("sflogo.sourceforge.net"), path("sflogo.php"), query("group_id=605761&type=13")).asString()),
+                                                                        imageSource(http(registeredName("sflogo.sourceforge.net"), path("sflogo.php"), queryParameters(queryParameter("group_id", "605761"), queryParameter("type", "13"))).asString()),
                                                                         alternateText("Get urin at SourceForge.net. Fast, secure and Free Open Source software downloads")
                                                                 )
                                                                         .withHeight(pixels("30"))
