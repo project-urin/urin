@@ -151,7 +151,6 @@ final class UrinPage {
     }
 
     static Urin standardJarUrin(final String version) {
-        // http://sourceforge.net/projects/urin/files/0.48/urin-0.48.jar/download
         return https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
     }
 }
