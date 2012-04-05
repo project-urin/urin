@@ -58,14 +58,6 @@ public class PomGenerator {
         );
     }
 
-    private static Tag server(final String serverName, final String username, final String password) {
-        return settingsTag(tagName("server"),
-                settingsTag(tagName("id"), text(serverName)),
-                settingsTag(tagName("username"), text(username)),
-                settingsTag(tagName("password"), text(password))
-        );
-    }
-
     private static Tag pom(final String version) {
         return pomTag(tagName("project"),
                 pomTag(tagName("modelVersion"), text("4.0.0")),
