@@ -192,11 +192,11 @@
                 <pathelement location="${location.lib}/build/xml-apis-ext.jar"/>
             </classpath>
         </typedef>
-        <rasterize result="image/png" src="${location.documentation}/favicon.svg"
+        <rasterize result="image/png" src="resources/favicon.svg"
                    dest="${location.dist.documentation}/favicon-32x32.png" classname="jaxp"/>
         <taskdef name="svg2ico" classname="net.sourceforge.svg2ico.Svg2Ico"
-                 classpath="${location.lib}/build/svg2ico-0.4.jar"/>
-        <svg2ico dest="${location.dist.documentation}/favicon.ico"/>
+                 classpath="${location.lib}/build/svg2ico-0.5.jar"/>
+        <svg2ico src="resources/favicon.svg" dest="${location.dist.documentation}/favicon.ico"/>
         <java classname="net.sourceforge.urin.documentation.DocumentationGenerator" failonerror="true" fork="true">
             <arg value="${location.dist}/documentation/${version}"/>
             <classpath>
