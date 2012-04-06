@@ -262,7 +262,7 @@
              destfile="${location.dist.maven}/urin-${version}-javadoc.jar"/>
     </target>
 
-    <target name="prepare-release" description="Builds an offical release locally">
+    <target name="prepare-release" description="Builds an official release locally">
         <property name="release" value="true"/>
         <antcall target="distribute"/>
     </target>
