@@ -20,12 +20,14 @@ import static net.sourceforge.urin.Hexadectet.hexadectet;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.Octet.octet;
+import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.Urin.urin;
+import static net.sourceforge.urin.UrinAssert.assertAsStringAsUriAndParse;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -33,45 +35,45 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void ftpExample() throws Exception {
-        UrinAssert.assertAsStringAsUriAndParse("ftp://ftp.is.co.za/rfc/rfc1808.txt", urin(
+        assertAsStringAsUriAndParse("ftp://ftp.is.co.za/rfc/rfc1808.txt", urin(
                 scheme("ftp"),
                 hierarchicalPart(
                         authority(registeredName("ftp.is.co.za")),
-                        Path.path(segment("rfc"), segment("rfc1808.txt")))
+                        path(segment("rfc"), segment("rfc1808.txt")))
         ));
     }
 
     @Test
     public void httpExample() throws Exception {
-        UrinAssert.assertAsStringAsUriAndParse("http://www.ietf.org/rfc/rfc2396.txt", urin(
+        assertAsStringAsUriAndParse("http://www.ietf.org/rfc/rfc2396.txt", urin(
                 scheme("http"),
                 hierarchicalPart(
                         authority(registeredName("www.ietf.org")),
-                        Path.path(segment("rfc"), segment("rfc2396.txt")))
+                        path(segment("rfc"), segment("rfc2396.txt")))
         ));
     }
 
     @Test
     public void ldapExample() throws Exception {
-        UrinAssert.assertAsStringAsUriAndParse("ldap://[2001:db8::7]/c=GB?objectClass?one", urin(
+        assertAsStringAsUriAndParse("ldap://[2001:db8::7]/c=GB?objectClass?one", urin(
                 scheme("ldap"),
                 hierarchicalPart(
                         authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
-                        Path.path(segment("c=GB"))),
+                        path(segment("c=GB"))),
                 query("objectClass?one")
         ));
     }
 
     @Test
     public void mailtoExample() throws Exception {
-        UrinAssert.assertAsStringAsUriAndParse("mailto:John.Doe@example.com", urin(
+        assertAsStringAsUriAndParse("mailto:John.Doe@example.com", urin(
                 scheme("mailto"),
                 hierarchicalPart(rootlessPath(segment("John.Doe@example.com")))));
     }
 
     @Test
     public void newsExample() throws Exception {
-        UrinAssert.assertAsStringAsUriAndParse("news:comp.infosystems.www.servers.unix", urin(
+        assertAsStringAsUriAndParse("news:comp.infosystems.www.servers.unix", urin(
                 scheme("news"),
                 hierarchicalPart(
                         rootlessPath(segment("comp.infosystems.www.servers.unix")))));
@@ -79,24 +81,24 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void telExample() throws Exception {
-        UrinAssert.assertAsStringAsUriAndParse("tel:+1-816-555-1212", urin(
+        assertAsStringAsUriAndParse("tel:+1-816-555-1212", urin(
                 scheme("tel"),
                 hierarchicalPart(rootlessPath(segment("+1-816-555-1212")))));
     }
 
     @Test
     public void telnetExample() throws Exception {
-        UrinAssert.assertAsStringAsUriAndParse("telnet://192.0.2.16:80/", urin(
+        assertAsStringAsUriAndParse("telnet://192.0.2.16:80/", urin(
                 scheme("telnet"),
                 hierarchicalPart(
                         authority(ipV4Address(octet(192), octet(0), octet(2), octet(16)), port("80")),
-                        Path.path())
+                        path())
         ));
     }
 
     @Test
     public void urnExample() throws Exception {
-        UrinAssert.assertAsStringAsUriAndParse("urn:oasis:names:specification:docbook:dtd:xml:4.1.2", urin(
+        assertAsStringAsUriAndParse("urn:oasis:names:specification:docbook:dtd:xml:4.1.2", urin(
                 scheme("urn"),
                 hierarchicalPart(rootlessPath(segment("oasis:names:specification:docbook:dtd:xml:4.1.2")))));
     }

@@ -16,12 +16,16 @@ import net.sourceforge.urin.UrinReference;
 import net.sourceforge.urin.scheme.Http;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
+import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Fragment.fragment;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
+import static net.sourceforge.urin.Scheme.scheme;
+import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.Http.*;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
@@ -63,7 +67,17 @@ final class DocumentationPage {
                 ),
                 h3Tag(xhtmlText("Producing URIs and relative references")),
                 paragraphTag(
-                        xhtmlText("Lorem ipsum etc etc")
+                        xhtmlText("Producing a URI is simply a case of calling the relevant static factory method on the "), simpleNameOf(Urin.class),
+                        xhtmlText(" class, for example:")
+                ),
+                codeBlock("urin(\n" +
+                        "        scheme(\"ftp\"),\n" +
+                        "        hierarchicalPart(\n" +
+                        "                authority(registeredName(\"ftp.is.co.za\")),\n" +
+                        "                path(\"rfc\", \"rfc1808.txt\"))\n" +
+                        ").asString();"),
+                paragraphTag(
+                        xhtmlText("Generates the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(simpleUrinExample()), xhtmlText(".")
                 ),
                 h3Tag(xhtmlText("Producing HTTP and HTTPS URIs and relative references")),
                 paragraphTag(
@@ -105,6 +119,16 @@ final class DocumentationPage {
         );
     }
 
+    private static String simpleUrinExample() {
+        return
+                urin(
+                        scheme("ftp"),
+                        hierarchicalPart(
+                                authority(registeredName("ftp.is.co.za")),
+                                path("rfc", "rfc1808.txt"))
+                ).asString();
+    }
+
     private static String httpExample() {
         return
                 http(
@@ -118,6 +142,5 @@ final class DocumentationPage {
                         fragment("verse 2")
                 ).asString();
     }
-
 
 }
