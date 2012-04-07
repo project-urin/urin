@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin.documentation;
 
+import net.sourceforge.urin.Urin;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import static net.sourceforge.urin.Authority.authority;
@@ -21,7 +22,6 @@ import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.Http.http;
 import static net.sourceforge.urin.scheme.Http.https;
-import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DownloadsPage {
@@ -30,14 +30,14 @@ final class DownloadsPage {
     }
 
     static HtmlTag downloadsPage(final String version) {
-        String standardJarUrl = standardJarUrin(version).asString();
-        String smallJarUrl = https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-small-" + version + ".jar", "download")).asString();
-        String gitUri = urin(scheme("git"), hierarchicalPart(authority(registeredName("git.code.sf.net")), path("p", "urin", "code"))).asString();
+        Urin standardJarUrl = standardJarUrin(version);
+        Urin smallJarUrl = https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-small-" + version + ".jar", "download"));
+        Urin gitUri = urin(scheme("git"), hierarchicalPart(authority(registeredName("git.code.sf.net")), path("p", "urin", "code")));
         return aUrinPage(
                 h2Tag(xhtmlText("Downloads")),
                 paragraphTag(
                         xhtmlText("Urin is available under the "),
-                        anchorTag(xhtmlText("Apache 2 license")).withHref(href(http(registeredName("www.apache.org"), path("licenses", "LICENSE-2.0")).asString())),
+                        anchorTag(xhtmlText("Apache 2 license")).withHref(href(http(registeredName("www.apache.org"), path("licenses", "LICENSE-2.0")))),
                         xhtmlText(".  It can be downloaded in four forms:")),
                 unorderedListTag(
                         listItemTag(
@@ -54,7 +54,7 @@ final class DownloadsPage {
                                 "</dependency>")
                         ),
                         listItemTag(
-                                xhtmlText("or as the full source code including tests etc. using Git from "), codeTag(anchorTag(xhtmlText(gitUri)).withHref(href(gitUri))), xhtmlText(".")
+                                xhtmlText("or as the full source code including tests etc. using Git from "), codeTag(anchorTag(xhtmlText(gitUri.asString())).withHref(href(gitUri))), xhtmlText(".")
                         )
                 ),
                 paragraphTag(

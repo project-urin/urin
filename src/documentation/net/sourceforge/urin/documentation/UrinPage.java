@@ -11,18 +11,18 @@
 package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.Host;
-import net.sourceforge.urin.Path;
 import net.sourceforge.urin.Urin;
+import net.sourceforge.urin.UrinReference;
 import org.sourceforge.xazzle.xhtml.*;
 
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
+import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.scheme.Http.*;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
 import static org.sourceforge.xazzle.xhtml.ClassName.className;
-import static org.sourceforge.xazzle.xhtml.Href.href;
 import static org.sourceforge.xazzle.xhtml.Id.id;
 import static org.sourceforge.xazzle.xhtml.ImageSource.imageSource;
 import static org.sourceforge.xazzle.xhtml.MetaContent.metaContent;
@@ -39,18 +39,18 @@ final class UrinPage {
     static final Host W3_WWW = registeredName("www.w3.org");
 
     public static HtmlTag aUrinPage(final BodyElement... body) {
-        final Href projectSiteHref = href(http(SOURCEFORGE, path("projects", "urin")).asString());
+        final Href projectSiteHref = href(http(SOURCEFORGE, path("projects", "urin")));
         return htmlTag(
                 headTag(
                         titleTag("Urin - A Java library for making URIs"),
                         linkTag()
                                 .withRelationships(STYLESHEET)
                                 .withMimeType(mimeType("text/css"))
-                                .withHref(href("urin.css")),
+                                .withHref(Href.href("urin.css")),
                         linkTag()
                                 .withRelationships(relationship("icon"))
                                 .withMimeType(mimeType("image/png"))
-                                .withHref(href("favicon-32x32.png")),
+                                .withHref(Href.href("favicon-32x32.png")),
                         metaTag(metaName("description"), metaContent("Urin is a replacement for Java's URI and URL classes.  It implements RFC 3986.  It is free to download and use in your project.")),
                         scriptTag(mimeType("text/javascript"), xhtmlText("  var _gaq = _gaq || [];\n" +
                                 "  _gaq.push(['_setAccount', 'UA-16431822-5']);\n" +
@@ -71,15 +71,19 @@ final class UrinPage {
                                         unorderedListTag(
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Home"))
-                                                                .withHref(href(relativeReference(Path.rootlessPath("index.html")).asString()))
+                                                                .withHref(href(relativeReference(rootlessPath("index.html"))))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Downloads"))
-                                                                .withHref(href(relativeReference(Path.rootlessPath("downloads.html")).asString()))
+                                                                .withHref(href(relativeReference(rootlessPath("downloads.html"))))
+                                                ),
+                                                listItemTag(
+                                                        anchorTag(xhtmlText("Documentation"))
+                                                                .withHref(href(relativeReference(rootlessPath("documentation.html"))))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Support"))
-                                                                .withHref(href(relativeReference(Path.rootlessPath("support.html")).asString()))
+                                                                .withHref(href(relativeReference(rootlessPath("support.html"))))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Project Site"))
@@ -108,7 +112,7 @@ final class UrinPage {
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(http(W3_JIGSAW, path("css-validator", "check", "referer")).asString()))
+                                                        ).withHref(href(http(W3_JIGSAW, path("css-validator", "check", "referer"))))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(
@@ -118,7 +122,7 @@ final class UrinPage {
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(http(registeredName("validator.w3.org"), path("check"), query("uri=referer")).asString()))
+                                                        ).withHref(href(http(registeredName("validator.w3.org"), path("check"), query("uri=referer"))))
                                                 )
                                         )
                                 ).withId(id("footer"))
@@ -143,5 +147,9 @@ final class UrinPage {
 
     static Urin standardJarUrin(final String version) {
         return https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
+    }
+
+    static Href href(final UrinReference urinReference) {
+        return Href.href(urinReference.asString());
     }
 }

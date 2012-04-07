@@ -21,6 +21,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
+import static net.sourceforge.urin.documentation.DocumentationPage.documentationPage;
 import static net.sourceforge.urin.documentation.DownloadsPage.downloadsPage;
 import static net.sourceforge.urin.documentation.IndexPage.indexPage;
 import static net.sourceforge.urin.documentation.SupportPage.supportPage;
@@ -32,6 +33,7 @@ public class DocumentationGenerator {
 
         writePage(indexPage(version), destination, "index.html");
         writePage(downloadsPage(version), destination, "downloads.html");
+        writePage(documentationPage(version), destination, "documentation.html");
         writePage(supportPage(), destination, "support.html");
     }
 
@@ -41,10 +43,10 @@ public class DocumentationGenerator {
         return properties.getProperty("urin.version.major") + "." + properties.getProperty("urin.version.minor");
     }
 
-    private static void writePage(final HtmlTag indexPage, final File destination, final String fileName) throws IOException, XmlWriterException {
+    private static void writePage(final HtmlTag urinPage, final File destination, final String fileName) throws IOException, XmlWriterException {
         final File file = new File(destination, fileName);
         final FileWriter fileWriter = new FileWriter(file);
-        new JaxpXmlWriter(fileWriter).write(new Document(indexPage.asWriteableToXml()));
+        new JaxpXmlWriter(fileWriter).write(new Document(urinPage.asWriteableToXml()));
         fileWriter.close();
     }
 

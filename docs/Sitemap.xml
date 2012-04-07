@@ -15,6 +15,10 @@
         <priority>1.0</priority>
     </url>
     <url>
+        <loc>http://urin.sourceforge.net/documentation.html</loc>
+        <priority>0.5</priority>
+    </url>
+    <url>
         <loc>http://urin.sourceforge.net/downloads.html</loc>
         <priority>0.5</priority>
     </url>
