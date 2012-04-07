@@ -73,15 +73,27 @@ final class DocumentationPage {
                 ),
                 codeBlock("http(\n" +
                         "        registeredName(\"www.example.com\"),\n" +
-                        "        port(\"8080\"),\n" +
+                        "        port(80),\n" +
                         "        path(\"music\", \"AC/DC\", \"Back in Black\"),\n" +
                         "        queryParameters(\n" +
-                        "                queryParameter(\"track\", \"Hell's Bells\")\n" +
+                        "                queryParameter(\"track\", \"Hells Bells\"),\n" +
+                        "                queryParameter(\"version\", \"Radio edit\")\n" +
                         "        ),\n" +
                         "        fragment(\"verse 2\")\n" +
                         ").asString();"),
                 paragraphTag(
-                        xhtmlText("Generates the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(httpExample()), xhtmlText(".")
+                        xhtmlText("Generates the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(httpExample()), xhtmlText(".  Notice " +
+                        "a number of HTTP specific features:")
+                ),
+                unorderedListTag(
+                        listItemTag(xhtmlText("The port has been elided because port 80 is the default for HTTP")),
+                        listItemTag(xhtmlText("HTTP query parameter separators have been inserted in the query component")),
+                        listItemTag(xhtmlText("Spaces in the query component have been encoded as \""), codeSnippet("+"),
+                                xhtmlText("\", rather than \""), codeSnippet("%20"), xhtmlText("\""))
+                ),
+                paragraphTag(
+                        xhtmlText("An equivalient set of methods for generating HTTPS URIs also exist on the "), simpleNameOf(Http.class),
+                        xhtmlText(" class.")
                 ),
                 h3Tag(xhtmlText("Parsing")),
                 paragraphTag(
@@ -97,10 +109,11 @@ final class DocumentationPage {
         return
                 http(
                         registeredName("www.example.com"),
-                        port("8080"),
+                        port(80),
                         path("music", "AC/DC", "Back in Black"),
                         queryParameters(
-                                queryParameter("track", "Hell's Bells")
+                                queryParameter("track", "Hells Bells"),
+                                queryParameter("version", "Radio edit")
                         ),
                         fragment("verse 2")
                 ).asString();
