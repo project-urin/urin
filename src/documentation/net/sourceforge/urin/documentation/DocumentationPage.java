@@ -10,7 +10,10 @@
 
 package net.sourceforge.urin.documentation;
 
+import net.sourceforge.urin.RelativeReference;
+import net.sourceforge.urin.Urin;
 import net.sourceforge.urin.UrinReference;
+import net.sourceforge.urin.scheme.Http;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import static net.sourceforge.urin.Host.registeredName;
@@ -46,7 +49,16 @@ final class DocumentationPage {
                 ),
                 unorderedListTag(
                         listItemTag(quotationTag(xhtmlText("URI")), xhtmlText(" - for example "), codeSnippet(http(registeredName("www.example.com"), path("index")).asString())),
-                        listItemTag(quotationTag(xhtmlText("Relative reference")), xhtmlText(" - for example "), codeSnippet(relativeReference(path("index")).asString()), xhtmlText(", sometimes loosely called a "), quotationTag(xhtmlText("relative URI")))
+                        listItemTag(quotationTag(xhtmlText("Relative reference")), xhtmlText(" - sometimes loosely called a "), quotationTag(xhtmlText("relative URI")), xhtmlText("; for example "), codeSnippet(relativeReference(path("index")).asString()))
+                ),
+                paragraphTag(
+                        xhtmlText("These are modelled in Urin as "), simpleNameOf(Urin.class), xhtmlText(" and "), simpleNameOf(RelativeReference.class),
+                        xhtmlText(" respectively.  These classes provide factory methods that allow any valid URI or URI reference to be generated.")
+                ),
+                paragraphTag(
+                        xhtmlText("Urin also provides a mechanism for schemes with extra rules to be implemented, as demonstrated in the "),
+                        simpleNameOf(Http.class), xhtmlText(" class, which handles the non-default encoding of the space character, and the " +
+                        "encoding of parameters in the query component of the HTTP scheme.")
                 ),
                 h3Tag(xhtmlText("Producing URIs and relative references")),
                 paragraphTag(

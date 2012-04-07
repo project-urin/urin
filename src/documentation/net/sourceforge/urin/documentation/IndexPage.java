@@ -44,11 +44,11 @@ final class IndexPage {
                         "    registeredName(\"www.example.com\"),\n" +
                         "    path(\"music\", \"AC/DC\", \"Back in Black\")\n" +
                         ").asString();"),
-                paragraphTag(xhtmlText("This produces the "), UrinPage.simpleNameOf(String.class), xhtmlText(" \""), UrinPage.codeSnippet(acDcString()),
-                        xhtmlText("\".  Note that the '"), UrinPage.codeSnippet("/"), xhtmlText("' character in \""), UrinPage.codeSnippet("AC/DC"),
-                        xhtmlText("\" has been encoded as \""), UrinPage.codeSnippet("%2F"), xhtmlText("\", and that the space characters in \""),
-                        UrinPage.codeSnippet("Back in Black"), xhtmlText("\" have been encoded as \""), UrinPage.codeSnippet("%20"), xhtmlText("\".")),
-                paragraphTag(xhtmlText("In the above example, the registered name and path could be any Java "), UrinPage.simpleNameOf(String.class),
+                paragraphTag(xhtmlText("This produces the "), simpleNameOf(String.class), xhtmlText(" \""), codeSnippet(acDcString()),
+                        xhtmlText("\".  Note that the '"), codeSnippet("/"), xhtmlText("' character in \""), codeSnippet("AC/DC"),
+                        xhtmlText("\" has been encoded as \""), codeSnippet("%2F"), xhtmlText("\", and that the space characters in \""),
+                        codeSnippet("Back in Black"), xhtmlText("\" have been encoded as \""), codeSnippet("%20"), xhtmlText("\".")),
+                paragraphTag(xhtmlText("In the above example, the registered name and path could be any Java "), simpleNameOf(String.class),
                         xhtmlText("s we choose; the library will encode them appropriately to the part of the URI where they appear."))
         );
     }
