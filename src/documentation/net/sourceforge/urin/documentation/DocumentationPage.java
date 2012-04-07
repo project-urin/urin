@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin.documentation;
 
+import net.sourceforge.urin.ParseException;
 import net.sourceforge.urin.RelativeReference;
 import net.sourceforge.urin.Urin;
 import net.sourceforge.urin.UrinReference;
@@ -114,8 +115,13 @@ final class DocumentationPage {
                         xhtmlText("The "), simpleNameOf(UrinReference.class), xhtmlText(", "), simpleNameOf(Urin.class),
                         xhtmlText(", and "), simpleNameOf(RelativeReference.class), xhtmlText(" classes all implement a static "),
                         codeSnippet("parse"), xhtmlText(" method to produce an instance of their respective types from a "), simpleNameOf(String.class),
-                        xhtmlText(".")
-                )
+                        xhtmlText(".  For example, we can parse the URI "), codeSnippet(parseExample()), xhtmlText(" as follows:")
+                ),
+                codeBlock("try {\n" +
+                        "    parsedUrin = Urin.parse(\"ldap://[2001:db8::7]/c=GB?objectClass?one\");\n" +
+                        "} catch (ParseException e) {\n" +
+                        "    // handle parse failure\n" +
+                        "}")
         );
     }
 
@@ -141,6 +147,16 @@ final class DocumentationPage {
                         ),
                         fragment("verse 2")
                 ).asString();
+    }
+
+    private static String parseExample() {
+        Urin parsedUrin = null;
+        try {
+            parsedUrin = Urin.parse("ldap://[2001:db8::7]/c=GB?objectClass?one");
+        } catch (ParseException e) {
+            // handle parse failure
+        }
+        return parsedUrin.asString();
     }
 
 }
