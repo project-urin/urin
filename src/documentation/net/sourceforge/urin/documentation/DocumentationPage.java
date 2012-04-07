@@ -121,7 +121,11 @@ final class DocumentationPage {
                         "    parsedUrin = Urin.parse(\"ldap://[2001:db8::7]/c=GB?objectClass?one\");\n" +
                         "} catch (ParseException e) {\n" +
                         "    // handle parse failure\n" +
-                        "}")
+                        "}"),
+                paragraphTag(
+                        xhtmlText("Where "), simpleNameOf(ParseException.class), xhtmlText(" would be thrown if the "), simpleNameOf(String.class),
+                        xhtmlText(" wasn't a valid URI.")
+                )
         );
     }
 
