@@ -16,12 +16,14 @@ import net.sourceforge.urin.UrinReference;
 import net.sourceforge.urin.scheme.Http;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
+import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
+import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.documentation.UrinPage.*;
-import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.Http.*;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DocumentationPage {
@@ -31,7 +33,6 @@ final class DocumentationPage {
 
     @SuppressWarnings({"StaticMethodOnlyUsedInOneClass"})
     static HtmlTag documentationPage(final String version) {
-        UrinReference urinReference = standardJarUrin(version);
         return aUrinPage(
                 h2Tag(xhtmlText("Documentation")),
                 h3Tag(xhtmlText("Introduction")),
@@ -39,7 +40,7 @@ final class DocumentationPage {
                         xhtmlText("This page provides an example-based guide to Urin. In-depth details of the API are available in the "),
                         anchorTag(xhtmlText("online javadoc")).withHref(href(relativeReference(rootlessPath("javadoc")))),
                         xhtmlText(", which can also be found in the "),
-                        anchorTag(xhtmlText("standard jar")).withHref(href(urinReference)),
+                        anchorTag(xhtmlText("standard jar")).withHref(href(standardJarUrin(version))),
                         xhtmlText(".")
                 ),
                 h3Tag(xhtmlText("Model of URIs and relative references in Urin")),
@@ -63,8 +64,47 @@ final class DocumentationPage {
                 h3Tag(xhtmlText("Producing URIs and relative references")),
                 paragraphTag(
                         xhtmlText("Lorem ipsum etc etc")
+                ),
+                h3Tag(xhtmlText("Producing HTTP and HTTPS URIs and relative references")),
+                paragraphTag(
+                        xhtmlText("Urin provides specific support for generating HTTP and HTTPS URIs for convenience, and to implement " +
+                                "the rules and encoding specified in addition to those specified for general URIs.  These are implemented in " +
+                                "the "), simpleNameOf(Http.class), xhtmlText(" class.  For example:")
+                ),
+                codeBlock("http(\n" +
+                        "        registeredName(\"www.example.com\"),\n" +
+                        "        port(\"8080\"),\n" +
+                        "        path(\"music\", \"AC/DC\", \"Back in Black\"),\n" +
+                        "        queryParameters(\n" +
+                        "                queryParameter(\"track\", \"Hell's Bells\")\n" +
+                        "        ),\n" +
+                        "        fragment(\"verse 2\")\n" +
+                        ").asString();"),
+                paragraphTag(
+                        xhtmlText("Generates the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(httpExample()), xhtmlText(".")
+                ),
+                h3Tag(xhtmlText("Parsing")),
+                paragraphTag(
+                        xhtmlText("The "), simpleNameOf(UrinReference.class), xhtmlText(", "), simpleNameOf(Urin.class),
+                        xhtmlText(", and "), simpleNameOf(RelativeReference.class), xhtmlText(" classes all implement a static "),
+                        codeSnippet("parse"), xhtmlText(" method to produce an instance of their respective types from a "), simpleNameOf(String.class),
+                        xhtmlText(".")
                 )
         );
     }
+
+    private static String httpExample() {
+        return
+                http(
+                        registeredName("www.example.com"),
+                        port("8080"),
+                        path("music", "AC/DC", "Back in Black"),
+                        queryParameters(
+                                queryParameter("track", "Hell's Bells")
+                        ),
+                        fragment("verse 2")
+                ).asString();
+    }
+
 
 }

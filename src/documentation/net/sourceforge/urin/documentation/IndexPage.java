@@ -40,7 +40,7 @@ final class IndexPage {
                 ),
                 h2Tag(xhtmlText("Example")),
                 paragraphTag(xhtmlText("A brief example demonstrates the generation of an HTTP URI:")),
-                UrinPage.codeBlock("http(\n" +
+                codeBlock("http(\n" +
                         "    registeredName(\"www.example.com\"),\n" +
                         "    path(\"music\", \"AC/DC\", \"Back in Black\")\n" +
                         ").asString();"),
