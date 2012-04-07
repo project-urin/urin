@@ -13,9 +13,12 @@ package net.sourceforge.urin.documentation;
 import net.sourceforge.urin.UrinReference;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
+import static net.sourceforge.urin.Host.registeredName;
+import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.documentation.UrinPage.*;
+import static net.sourceforge.urin.scheme.Http.http;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DocumentationPage {
@@ -38,7 +41,12 @@ final class DocumentationPage {
                 ),
                 h3Tag(xhtmlText("Model of URIs and relative references in Urin")),
                 paragraphTag(
-                        xhtmlText("There are two top level structures defined in RFC 3986:")
+                        xhtmlText("The model of URIs and relative references in Urin reflects that defined in "), RFC_3986, xhtmlText(".  The RFC " +
+                        "defines two top level structures:")
+                ),
+                unorderedListTag(
+                        listItemTag(xhtmlText("URI - for example "), codeSnippet(http(registeredName("www.example.com"), path("index")).asString())),
+                        listItemTag(xhtmlText("Relative reference - for example "), codeSnippet(relativeReference(path("index")).asString()), xhtmlText(", sometimes loosely called a 'relative URI'"))
                 ),
                 h3Tag(xhtmlText("Producing URIs and relative references")),
                 paragraphTag(

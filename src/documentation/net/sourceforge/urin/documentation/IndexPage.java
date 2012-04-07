@@ -30,8 +30,7 @@ final class IndexPage {
                 h2Tag(xhtmlText("Introduction")),
                 paragraphTag(xhtmlText("Urin is a URI generator and parser for Java.  It is written to make the dynamic generation of " +
                         "URIs easier than it is with Java's built-in URI and URL classes, and to provide support for the current URI standard, "),
-                        anchorTag(xhtmlText("RFC 3986")).withHref(href(http(registeredName("tools.ietf.org"), path("html", "rfc3986")))),
-                        xhtmlText(".  It is open source, and free for you to use.")),
+                        RFC_3986, xhtmlText(".  It is open source, and free for you to use.")),
                 paragraphTag(
                         xhtmlText("The latest version of Urin available for download is "),
                         anchorTag(xhtmlText(version)).withHref(href(standardJarUrin(version))),
