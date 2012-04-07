@@ -45,8 +45,8 @@ final class DocumentationPage {
                         "defines two top level structures:")
                 ),
                 unorderedListTag(
-                        listItemTag(xhtmlText("URI - for example "), codeSnippet(http(registeredName("www.example.com"), path("index")).asString())),
-                        listItemTag(xhtmlText("Relative reference - for example "), codeSnippet(relativeReference(path("index")).asString()), xhtmlText(", sometimes loosely called a 'relative URI'"))
+                        listItemTag(quotationTag(xhtmlText("URI")), xhtmlText(" - for example "), codeSnippet(http(registeredName("www.example.com"), path("index")).asString())),
+                        listItemTag(quotationTag(xhtmlText("Relative reference")), xhtmlText(" - for example "), codeSnippet(relativeReference(path("index")).asString()), xhtmlText(", sometimes loosely called a "), quotationTag(xhtmlText("relative URI")))
                 ),
                 h3Tag(xhtmlText("Producing URIs and relative references")),
                 paragraphTag(
