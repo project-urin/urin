@@ -47,11 +47,11 @@ final class UrinPage {
                         linkTag()
                                 .withRelationships(STYLESHEET)
                                 .withMimeType(mimeType("text/css"))
-                                .withHref(Href.href("urin.css")),
+                                .withHref(href(relativeReference(rootlessPath("urin.css")))),
                         linkTag()
                                 .withRelationships(relationship("icon"))
                                 .withMimeType(mimeType("image/png"))
-                                .withHref(Href.href("favicon-32x32.png")),
+                                .withHref(href(relativeReference(rootlessPath("favicon-32x32.png")))),
                         metaTag(metaName("description"), metaContent("Urin is a replacement for Java's URI and URL classes.  It implements RFC 3986.  It is free to download and use in your project.")),
                         scriptTag(mimeType("text/javascript"), xhtmlText("  var _gaq = _gaq || [];\n" +
                                 "  _gaq.push(['_setAccount', 'UA-16431822-5']);\n" +
