@@ -106,8 +106,8 @@ final class DocumentationPage {
                         "        query(\"some-query\")\n" +
                         ").asString();"),
                 paragraphTag(
-                xhtmlText("This rerturns a "), simpleNameOf(String.class), xhtmlText(" containing "), codeSnippet(simpleRelativeReferenceExample()),
-                xhtmlText(". It is possible to retrieve this as a "), canonicalNameOf(URI.class), xhtmlText(" in the same way " +
+                        xhtmlText("This rerturns a "), simpleNameOf(String.class), xhtmlText(" containing "), codeSnippet(simpleRelativeReferenceExample()),
+                        xhtmlText(". It is possible to retrieve this as a "), canonicalNameOf(URI.class), xhtmlText(" in the same way " +
                         "as for a "), canonicalNameOf(Urin.class), xhtmlText(", by calling the "), codeSnippet("asUri()"), xhtmlText("method.  " +
                         "Of note in this example:")
                 ),
@@ -162,7 +162,33 @@ final class DocumentationPage {
                 paragraphTag(
                         xhtmlText("Where "), simpleNameOf(ParseException.class), xhtmlText(" would be thrown if the "), simpleNameOf(String.class),
                         xhtmlText(" wasn't a valid URI.")
-                )
+                ),
+                h3Tag(xhtmlText("Normalisation")),
+                paragraphTag(RFC_3986, xhtmlText(" specifies a number of methods of URI normalisation, such as the handling of " +
+                        "unnecessary encoding and non-preferred case, and the handling of "), codeSnippet("."), xhtmlText(" and "), codeSnippet("..")
+                        , xhtmlText(" segments, which are applied " +
+                        "by Urin.  For example:")),
+                codeBlock("Urin.parse(\"HTTP://www.example.com/.././some%20pat%68\").asString()"),
+                paragraphTag(xhtmlText("Returns the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(normalisationExample()),
+                        xhtmlText(", as a result of normalisation rules having been applied.")),
+                h3Tag(xhtmlText("Resolution")),
+                paragraphTag(xhtmlText("Relative references can be turned into URIs by resolving them, relative to a context URI.  " +
+                        "In Urin, this is achieved using the "), codeSnippet("resolve"), xhtmlText(" method on "), simpleNameOf(Urin.class),
+                        xhtmlText(", for example:")),
+                codeBlock("urin(\n" +
+                        "        scheme(\"http\"),\n" +
+                        "        hierarchicalPart(\n" +
+                        "                authority(registeredName(\"www.example.com\")),\n" +
+                        "                path(\"child-1\")\n" +
+                        "        )\n" +
+                        ").resolve(\n" +
+                        "        relativeReference(\n" +
+                        "                rootlessPath(DOT_DOT, segment(\"child-2\")),\n" +
+                        "                query(\"extra-query\")\n" +
+                        "        )\n" +
+                        ").asString();"),
+                paragraphTag(xhtmlText("This returns the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(resolutionExample()),
+                        xhtmlText("."))
         );
     }
 
@@ -178,20 +204,20 @@ final class DocumentationPage {
 
     private static URI simpleUrinToUriExample() {
         return
-urin(
-        scheme("mailto"),
-        hierarchicalPart(
-                rootlessPath("John.Doe@example.com")
-        )
-).asUri();
+                urin(
+                        scheme("mailto"),
+                        hierarchicalPart(
+                                rootlessPath("John.Doe@example.com")
+                        )
+                ).asUri();
     }
 
     private static String simpleRelativeReferenceExample() {
         return
-relativeReference(
-        rootlessPath(DOT_DOT, segment("sibling")),
-        query("some-query")
-).asString();
+                relativeReference(
+                        rootlessPath(DOT_DOT, segment("sibling")),
+                        query("some-query")
+                ).asString();
     }
 
     private static String httpExample() {
@@ -215,8 +241,35 @@ relativeReference(
         } catch (ParseException e) {
             // handle parse failure
         }
-        return parsedUrin.asString();
+        if (parsedUrin == null) {
+            throw new DocumentationGenerationException("Something bad has happened - we didn't successfully generate a Urin.");
+        } else {
+            return parsedUrin.asString();
+        }
     }
 
+    private static String normalisationExample() {
+        try {
+            return
+                    Urin.parse("HTTP://www.example.com/.././some%20pat%68").asString();
+        } catch (ParseException e) {
+            throw new DocumentationGenerationException(e);
+        }
+    }
 
+    private static String resolutionExample() {
+        return
+urin(
+        scheme("http"),
+        hierarchicalPart(
+                authority(registeredName("www.example.com")),
+                path("child-1")
+        )
+).resolve(
+        relativeReference(
+                rootlessPath(DOT_DOT, segment("child-2")),
+                query("extra-query")
+        )
+).asString();
+    }
 }
