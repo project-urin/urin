@@ -22,6 +22,9 @@ import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Urin.urin;
 
+/**
+ * Utility class providing factory methods for generating http and https URIs.
+ */
 public final class Http {
 
     private static final Scheme HTTP_SCHEME = scheme("http", port(80));
