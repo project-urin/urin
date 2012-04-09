@@ -23,7 +23,7 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Urin.urin;
 
 /**
- * Utility class providing factory methods for generating http and https URIs.
+ * Utility class providing factory methods for generating HTTP and HTTPS URIs.
  */
 public final class Http {
 
@@ -248,6 +248,11 @@ public final class Http {
         }
     }
 
+    /**
+     * Value type for specifying HTTP query parameter name/value pairs.
+     *
+     * @see Http#queryParameter(String, String)
+     */
     public static final class QueryParameter {
         private final String name;
         private final String value;
