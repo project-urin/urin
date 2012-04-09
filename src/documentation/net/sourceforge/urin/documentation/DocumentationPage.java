@@ -10,10 +10,7 @@
 
 package net.sourceforge.urin.documentation;
 
-import net.sourceforge.urin.ParseException;
-import net.sourceforge.urin.RelativeReference;
-import net.sourceforge.urin.Urin;
-import net.sourceforge.urin.UrinReference;
+import net.sourceforge.urin.*;
 import net.sourceforge.urin.scheme.Http;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
@@ -26,8 +23,11 @@ import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.Port.port;
+import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.Scheme.scheme;
+import static net.sourceforge.urin.Segment.DOT_DOT;
+import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.Http.*;
@@ -98,7 +98,25 @@ final class DocumentationPage {
                         xhtmlText(", meaning there are certain valid URIs which can be produced using Urin, but which can't be represented " +
                                 "by "), canonicalNameOf(URI.class), xhtmlText(".")
                 ),
-                codeBlock("blah"),
+                paragraphTag(
+                        xhtmlText("Generating a relative reference follows the same pattern, for example:")
+                ),
+                codeBlock("relativeReference(\n" +
+                        "        rootlessPath(DOT_DOT, segment(\"sibling\")),\n" +
+                        "        query(\"some-query\")\n" +
+                        ").asString();"),
+                paragraphTag(
+                xhtmlText("This rerturns a "), simpleNameOf(String.class), xhtmlText(" containing "), codeSnippet(simpleRelativeReferenceExample()),
+                xhtmlText(". It is possible to retrieve this as a "), canonicalNameOf(URI.class), xhtmlText(" in the same way " +
+                        "as for a "), canonicalNameOf(Urin.class), xhtmlText(", by calling the "), codeSnippet("asUri()"), xhtmlText("method.  " +
+                        "Of note in this example:")
+                ),
+                unorderedListTag(
+                        listItemTag(xhtmlText("The path component is created using the "), codeSnippet("rootlessPath"), xhtmlText(" method, to create a path without a leading '"),
+                                codeSnippet("/"), xhtmlText("' character.")),
+                        listItemTag(xhtmlText("The \""), codeSnippet(".."), xhtmlText("\" part of the output was generated using the "), codeSnippet("DOT_DOT"),
+                                xhtmlText(" constant.  This is because we're using \""), codeSnippet(".."), xhtmlText("\" with the special meaning 'parent'."))
+                ),
                 h3Tag(xhtmlText("Producing HTTP and HTTPS URIs and relative references")),
                 paragraphTag(
                         xhtmlText("Urin provides specific support for generating HTTP and HTTPS URIs for convenience, and to implement " +
@@ -166,6 +184,14 @@ urin(
                 rootlessPath("John.Doe@example.com")
         )
 ).asUri();
+    }
+
+    private static String simpleRelativeReferenceExample() {
+        return
+relativeReference(
+        rootlessPath(DOT_DOT, segment("sibling")),
+        query("some-query")
+).asString();
     }
 
     private static String httpExample() {
