@@ -27,6 +27,10 @@ public final class Http {
     private static final Scheme HTTP_SCHEME = scheme("http", port(80));
     private static final Scheme HTTPS_SCHEME = scheme("https", port(443));
 
+    private Http() {
+        // deliberately empty
+    }
+
     public static Urin http(final Host host) {
         return urin(HTTP_SCHEME, hierarchicalPart(authority(host), path()));
     }
