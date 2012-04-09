@@ -226,14 +226,33 @@ public final class Http {
         return urin(HTTPS_SCHEME, hierarchicalPart(authority, path()), query, fragment);
     }
 
+    /**
+     * Factory method for name/value pair query parameters.
+     *
+     * @param name the name part of the query parameter.
+     * @param value the value part of the query parameter.
+     * @return a {@code QueryParameter} representing the given name and value.
+     */
     public static QueryParameter queryParameter(final String name, final String value) {
         return new QueryParameter(name, value);
     }
 
+    /**
+     * Factory method for HTTP and HTTPs encoded query components made up of name/value pairs.
+     *
+     * @param queryParameters {@code QueryParameter}s that will be represented by this query.
+     * @return a {@code Query} representing the given query parameters.
+     */
     public static Query queryParameters(final QueryParameter... queryParameters) {
         return queryParameters(asList(queryParameters));
     }
 
+    /**
+     * Factory method for HTTP and HTTPs encoded query components made up of name/value pairs.
+     *
+     * @param queryParameters {@code Iterable} of {@code QueryParameter}s that will be represented by this query.
+     * @return a {@code Query} representing the given query parameters.
+     */
     public static Query queryParameters(final Iterable<QueryParameter> queryParameters) {
         return new HttpQuery(queryParameters);
     }
