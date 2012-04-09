@@ -22,6 +22,7 @@ import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class AuthorityTest {
     @Test
@@ -225,6 +226,16 @@ public class AuthorityTest {
         assertThat(parse(userInfo.asString() + "@" + host.asString() + ":" + port.asString()), equalTo(authority(userInfo, host, port)));
     }
 
+    @Test
+    public void parsingAnInvalidAuthorityStringThrowsParseException() throws Exception {
+        try {
+            Authority.parse("something invalid");
+            fail("Should have thrown ParseException");
+        } catch (ParseException e) {
+            // expect to end up here
+        }
+    }
+    
     @Test
     public void authorityWithNoUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() throws Exception {
         Authority authority = authority(aHost());

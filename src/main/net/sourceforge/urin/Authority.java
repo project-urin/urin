@@ -73,7 +73,14 @@ public abstract class Authority {
         return new AuthorityWithUserInfoAndHostAndPort(userInfo, host, port);
     }
 
-    static Authority parse(final String authority) throws ParseException {
+    /**
+     * Parses the given {@code String} as an authority.
+     *
+     * @param authority a {@code String} that represents a URI.
+     * @return an {@code Authority} representing the authority represented by the given {@code String}.
+     * @throws ParseException if the given {@code String} is not a valid authority.
+     */
+    public static Authority parse(final String authority) throws ParseException {
         Matcher matcher = AUTHORITY_PATTERN.matcher(authority);
         matcher.matches();
         final String userInfoString = matcher.group(2);
