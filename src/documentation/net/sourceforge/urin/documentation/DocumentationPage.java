@@ -61,12 +61,7 @@ final class DocumentationPage {
                 ),
                 paragraphTag(
                         xhtmlText("These are modelled in Urin as "), simpleNameOf(Urin.class), xhtmlText(" and "), simpleNameOf(RelativeReference.class),
-                        xhtmlText(" respectively.  These classes provide factory methods that allow any valid URI or URI reference to be generated.")
-                ),
-                paragraphTag(
-                        xhtmlText("Urin also provides a mechanism for schemes with extra rules to be implemented, as demonstrated in the "),
-                        simpleNameOf(Http.class), xhtmlText(" class, which handles the non-default encoding of the space character, and the " +
-                        "encoding of parameters in the query component of the HTTP scheme.")
+                        xhtmlText(" respectively.  These classes provide factory methods that allow any valid URI or relative reference to be generated.")
                 ),
                 h3Tag(xhtmlText("Producing URIs and relative references")),
                 paragraphTag(
@@ -188,7 +183,17 @@ final class DocumentationPage {
                         "        )\n" +
                         ").asString();"),
                 paragraphTag(xhtmlText("This returns the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(resolutionExample()),
-                        xhtmlText("."))
+                        xhtmlText(".")),
+                h3Tag(xhtmlText("Implementing scheme-specific rules")),
+                paragraphTag(
+                        xhtmlText("Urin also provides a mechanism for schemes with extra rules to be implemented, as demonstrated in the "),
+                        simpleNameOf(Http.class), xhtmlText(" class, which handles the non-default encoding of the space character, and the " +
+                        "encoding of parameters in the query component of the HTTP scheme.")
+                ),
+                paragraphTag(
+                        xhtmlText("This is achieved by extending the "), simpleNameOf(Query.class), xhtmlText(" class.  " +
+                        "The source code for "), codeSnippet("Http.HttpQuery"), xhtmlText(" has an example of this in action.")
+                )
         );
     }
 
