@@ -159,10 +159,10 @@ final class DocumentationPage {
                         xhtmlText(" wasn't a valid URI.")
                 ),
                 h3Tag(xhtmlText("Normalisation")),
-                paragraphTag(RFC_3986, xhtmlText(" specifies a number of methods of URI normalisation, such as the handling of " +
-                        "unnecessary encoding and non-preferred case, and the handling of "), codeSnippet("."), xhtmlText(" and "), codeSnippet("..")
-                        , xhtmlText(" segments, which are applied " +
-                        "by Urin.  For example:")),
+                paragraphTag(xhtmlText("RFC 3986 specifies a number of methods of "),
+                        anchorTag(xhtmlText("URI normalisation")).withHref(href(http(registeredName("tools.ietf.org"), path("html", "rfc3986"), fragment("section-6")))),
+                        xhtmlText(" such as the handling of unnecessary encoding and non-preferred case, and the handling of "),
+                        codeSnippet("."), xhtmlText(" and "), codeSnippet(".."), xhtmlText(" segments, which are applied by Urin.  For example:")),
                 codeBlock("Urin.parse(\"HTTP://www.example.com/.././some%20pat%68\").asString()"),
                 paragraphTag(xhtmlText("Returns the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(normalisationExample()),
                         xhtmlText(", as a result of normalisation rules having been applied.")),
