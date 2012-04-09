@@ -146,6 +146,10 @@ final class UrinPage {
         return codeTag(xhtmlText(clazz.getSimpleName()));
     }
 
+    static InlineTag canonicalNameOf(final Class clazz) {
+        return codeTag(xhtmlText(clazz.getCanonicalName()));
+    }
+
     static Urin standardJarUrin(final String version) {
         return https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
     }

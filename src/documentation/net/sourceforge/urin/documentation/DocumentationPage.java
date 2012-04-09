@@ -17,6 +17,8 @@ import net.sourceforge.urin.UrinReference;
 import net.sourceforge.urin.scheme.Http;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
+import java.net.URI;
+
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
@@ -80,6 +82,23 @@ final class DocumentationPage {
                 paragraphTag(
                         xhtmlText("Generates the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(simpleUrinExample()), xhtmlText(".")
                 ),
+                paragraphTag(
+                        xhtmlText("It is also possible to generate an instance of "), canonicalNameOf(URI.class), xhtmlText(", like so:")
+                ),
+                codeBlock("urin(\n" +
+                        "        scheme(\"mailto\"),\n" +
+                        "        hierarchicalPart(\n" +
+                        "                rootlessPath(\"John.Doe@example.com\")\n" +
+                        "        )\n" +
+                        ").asUri();"),
+                paragraphTag(
+                        xhtmlText("This produces "), codeSnippet(simpleUrinToUriExample().toString()),
+                        xhtmlText(".  Note, however, that "), canonicalNameOf(URI.class), xhtmlText(" implements the obsoleted "),
+                        anchorTag(xhtmlText("RFC 2396")).withHref(href(http(registeredName("tools.ietf.org"), path("html", "rfc2396")))),
+                        xhtmlText(", meaning there are certain valid URIs which can be produced using Urin, but which can't be represented " +
+                                "by "), canonicalNameOf(URI.class), xhtmlText(".")
+                ),
+                codeBlock("blah"),
                 h3Tag(xhtmlText("Producing HTTP and HTTPS URIs and relative references")),
                 paragraphTag(
                         xhtmlText("Urin provides specific support for generating HTTP and HTTPS URIs for convenience, and to implement " +
@@ -139,6 +158,16 @@ final class DocumentationPage {
                 ).asString();
     }
 
+    private static URI simpleUrinToUriExample() {
+        return
+urin(
+        scheme("mailto"),
+        hierarchicalPart(
+                rootlessPath("John.Doe@example.com")
+        )
+).asUri();
+    }
+
     private static String httpExample() {
         return
                 http(
@@ -162,5 +191,6 @@ final class DocumentationPage {
         }
         return parsedUrin.asString();
     }
+
 
 }
