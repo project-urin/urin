@@ -40,6 +40,11 @@ public abstract class Segment extends PercentEncodedUnaryValue {
         public boolean hasValue() {
             return false;
         }
+
+        @Override
+        public String value() {
+            throw new UnsupportedOperationException("Attempt to get value of . segment");
+        }
     };
     /**
      * The segment "..", referring to the parent location in the path name hierarchy,
@@ -48,6 +53,11 @@ public abstract class Segment extends PercentEncodedUnaryValue {
         @Override
         public boolean hasValue() {
             return false;
+        }
+
+        @Override
+        public String value() {
+            throw new UnsupportedOperationException("Attempt to get value of .. segment");
         }
     };
 
@@ -71,6 +81,11 @@ public abstract class Segment extends PercentEncodedUnaryValue {
             @Override
             public boolean hasValue() {
                 return true;
+            }
+
+            @Override
+            public String value() {
+                return segment;
             }
         };
     }
@@ -96,4 +111,6 @@ public abstract class Segment extends PercentEncodedUnaryValue {
      * @return true if {@code value()} can be called on this {@code Segment}.
      */
     public abstract boolean hasValue();
+
+    public abstract String value();
 }

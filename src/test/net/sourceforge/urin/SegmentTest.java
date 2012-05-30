@@ -13,11 +13,14 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.P_CHARS;
+import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.DOT_DOT;
+import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class SegmentTest {
 
@@ -94,5 +97,31 @@ public class SegmentTest {
     @Test
     public void nonDotSegmentHasValue() throws Exception {
         assertThat(aNonDotSegment().hasValue(), equalTo(true));
+    }
+
+    @Test
+    public void dotThrowsUnsupportedOperationOnValueRetrieval() throws Exception {
+        try {
+            DOT.value();
+            fail("Expected UnsupportedOperationException to be thrown");
+        } catch (final UnsupportedOperationException e) {
+            assertThat(e.getMessage(), equalTo("Attempt to get value of . segment"));
+        }
+    }
+
+    @Test
+    public void dotDotThrowsUnsupportedOperationOnValueRetrieval() throws Exception {
+        try {
+            DOT_DOT.value();
+            fail("Expected UnsupportedOperationException to be thrown");
+        } catch (final UnsupportedOperationException e) {
+            assertThat(e.getMessage(), equalTo("Attempt to get value of .. segment"));
+        }
+    }
+
+    @Test
+    public void nonDotSegmentReturnsValue() throws Exception {
+        String value = aString();
+        assertThat(segment(value).value(), equalTo(value));
     }
 }
