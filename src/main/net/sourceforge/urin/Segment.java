@@ -112,5 +112,14 @@ public abstract class Segment extends PercentEncodedUnaryValue {
      */
     public abstract boolean hasValue();
 
+    /**
+     * Gets the (non-encoded) value of this segment as a {@code String}, if it is a type that has a value, or throws {@code UnsupportedOperationException} otherwise.
+     *
+     * Dot segments (. and ..) do not have values, and will throw {@code UnsupportedOperationException}.  This can be tested
+     * by equality with the {@code DOT} and {@code DOT_DOT} constants, or by calling {@code hasValue}.
+     *
+     * @return the (non-encoded) value of this segment as a {@code String}.
+     * @throws UnsupportedOperationException if this is a segment that does not represent a value.
+     */
     public abstract String value();
 }
