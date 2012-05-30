@@ -24,7 +24,7 @@ import static net.sourceforge.urin.Segment.segment;
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
  */
-public abstract class Path {
+public abstract class Path implements Iterable<Segment> {
 
     /**
      * Factory method for creating rootless {@code Path}s from {@code String}s.

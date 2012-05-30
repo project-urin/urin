@@ -20,23 +20,26 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
 import static net.sourceforge.urin.RootlessPath.rootlessPath;
 import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
+import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertThat;
 
 public class RootlessPathTest {
     @Test
     public void aPathIsEqualToAnotherPathWithTheSameMembers() throws Exception {
-        Segment firstSegment = SegmentBuilder.aSegment();
-        Segment secondSegment = SegmentBuilder.aSegment();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
         assertThat(rootlessPath(firstSegment, secondSegment), equalTo(rootlessPath(firstSegment, secondSegment)));
         assertThat(rootlessPath(firstSegment, secondSegment).hashCode(), equalTo(rootlessPath(firstSegment, secondSegment).hashCode()));
     }
 
     @Test
     public void aPathUsingVarargsFactoryIsEqualToWithTheSameMembersMadeUsingIterableFactory() throws Exception {
-        Segment firstSegment = SegmentBuilder.aSegment();
-        Segment secondSegment = SegmentBuilder.aSegment();
+        Segment firstSegment = aSegment();
+        Segment secondSegment = aSegment();
         assertThat(rootlessPath(firstSegment, secondSegment), equalTo(RootlessPath.rootlessPath(asList(firstSegment, secondSegment))));
         assertThat(rootlessPath(firstSegment, secondSegment).hashCode(), equalTo(RootlessPath.rootlessPath(asList(firstSegment, secondSegment)).hashCode()));
     }
@@ -57,13 +60,13 @@ public class RootlessPathTest {
         Segment secondSegment = SegmentBuilder.aNonDotSegment();
         Segment[] segments = {firstSegment, secondSegment};
         Path relativePath = Path.rootlessPath(segments);
-        segments[0] = SegmentBuilder.aSegment();
+        segments[0] = aSegment();
         assertThat(relativePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
     public void aPathIsNotEqualToAnotherPathWithDifferentMembers() throws Exception {
-        assertThat(rootlessPath(SegmentBuilder.aSegment(), SegmentBuilder.aSegment()), not(equalTo(rootlessPath(SegmentBuilder.aSegment(), SegmentBuilder.aSegment()))));
+        assertThat(rootlessPath(aSegment(), aSegment()), not(equalTo(rootlessPath(aSegment(), aSegment()))));
     }
 
     @Test
@@ -90,7 +93,7 @@ public class RootlessPathTest {
 
     @Test
     public void correctlyIdentifiesFirstPartNonEmpty() throws Exception {
-        assertThat(rootlessPath(SegmentBuilder.aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(rootlessPath(aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
@@ -118,23 +121,30 @@ public class RootlessPathTest {
 
     @Test
     public void resolvesAbsolutePath() throws Exception {
-        Segment rootlessSegmentOne = SegmentBuilder.aSegment();
-        Segment rootlessSegmentTwo = SegmentBuilder.aSegment();
+        Segment rootlessSegmentOne = aSegment();
+        Segment rootlessSegmentTwo = aSegment();
         Path path = rootlessPath(rootlessSegmentOne, rootlessSegmentTwo);
-        Segment baseSegmentOne = SegmentBuilder.aSegment();
-        Segment baseSegmentTwo = SegmentBuilder.aSegment();
+        Segment baseSegmentOne = aSegment();
+        Segment baseSegmentTwo = aSegment();
         Path basePath = Path.path(baseSegmentOne, baseSegmentTwo);
         assertThat(path.resolveRelativeTo(basePath), equalTo((Path) Path.path(baseSegmentOne, rootlessSegmentOne, rootlessSegmentTwo)));
     }
 
     @Test
     public void resolvesRootlessPath() throws Exception {
-        Segment rootlessSegmentOne = SegmentBuilder.aSegment();
-        Segment rootlessSegmentTwo = SegmentBuilder.aSegment();
+        Segment rootlessSegmentOne = aSegment();
+        Segment rootlessSegmentTwo = aSegment();
         Path path = rootlessPath(rootlessSegmentOne, rootlessSegmentTwo);
-        Segment baseSegmentOne = SegmentBuilder.aSegment();
-        Segment baseSegmentTwo = SegmentBuilder.aSegment();
+        Segment baseSegmentOne = aSegment();
+        Segment baseSegmentTwo = aSegment();
         Path basePath = Path.path(baseSegmentOne, baseSegmentTwo);
         assertThat(path.resolveRelativeTo(basePath), equalTo((Path) Path.path(baseSegmentOne, rootlessSegmentOne, rootlessSegmentTwo)));
+    }
+
+    @Test
+    public void rootlessPathIteratorContainsAllNonDotSegments() throws Exception {
+        Segment rootlessSegmentOne = aNonDotSegment();
+        Segment rootlessSegmentTwo = aNonDotSegment();
+        assertThat(rootlessPath(rootlessSegmentOne, rootlessSegmentTwo), contains(rootlessSegmentOne, rootlessSegmentTwo));
     }
 }

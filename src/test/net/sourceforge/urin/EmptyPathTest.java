@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
@@ -49,5 +50,10 @@ public class EmptyPathTest {
     public void resolvesRootlessPath() throws Exception {
         Path basePath = aRootlessPath();
         assertThat(new EmptyPath().resolveRelativeTo(basePath), equalTo(basePath));
+    }
+
+    @Test
+    public void emptyPathIteratorIsEmpty() throws Exception {
+        assertThat(new EmptyPath(), Matchers.<Segment>emptyIterable());
     }
 }

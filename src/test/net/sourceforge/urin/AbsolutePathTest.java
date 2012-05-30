@@ -15,6 +15,7 @@ import org.junit.Test;
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
+import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.Segment.*;
@@ -22,6 +23,7 @@ import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertThat;
 
 public class AbsolutePathTest {
@@ -112,4 +114,12 @@ public class AbsolutePathTest {
         Path basePath = aRootlessPath();
         assertThat(path.resolveRelativeTo(basePath), equalTo((Path) path));
     }
+
+    @Test
+    public void absolutePathIteratorContainsAllNonDotSegments() throws Exception {
+        Segment rootlessSegmentOne = aNonDotSegment();
+        Segment rootlessSegmentTwo = aNonDotSegment();
+        assertThat(path(rootlessSegmentOne, rootlessSegmentTwo), contains(rootlessSegmentOne, rootlessSegmentTwo));
+    }
+
 }

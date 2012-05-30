@@ -10,6 +10,9 @@
 
 package net.sourceforge.urin;
 
+import java.util.Collections;
+import java.util.Iterator;
+
 final class EmptyPath extends Path {
 
     EmptyPath() {
@@ -55,5 +58,9 @@ final class EmptyPath extends Path {
     @Override
     public String toString() {
         return "EmptyPath";
+    }
+
+    public Iterator<Segment> iterator() {
+        return Collections.<Segment>emptyList().iterator();
     }
 }

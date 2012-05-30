@@ -122,4 +122,8 @@ final class RootlessPath extends Path {
     public String toString() {
         return segments.toString();
     }
+
+    public Iterator<Segment> iterator() {
+        return segments.iterator();
+    }
 }

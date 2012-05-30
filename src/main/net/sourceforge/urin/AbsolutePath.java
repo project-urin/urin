@@ -112,4 +112,8 @@ public final class AbsolutePath extends Path {
     public String toString() {
         return segments.toString();
     }
+
+    public Iterator<Segment> iterator() {
+        return segments.iterator();
+    }
 }
