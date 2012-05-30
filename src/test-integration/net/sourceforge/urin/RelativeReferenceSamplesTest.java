@@ -10,14 +10,17 @@
 
 package net.sourceforge.urin;
 
+import com.google.common.base.Function;
 import org.junit.Test;
 
+import static com.google.common.collect.Iterables.transform;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.RelativeReference.parse;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.Segment.segment;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertThat;
 
 public class RelativeReferenceSamplesTest {
@@ -31,5 +34,15 @@ public class RelativeReferenceSamplesTest {
     public void canParseARelativeReferenceWithColonInTheFirstSegment() throws Exception {
         Segment segment = segment(aStringIncluding(':'));
         assertThat(parse("./" + segment.asString()), equalTo(relativeReference(rootlessPath(segment))));
+    }
+
+    @Test
+    public void canParseARelativeReferenceAndRetrieveTheValuesOfTheSegments() throws Exception {
+        RelativeReference relativeReference = parse("a/b%2Fc");
+        assertThat(transform(relativeReference.path(), new Function<Segment, String>() {
+            public String apply(final Segment segment) {
+                return segment.value();
+            }
+        }), contains("a", "b/c"));
     }
 }
