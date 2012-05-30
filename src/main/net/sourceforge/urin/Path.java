@@ -145,7 +145,7 @@ public abstract class Path implements Iterable<Segment> {
     public abstract boolean isAbsolute();
 
     /**
-     * Gives the list of {@code Segment}s that this path represents.
+     * Returns the list of {@code Segment}s that this path represents.
      * Note that this {@code List} contains the same elements as returned by calling {@code iterator()} on {@code this}.
      *
      * @return the list of {@code Segment}s that this path represents.
