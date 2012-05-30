@@ -205,6 +205,11 @@ public abstract class Urin extends UrinReference {
         }
 
         @Override
+        public Path path() {
+            return hierarchicalPart.path();
+        }
+
+        @Override
         public Urin resolve(final UrinReference urinReference) {
             return urinReference.resolve(scheme, hierarchicalPart, query, fragment);
         }
@@ -272,6 +277,11 @@ public abstract class Urin extends UrinReference {
         }
 
         @Override
+        public Path path() {
+            return hierarchicalPart.path();
+        }
+
+        @Override
         public Urin resolve(final UrinReference urinReference) {
             return urinReference.resolve(scheme, hierarchicalPart, query);
         }
@@ -336,6 +346,11 @@ public abstract class Urin extends UrinReference {
         }
 
         @Override
+        public Path path() {
+            return hierarchicalPart.path();
+        }
+
+        @Override
         public Urin resolve(final UrinReference urinReference) {
             return urinReference.resolve(scheme, hierarchicalPart);
         }
@@ -390,6 +405,11 @@ public abstract class Urin extends UrinReference {
                     .append(':')
                     .append(hierarchicalPart.asString())
                     .toString();
+        }
+
+        @Override
+        public Path path() {
+            return hierarchicalPart.path();
         }
 
         @Override

@@ -55,6 +55,8 @@ public abstract class HierarchicalPart {
 
     abstract String asString();
 
+    abstract Path path();
+
     /**
      * Factory method for creating {@code HierarchicalPart}s with just an empty path.
      *
@@ -119,6 +121,11 @@ public abstract class HierarchicalPart {
         }
 
         @Override
+        Path path() {
+            return path;
+        }
+
+        @Override
         HierarchicalPart resolve(final Path relativeReferencePath) {
             return hierarchicalPart(relativeReferencePath.resolveRelativeTo(path));
         }
@@ -171,6 +178,11 @@ public abstract class HierarchicalPart {
                     .append(authority.asString())
                     .append(path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
                     .toString();
+        }
+
+        @Override
+        Path path() {
+            return path;
         }
 
         @Override

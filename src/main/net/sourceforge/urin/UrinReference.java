@@ -72,6 +72,14 @@ public abstract class UrinReference {
         return parse(uriReference.toASCIIString());
     }
 
+    /**
+     * Returns the path component of the URI reference this represents.  All URI references have a path, though this maybe
+     * the empty path, and in some cases, the path is implicitly the empty path.
+     *
+     * @return a {@code Path} representing the path component of this URI reference.
+     */
+    public abstract Path path();
+
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart);
 
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query);

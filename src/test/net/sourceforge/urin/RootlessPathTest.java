@@ -66,7 +66,7 @@ public class RootlessPathTest {
 
     @Test
     public void aPathIsNotEqualToAnotherPathWithDifferentMembers() throws Exception {
-        assertThat(rootlessPath(aSegment(), aSegment()), not(equalTo(rootlessPath(aSegment(), aSegment()))));
+        assertThat(rootlessPath(aNonDotSegment(), aNonDotSegment()), not(equalTo(rootlessPath(aNonDotSegment(), aNonDotSegment()))));
     }
 
     @Test
@@ -121,22 +121,22 @@ public class RootlessPathTest {
 
     @Test
     public void resolvesAbsolutePath() throws Exception {
-        Segment segmentOne = aSegment();
-        Segment segmentTwo = aSegment();
+        Segment segmentOne = aNonDotSegment();
+        Segment segmentTwo = aNonDotSegment();
         Path path = rootlessPath(segmentOne, segmentTwo);
-        Segment baseSegmentOne = aSegment();
-        Segment baseSegmentTwo = aSegment();
+        Segment baseSegmentOne = aNonDotSegment();
+        Segment baseSegmentTwo = aNonDotSegment();
         Path basePath = Path.path(baseSegmentOne, baseSegmentTwo);
         assertThat(path.resolveRelativeTo(basePath), equalTo((Path) Path.path(baseSegmentOne, segmentOne, segmentTwo)));
     }
 
     @Test
     public void resolvesRootlessPath() throws Exception {
-        Segment rootlessSegmentOne = aSegment();
-        Segment rootlessSegmentTwo = aSegment();
+        Segment rootlessSegmentOne = aNonDotSegment();
+        Segment rootlessSegmentTwo = aNonDotSegment();
         Path path = rootlessPath(rootlessSegmentOne, rootlessSegmentTwo);
-        Segment baseSegmentOne = aSegment();
-        Segment baseSegmentTwo = aSegment();
+        Segment baseSegmentOne = aNonDotSegment();
+        Segment baseSegmentTwo = aNonDotSegment();
         Path basePath = Path.path(baseSegmentOne, baseSegmentTwo);
         assertThat(path.resolveRelativeTo(basePath), equalTo((Path) Path.path(baseSegmentOne, rootlessSegmentOne, rootlessSegmentTwo)));
     }

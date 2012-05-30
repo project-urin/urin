@@ -42,6 +42,15 @@ public class UrinTest {
     }
 
     @Test
+    public void urinWithAllPartsPathIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(urin(scheme, hierarchicalPart, query, fragment).path(), equalTo(hierarchicalPart.path()));
+    }
+
+    @Test
     public void aUrinWithAllPartsIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
@@ -102,6 +111,14 @@ public class UrinTest {
     }
 
     @Test
+    public void urinWithNoFragmentPathIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        assertThat(urin(scheme, hierarchicalPart, query).path(), equalTo(hierarchicalPart.path()));
+    }
+
+    @Test
     public void aUrinWithNoFragmentIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
@@ -155,6 +172,14 @@ public class UrinTest {
     }
 
     @Test
+    public void urinWithNoQueryPathIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Fragment fragment = aFragment();
+        assertThat(urin(scheme, hierarchicalPart, fragment).path(), equalTo(hierarchicalPart.path()));
+    }
+
+    @Test
     public void aUrinWithNoQueryIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
@@ -204,6 +229,13 @@ public class UrinTest {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         assertThat(urin(scheme, hierarchicalPart).asString(), equalTo(scheme.asString() + ":" + hierarchicalPart.asString()));
+    }
+
+    @Test
+    public void urinWithNoQueryAndNoFragmentPathIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        assertThat(urin(scheme, hierarchicalPart).path(), equalTo(hierarchicalPart.path()));
     }
 
     @Test

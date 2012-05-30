@@ -34,6 +34,11 @@ public class HierarchicalPartTest {
     }
 
     @Test
+    public void aHierarchicalPartWithEmptyPathPathIsCorrect() throws Exception {
+        assertThat(hierarchicalPart().path(), equalTo(rootlessPath()));
+    }
+
+    @Test
     public void aHierarchicalPartWithEmptyPathIsEqualToAnotherHierarchicalPartWithEmptyPath() throws Exception {
         assertThat(hierarchicalPart(), equalTo(hierarchicalPart()));
         assertThat(hierarchicalPart().hashCode(), equalTo(hierarchicalPart().hashCode()));
@@ -48,6 +53,12 @@ public class HierarchicalPartTest {
     public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
         Path path = aPath();
         assertThat(hierarchicalPart(path).asString(), equalTo(path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT)));
+    }
+
+    @Test
+    public void aSimpleAbsolutePathPathIsCorrect() throws Exception {
+        Path path = aPath();
+        assertThat(hierarchicalPart(path).path(), equalTo(path));
     }
 
     @Test
@@ -106,6 +117,14 @@ public class HierarchicalPartTest {
         Segment firstSegment = aNonDotSegment();
         Segment secondSegment = aNonDotSegment();
         assertThat(hierarchicalPart(rootlessPath(firstSegment, secondSegment)).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
+    }
+
+    @Test
+    public void aSimpleRootlessPathPathIsCorrect() throws Exception {
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
+        Path path = rootlessPath(firstSegment, secondSegment);
+        assertThat(hierarchicalPart(path).path(), equalTo(path));
     }
 
     @Test

@@ -326,6 +326,11 @@ public abstract class RelativeReference extends UrinReference {
         }
 
         @Override
+        public Path path() {
+            return path;
+        }
+
+        @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
             return urin(scheme, hierarchicalPart.resolve(path));
         }
@@ -391,6 +396,11 @@ public abstract class RelativeReference extends UrinReference {
                     .append('?')
                     .append(query.asString())
                     .toString();
+        }
+
+        @Override
+        public Path path() {
+            return path;
         }
 
         @Override
@@ -460,6 +470,11 @@ public abstract class RelativeReference extends UrinReference {
                     .append('#')
                     .append(fragment.asString())
                     .toString();
+        }
+
+        @Override
+        public Path path() {
+            return path;
         }
 
         @Override
@@ -543,6 +558,11 @@ public abstract class RelativeReference extends UrinReference {
         }
 
         @Override
+        public Path path() {
+            return path;
+        }
+
+        @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -606,6 +626,11 @@ public abstract class RelativeReference extends UrinReference {
                     .append(authority.asString())
                     .append(path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
                     .toString();
+        }
+
+        @Override
+        public Path path() {
+            return path;
         }
 
         @Override
@@ -680,6 +705,11 @@ public abstract class RelativeReference extends UrinReference {
         }
 
         @Override
+        public Path path() {
+            return path;
+        }
+
+        @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
             return urin(scheme, hierarchicalPart.resolve(authority, path), query);
         }
@@ -750,6 +780,11 @@ public abstract class RelativeReference extends UrinReference {
                     .append('#')
                     .append(fragment.asString())
                     .toString();
+        }
+
+        @Override
+        public Path path() {
+            return path;
         }
 
         @Override
@@ -830,6 +865,11 @@ public abstract class RelativeReference extends UrinReference {
                     .append('#')
                     .append(fragment.asString())
                     .toString();
+        }
+
+        @Override
+        public Path path() {
+            return path;
         }
 
         @Override
