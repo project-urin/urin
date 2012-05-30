@@ -146,6 +146,7 @@ public abstract class Path implements Iterable<Segment> {
 
     /**
      * Gives the list of {@code Segment}s that this path represents.
+     * Note that this {@code List} contains the same elements as returned by calling {@code iterator()} on {@code this}.
      *
      * @return the list of {@code Segment}s that this path represents.
      */
