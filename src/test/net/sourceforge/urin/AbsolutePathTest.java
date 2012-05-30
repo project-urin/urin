@@ -122,9 +122,25 @@ public class AbsolutePathTest {
 
     @Test
     public void absolutePathIteratorContainsAllNonDotSegments() throws Exception {
-        Segment rootlessSegmentOne = aNonDotSegment();
-        Segment rootlessSegmentTwo = aNonDotSegment();
-        assertThat(path(rootlessSegmentOne, rootlessSegmentTwo), contains(rootlessSegmentOne, rootlessSegmentTwo));
+        Segment segmentOne = aNonDotSegment();
+        Segment segmentTwo = aNonDotSegment();
+        assertThat(path(segmentOne, segmentTwo), contains(segmentOne, segmentTwo));
+    }
+
+    @Test
+    public void absolutePathSegmentsContainsAllNonDotSegments() throws Exception {
+        Segment segmentOne = aNonDotSegment();
+        Segment segmentTwo = aNonDotSegment();
+        assertThat(path(segmentOne, segmentTwo).segments(), contains(segmentOne, segmentTwo));
+    }
+
+    @Test
+    public void absolutePathSegmentsDoesNotExposeMutability() throws Exception {
+        Segment segmentOne = aNonDotSegment();
+        Segment segmentTwo = aNonDotSegment();
+        Path absolutePath = path(segmentOne, segmentTwo);
+        absolutePath.segments().add(aSegment());
+        assertThat(absolutePath.segments(), contains(segmentOne, segmentTwo));
     }
 
 }

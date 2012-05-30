@@ -144,6 +144,13 @@ public abstract class Path implements Iterable<Segment> {
      */
     public abstract boolean isAbsolute();
 
+    /**
+     * Gives the list of {@code Segment}s that this path represents.
+     *
+     * @return the list of {@code Segment}s that this path represents.
+     */
+    public abstract List<Segment> segments();
+
     static enum PrefixWithDotSegmentCriteria {
         NEVER_PREFIX_WITH_DOT_SEGMENT {
             @Override

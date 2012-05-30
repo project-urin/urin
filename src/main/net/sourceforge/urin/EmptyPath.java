@@ -12,6 +12,9 @@ package net.sourceforge.urin;
 
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
+
+import static java.util.Collections.emptyList;
 
 final class EmptyPath extends Path {
 
@@ -44,6 +47,11 @@ final class EmptyPath extends Path {
     @Override
     public boolean isAbsolute() {
         return false;
+    }
+
+    @Override
+    public List<Segment> segments() {
+        return emptyList();
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {

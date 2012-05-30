@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
+import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -60,5 +61,21 @@ public class EmptyPathTest {
     @Test
     public void emptyPathIteratorIsEmpty() throws Exception {
         assertThat(new EmptyPath(), Matchers.<Segment>emptyIterable());
+    }
+
+    @Test
+    public void emptyPathSegmentsIsEmpty() throws Exception {
+        assertThat(new EmptyPath().segments(), Matchers.<Segment>empty());
+    }
+
+    @Test
+    public void emptyPathSegmentsDoesNotExposeMutability() throws Exception {
+        EmptyPath emptyPath = new EmptyPath();
+        try {
+            emptyPath.segments().add(aSegment());
+            assertThat(emptyPath, Matchers.<Segment>emptyIterable());
+        } catch (UnsupportedOperationException e) {
+            // expect to end up here
+        }
     }
 }

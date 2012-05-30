@@ -10,9 +10,7 @@
 
 package net.sourceforge.urin;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 import static net.sourceforge.urin.PathHelper.appendSegmentsTo;
 import static net.sourceforge.urin.Segment.*;
@@ -78,6 +76,11 @@ public final class AbsolutePath extends Path {
     @Override
     public boolean isAbsolute() {
         return true;
+    }
+
+    @Override
+    public List<Segment> segments() {
+        return new ArrayList<Segment>(segments);
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
