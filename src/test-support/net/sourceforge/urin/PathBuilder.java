@@ -14,8 +14,6 @@ import com.google.common.base.Supplier;
 
 import java.util.Random;
 
-import static net.sourceforge.urin.SegmentBuilder.aSegment;
-
 public class PathBuilder {
 
     @SuppressWarnings({"unchecked"})
@@ -37,7 +35,7 @@ public class PathBuilder {
         int numberOfSegments = RANDOM.nextInt(4) + 1;
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
-            tailSegments[i] = aSegment();
+            tailSegments[i] = SegmentBuilder.aNonDotSegment();
         }
         return Path.path(tailSegments);
     }
@@ -46,7 +44,7 @@ public class PathBuilder {
         int numberOfSegments = RANDOM.nextInt(4) + 1;
         Segment[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
-            tailSegments[i] = aSegment();
+            tailSegments[i] = SegmentBuilder.aNonDotSegment();
         }
         return RootlessPath.rootlessPath(tailSegments);
     }

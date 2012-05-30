@@ -18,6 +18,7 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFI
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -52,8 +53,8 @@ public class AbsolutePathTest {
 
     @Test
     public void aPathUsingSegmentVarargsIsImmutable() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
         Segment[] segments = {firstSegment, secondSegment};
         AbsolutePath absolutePath = Path.path(segments);
         segments[0] = aSegment();
@@ -62,13 +63,13 @@ public class AbsolutePathTest {
 
     @Test
     public void aPathIsNotEqualToAnotherPathWithDifferentMembers() throws Exception {
-        assertThat(AbsolutePath.path(aSegment(), aSegment()), not(equalTo(AbsolutePath.path(aSegment(), aSegment()))));
+        assertThat(AbsolutePath.path(aSegment(), aNonDotSegment()), not(equalTo(AbsolutePath.path(aSegment(), aNonDotSegment()))));
     }
 
     @Test
     public void aPathToStringIsCorrect() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(AbsolutePath.path(firstSegment, secondSegment).toString(), equalTo("[" + firstSegment + ", " + secondSegment + "]"));
     }
 
@@ -84,7 +85,7 @@ public class AbsolutePathTest {
 
     @Test
     public void correctlyIdentifiesFirstPartNonEmpty() throws Exception {
-        assertThat(AbsolutePath.path(aSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(AbsolutePath.path(aNonDotSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test

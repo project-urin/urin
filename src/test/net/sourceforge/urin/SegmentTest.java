@@ -15,6 +15,7 @@ import org.junit.Test;
 import static net.sourceforge.urin.CharacterSets.P_CHARS;
 import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.DOT_DOT;
+import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -80,4 +81,18 @@ public class SegmentTest {
         assertThat(Segment.parse(".."), equalTo(DOT_DOT));
     }
 
+    @Test
+    public void dotHasNoValue() throws Exception {
+        assertThat(DOT.hasValue(), equalTo(false));
+    }
+
+    @Test
+    public void dotDotHasNoValue() throws Exception {
+        assertThat(DOT_DOT.hasValue(), equalTo(false));
+    }
+
+    @Test
+    public void nonDotSegmentHasValue() throws Exception {
+        assertThat(aNonDotSegment().hasValue(), equalTo(true));
+    }
 }

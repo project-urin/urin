@@ -21,6 +21,7 @@ import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.PathBuilder.aPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -52,7 +53,7 @@ public class HierarchicalPartTest {
     @Test
     public void aSimpleAbsolutePathRejectsAnEmptyFirstSegment() throws Exception {
         Segment firstSegment = segment("");
-        Segment secondSegment = aSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(hierarchicalPart(Path.path(firstSegment, secondSegment)).asString(), equalTo("/./" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
@@ -102,15 +103,15 @@ public class HierarchicalPartTest {
 
     @Test
     public void aSimpleRootlessPathAsStringReturnsThePath() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(hierarchicalPart(rootlessPath(firstSegment, secondSegment)).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
     public void aSimpleRootlessPathRejectsAnEmptyFirstSegment() throws Exception {
         Segment firstSegment = segment("");
-        Segment secondSegment = aSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(hierarchicalPart(rootlessPath(firstSegment, secondSegment)).asString(), equalTo("./" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
@@ -129,8 +130,8 @@ public class HierarchicalPartTest {
 
     @Test
     public void aSimpleRootlessPathToStringIsCorrect() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(hierarchicalPart(rootlessPath(firstSegment, secondSegment)).toString(), equalTo("HierarchicalPart{path=[" + firstSegment + ", " + secondSegment + "]}"));
     }
 
@@ -172,19 +173,19 @@ public class HierarchicalPartTest {
     @Test
     public void makesHierarchicalPartWithAuthorityAndNonEmptyPath() throws Exception {
         Authority authority = anAuthority();
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(hierarchicalPart(authority, Path.path(firstSegment, secondSegment)).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
     @Test
     public void aHierarchicalPartWithAuthorityAndNonEmptyPathHasImmutableVarargs() throws Exception {
         Authority authority = anAuthority();
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
         Segment[] segments = {firstSegment, secondSegment};
         HierarchicalPart hierarchicalPart = hierarchicalPart(authority, Path.path(segments));
-        segments[0] = aSegment();
+        segments[0] = aNonDotSegment();
         assertThat(hierarchicalPart.asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 

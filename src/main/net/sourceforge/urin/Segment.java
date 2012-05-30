@@ -36,11 +36,19 @@ public abstract class Segment extends PercentEncodedUnaryValue {
      * The segment ".", referring to the current location in the path name hierarchy,
      */
     public static final Segment DOT = new Segment(PercentEncodable.percentEncodableString("."), ENCODE_NOTHING) {
+        @Override
+        public boolean hasValue() {
+            return false;
+        }
     };
     /**
      * The segment "..", referring to the parent location in the path name hierarchy,
      */
     public static final Segment DOT_DOT = new Segment(PercentEncodable.percentEncodableString(".."), ENCODE_NOTHING) {
+        @Override
+        public boolean hasValue() {
+            return false;
+        }
     };
 
     private Segment(final PercentEncodable percentEncodable, final PercentEncoder percentEncoder) {
@@ -60,6 +68,10 @@ public abstract class Segment extends PercentEncodedUnaryValue {
                         ".",
                         PercentEncodable.percentEncodableString(segment))
         ), PERCENT_ENCODER) {
+            @Override
+            public boolean hasValue() {
+                return true;
+            }
         };
     }
 
@@ -76,4 +88,12 @@ public abstract class Segment extends PercentEncodedUnaryValue {
             return segment(PERCENT_DECODER.decode(encodedSegment));
         }
     }
+
+    /**
+     * Returns true if {@code value()} can be called on this {@code Segment}.  This method
+     * returns false for . and .. segments.
+     *
+     * @return true if {@code value()} can be called on this {@code Segment}.
+     */
+    public abstract boolean hasValue();
 }

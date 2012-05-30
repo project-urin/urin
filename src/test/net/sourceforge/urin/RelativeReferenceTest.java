@@ -30,6 +30,7 @@ import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -463,8 +464,8 @@ public class RelativeReferenceTest {
 
     @Test
     public void aSimpleAbsolutePathAsStringReturnsThePath() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(relativeReference(Path.path(firstSegment, secondSegment)).asString(), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
         assertThat(relativeReference(Path.path(firstSegment, secondSegment)).asUri(), equalTo(URI.create("/" + firstSegment.asString() + "/" + secondSegment.asString())));
     }
@@ -472,7 +473,7 @@ public class RelativeReferenceTest {
     @Test
     public void aSimpleAbsolutePathPrefixesAnEmptyFirstSegmentWithADotSegment() throws Exception {
         Segment firstSegment = segment("");
-        Segment secondSegment = aSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(relativeReference(Path.path(firstSegment, secondSegment)).asString(), equalTo("/./" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
@@ -507,8 +508,8 @@ public class RelativeReferenceTest {
 
     @Test
     public void aSimpleRootlessPathAsStringReturnsThePath() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(relativeReference(rootlessPath(firstSegment, secondSegment)).asString(), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
         assertThat(relativeReference(rootlessPath(firstSegment, secondSegment)).asUri(), equalTo(URI.create(firstSegment.asString() + "/" + secondSegment.asString())));
     }
@@ -516,7 +517,7 @@ public class RelativeReferenceTest {
     @Test
     public void aSimpleRootlessPathRejectsAnEmptyFirstSegment() throws Exception {
         Segment firstSegment = segment("");
-        Segment secondSegment = aSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(relativeReference(rootlessPath(firstSegment, secondSegment)).asString(), equalTo("./" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 
@@ -929,8 +930,8 @@ public class RelativeReferenceTest {
     @Test
     public void makesRelativeReferenceWithAuthorityAndNonEmptyPath() throws Exception {
         Authority authority = anAuthority();
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment firstSegment = aNonDotSegment();
+        Segment secondSegment = aNonDotSegment();
         assertThat(relativeReference(authority, Path.path(firstSegment, secondSegment)).asString(), equalTo("//" + authority.asString() + "/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
 

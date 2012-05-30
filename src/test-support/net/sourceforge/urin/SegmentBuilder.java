@@ -10,12 +10,40 @@
 
 package net.sourceforge.urin;
 
+import com.google.common.base.Supplier;
+
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
+import static net.sourceforge.urin.Segment.DOT;
+import static net.sourceforge.urin.Segment.DOT_DOT;
 import static net.sourceforge.urin.Segment.segment;
 
 public class SegmentBuilder {
-    public static Segment aSegment() {
+
+    @SuppressWarnings({"unchecked"})
+    private static final RandomSupplierSwitcher<Segment> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Segment>(
+            new Supplier<Segment>() {
+                public Segment get() {
+                    return aNonDotSegment();
+                }
+            },
+            new Supplier<Segment>() {
+                public Segment get() {
+                    return DOT;
+                }
+            },
+            new Supplier<Segment>() {
+                public Segment get() {
+                    return DOT_DOT;
+                }
+            }
+    );
+
+    public static Segment aNonDotSegment() {
         return segment(aString());
+    }
+
+    public static Segment aSegment() {
+        return RANDOM_SUPPLIER_SWITCHER.get();
     }
 
 }
