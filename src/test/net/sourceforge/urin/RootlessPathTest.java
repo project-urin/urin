@@ -142,6 +142,11 @@ public class RootlessPathTest {
     }
 
     @Test
+    public void rootlessPathIsNotAbsolute() throws Exception {
+        assertThat(aRootlessPath().isAbsolute(), equalTo(false));
+    }
+
+    @Test
     public void rootlessPathIteratorContainsAllNonDotSegments() throws Exception {
         Segment rootlessSegmentOne = aNonDotSegment();
         Segment rootlessSegmentTwo = aNonDotSegment();

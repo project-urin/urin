@@ -116,6 +116,11 @@ public class AbsolutePathTest {
     }
 
     @Test
+    public void absolutePathIsAbsolute() throws Exception {
+        assertThat(anAbsolutePath().isAbsolute(), equalTo(true));
+    }
+
+    @Test
     public void absolutePathIteratorContainsAllNonDotSegments() throws Exception {
         Segment rootlessSegmentOne = aNonDotSegment();
         Segment rootlessSegmentTwo = aNonDotSegment();

@@ -41,6 +41,11 @@ final class EmptyPath extends Path {
         return rootlessPath(segments);
     }
 
+    @Override
+    public boolean isAbsolute() {
+        return false;
+    }
+
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         return "";
     }

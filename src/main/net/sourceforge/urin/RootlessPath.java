@@ -85,6 +85,11 @@ final class RootlessPath extends Path {
         return new RootlessPath(appendSegmentsTo(this.segments, segments));
     }
 
+    @Override
+    public boolean isAbsolute() {
+        return false;
+    }
+
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         StringBuilder result = new StringBuilder();
         if (prefixWithDotSegmentCriteria.matches(this)) {

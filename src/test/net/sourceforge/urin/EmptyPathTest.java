@@ -53,6 +53,11 @@ public class EmptyPathTest {
     }
 
     @Test
+    public void emptyPathIsNotAbsolute() throws Exception {
+        assertThat(new EmptyPath().isAbsolute(), equalTo(false));
+    }
+
+    @Test
     public void emptyPathIteratorIsEmpty() throws Exception {
         assertThat(new EmptyPath(), Matchers.<Segment>emptyIterable());
     }

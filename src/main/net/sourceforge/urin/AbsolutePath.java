@@ -75,6 +75,11 @@ public final class AbsolutePath extends Path {
         return new AbsolutePath(appendSegmentsTo(this.segments, segments));
     }
 
+    @Override
+    public boolean isAbsolute() {
+        return true;
+    }
+
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         StringBuilder result = new StringBuilder("/");
         if (prefixWithDotSegmentCriteria.matches(this)) {

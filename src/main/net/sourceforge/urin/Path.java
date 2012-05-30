@@ -137,6 +137,13 @@ public abstract class Path implements Iterable<Segment> {
 
     abstract Path replaceLastSegmentWith(final Iterable<Segment> segments);
 
+    /**
+     * Indicates whether this path is absolute (begins with '/') or not.
+     *
+     * @return whether this path is absolute (begins with '/') or not.
+     */
+    public abstract boolean isAbsolute();
+
     static enum PrefixWithDotSegmentCriteria {
         NEVER_PREFIX_WITH_DOT_SEGMENT {
             @Override
