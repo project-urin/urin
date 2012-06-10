@@ -306,16 +306,6 @@ public abstract class RelativeReference extends UrinReference {
         return parse(uri.toASCIIString());
     }
 
-    @Override
-    public boolean hasFragment() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public Fragment fragment() {
-        throw new UnsupportedOperationException("Not done yet.");
-    }
-
     static boolean isValidRelativeReferenceString(final String uriReferenceString) {
         return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
     }
@@ -338,6 +328,16 @@ public abstract class RelativeReference extends UrinReference {
         @Override
         public Path path() {
             return path;
+        }
+
+        @Override
+        public boolean hasFragment() {
+            return false;
+        }
+
+        @Override
+        public Fragment fragment() {
+            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
         }
 
         @Override
@@ -414,6 +414,16 @@ public abstract class RelativeReference extends UrinReference {
         }
 
         @Override
+        public boolean hasFragment() {
+            return false;
+        }
+
+        @Override
+        public Fragment fragment() {
+            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
+        }
+
+        @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
             return urin(scheme, hierarchicalPart.resolve(path), query);
         }
@@ -485,6 +495,16 @@ public abstract class RelativeReference extends UrinReference {
         @Override
         public Path path() {
             return path;
+        }
+
+        @Override
+        public boolean hasFragment() {
+            return true;
+        }
+
+        @Override
+        public Fragment fragment() {
+            return fragment;
         }
 
         @Override
@@ -573,6 +593,16 @@ public abstract class RelativeReference extends UrinReference {
         }
 
         @Override
+        public boolean hasFragment() {
+            return true;
+        }
+
+        @Override
+        public Fragment fragment() {
+            return fragment;
+        }
+
+        @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -641,6 +671,16 @@ public abstract class RelativeReference extends UrinReference {
         @Override
         public Path path() {
             return path;
+        }
+
+        @Override
+        public boolean hasFragment() {
+            return false;
+        }
+
+        @Override
+        public Fragment fragment() {
+            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
         }
 
         @Override
@@ -720,6 +760,16 @@ public abstract class RelativeReference extends UrinReference {
         }
 
         @Override
+        public boolean hasFragment() {
+            return false;
+        }
+
+        @Override
+        public Fragment fragment() {
+            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
+        }
+
+        @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
             return urin(scheme, hierarchicalPart.resolve(authority, path), query);
         }
@@ -795,6 +845,16 @@ public abstract class RelativeReference extends UrinReference {
         @Override
         public Path path() {
             return path;
+        }
+
+        @Override
+        public boolean hasFragment() {
+            return true;
+        }
+
+        @Override
+        public Fragment fragment() {
+            return fragment;
         }
 
         @Override
@@ -880,6 +940,16 @@ public abstract class RelativeReference extends UrinReference {
         @Override
         public Path path() {
             return path;
+        }
+
+        @Override
+        public boolean hasFragment() {
+            return true;
+        }
+
+        @Override
+        public Fragment fragment() {
+            return fragment;
         }
 
         @Override

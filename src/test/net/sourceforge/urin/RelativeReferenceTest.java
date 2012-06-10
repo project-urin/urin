@@ -50,6 +50,18 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithEmptyPathFragmentIsCorrect() throws Exception {
+        final RelativeReference relativeReference = relativeReference();
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
+
+    }
+
+    @Test
     public void aRelativeReferenceWithEmptyPathIsEqualToAnotherRelativeReferenceWithEmptyPath() throws Exception {
         assertThat(relativeReference(), equalTo(relativeReference()));
         assertThat(relativeReference().hashCode(), equalTo(relativeReference().hashCode()));
@@ -71,6 +83,19 @@ public class RelativeReferenceTest {
     public void aRelativeReferenceWithEmptyPathWithQueryPathIsCorrect() throws Exception {
         Query query = aQuery();
         assertThat(relativeReference(query).path(), equalTo(rootlessPath()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithQueryFragmentIsCorrect() throws Exception {
+        Query query = aQuery();
+        final RelativeReference relativeReference = relativeReference(query);
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
+
     }
 
     @Test
@@ -116,6 +141,15 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithEmptyPathWithFragmentFragmentIsCorrect() throws Exception {
+        Fragment fragment = aFragment();
+        RelativeReference relativeReference = relativeReference(fragment);
+        assertThat(relativeReference.hasFragment(), equalTo(true));
+        assertThat(relativeReference.fragment(), equalTo(fragment));
+
+    }
+
+    @Test
     public void aRelativeReferenceWithEmptyPathWithFragmentIsEqualToAnotherRelativeReferenceWithEmptyPath() throws Exception {
         Fragment fragment = aFragment();
         assertThat(relativeReference(fragment), equalTo(relativeReference(fragment)));
@@ -157,6 +191,16 @@ public class RelativeReferenceTest {
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(relativeReference(query, fragment).path(), equalTo(rootlessPath()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithEmptyPathWithQueryAndFragmentFragmentIsCorrect() throws Exception {
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        RelativeReference relativeReference = relativeReference(query, fragment);
+        assertThat(relativeReference.hasFragment(), equalTo(true));
+        assertThat(relativeReference.fragment(), equalTo(fragment));
+
     }
 
     @Test
@@ -215,6 +259,18 @@ public class RelativeReferenceTest {
     public void aRelativeReferenceWithPathPathIsCorrect() throws Exception {
         Path path = aPath();
         assertThat(relativeReference(path).path(), equalTo(path));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathFragmentIsCorrect() throws Exception {
+        Path path = aPath();
+        final RelativeReference relativeReference = relativeReference(path);
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
     }
 
     @Test
@@ -291,6 +347,20 @@ public class RelativeReferenceTest {
         Path path = aPath();
         Query query = aQuery();
         assertThat(relativeReference(path, query).path(), equalTo(path));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndQueryFragmentIsCorrect() throws Exception {
+        Path path = aPath();
+        Query query = aQuery();
+        final RelativeReference relativeReference = relativeReference(path, query);
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
+
     }
 
     @Test
@@ -385,6 +455,15 @@ public class RelativeReferenceTest {
         Path path = aPath();
         Fragment fragment = aFragment();
         assertThat(relativeReference(path, fragment).path(), equalTo(path));
+    }
+
+    @Test
+    public void aRelativeReferenceWithPathAndFragmentFragmentIsCorrect() throws Exception {
+        Path path = aPath();
+        Fragment fragment = aFragment();
+        RelativeReference relativeReference = relativeReference(path, fragment);
+        assertThat(relativeReference.hasFragment(), equalTo(true));
+        assertThat(relativeReference.fragment(), equalTo(fragment));
     }
 
     @Test
@@ -483,6 +562,15 @@ public class RelativeReferenceTest {
         assertThat(relativeReference(path, query, fragment).path(), equalTo(path));
     }
 
+    @Test
+    public void aRelativeReferenceWithPathAndQueryAndFragmentFragmentIsCorrect() throws Exception {
+        Path path = aPath();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        RelativeReference relativeReference = relativeReference(path, query, fragment);
+        assertThat(relativeReference.hasFragment(), equalTo(true));
+        assertThat(relativeReference.fragment(), equalTo(fragment));
+    }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentIsEqualToAnotherRelativeReferenceWithPathAndFragment() throws Exception {
@@ -628,6 +716,19 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aSimpleAbsolutePathFragmentIsCorrect() throws Exception {
+        Path path = aPath();
+        final RelativeReference relativeReference = relativeReference(path);
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
+
+    }
+
+    @Test
     public void aSimpleAbsolutePathToStringIsCorrect() throws Exception {
         Path path = aPath();
         assertThat(relativeReference(path).toString(), equalTo("RelativeReference{path=" + path + "}"));
@@ -676,6 +777,18 @@ public class RelativeReferenceTest {
     public void aSimpleRootlessPathPathIsCorrect() throws Exception {
         Path path = aPath();
         assertThat(relativeReference(path).path(), equalTo(path));
+    }
+
+    @Test
+    public void aSimpleRootlessPathFragmentIsCorrect() throws Exception {
+        final RelativeReference relativeReference = relativeReference(aPath());
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
+
     }
 
     @Test
@@ -752,6 +865,18 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithAuthorityAndEmptyPathFragmentIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        final RelativeReference relativeReference = relativeReference(authority);
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
+    }
+
+    @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
         assertThat(relativeReference(authority).toString(), equalTo("RelativeReference{authority=" + authority + ", path=EmptyPath}"));
@@ -822,6 +947,20 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         Query query = aQuery();
         assertThat(relativeReference(authority, query).path(), equalTo(rootlessPath()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndQueryFragmentIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        Query query = aQuery();
+        final RelativeReference relativeReference = relativeReference(authority, query);
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
+
     }
 
     @Test
@@ -913,6 +1052,15 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         Fragment fragment = aFragment();
         assertThat(relativeReference(authority, fragment).path(), equalTo(rootlessPath()));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndFragmentFragmentIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        Fragment fragment = aFragment();
+        RelativeReference relativeReference = relativeReference(authority, fragment);
+        assertThat(relativeReference.hasFragment(), equalTo(true));
+        assertThat(relativeReference.fragment(), equalTo(fragment));
     }
 
     @Test
@@ -1020,6 +1168,16 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithAuthorityAndQueryAndFragmentFragmentIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        RelativeReference relativeReference = relativeReference(authority, query, fragment);
+        assertThat(relativeReference.hasFragment(), equalTo(true));
+        assertThat(relativeReference.fragment(), equalTo(fragment));
+    }
+
+    @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
         Query query = aQuery();
@@ -1117,6 +1275,19 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithAuthorityAndPathFragmentIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        AbsolutePath absolutePath = anAbsolutePath();
+        final RelativeReference relativeReference = relativeReference(authority, absolutePath);
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
+    }
+
+    @Test
     public void aRelativeReferenceWithAuthorityAndPathToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
         AbsolutePath absolutePath = anAbsolutePath();
@@ -1169,6 +1340,21 @@ public class RelativeReferenceTest {
         AbsolutePath absolutePath = anAbsolutePath();
         Query query = aQuery();
         assertThat(relativeReference(authority, absolutePath, query).path(), equalTo((Path) absolutePath));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndPathAndQueryFragmentIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        AbsolutePath absolutePath = anAbsolutePath();
+        Query query = aQuery();
+        final RelativeReference relativeReference = relativeReference(authority, absolutePath, query);
+        assertThat(relativeReference.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                relativeReference.fragment();
+            }
+        });
+
     }
 
     @Test
@@ -1232,6 +1418,16 @@ public class RelativeReferenceTest {
     }
 
     @Test
+    public void aRelativeReferenceWithAuthorityAndPathAndFragmentFragmentIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        AbsolutePath absolutePath = anAbsolutePath();
+        Fragment fragment = aFragment();
+        RelativeReference relativeReference = relativeReference(authority, absolutePath, fragment);
+        assertThat(relativeReference.hasFragment(), equalTo(true));
+        assertThat(relativeReference.fragment(), equalTo(fragment));
+    }
+
+    @Test
     public void aRelativeReferenceWithAuthorityAndPathAndFragmentToStringIsCorrect() throws Exception {
         Authority authority = anAuthority();
         AbsolutePath absolutePath = anAbsolutePath();
@@ -1292,6 +1488,17 @@ public class RelativeReferenceTest {
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(relativeReference(authority, absolutePath, query, fragment).path(), equalTo((Path) absolutePath));
+    }
+
+    @Test
+    public void aRelativeReferenceWithAuthorityAndPathAndQueryAndFragmentFragmentIsCorrect() throws Exception {
+        Authority authority = anAuthority();
+        AbsolutePath absolutePath = anAbsolutePath();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        RelativeReference relativeReference = relativeReference(authority, absolutePath, query, fragment);
+        assertThat(relativeReference.hasFragment(), equalTo(true));
+        assertThat(relativeReference.fragment(), equalTo(fragment));
     }
 
     @Test
