@@ -278,7 +278,7 @@
             <artifact:arg value="-DpomFile=${release.directory.maven}/pom.xml"/>
             <artifact:arg value="-Dfile=${release.directory.maven}/urin-${version}.jar"/>
             <artifact:arg value="-Pgpg"/>
-            <artifact:arg value="-X"/>
+            <!--<artifact:arg value="-X"/>-->
         </artifact:mvn>
 
         <!-- sign and deploy the sources artifact -->
@@ -291,7 +291,7 @@
             <artifact:arg value="-Dfile=${release.directory.maven}/urin-${version}-sources.jar"/>
             <artifact:arg value="-Dclassifier=sources"/>
             <artifact:arg value="-Pgpg"/>
-            <artifact:arg value="-X"/>
+            <!--<artifact:arg value="-X"/>-->
         </artifact:mvn>
 
         <!-- sign and deploy the javadoc artifact -->
@@ -304,7 +304,7 @@
             <artifact:arg value="-Dfile=${release.directory.maven}/urin-${version}-javadoc.jar"/>
             <artifact:arg value="-Dclassifier=javadoc"/>
             <artifact:arg value="-Pgpg"/>
-            <artifact:arg value="-X"/>
+            <!--<artifact:arg value="-X"/>-->
         </artifact:mvn>
 
         <!-- close the staging repository, whatever that means -->
@@ -317,7 +317,7 @@
             <artifact:arg value="-Dnexus.artifactId=urin"/>
             <artifact:arg value="-Dnexus.groupId=net.sourceforge.urin"/>
             <artifact:arg value="-Dnexus.automatic=true"/>
-            <artifact:arg value="-X"/>
+            <!--<artifact:arg value="-X"/>-->
         </artifact:mvn>
 
         <!-- release the staging repository -->
@@ -329,7 +329,7 @@
             <artifact:arg value="-Dnexus.promote.autoSelectOverride=true"/>
             <artifact:arg value="-Dnexus.automatic=true"/>
             <artifact:arg value="-DtargetRepositoryId=releases"/>
-            <artifact:arg value="-X"/>
+            <!--<artifact:arg value="-X"/>-->
         </artifact:mvn>
     </target>
 
