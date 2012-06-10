@@ -174,10 +174,7 @@ public abstract class HierarchicalPart {
 
         @Override
         String asString() {
-            return new StringBuilder("//")
-                    .append(authority.asString())
-                    .append(path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
-                    .toString();
+            return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT);
         }
 
         @Override

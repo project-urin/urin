@@ -402,10 +402,7 @@ public abstract class RelativeReference extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON))
-                    .append('?')
-                    .append(query.asString())
-                    .toString();
+            return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + '?' + query.asString();
         }
 
         @Override
@@ -486,10 +483,7 @@ public abstract class RelativeReference extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON))
-                    .append('#')
-                    .append(fragment.asString())
-                    .toString();
+            return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + '#' + fragment.asString();
         }
 
         @Override
@@ -579,12 +573,7 @@ public abstract class RelativeReference extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON))
-                    .append('?')
-                    .append(query.asString())
-                    .append('#')
-                    .append(fragment.asString())
-                    .toString();
+            return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + '?' + query.asString() + '#' + fragment.asString();
         }
 
         @Override
@@ -662,10 +651,7 @@ public abstract class RelativeReference extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder("//")
-                    .append(authority.asString())
-                    .append(path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
-                    .toString();
+            return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT);
         }
 
         @Override
@@ -746,12 +732,7 @@ public abstract class RelativeReference extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder("//")
-                    .append(authority.asString())
-                    .append(path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
-                    .append('?')
-                    .append(query.asString())
-                    .toString();
+            return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + '?' + query.asString();
         }
 
         @Override
@@ -834,12 +815,7 @@ public abstract class RelativeReference extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder("//")
-                    .append(authority.asString())
-                    .append(path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
-                    .append('#')
-                    .append(fragment.asString())
-                    .toString();
+            return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + '#' + fragment.asString();
         }
 
         @Override
@@ -927,14 +903,7 @@ public abstract class RelativeReference extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder("//")
-                    .append(authority.asString())
-                    .append(path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT))
-                    .append('?')
-                    .append(query.asString())
-                    .append('#')
-                    .append(fragment.asString())
-                    .toString();
+            return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + '?' + query.asString() + '#' + fragment.asString();
         }
 
         @Override

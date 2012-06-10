@@ -284,14 +284,10 @@ public abstract class Host {
 
         @Override
         String asString() {
-            return new StringBuilder(firstOctet.asString())
-                    .append('.')
-                    .append(secondOctet.asString())
-                    .append('.')
-                    .append(thirdOctet.asString())
-                    .append('.')
-                    .append(fourthOctet.asString())
-                    .toString();
+            return firstOctet.asString() +
+                    '.' + secondOctet.asString() +
+                    '.' + thirdOctet.asString() +
+                    '.' + fourthOctet.asString();
         }
 
         @Override
@@ -745,13 +741,7 @@ public abstract class Host {
 
         @Override
         String asString() {
-            return new StringBuilder()
-                    .append("[v")
-                    .append(version)
-                    .append('.')
-                    .append(address)
-                    .append(']')
-                    .toString();
+            return "[v" + version + '.' + address + ']';
         }
 
         @Override

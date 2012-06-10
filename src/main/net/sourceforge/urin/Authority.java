@@ -164,10 +164,7 @@ public abstract class Authority {
 
         @Override
         String asString() {
-            return new StringBuilder(userInfo.asString())
-                    .append('@')
-                    .append(host.asString())
-                    .toString();
+            return userInfo.asString() + '@' + host.asString();
         }
 
         @Override
@@ -220,10 +217,7 @@ public abstract class Authority {
 
         @Override
         String asString() {
-            return new StringBuilder(host.asString())
-                    .append(':')
-                    .append(port.asString())
-                    .toString();
+            return host.asString() + ':' + port.asString();
         }
 
         @Override
@@ -279,12 +273,7 @@ public abstract class Authority {
 
         @Override
         String asString() {
-            return new StringBuilder(userInfo.asString())
-                    .append('@')
-                    .append(host.asString())
-                    .append(':')
-                    .append(port.asString())
-                    .toString();
+            return userInfo.asString() + '@' + host.asString() + ':' + port.asString();
         }
 
         @Override

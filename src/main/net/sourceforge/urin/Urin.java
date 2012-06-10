@@ -194,14 +194,7 @@ public abstract class Urin extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder(scheme.asString())
-                    .append(':')
-                    .append(hierarchicalPart.asString())
-                    .append('?')
-                    .append(query.asString())
-                    .append('#')
-                    .append(fragment.asString())
-                    .toString();
+            return scheme.asString() + ':' + hierarchicalPart.asString() + '?' + query.asString() + '#' + fragment.asString();
         }
 
         @Override
@@ -278,12 +271,7 @@ public abstract class Urin extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder(scheme.asString())
-                    .append(':')
-                    .append(hierarchicalPart.asString())
-                    .append('?')
-                    .append(query.asString())
-                    .toString();
+            return scheme.asString() + ':' + hierarchicalPart.asString() + '?' + query.asString();
         }
 
         @Override
@@ -357,12 +345,7 @@ public abstract class Urin extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder(scheme.asString())
-                    .append(':')
-                    .append(hierarchicalPart.asString())
-                    .append('#')
-                    .append(fragment.asString())
-                    .toString();
+            return scheme.asString() + ':' + hierarchicalPart.asString() + '#' + fragment.asString();
         }
 
         @Override
@@ -431,10 +414,7 @@ public abstract class Urin extends UrinReference {
 
         @Override
         public String asString() {
-            return new StringBuilder(scheme.asString())
-                    .append(':')
-                    .append(hierarchicalPart.asString())
-                    .toString();
+            return scheme.asString() + ':' + hierarchicalPart.asString();
         }
 
         @Override
