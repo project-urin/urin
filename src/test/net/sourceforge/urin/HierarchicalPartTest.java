@@ -144,7 +144,7 @@ public class HierarchicalPartTest {
 
     @Test
     public void aSimpleRootlessPathIsNotEqualToAnotherWithTheADifferentPath() throws Exception {
-        assertThat(hierarchicalPart(rootlessPath(aSegment(), aSegment())), not(equalTo(hierarchicalPart(rootlessPath(aSegment(), aSegment())))));
+        assertThat(hierarchicalPart(rootlessPath(aNonDotSegment(), aNonDotSegment())), not(equalTo(hierarchicalPart(rootlessPath(aSegment(), aSegment())))));
     }
 
     @Test
