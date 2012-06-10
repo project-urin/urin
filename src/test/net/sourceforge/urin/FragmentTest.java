@@ -15,6 +15,7 @@ import org.junit.Test;
 import static net.sourceforge.urin.CharacterSets.QUERY_AND_FRAGMENT_CHARACTERS;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
+import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -36,4 +37,9 @@ public class FragmentTest {
         assertThat(Fragment.parse(fragment.asString()), equalTo(fragment));
     }
 
+    @Test
+    public void valueGetsTheValueCorrectly() throws Exception {
+        String value = aString();
+        assertThat(fragment(value).value(), equalTo(value));
+    }
 }

@@ -14,7 +14,6 @@ import com.google.common.base.Function;
 import org.junit.Test;
 
 import static com.google.common.collect.Iterables.transform;
-import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.RelativeReference.parse;
@@ -51,6 +50,6 @@ public class RelativeReferenceSamplesTest {
     public void canParseARelativeReferenceAndRetrieveTheValuesOfTheFragment() throws Exception {
         RelativeReference relativeReference = parse("a#foo:bar");
         assertThat(relativeReference.hasFragment(), equalTo(true));
-        assertThat(relativeReference.fragment(), equalTo(fragment("foo:bar")));
+        assertThat(relativeReference.fragment().value(), equalTo("foo:bar"));
     }
 }
