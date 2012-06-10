@@ -15,8 +15,8 @@ import org.junit.Test;
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
+import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.MoreRandomStringUtils.*;
-import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.PercentEncodableBuilder.aPercentEncodableString;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_EVERYTHING;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -67,7 +67,7 @@ public class PercentEncodableTest {
 
     @Test
     public void rejectsNullInFactoryForPercentEncodableString() throws Exception {
-        assertThrowsNullPointerException("Null value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 PercentEncodedUnaryValue.PercentEncodable.percentEncodableString(null);
@@ -123,14 +123,14 @@ public class PercentEncodableTest {
 
     @Test
     public void rejectsNullInFactoryForPercentEncodableDelimitedValue() throws Exception {
-        assertThrowsNullPointerException("Null value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 PercentEncodedUnaryValue.PercentEncodable value = null;
                 PercentEncodedUnaryValue.PercentEncodable.percentEncodableDelimitedValue('a', value);
             }
         });
-        assertThrowsNullPointerException("Null value array should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null value array should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 PercentEncodedUnaryValue.PercentEncodable[] values = null;
@@ -191,7 +191,7 @@ public class PercentEncodableTest {
 
     @Test
     public void rejectsNullInFactoryForPercentEncodableSubstitutedValue() throws Exception {
-        assertThrowsNullPointerException("Null value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 PercentEncodedUnaryValue.PercentEncodable.percentEncodableSubstitutedValue('a', 'A', null);
@@ -235,13 +235,13 @@ public class PercentEncodableTest {
 
     @Test
     public void rejectsNullInFactoryForPercentEncodableSpecifiedValue() throws Exception {
-        assertThrowsNullPointerException("Null value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 PercentEncodedUnaryValue.PercentEncodable.percentEncodableSpecifiedValue(aString(), null);
             }
         });
-        assertThrowsNullPointerException("Null specified value should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null specified value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 PercentEncodedUnaryValue.PercentEncodable.percentEncodableSpecifiedValue(null, aPercentEncodableString());

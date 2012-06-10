@@ -80,6 +80,24 @@ public abstract class UrinReference {
      */
     public abstract Path path();
 
+    /**
+     * Returns true if {@code fragment()} can be called on this {@code UrinReference}.  This method
+     * returns for {@code UrinReference}s that do not have a fragment component.
+     *
+     * @return true if {@code fragment()} can be called on this {@code UrinReference}.
+     */
+    public abstract boolean hasFragment();
+
+    /**
+     * Gets the {@code Fragment} component of this {@code UrinReference}, if it has one, or throws {@code UnsupportedOperationException} otherwise.
+     * <p/>
+     * The existence of a {@code Fragment} component can be tested by calling {@code hasFragment()}.
+     *
+     * @return the {@code Fragment} component of this {@code UrinReference}.
+     * @throws UnsupportedOperationException if this is a {@code UrinReference} that does not have a {@code Fragment} component.
+     */
+    public abstract Fragment fragment();
+
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart);
 
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query);

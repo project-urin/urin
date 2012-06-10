@@ -13,11 +13,11 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.HierarchicalPartBuilder.aHierarchicalPart;
 import static net.sourceforge.urin.HostBuilder.aHost;
-import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.Scheme.scheme;
@@ -51,6 +51,16 @@ public class UrinTest {
     }
 
     @Test
+    public void urinWithAllPartsFragmentIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(urin(scheme, hierarchicalPart, query, fragment).hasFragment(), equalTo(true));
+        assertThat(urin(scheme, hierarchicalPart, query, fragment).fragment(), equalTo(fragment));
+    }
+
+    @Test
     public void aUrinWithAllPartsIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
@@ -76,25 +86,25 @@ public class UrinTest {
 
     @Test
     public void rejectsNullInFactoryForAUrinWithAllParts() throws Exception {
-        assertThrowsNullPointerException("Null scheme should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null scheme should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(null, aHierarchicalPart(), aQuery(), aFragment());
             }
         });
-        assertThrowsNullPointerException("Null hierarchicalPart should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(aScheme(), null, aQuery(), aFragment());
             }
         });
-        assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(aScheme(), aHierarchicalPart(), null, aFragment());
             }
         });
-        assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(aScheme(), aHierarchicalPart(), aQuery(), null);
@@ -116,6 +126,20 @@ public class UrinTest {
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Query query = aQuery();
         assertThat(urin(scheme, hierarchicalPart, query).path(), equalTo(hierarchicalPart.path()));
+    }
+
+    @Test
+    public void urinWithNoFragmentFragmentIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        final Urin urin = urin(scheme, hierarchicalPart, query);
+        assertThat(urin.hasFragment(), equalTo(false));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                urin.fragment();
+            }
+        });
     }
 
     @Test
@@ -142,19 +166,19 @@ public class UrinTest {
 
     @Test
     public void rejectsNullInFactoryForAUrinWithNoFragment() throws Exception {
-        assertThrowsNullPointerException("Null scheme should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null scheme should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(null, aHierarchicalPart(), aQuery());
             }
         });
-        assertThrowsNullPointerException("Null hierarchicalPart should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(aScheme(), null, aQuery());
             }
         });
-        assertThrowsNullPointerException("Null query should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 Query query = null;
@@ -177,6 +201,15 @@ public class UrinTest {
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Fragment fragment = aFragment();
         assertThat(urin(scheme, hierarchicalPart, fragment).path(), equalTo(hierarchicalPart.path()));
+    }
+
+    @Test
+    public void urinWithNoQueryFragmentIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Fragment fragment = aFragment();
+        assertThat(urin(scheme, hierarchicalPart, fragment).hasFragment(), equalTo(true));
+        assertThat(urin(scheme, hierarchicalPart, fragment).fragment(), equalTo(fragment));
     }
 
     @Test
@@ -203,19 +236,19 @@ public class UrinTest {
 
     @Test
     public void rejectsNullInFactoryForAUrinWithNoQuery() throws Exception {
-        assertThrowsNullPointerException("Null scheme should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null scheme should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(null, aHierarchicalPart(), aFragment());
             }
         });
-        assertThrowsNullPointerException("Null hierarchicalPart should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(aScheme(), null, aFragment());
             }
         });
-        assertThrowsNullPointerException("Null fragment should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 Fragment fragment = null;
@@ -235,7 +268,20 @@ public class UrinTest {
     public void urinWithNoQueryAndNoFragmentPathIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
-        assertThat(urin(scheme, hierarchicalPart).path(), equalTo(hierarchicalPart.path()));
+        final Urin urin = urin(scheme, hierarchicalPart);
+        assertThat(urin.path(), equalTo(hierarchicalPart.path()));
+        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                urin.fragment();
+            }
+        });
+    }
+
+    @Test
+    public void urinWithNoQueryAndNoFragmentFragmentIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        assertThat(urin(scheme, hierarchicalPart).hasFragment(), equalTo(false));
     }
 
     @Test
@@ -260,13 +306,13 @@ public class UrinTest {
 
     @Test
     public void rejectsNullInFactoryForAUrinWithNoQueryOrNoFragment() throws Exception {
-        assertThrowsNullPointerException("Null scheme should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null scheme should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(null, aHierarchicalPart());
             }
         });
-        assertThrowsNullPointerException("Null hierarchicalPart should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 urin(aScheme(), null);

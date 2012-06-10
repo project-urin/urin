@@ -14,8 +14,8 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Authority.parse;
+import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.HostBuilder.aHost;
-import static net.sourceforge.urin.NullTest.assertThrowsNullPointerException;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
 import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
@@ -33,7 +33,7 @@ public class AuthorityTest {
 
     @Test
     public void rejectsNullHostInFactory() throws Exception {
-        assertThrowsNullPointerException("Null host should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 authority(null);
@@ -68,13 +68,13 @@ public class AuthorityTest {
 
     @Test
     public void rejectsNullInFactoryForAuthorityWithNoPort() throws Exception {
-        assertThrowsNullPointerException("Null userInfo should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null userInfo should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 authority(null, aHost());
             }
         });
-        assertThrowsNullPointerException("Null host should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 authority(aUserInfo(), null);
@@ -111,13 +111,13 @@ public class AuthorityTest {
 
     @Test
     public void rejectsNullInFactoryForAuthorityWithNoUserInfo() throws Exception {
-        assertThrowsNullPointerException("Null host should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 authority(null, aPort());
             }
         });
-        assertThrowsNullPointerException("Null port should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null port should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 authority(aHost(), null);
@@ -155,19 +155,19 @@ public class AuthorityTest {
 
     @Test
     public void rejectsNullInFactoryForAuthorityWithAllOptions() throws Exception {
-        assertThrowsNullPointerException("Null userInfo should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null userInfo should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 authority(null, aHost(), aPort());
             }
         });
-        assertThrowsNullPointerException("Null host should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 authority(aUserInfo(), null, aPort());
             }
         });
-        assertThrowsNullPointerException("Null port should throw NullPointerException in factory", new NullTest.NullPointerExceptionThrower() {
+        assertThrowsException("Null port should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 authority(aUserInfo(), aHost(), null);
@@ -235,7 +235,7 @@ public class AuthorityTest {
             // expect to end up here
         }
     }
-    
+
     @Test
     public void authorityWithNoUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() throws Exception {
         Authority authority = authority(aHost());

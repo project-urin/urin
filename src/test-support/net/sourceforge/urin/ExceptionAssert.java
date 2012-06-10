@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -12,17 +12,19 @@ package net.sourceforge.urin;
 
 import static org.junit.Assert.fail;
 
-public final class NullTest {
-    public static void assertThrowsNullPointerException(final String message, final NullPointerExceptionThrower nullPointerExceptionThrower) {
+public final class ExceptionAssert {
+    public static <T extends Exception> void assertThrowsException(final String message, final Class<T> exceptionClass, final ExceptionThrower<T> exceptionThrower) throws Exception {
         try {
-            nullPointerExceptionThrower.execute();
+            exceptionThrower.execute();
             fail(message);
-        } catch (NullPointerException e) {
-            // expect to end up here
+        } catch (Exception e) {
+            if (!exceptionClass.isInstance(e)) {
+                throw e;
+            }
         }
     }
 
-    public static interface NullPointerExceptionThrower {
-        void execute() throws NullPointerException;
+    public static interface ExceptionThrower<T extends Exception> {
+        void execute() throws T;
     }
 }
