@@ -82,7 +82,7 @@ public abstract class UrinReference {
 
     /**
      * Returns true if {@code fragment()} can be called on this {@code UrinReference}.  This method
-     * returns for {@code UrinReference}s that do not have a fragment component.
+     * returns false for {@code UrinReference}s that do not have a fragment component.
      *
      * @return true if {@code fragment()} can be called on this {@code UrinReference}.
      */
