@@ -104,7 +104,7 @@ abstract class CharacterSetMembershipFunction {
             singleMemberCharacterSet('?')
     );
 
-    public static CharacterSetMembershipFunction ALL_CHARACTERS = new CharacterSetMembershipFunction() {
+    public static final CharacterSetMembershipFunction ALL_CHARACTERS = new CharacterSetMembershipFunction() {
         @Override
         boolean isMember(final char character) {
             return true;
@@ -116,7 +116,7 @@ abstract class CharacterSetMembershipFunction {
         }
     };
 
-    public static CharacterSetMembershipFunction NO_CHARACTERS = new CharacterSetMembershipFunction() {
+    public static final CharacterSetMembershipFunction NO_CHARACTERS = new CharacterSetMembershipFunction() {
         @Override
         boolean isMember(final char character) {
             return false;
