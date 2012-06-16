@@ -306,6 +306,16 @@ public abstract class RelativeReference extends UrinReference {
         return parse(uri.toASCIIString());
     }
 
+    @Override
+    public boolean hasQuery() {
+        return false;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public Query query() {
+        throw new UnsupportedOperationException("Not done yet");
+    }
+
     static boolean isValidRelativeReferenceString(final String uriReferenceString) {
         return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
     }

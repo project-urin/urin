@@ -213,6 +213,16 @@ public abstract class Urin extends UrinReference {
         }
 
         @Override
+        public boolean hasQuery() {
+            return true;
+        }
+
+        @Override
+        public Query query() {
+            return query;
+        }
+
+        @Override
         public Urin resolve(final UrinReference urinReference) {
             return urinReference.resolve(scheme, hierarchicalPart, query, fragment);
         }
@@ -290,6 +300,16 @@ public abstract class Urin extends UrinReference {
         }
 
         @Override
+        public boolean hasQuery() {
+            return true;
+        }
+
+        @Override
+        public Query query() {
+            return query;
+        }
+
+        @Override
         public Urin resolve(final UrinReference urinReference) {
             return urinReference.resolve(scheme, hierarchicalPart, query);
         }
@@ -364,6 +384,16 @@ public abstract class Urin extends UrinReference {
         }
 
         @Override
+        public boolean hasQuery() {
+            return false;
+        }
+
+        @Override
+        public Query query() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
         public Urin resolve(final UrinReference urinReference) {
             return urinReference.resolve(scheme, hierarchicalPart);
         }
@@ -430,6 +460,16 @@ public abstract class Urin extends UrinReference {
         @Override
         public Fragment fragment() {
             throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
+        }
+
+        @Override
+        public boolean hasQuery() {
+            return false;
+        }
+
+        @Override
+        public Query query() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
         }
 
         @Override

@@ -98,6 +98,24 @@ public abstract class UrinReference {
      */
     public abstract Fragment fragment();
 
+    /**
+     * Returns true if {@code query()} can be called on this {@code UrinReference}.  This method
+     * returns false for {@code UrinReference}s that do not have a query component.
+     *
+     * @return true if {@code query()} can be called on this {@code UrinReference}.
+     */
+    public abstract boolean hasQuery();
+
+    /**
+     * Gets the {@code Query} component of this {@code UrinReference}, if it has one, or throws {@code UnsupportedOperationException} otherwise.
+     * <p/>
+     * The existence of a {@code Query} component can be tested by calling {@code hasQuery()}.
+     *
+     * @return the {@code Query} component of this {@code UrinReference}.
+     * @throws UnsupportedOperationException if this is a {@code UrinReference} that does not have a {@code Query} component.
+     */
+    public abstract Query query();
+
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart);
 
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query);

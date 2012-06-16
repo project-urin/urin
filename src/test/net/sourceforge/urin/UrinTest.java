@@ -51,6 +51,16 @@ public class UrinTest {
     }
 
     @Test
+    public void urinWithAllPartsQueryIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(urin(scheme, hierarchicalPart, query, fragment).hasQuery(), equalTo(true));
+        assertThat(urin(scheme, hierarchicalPart, query, fragment).query(), equalTo(query));
+    }
+
+    @Test
     public void urinWithAllPartsFragmentIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
@@ -129,6 +139,16 @@ public class UrinTest {
     }
 
     @Test
+    public void urinWithNoFragmentQueryIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Query query = aQuery();
+        final Urin urin = urin(scheme, hierarchicalPart, query);
+        assertThat(urin.hasQuery(), equalTo(true));
+        assertThat(urin(scheme, hierarchicalPart, query).query(), equalTo(query));
+    }
+
+    @Test
     public void urinWithNoFragmentFragmentIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
@@ -204,6 +224,20 @@ public class UrinTest {
     }
 
     @Test
+    public void urinWithNoQueryQueryIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Fragment fragment = aFragment();
+        final Urin urin = urin(scheme, hierarchicalPart, fragment);
+        assertThat(urin.hasQuery(), equalTo(false));
+        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                urin.query();
+            }
+        });
+    }
+
+    @Test
     public void urinWithNoQueryFragmentIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
@@ -273,6 +307,19 @@ public class UrinTest {
         assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
             public void execute() throws UnsupportedOperationException {
                 urin.fragment();
+            }
+        });
+    }
+
+    @Test
+    public void urinWithNoQueryAndNoFragmentQueryIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        final Urin urin = urin(scheme, hierarchicalPart);
+        assertThat(urin.hasQuery(), equalTo(false));
+        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                urin.query();
             }
         });
     }
