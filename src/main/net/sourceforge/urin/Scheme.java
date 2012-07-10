@@ -10,6 +10,10 @@
 
 package net.sourceforge.urin;
 
+import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
@@ -23,6 +27,8 @@ import static net.sourceforge.urin.Urin.urin;
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.1">RFC 3986 - Scheme</a>
  */
 public abstract class Scheme {
+
+    private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
     private static final CharacterSetMembershipFunction TRAILING_CHARACTER_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,
@@ -259,6 +265,107 @@ public abstract class Scheme {
      */
     public final RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, path, query, fragment);
+    }
+
+    /**
+     * Parses the given {@code String} as a relative reference.
+     *
+     * @param relativeReferenceString a {@code String} that represents a relative reference.
+     * @return a {@code UrinReference} representing the relative reference represented by the given {@code String}.
+     * @throws ParseException if the given {@code String} is not a valid relative reference.
+     */
+    public final RelativeReference parseRelativeReference(final String relativeReferenceString) throws ParseException {
+        final Matcher matcher = RELATIVE_REFERENCE_PATTERN.matcher(relativeReferenceString);
+        matcher.matches();
+        final String queryString = matcher.group(6);
+        final String fragment = matcher.group(8);
+        final RelativeReference result;
+        final String authorityString = matcher.group(3);
+        final String pathString = matcher.group(4);
+        if (authorityString == null) {
+            if (pathString == null || "".equals(pathString)) {
+                if (queryString == null) {
+                    if (fragment == null) {
+                        result = relativeReference();
+                    } else {
+                        result = relativeReference(Fragment.parse(fragment));
+                    }
+                } else {
+                    final Query query = Query.parse(queryString);
+                    if (fragment == null) {
+                        result = relativeReference(query);
+                    } else {
+                        result = relativeReference(query, Fragment.parse(fragment));
+                    }
+                }
+            } else {
+                final Path path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString) : Path.parseParse(pathString);
+                if (queryString == null) {
+                    if (fragment == null) {
+                        result = relativeReference(path);
+                    } else {
+                        result = relativeReference(path, Fragment.parse(fragment));
+                    }
+                } else {
+                    final Query query = Query.parse(queryString);
+                    if (fragment == null) {
+                        result = relativeReference(path, query);
+                    } else {
+                        result = relativeReference(path, query, Fragment.parse(fragment));
+                    }
+                }
+            }
+        } else {
+            final Authority authority = Authority.parse(authorityString);
+            if (pathString == null || "".equals(pathString)) {
+                if (queryString == null) {
+                    if (fragment == null) {
+                        result = relativeReference(authority);
+                    } else {
+                        result = relativeReference(authority, Fragment.parse(fragment));
+                    }
+                } else {
+                    final Query query = Query.parse(queryString);
+                    if (fragment == null) {
+                        result = relativeReference(authority, query);
+                    } else {
+                        result = relativeReference(authority, query, Fragment.parse(fragment));
+                    }
+                }
+            } else {
+                final AbsolutePath path = Path.parseParse(pathString);
+                if (queryString == null) {
+                    if (fragment == null) {
+                        result = relativeReference(authority, path);
+                    } else {
+                        result = relativeReference(authority, path, Fragment.parse(fragment));
+                    }
+                } else {
+                    final Query query = Query.parse(queryString);
+                    if (fragment == null) {
+                        result = relativeReference(authority, path, query);
+                    } else {
+                        result = relativeReference(authority, path, query, Fragment.parse(fragment));
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Parses the given {@code URI} to produce a {@code RelativeReference}.
+     *
+     * @param uri a {@code URI} representing a relative reference to parse.
+     * @return a {@code RelativeReference} representing the RFC 3986 relative reference represented by the given {@code URI}.
+     * @throws ParseException if the given {@code URI} is not a valid RFC 3986 relative reference.
+     */
+    public final RelativeReference parseRelativeReference(URI uri) throws ParseException {
+        return parseRelativeReference(uri.toASCIIString());
+    }
+
+    static boolean isValidRelativeReferenceString(final String uriReferenceString) {
+        return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
     }
 
     public static final class GenericScheme extends Scheme {

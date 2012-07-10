@@ -11,8 +11,6 @@
 package net.sourceforge.urin;
 
 import java.net.URI;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A relative reference.
@@ -24,8 +22,6 @@ import java.util.regex.Pattern;
  */
 public abstract class RelativeReference extends UrinReference {
 
-    private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
-
     RelativeReference() {
     }
 
@@ -33,6 +29,7 @@ public abstract class RelativeReference extends UrinReference {
      * Factory method for creating {@code RelativeReference}s with just an empty path.
      *
      * @return a {@code RelativeReference} with an empty path.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference()}
      */
     public static RelativeReference relativeReference() {
         return anyScheme().relativeReference();
@@ -43,6 +40,7 @@ public abstract class RelativeReference extends UrinReference {
      *
      * @param authority any {@code Authority} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and an empty path.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Authority)}
      */
     public static RelativeReference relativeReference(final Authority authority) {
         return anyScheme().relativeReference(authority);
@@ -53,6 +51,7 @@ public abstract class RelativeReference extends UrinReference {
      *
      * @param path any {@code Path} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path}.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Path)}
      */
     public static RelativeReference relativeReference(final Path path) {
         return anyScheme().relativeReference(path);
@@ -64,6 +63,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param authority any {@code Authority} to use in this {@code RelativeReference}.
      * @param path      any {@code AbsolutePath} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Path}.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Authority, AbsolutePath)}
      */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path) {
         return anyScheme().relativeReference(authority, path);
@@ -74,6 +74,7 @@ public abstract class RelativeReference extends UrinReference {
      *
      * @param query any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Query} and an empty path.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Query)}
      */
     public static RelativeReference relativeReference(final Query query) {
         return anyScheme().relativeReference(query);
@@ -85,6 +86,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param authority any {@code Authority} to use in this {@code RelativeReference}.
      * @param query     any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Query}, and an empty path.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Authority, Query)}
      */
     public static RelativeReference relativeReference(final Authority authority, final Query query) {
         return anyScheme().relativeReference(authority, query);
@@ -96,6 +98,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param path  any {@code Path} to use in this {@code RelativeReference}.
      * @param query any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path} and {@code Query}.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Path, Query)}
      */
     public static RelativeReference relativeReference(final Path path, final Query query) {
         return anyScheme().relativeReference(path, query);
@@ -108,6 +111,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param path      any {@code Path} to use in this {@code RelativeReference}.
      * @param query     any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Query}.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Authority, AbsolutePath, Query)}
      */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query) {
         return anyScheme().relativeReference(authority, path, query);
@@ -118,6 +122,7 @@ public abstract class RelativeReference extends UrinReference {
      *
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Fragment} and an empty path.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Fragment)}
      */
     public static RelativeReference relativeReference(final Fragment fragment) {
         return anyScheme().relativeReference(fragment);
@@ -129,6 +134,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param authority any {@code Authority} to use in this {@code RelativeReference}.
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Fragment}, and an empty path.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Authority, Fragment)}
      */
     public static RelativeReference relativeReference(final Authority authority, final Fragment fragment) {
         return anyScheme().relativeReference(authority, fragment);
@@ -140,6 +146,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param path     any {@code Path} to use in this {@code RelativeReference}.
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path} and {@code Fragment}.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Path, Fragment)}
      */
     public static RelativeReference relativeReference(final Path path, final Fragment fragment) {
         return anyScheme().relativeReference(path, fragment);
@@ -152,6 +159,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param path      any {@code AbsolutePath} to use in this {@code RelativeReference}.
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Fragment}.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Authority, AbsolutePath, Fragment)}
      */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Fragment fragment) {
         return anyScheme().relativeReference(authority, path, fragment);
@@ -163,6 +171,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param query    any {@code Query} to use in this {@code RelativeReference}.
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Query} and {@code Fragment}, and an empty path.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Query, Fragment)}
      */
     public static RelativeReference relativeReference(final Query query, final Fragment fragment) {
         return anyScheme().relativeReference(query, fragment);
@@ -175,6 +184,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param query     any {@code Query} to use in this {@code RelativeReference}.
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Query} and {@code Fragment}, and an empty path.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Authority, Query, Fragment)
      */
     public static RelativeReference relativeReference(final Authority authority, final Query query, final Fragment fragment) {
         return anyScheme().relativeReference(authority, query, fragment);
@@ -187,6 +197,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param query    any {@code Query} to use in this {@code RelativeReference}.
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path}, {@code Query} and {@code Fragment}.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Path, Query, Fragment)}
      */
     public static RelativeReference relativeReference(final Path path, final Query query, final Fragment fragment) {
         return anyScheme().relativeReference(path, query, fragment);
@@ -200,6 +211,7 @@ public abstract class RelativeReference extends UrinReference {
      * @param query     any {@code Query} to use in this {@code RelativeReference}.
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path}, {@code Query} and {@code Fragment}.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Authority, AbsolutePath, Query, Fragment)}
      */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query, final Fragment fragment) {
         return anyScheme().relativeReference(authority, path, query, fragment);
@@ -211,84 +223,10 @@ public abstract class RelativeReference extends UrinReference {
      * @param relativeReferenceString a {@code String} that represents a relative reference.
      * @return a {@code UrinReference} representing the relative reference represented by the given {@code String}.
      * @throws ParseException if the given {@code String} is not a valid relative reference.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#parseRelativeReference(String)}
      */
     public static RelativeReference parse(final String relativeReferenceString) throws ParseException {
-        final Matcher matcher = RELATIVE_REFERENCE_PATTERN.matcher(relativeReferenceString);
-        matcher.matches();
-        final String queryString = matcher.group(6);
-        final String fragment = matcher.group(8);
-        final RelativeReference result;
-        final String authorityString = matcher.group(3);
-        final String pathString = matcher.group(4);
-        if (authorityString == null) {
-            if (pathString == null || "".equals(pathString)) {
-                if (queryString == null) {
-                    if (fragment == null) {
-                        result = relativeReference();
-                    } else {
-                        result = relativeReference(Fragment.parse(fragment));
-                    }
-                } else {
-                    final Query query = Query.parse(queryString);
-                    if (fragment == null) {
-                        result = relativeReference(query);
-                    } else {
-                        result = relativeReference(query, Fragment.parse(fragment));
-                    }
-                }
-            } else {
-                final Path path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString) : Path.parseParse(pathString);
-                if (queryString == null) {
-                    if (fragment == null) {
-                        result = relativeReference(path);
-                    } else {
-                        result = relativeReference(path, Fragment.parse(fragment));
-                    }
-                } else {
-                    final Query query = Query.parse(queryString);
-                    if (fragment == null) {
-                        result = relativeReference(path, query);
-                    } else {
-                        result = relativeReference(path, query, Fragment.parse(fragment));
-                    }
-                }
-            }
-        } else {
-            final Authority authority = Authority.parse(authorityString);
-            if (pathString == null || "".equals(pathString)) {
-                if (queryString == null) {
-                    if (fragment == null) {
-                        result = relativeReference(authority);
-                    } else {
-                        result = relativeReference(authority, Fragment.parse(fragment));
-                    }
-                } else {
-                    final Query query = Query.parse(queryString);
-                    if (fragment == null) {
-                        result = relativeReference(authority, query);
-                    } else {
-                        result = relativeReference(authority, query, Fragment.parse(fragment));
-                    }
-                }
-            } else {
-                final AbsolutePath path = Path.parseParse(pathString);
-                if (queryString == null) {
-                    if (fragment == null) {
-                        result = relativeReference(authority, path);
-                    } else {
-                        result = relativeReference(authority, path, Fragment.parse(fragment));
-                    }
-                } else {
-                    final Query query = Query.parse(queryString);
-                    if (fragment == null) {
-                        result = relativeReference(authority, path, query);
-                    } else {
-                        result = relativeReference(authority, path, query, Fragment.parse(fragment));
-                    }
-                }
-            }
-        }
-        return result;
+        return anyScheme().parseRelativeReference(relativeReferenceString);
     }
 
     /**
@@ -297,13 +235,17 @@ public abstract class RelativeReference extends UrinReference {
      * @param uri a {@code URI} representing a relative reference to parse.
      * @return a {@code RelativeReference} representing the RFC 3986 relative reference represented by the given {@code URI}.
      * @throws ParseException if the given {@code URI} is not a valid RFC 3986 relative reference.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#parseRelativeReference(java.net.URI)}
      */
     public static RelativeReference parse(URI uri) throws ParseException {
-        return parse(uri.toASCIIString());
+        return anyScheme().parseRelativeReference(uri);
     }
 
+    /**
+     * @deprecated use {@link net.sourceforge.urin.Scheme#isValidRelativeReferenceString(String)}
+     */
     static boolean isValidRelativeReferenceString(final String uriReferenceString) {
-        return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
+        return Scheme.isValidRelativeReferenceString(uriReferenceString);
     }
 
     private static Scheme anyScheme() {
