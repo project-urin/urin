@@ -14,10 +14,6 @@ import java.net.URI;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
-import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
-import static net.sourceforge.urin.Urin.urin;
-
 /**
  * A relative reference.
  * <p/>
@@ -30,7 +26,7 @@ public abstract class RelativeReference extends UrinReference {
 
     private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
-    private RelativeReference() {
+    RelativeReference() {
     }
 
     /**
@@ -39,7 +35,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with an empty path.
      */
     public static RelativeReference relativeReference() {
-        return new RelativeReferenceNoAuthority(new EmptyPath());
+        return anyScheme().relativeReference();
     }
 
     /**
@@ -49,7 +45,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Authority} and an empty path.
      */
     public static RelativeReference relativeReference(final Authority authority) {
-        return new RelativeReferenceWithAuthority(authority, new EmptyPath());
+        return anyScheme().relativeReference(authority);
     }
 
     /**
@@ -59,7 +55,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Path}.
      */
     public static RelativeReference relativeReference(final Path path) {
-        return new RelativeReferenceNoAuthority(path);
+        return anyScheme().relativeReference(path);
     }
 
     /**
@@ -70,7 +66,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Path}.
      */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path) {
-        return new RelativeReferenceWithAuthority(authority, path);
+        return anyScheme().relativeReference(authority, path);
     }
 
     /**
@@ -80,7 +76,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Query} and an empty path.
      */
     public static RelativeReference relativeReference(final Query query) {
-        return new RelativeReferenceNoAuthorityWithQuery(new EmptyPath(), query);
+        return anyScheme().relativeReference(query);
     }
 
     /**
@@ -91,7 +87,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Query}, and an empty path.
      */
     public static RelativeReference relativeReference(final Authority authority, final Query query) {
-        return new RelativeReferenceWithAuthorityAndQuery(authority, new EmptyPath(), query);
+        return anyScheme().relativeReference(authority, query);
     }
 
     /**
@@ -102,7 +98,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Path} and {@code Query}.
      */
     public static RelativeReference relativeReference(final Path path, final Query query) {
-        return new RelativeReferenceNoAuthorityWithQuery(path, query);
+        return anyScheme().relativeReference(path, query);
     }
 
     /**
@@ -114,7 +110,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Query}.
      */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query) {
-        return new RelativeReferenceWithAuthorityAndQuery(authority, path, query);
+        return anyScheme().relativeReference(authority, path, query);
     }
 
     /**
@@ -124,7 +120,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Fragment} and an empty path.
      */
     public static RelativeReference relativeReference(final Fragment fragment) {
-        return new RelativeReferenceNoAuthorityWithFragment(new EmptyPath(), fragment);
+        return anyScheme().relativeReference(fragment);
     }
 
     /**
@@ -135,7 +131,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Fragment}, and an empty path.
      */
     public static RelativeReference relativeReference(final Authority authority, final Fragment fragment) {
-        return new RelativeReferenceWithAuthorityAndFragment(authority, new EmptyPath(), fragment);
+        return anyScheme().relativeReference(authority, fragment);
     }
 
     /**
@@ -146,7 +142,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Path} and {@code Fragment}.
      */
     public static RelativeReference relativeReference(final Path path, final Fragment fragment) {
-        return new RelativeReferenceNoAuthorityWithFragment(path, fragment);
+        return anyScheme().relativeReference(path, fragment);
     }
 
     /**
@@ -158,7 +154,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Fragment}.
      */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Fragment fragment) {
-        return new RelativeReferenceWithAuthorityAndFragment(authority, path, fragment);
+        return anyScheme().relativeReference(authority, path, fragment);
     }
 
     /**
@@ -169,7 +165,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Query} and {@code Fragment}, and an empty path.
      */
     public static RelativeReference relativeReference(final Query query, final Fragment fragment) {
-        return new RelativeReferenceNoAuthorityWithQueryAndFragment(new EmptyPath(), query, fragment);
+        return anyScheme().relativeReference(query, fragment);
     }
 
     /**
@@ -181,7 +177,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Query} and {@code Fragment}, and an empty path.
      */
     public static RelativeReference relativeReference(final Authority authority, final Query query, final Fragment fragment) {
-        return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, new EmptyPath(), query, fragment);
+        return anyScheme().relativeReference(authority, query, fragment);
     }
 
     /**
@@ -193,7 +189,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Path}, {@code Query} and {@code Fragment}.
      */
     public static RelativeReference relativeReference(final Path path, final Query query, final Fragment fragment) {
-        return new RelativeReferenceNoAuthorityWithQueryAndFragment(path, query, fragment);
+        return anyScheme().relativeReference(path, query, fragment);
     }
 
     /**
@@ -206,7 +202,7 @@ public abstract class RelativeReference extends UrinReference {
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path}, {@code Query} and {@code Fragment}.
      */
     public static RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query, final Fragment fragment) {
-        return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, path, query, fragment);
+        return anyScheme().relativeReference(authority, path, query, fragment);
     }
 
     /**
@@ -310,740 +306,39 @@ public abstract class RelativeReference extends UrinReference {
         return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
     }
 
-    private static final class RelativeReferenceNoAuthority extends RelativeReference {
-        private final Path path;
-
-        RelativeReferenceNoAuthority(final Path path) {
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
+    private static Scheme anyScheme() {
+        return new Scheme() {
+            @Override
+            String asString() {
+                return "";
             }
-            this.path = path;
-        }
 
-        @Override
-        public String asString() {
-            return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON);
-        }
-
-        @Override
-        public Path path() {
-            return path;
-        }
-
-        @Override
-        public boolean hasFragment() {
-            return false;
-        }
-
-        @Override
-        public Fragment fragment() {
-            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
-        }
-
-        @Override
-        public boolean hasQuery() {
-            return false;
-        }
-
-        @Override
-        public Query query() {
-            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(path));
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), query);
-            } else {
-                return urin(scheme, hierarchicalPart.resolve(path));
+            @Override
+            Authority normalise(final Authority authority) {
+                return authority;
             }
-        }
 
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), query, fragment);
-            } else {
-                return urin(scheme, hierarchicalPart.resolve(path));
+            @Override
+            Scheme removeDefaultPort() {
+                return this;
             }
-        }
 
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            @Override
+            public boolean equals(final Object o) {
+                return this == o || !(o == null || getClass() != o.getClass());
 
-            RelativeReferenceNoAuthority that = (RelativeReferenceNoAuthority) o;
-            return path.equals(that.path);
-        }
-
-        @Override
-        public int hashCode() {
-            return path.hashCode();
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "path=" + path +
-                    '}';
-        }
-    }
-
-    private static final class RelativeReferenceNoAuthorityWithQuery extends RelativeReference {
-        private final Path path;
-        private final Query query;
-
-        RelativeReferenceNoAuthorityWithQuery(final Path path, final Query query) {
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
             }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
+
+            @Override
+            public int hashCode() {
+                return 37;
             }
-            this.query = query;
-        }
 
-        @Override
-        public String asString() {
-            return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + '?' + query.asString();
-        }
-
-        @Override
-        public Path path() {
-            return path;
-        }
-
-        @Override
-        public boolean hasFragment() {
-            return false;
-        }
-
-        @Override
-        public Fragment fragment() {
-            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
-        }
-
-        @Override
-        public boolean hasQuery() {
-            return true;
-        }
-
-        @Override
-        public Query query() {
-            return query;
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(path), query);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(path), this.query);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), this.query, fragment);
-            } else {
-                return urin(scheme, hierarchicalPart.resolve(path), this.query);
+            @Override
+            public String toString() {
+                return "Scheme{}";
             }
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            RelativeReferenceNoAuthorityWithQuery that = (RelativeReferenceNoAuthorityWithQuery) o;
-
-            return query.equals(that.query) && path.equals(that.path);
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = path.hashCode();
-            result = 31 * result + query.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "path=" + path +
-                    ", query=" + query +
-                    '}';
-        }
-    }
-
-    private static final class RelativeReferenceNoAuthorityWithFragment extends RelativeReference {
-        private final Path path;
-        private final Fragment fragment;
-
-        RelativeReferenceNoAuthorityWithFragment(final Path path, final Fragment fragment) {
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
-            }
-            this.fragment = fragment;
-        }
-
-        @Override
-        public String asString() {
-            return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + '#' + fragment.asString();
-        }
-
-        @Override
-        public Path path() {
-            return path;
-        }
-
-        @Override
-        public boolean hasFragment() {
-            return true;
-        }
-
-        @Override
-        public Fragment fragment() {
-            return fragment;
-        }
-
-        @Override
-        public boolean hasQuery() {
-            return false;
-        }
-
-        @Override
-        public Query query() {
-            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(path), fragment);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), query, fragment);
-            } else {
-                return urin(scheme, hierarchicalPart.resolve(path), fragment);
-            }
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), query, this.fragment);
-            } else {
-                return urin(scheme, hierarchicalPart.resolve(path), this.fragment);
-            }
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            RelativeReferenceNoAuthorityWithFragment that = (RelativeReferenceNoAuthorityWithFragment) o;
-
-            return fragment.equals(that.fragment) && path.equals(that.path);
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = path.hashCode();
-            result = 31 * result + fragment.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "path=" + path +
-                    ", fragment=" + fragment +
-                    '}';
-        }
-    }
-
-    private static final class RelativeReferenceNoAuthorityWithQueryAndFragment extends RelativeReference {
-        private final Path path;
-        private final Fragment fragment;
-        private final Query query;
-
-        RelativeReferenceNoAuthorityWithQueryAndFragment(final Path path, final Query query, final Fragment fragment) {
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
-            }
-            this.query = query;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
-            }
-            this.fragment = fragment;
-        }
-
-        @Override
-        public String asString() {
-            return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + '?' + query.asString() + '#' + fragment.asString();
-        }
-
-        @Override
-        public Path path() {
-            return path;
-        }
-
-        @Override
-        public boolean hasFragment() {
-            return true;
-        }
-
-        @Override
-        public Fragment fragment() {
-            return fragment;
-        }
-
-        @Override
-        public boolean hasQuery() {
-            return true;
-        }
-
-        @Override
-        public Query query() {
-            return query;
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            RelativeReferenceNoAuthorityWithQueryAndFragment that = (RelativeReferenceNoAuthorityWithQueryAndFragment) o;
-
-            return fragment.equals(that.fragment) && query.equals(that.query) && path.equals(that.path);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = path.hashCode();
-            result = 31 * result + fragment.hashCode();
-            result = 31 * result + query.hashCode();
-            return result;
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(path), query, fragment);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(path), this.query, fragment);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(path), this.query, this.fragment);
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "path=" + path +
-                    ", query=" + query +
-                    ", fragment=" + fragment +
-                    '}';
-        }
-    }
-
-    private static final class RelativeReferenceWithAuthority extends RelativeReference {
-        private final Authority authority;
-        private final Path path;
-
-        RelativeReferenceWithAuthority(final Authority authority, final Path path) {
-            if (authority == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-        }
-
-        @Override
-        public String asString() {
-            return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT);
-        }
-
-        @Override
-        public Path path() {
-            return path;
-        }
-
-        @Override
-        public boolean hasFragment() {
-            return false;
-        }
-
-        @Override
-        public Fragment fragment() {
-            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
-        }
-
-        @Override
-        public boolean hasQuery() {
-            return false;
-        }
-
-        @Override
-        public Query query() {
-            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path));
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path));
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path));
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            RelativeReferenceWithAuthority that = (RelativeReferenceWithAuthority) o;
-            return authority.equals(that.authority)
-                    && path.equals(that.path);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = authority.hashCode();
-            result = 31 * result + path.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "authority=" + authority +
-                    ", path=" + path +
-                    '}';
-        }
-    }
-
-    private static final class RelativeReferenceWithAuthorityAndQuery extends RelativeReference {
-        private final Authority authority;
-        private final Path path;
-        private final Query query;
-
-        RelativeReferenceWithAuthorityAndQuery(final Authority authority, final Path path, final Query query) {
-            if (authority == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
-            }
-            this.query = query;
-        }
-
-        @Override
-        public String asString() {
-            return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + '?' + query.asString();
-        }
-
-        @Override
-        public Path path() {
-            return path;
-        }
-
-        @Override
-        public boolean hasFragment() {
-            return false;
-        }
-
-        @Override
-        public Fragment fragment() {
-            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
-        }
-
-        @Override
-        public boolean hasQuery() {
-            return true;
-        }
-
-        @Override
-        public Query query() {
-            return query;
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), query);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.query);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.query);
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            RelativeReferenceWithAuthorityAndQuery that = (RelativeReferenceWithAuthorityAndQuery) o;
-
-            return authority.equals(that.authority) && query.equals(that.query) && path.equals(that.path);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = authority.hashCode();
-            result = 31 * result + path.hashCode();
-            result = 31 * result + query.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "authority=" + authority +
-                    ", path=" + path +
-                    ", query=" + query +
-                    '}';
-        }
-    }
-
-    private static final class RelativeReferenceWithAuthorityAndFragment extends RelativeReference {
-        private final Authority authority;
-        private final Path path;
-        private final Fragment fragment;
-
-        RelativeReferenceWithAuthorityAndFragment(final Authority authority, final Path path, final Fragment fragment) {
-            if (authority == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
-            }
-            this.fragment = fragment;
-        }
-
-        @Override
-        public String asString() {
-            return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + '#' + fragment.asString();
-        }
-
-        @Override
-        public Path path() {
-            return path;
-        }
-
-        @Override
-        public boolean hasFragment() {
-            return true;
-        }
-
-        @Override
-        public Fragment fragment() {
-            return fragment;
-        }
-
-        @Override
-        public boolean hasQuery() {
-            return false;
-        }
-
-        @Override
-        public Query query() {
-            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), fragment);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), fragment);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.fragment);
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            RelativeReferenceWithAuthorityAndFragment that = (RelativeReferenceWithAuthorityAndFragment) o;
-
-            return authority.equals(that.authority) && fragment.equals(that.fragment) && path.equals(that.path);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = authority.hashCode();
-            result = 31 * result + path.hashCode();
-            result = 31 * result + fragment.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "authority=" + authority +
-                    ", path=" + path +
-                    ", fragment=" + fragment +
-                    '}';
-        }
-    }
-
-    private static final class RelativeReferenceWithAuthorityAndQueryAndFragment extends RelativeReference {
-        private final Authority authority;
-        private final Path path;
-        private final Query query;
-        private final Fragment fragment;
-
-        RelativeReferenceWithAuthorityAndQueryAndFragment(final Authority authority, final Path path, final Query query, final Fragment fragment) {
-            if (authority == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
-            }
-            this.query = query;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
-            }
-            this.fragment = fragment;
-        }
-
-        @Override
-        public String asString() {
-            return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + '?' + query.asString() + '#' + fragment.asString();
-        }
-
-        @Override
-        public Path path() {
-            return path;
-        }
-
-        @Override
-        public boolean hasFragment() {
-            return true;
-        }
-
-        @Override
-        public Fragment fragment() {
-            return fragment;
-        }
-
-        @Override
-        public boolean hasQuery() {
-            return true;
-        }
-
-        @Override
-        public Query query() {
-            return query;
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), query, fragment);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.query, fragment);
-        }
-
-        @Override
-        Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.query, this.fragment);
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            RelativeReferenceWithAuthorityAndQueryAndFragment that = (RelativeReferenceWithAuthorityAndQueryAndFragment) o;
-
-            return authority.equals(that.authority) && fragment.equals(that.fragment) && query.equals(that.query) && path.equals(that.path);
-        }
-
-        @Override
-        public int hashCode() {
-            int result = authority.hashCode();
-            result = 31 * result + path.hashCode();
-            result = 31 * result + query.hashCode();
-            result = 31 * result + fragment.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "authority=" + authority +
-                    ", path=" + path +
-                    ", query=" + query +
-                    ", fragment=" + fragment +
-                    '}';
-        }
+        };
     }
 
 }
