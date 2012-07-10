@@ -90,7 +90,7 @@ public abstract class Scheme {
      *
      * @return a {@code RelativeReference} with an empty path.
      */
-    public RelativeReference relativeReference() {
+    public final RelativeReference relativeReference() {
         return new RelativeReferenceNoAuthority(new EmptyPath());
     }
 
@@ -100,7 +100,7 @@ public abstract class Scheme {
      * @param authority any {@code Authority} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and an empty path.
      */
-    public RelativeReference relativeReference(final Authority authority) {
+    public final RelativeReference relativeReference(final Authority authority) {
         return new RelativeReferenceWithAuthority(authority, new EmptyPath());
     }
 
@@ -110,7 +110,7 @@ public abstract class Scheme {
      * @param path any {@code Path} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path}.
      */
-    public RelativeReference relativeReference(final Path path) {
+    public final RelativeReference relativeReference(final Path path) {
         return new RelativeReferenceNoAuthority(path);
     }
 
@@ -121,7 +121,7 @@ public abstract class Scheme {
      * @param path      any {@code AbsolutePath} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Path}.
      */
-    public RelativeReference relativeReference(final Authority authority, final AbsolutePath path) {
+    public final RelativeReference relativeReference(final Authority authority, final AbsolutePath path) {
         return new RelativeReferenceWithAuthority(authority, path);
     }
 
@@ -131,7 +131,7 @@ public abstract class Scheme {
      * @param query any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Query} and an empty path.
      */
-    public RelativeReference relativeReference(final Query query) {
+    public final RelativeReference relativeReference(final Query query) {
         return new RelativeReferenceNoAuthorityWithQuery(new EmptyPath(), query);
     }
 
@@ -142,7 +142,7 @@ public abstract class Scheme {
      * @param query     any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Query}, and an empty path.
      */
-    public RelativeReference relativeReference(final Authority authority, final Query query) {
+    public final RelativeReference relativeReference(final Authority authority, final Query query) {
         return new RelativeReferenceWithAuthorityAndQuery(authority, new EmptyPath(), query);
     }
 
@@ -153,7 +153,7 @@ public abstract class Scheme {
      * @param query any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path} and {@code Query}.
      */
-    public RelativeReference relativeReference(final Path path, final Query query) {
+    public final RelativeReference relativeReference(final Path path, final Query query) {
         return new RelativeReferenceNoAuthorityWithQuery(path, query);
     }
 
@@ -165,7 +165,7 @@ public abstract class Scheme {
      * @param query     any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Query}.
      */
-    public RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query) {
+    public final RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query) {
         return new RelativeReferenceWithAuthorityAndQuery(authority, path, query);
     }
 
@@ -175,7 +175,7 @@ public abstract class Scheme {
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Fragment} and an empty path.
      */
-    public RelativeReference relativeReference(final Fragment fragment) {
+    public final RelativeReference relativeReference(final Fragment fragment) {
         return new RelativeReferenceNoAuthorityWithFragment(new EmptyPath(), fragment);
     }
 
@@ -186,7 +186,7 @@ public abstract class Scheme {
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Fragment}, and an empty path.
      */
-    public RelativeReference relativeReference(final Authority authority, final Fragment fragment) {
+    public final RelativeReference relativeReference(final Authority authority, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndFragment(authority, new EmptyPath(), fragment);
     }
 
@@ -197,7 +197,7 @@ public abstract class Scheme {
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path} and {@code Fragment}.
      */
-    public RelativeReference relativeReference(final Path path, final Fragment fragment) {
+    public final RelativeReference relativeReference(final Path path, final Fragment fragment) {
         return new RelativeReferenceNoAuthorityWithFragment(path, fragment);
     }
 
@@ -209,7 +209,7 @@ public abstract class Scheme {
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Fragment}.
      */
-    public RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Fragment fragment) {
+    public final RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndFragment(authority, path, fragment);
     }
 
@@ -220,7 +220,7 @@ public abstract class Scheme {
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Query} and {@code Fragment}, and an empty path.
      */
-    public RelativeReference relativeReference(final Query query, final Fragment fragment) {
+    public final RelativeReference relativeReference(final Query query, final Fragment fragment) {
         return new RelativeReferenceNoAuthorityWithQueryAndFragment(new EmptyPath(), query, fragment);
     }
 
@@ -232,7 +232,7 @@ public abstract class Scheme {
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Query} and {@code Fragment}, and an empty path.
      */
-    public RelativeReference relativeReference(final Authority authority, final Query query, final Fragment fragment) {
+    public final RelativeReference relativeReference(final Authority authority, final Query query, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, new EmptyPath(), query, fragment);
     }
 
@@ -244,7 +244,7 @@ public abstract class Scheme {
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path}, {@code Query} and {@code Fragment}.
      */
-    public RelativeReference relativeReference(final Path path, final Query query, final Fragment fragment) {
+    public final RelativeReference relativeReference(final Path path, final Query query, final Fragment fragment) {
         return new RelativeReferenceNoAuthorityWithQueryAndFragment(path, query, fragment);
     }
 
@@ -257,7 +257,7 @@ public abstract class Scheme {
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path}, {@code Query} and {@code Fragment}.
      */
-    public RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query, final Fragment fragment) {
+    public final RelativeReference relativeReference(final Authority authority, final AbsolutePath path, final Query query, final Fragment fragment) {
         return new RelativeReferenceWithAuthorityAndQueryAndFragment(authority, path, query, fragment);
     }
 
