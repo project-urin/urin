@@ -248,39 +248,4 @@ public abstract class RelativeReference extends UrinReference {
         return Scheme.isValidRelativeReferenceString(uriReferenceString);
     }
 
-    private static Scheme anyScheme() {
-        return new Scheme() {
-            @Override
-            String asString() {
-                return "";
-            }
-
-            @Override
-            Authority normalise(final Authority authority) {
-                return authority;
-            }
-
-            @Override
-            Scheme removeDefaultPort() {
-                return this;
-            }
-
-            @Override
-            public boolean equals(final Object o) {
-                return this == o || !(o == null || getClass() != o.getClass());
-
-            }
-
-            @Override
-            public int hashCode() {
-                return 37;
-            }
-
-            @Override
-            public String toString() {
-                return "Scheme{}";
-            }
-        };
-    }
-
 }

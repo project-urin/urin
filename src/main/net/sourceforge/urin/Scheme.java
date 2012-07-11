@@ -28,6 +28,7 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH
 public abstract class Scheme {
 
     private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
+    private static final Pattern URI_PATTERN = Pattern.compile("^(([^:/?#]+):)((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
     private static final CharacterSetMembershipFunction TRAILING_CHARACTER_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,
@@ -71,10 +72,12 @@ public abstract class Scheme {
         return new SchemeWithDefaultPort(name.toLowerCase(ENGLISH), defaultPort);
     }
 
-    static Scheme parse(final String name) throws ParseException {
+    private Scheme parse(final String name) throws ParseException {
         verify(name, ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY);
-        return scheme(name);
+        return withName(name);
     }
+
+    abstract Scheme withName(String name);
 
     private static <T extends Exception> void verify(final String name, final ExceptionFactory<T> exceptionFactory) throws T {
         if (name.isEmpty()) {
@@ -411,11 +414,75 @@ public abstract class Scheme {
         return new UrinWithHierarchicalPartAndQueryAndFragment(removeDefaultPort(), hierarchicalPart.normalisePort(this), query, fragment);
     }
 
+    /**
+     * Parses the given {@code String} as a URI.
+     *
+     * @param uriString a {@code String} that represents a URI.
+     * @return a {@code Urin} representing the URI represented by the given {@code String}.
+     * @throws ParseException if the given {@code String} is not a valid URI.
+     */
+    public final Urin parseUrin(final String uriString) throws ParseException {
+        final Matcher matcher = URI_PATTERN.matcher(uriString);
+        matcher.matches();
+        final Scheme scheme = parse(matcher.group(2));
+        final HierarchicalPart hierarchicalPart = HierarchicalPart.parse(matcher.group(3));
+        final String queryString = matcher.group(8);
+        final String fragment = matcher.group(10);
+        final Urin result;
+        if (queryString == null) {
+            if (fragment == null) {
+                result = scheme.urin(
+                        hierarchicalPart
+                );
+            } else {
+                result = scheme.urin(
+                        hierarchicalPart,
+                        Fragment.parse(fragment)
+                );
+            }
+        } else {
+            final Query query = Query.parse(queryString);
+            if (fragment == null) {
+                result = scheme.urin(
+                        hierarchicalPart,
+                        query
+                );
+            } else {
+                result = scheme.urin(
+                        hierarchicalPart,
+                        query,
+                        Fragment.parse(fragment)
+                );
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Parses the given {@code URI} to produce a {@code Urin}.
+     *
+     * @param uri a {@code URI} to parse.
+     * @return a {@code Urin} representing the RFC 3986 URI represented by the given {@code URI}.
+     * @throws ParseException if the given {@code URI} is not a valid RFC 3986 URI.
+     */
+    public final Urin parseUrin(final URI uri) throws ParseException {
+        return parseUrin(uri.toASCIIString());
+    }
+
+    static boolean isValidUrinString(final String uriReferenceString) {
+        return URI_PATTERN.matcher(uriReferenceString).matches();
+    }
+
     public static final class GenericScheme extends Scheme {
         private final String name;
 
         public GenericScheme(final String name) {
             this.name = name;
+        }
+
+        @Override
+        GenericScheme withName(final String name) {
+            return new GenericScheme(name);
         }
 
         @Override
@@ -467,6 +534,11 @@ public abstract class Scheme {
                 throw new NullPointerException("Cannot instantiate Scheme with null default port");
             }
             this.defaultPort = defaultPort;
+        }
+
+        @Override
+        SchemeWithDefaultPort withName(final String name) {
+            return new SchemeWithDefaultPort(name, defaultPort);
         }
 
         @Override

@@ -11,8 +11,6 @@
 package net.sourceforge.urin;
 
 import java.net.URI;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * A URI.
@@ -25,8 +23,6 @@ import java.util.regex.Pattern;
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3">RFC 3986 - Syntax Components</a>
  */
 public abstract class Urin extends UrinReference {
-
-    private static final Pattern URI_PATTERN = Pattern.compile("^(([^:/?#]+):)((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
     Urin() {
         // deliberately empty
@@ -99,46 +95,10 @@ public abstract class Urin extends UrinReference {
      * @param uriString a {@code String} that represents a URI.
      * @return a {@code Urin} representing the URI represented by the given {@code String}.
      * @throws ParseException if the given {@code String} is not a valid URI.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#parseUrin(String)}
      */
     public static Urin parse(final String uriString) throws ParseException {
-        final Matcher matcher = URI_PATTERN.matcher(uriString);
-        matcher.matches();
-        final Scheme scheme = Scheme.parse(matcher.group(2));
-        final HierarchicalPart hierarchicalPart = HierarchicalPart.parse(matcher.group(3));
-        final String queryString = matcher.group(8);
-        final String fragment = matcher.group(10);
-        final Urin result;
-        if (queryString == null) {
-            if (fragment == null) {
-                result = urin(
-                        scheme,
-                        hierarchicalPart
-                );
-            } else {
-                result = urin(
-                        scheme,
-                        hierarchicalPart,
-                        Fragment.parse(fragment)
-                );
-            }
-        } else {
-            final Query query = Query.parse(queryString);
-            if (fragment == null) {
-                result = urin(
-                        scheme,
-                        hierarchicalPart,
-                        query
-                );
-            } else {
-                result = urin(
-                        scheme,
-                        hierarchicalPart,
-                        query,
-                        Fragment.parse(fragment)
-                );
-            }
-        }
-        return result;
+        return anyScheme().parseUrin(uriString);
     }
 
     /**
@@ -147,13 +107,17 @@ public abstract class Urin extends UrinReference {
      * @param uri a {@code URI} to parse.
      * @return a {@code Urin} representing the RFC 3986 URI represented by the given {@code URI}.
      * @throws ParseException if the given {@code URI} is not a valid RFC 3986 URI.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#parseUrin(java.net.URI)}
      */
     public static Urin parse(final URI uri) throws ParseException {
-        return parse(uri.toASCIIString());
+        return anyScheme().parseUrin(uri);
     }
 
+    /**
+     * @deprecated use {@link net.sourceforge.urin.Scheme#isValidRelativeReferenceString(String)}
+     */
     static boolean isValidUrinString(final String uriReferenceString) {
-        return URI_PATTERN.matcher(uriReferenceString).matches();
+        return Scheme.isValidUrinString(uriReferenceString);
     }
 
     @Override
