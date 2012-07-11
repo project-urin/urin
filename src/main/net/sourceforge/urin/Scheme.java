@@ -473,6 +473,33 @@ public abstract class Scheme {
         return URI_PATTERN.matcher(uriReferenceString).matches();
     }
 
+    /**
+     * Parses the given {@code String} as a URI reference.
+     *
+     * @param uriReferenceString a {@code String} that represents a URI reference.
+     * @return a {@code UrinReference} representing the URI reference represented by the given {@code String}.
+     * @throws ParseException if the given {@code String} is not a valid URI reference.
+     */
+    public final UrinReference parseUrinReference(final String uriReferenceString) throws ParseException {
+        if (isValidUrinString(uriReferenceString)) {
+            return parseUrin(uriReferenceString);
+        } else if (isValidRelativeReferenceString(uriReferenceString)) {
+            return parseRelativeReference(uriReferenceString);
+        }
+        throw new ParseException("Given String is neither a valid URI nor a valid relative reference [" + uriReferenceString + "].");
+    }
+
+    /**
+     * Parses the given {@code URI} to produce a {@code UrinReference}.
+     *
+     * @param uriReference a {@code URI} to parse.
+     * @return a {@code UrinReference} representing the RFC 3986 URI reference represented by the given {@code URI}.
+     * @throws ParseException if the given {@code URI} is not a valid RFC 3986 URI reference.
+     */
+    public final UrinReference parseUrinReference(final URI uriReference) throws ParseException {
+        return parseUrinReference(uriReference.toASCIIString());
+    }
+
     public static final class GenericScheme extends Scheme {
         private final String name;
 

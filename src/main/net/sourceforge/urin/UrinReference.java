@@ -91,14 +91,10 @@ public abstract class UrinReference {
      * @param uriReferenceString a {@code String} that represents a URI reference.
      * @return a {@code UrinReference} representing the URI reference represented by the given {@code String}.
      * @throws ParseException if the given {@code String} is not a valid URI reference.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#parseUrinReference(String)}
      */
     public static UrinReference parse(final String uriReferenceString) throws ParseException {
-        if (Urin.isValidUrinString(uriReferenceString)) {
-            return Urin.parse(uriReferenceString);
-        } else if (RelativeReference.isValidRelativeReferenceString(uriReferenceString)) {
-            return RelativeReference.parse(uriReferenceString);
-        }
-        throw new ParseException("Given String is neither a valid URI nor a valid relative reference [" + uriReferenceString + "].");
+        return anyScheme().parseUrinReference(uriReferenceString);
     }
 
     /**
@@ -107,9 +103,10 @@ public abstract class UrinReference {
      * @param uriReference a {@code URI} to parse.
      * @return a {@code UrinReference} representing the RFC 3986 URI reference represented by the given {@code URI}.
      * @throws ParseException if the given {@code URI} is not a valid RFC 3986 URI reference.
+     * @deprecated use {@link net.sourceforge.urin.Scheme#parseUrinReference(java.net.URI)}
      */
     public static UrinReference parse(final URI uriReference) throws ParseException {
-        return parse(uriReference.toASCIIString());
+        return anyScheme().parseUrinReference(uriReference.toASCIIString());
     }
 
     /**
