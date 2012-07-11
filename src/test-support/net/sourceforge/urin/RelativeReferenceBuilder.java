@@ -17,7 +17,7 @@ import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.PathBuilder.aPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
-import static net.sourceforge.urin.RelativeReference.relativeReference;
+import static net.sourceforge.urin.UrinReference.anyScheme;
 
 public class RelativeReferenceBuilder {
 
@@ -25,82 +25,82 @@ public class RelativeReferenceBuilder {
     private static final RandomSupplierSwitcher<RelativeReference> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<RelativeReference>(
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference();
+                    return anyScheme().relativeReference();
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aFragment());
+                    return anyScheme().relativeReference(aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aQuery());
+                    return anyScheme().relativeReference(aQuery());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aQuery(), aFragment());
+                    return anyScheme().relativeReference(aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aPath());
+                    return anyScheme().relativeReference(aPath());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aPath(), aFragment());
+                    return anyScheme().relativeReference(aPath(), aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aPath(), aQuery());
+                    return anyScheme().relativeReference(aPath(), aQuery());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(aPath(), aQuery(), aFragment());
+                    return anyScheme().relativeReference(aPath(), aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority());
+                    return anyScheme().relativeReference(anAuthority());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), aFragment());
+                    return anyScheme().relativeReference(anAuthority(), aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), aQuery());
+                    return anyScheme().relativeReference(anAuthority(), aQuery());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), aQuery(), aFragment());
+                    return anyScheme().relativeReference(anAuthority(), aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), anAbsolutePath());
+                    return anyScheme().relativeReference(anAuthority(), anAbsolutePath());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), anAbsolutePath(), aFragment());
+                    return anyScheme().relativeReference(anAuthority(), anAbsolutePath(), aFragment());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), anAbsolutePath(), aQuery());
+                    return anyScheme().relativeReference(anAuthority(), anAbsolutePath(), aQuery());
                 }
             },
             new Supplier<RelativeReference>() {
                 public RelativeReference get() {
-                    return relativeReference(anAuthority(), anAbsolutePath(), aQuery(), aFragment());
+                    return anyScheme().relativeReference(anAuthority(), anAbsolutePath(), aQuery(), aFragment());
                 }
             }
     );

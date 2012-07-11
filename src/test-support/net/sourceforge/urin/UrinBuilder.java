@@ -16,7 +16,6 @@ import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HierarchicalPartBuilder.aHierarchicalPart;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
-import static net.sourceforge.urin.Urin.urin;
 
 public class UrinBuilder {
 
@@ -24,22 +23,22 @@ public class UrinBuilder {
     private static final RandomSupplierSwitcher<Urin> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Urin>(
             new Supplier<Urin>() {
                 public Urin get() {
-                    return urin(aScheme(), aHierarchicalPart());
+                    return aScheme().urin(aHierarchicalPart());
                 }
             },
             new Supplier<Urin>() {
                 public Urin get() {
-                    return urin(aScheme(), aHierarchicalPart(), aFragment());
+                    return aScheme().urin(aHierarchicalPart(), aFragment());
                 }
             },
             new Supplier<Urin>() {
                 public Urin get() {
-                    return urin(aScheme(), aHierarchicalPart(), aQuery());
+                    return aScheme().urin(aHierarchicalPart(), aQuery());
                 }
             },
             new Supplier<Urin>() {
                 public Urin get() {
-                    return urin(aScheme(), aHierarchicalPart(), aQuery(), aFragment());
+                    return aScheme().urin(aHierarchicalPart(), aQuery(), aFragment());
                 }
             }
     );
