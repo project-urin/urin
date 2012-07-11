@@ -12,6 +12,7 @@ package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.*;
 import net.sourceforge.urin.scheme.Http;
+import net.sourceforge.urin.scheme.Https;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import java.net.URI;
@@ -24,11 +25,9 @@ import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.Query.query;
-import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segment.DOT_DOT;
 import static net.sourceforge.urin.Segment.segment;
-import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.Http.*;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
@@ -65,11 +64,10 @@ final class DocumentationPage {
                 ),
                 h3Tag(xhtmlText("Producing URIs and relative references")),
                 paragraphTag(
-                        xhtmlText("Producing a URI is simply a case of calling the relevant static factory method on the "), simpleNameOf(Urin.class),
+                        xhtmlText("Producing a URI is simply a case of calling the relevant factory method on an instance of the "), simpleNameOf(Scheme.class),
                         xhtmlText(" class, for example:")
                 ),
-                codeBlock("urin(\n" +
-                        "        scheme(\"ftp\"),\n" +
+                codeBlock("scheme(\"ftp\").urin(\n" +
                         "        hierarchicalPart(\n" +
                         "                authority(registeredName(\"ftp.is.co.za\")),\n" +
                         "                path(\"rfc\", \"rfc1808.txt\"))\n" +
@@ -80,8 +78,7 @@ final class DocumentationPage {
                 paragraphTag(
                         xhtmlText("It is also possible to generate an instance of "), canonicalNameOf(URI.class), xhtmlText(", like so:")
                 ),
-                codeBlock("urin(\n" +
-                        "        scheme(\"mailto\"),\n" +
+                codeBlock("scheme(\"mailto\").urin(\n" +
                         "        hierarchicalPart(\n" +
                         "                rootlessPath(\"John.Doe@example.com\")\n" +
                         "        )\n" +
@@ -96,7 +93,7 @@ final class DocumentationPage {
                 paragraphTag(
                         xhtmlText("Generating a relative reference follows the same pattern, for example:")
                 ),
-                codeBlock("relativeReference(\n" +
+                codeBlock("scheme(\"rsync\").relativeReference(\n" +
                         "        rootlessPath(DOT_DOT, segment(\"sibling\")),\n" +
                         "        query(\"some-query\")\n" +
                         ").asString();"),
@@ -110,7 +107,8 @@ final class DocumentationPage {
                         listItemTag(xhtmlText("The path component is created using the "), codeSnippet("rootlessPath"), xhtmlText(" method, to create a path without a leading '"),
                                 codeSnippet("/"), xhtmlText("' character.")),
                         listItemTag(xhtmlText("The \""), codeSnippet(".."), xhtmlText("\" part of the output was generated using the "), codeSnippet("DOT_DOT"),
-                                xhtmlText(" constant.  This is because we're using \""), codeSnippet(".."), xhtmlText("\" with the special meaning 'parent'."))
+                                xhtmlText(" constant.  This is because we're using \""), codeSnippet(".."), xhtmlText("\" with the special meaning 'parent'.")),
+                        listItemTag(xhtmlText("The scheme name doesn't appear in the output, but the scheme is important because schemes can define modifications to the encoding of other components."))
                 ),
                 h3Tag(xhtmlText("Producing HTTP and HTTPS URIs and relative references")),
                 paragraphTag(
@@ -139,18 +137,18 @@ final class DocumentationPage {
                                 xhtmlText("\", rather than \""), codeSnippet("%20"), xhtmlText("\""))
                 ),
                 paragraphTag(
-                        xhtmlText("An equivalent set of methods for generating HTTPS URIs also exist on the "), simpleNameOf(Http.class),
+                        xhtmlText("An equivalent set of methods for generating HTTPS URIs also exist on the "), simpleNameOf(Https.class),
                         xhtmlText(" class.")
                 ),
                 h3Tag(xhtmlText("Parsing")),
                 paragraphTag(
-                        xhtmlText("The "), simpleNameOf(UrinReference.class), xhtmlText(", "), simpleNameOf(Urin.class),
-                        xhtmlText(", and "), simpleNameOf(RelativeReference.class), xhtmlText(" classes all implement a static "),
-                        codeSnippet("parse"), xhtmlText(" method to produce an instance of their respective types from a "), simpleNameOf(String.class),
+                        xhtmlText("The "), simpleNameOf(Scheme.class), xhtmlText(" class implements "),
+                        codeSnippet("parseUrinReference"), xhtmlText(", "), codeSnippet("parseUrin"), xhtmlText(", and "), codeSnippet("parseRelativeReference"),
+                        xhtmlText(" methods to produce an instances of their respective types from a "), simpleNameOf(String.class),
                         xhtmlText(".  For example, we can parse the URI "), codeSnippet(parseExample()), xhtmlText(" as follows:")
                 ),
                 codeBlock("try {\n" +
-                        "    parsedUrin = Urin.parse(\"ldap://[2001:db8::7]/c=GB?objectClass?one\");\n" +
+                        "    parsedUrin = scheme(\"ldap\").parseUrin(\"ldap://[2001:db8::7]/c=GB?objectClass?one\");\n" +
                         "} catch (ParseException e) {\n" +
                         "    // handle parse failure\n" +
                         "}"),
@@ -163,25 +161,22 @@ final class DocumentationPage {
                         anchorTag(xhtmlText("URI normalisation")).withHref(href(http(registeredName("tools.ietf.org"), path("html", "rfc3986"), fragment("section-6")))),
                         xhtmlText(" such as the handling of unnecessary encoding and non-preferred case, and the handling of "),
                         codeSnippet("."), xhtmlText(" and "), codeSnippet(".."), xhtmlText(" segments, which are applied by Urin.  For example:")),
-                codeBlock("Urin.parse(\"HTTP://www.example.com/.././some%20pat%68\").asString()"),
+                codeBlock("HTTP.parseUrin(\"HTTP://www.example.com/.././some%20pat%68\").asString()"),
                 paragraphTag(xhtmlText("Returns the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(normalisationExample()),
                         xhtmlText(", as a result of normalisation rules having been applied.")),
                 h3Tag(xhtmlText("Resolution")),
                 paragraphTag(xhtmlText("Relative references can be turned into URIs by resolving them, relative to a context URI.  " +
                         "In Urin, this is achieved using the "), codeSnippet("resolve"), xhtmlText(" method on "), simpleNameOf(Urin.class),
                         xhtmlText(", for example:")),
-                codeBlock("urin(\n" +
-                        "        scheme(\"http\"),\n" +
-                        "        hierarchicalPart(\n" +
-                        "                authority(registeredName(\"www.example.com\")),\n" +
-                        "                path(\"child-1\")\n" +
-                        "        )\n" +
+                codeBlock("http(\n" +
+                        "        authority(registeredName(\"www.example.com\")),\n" +
+                        "        path(\"child-1\")\n" +
                         ").resolve(\n" +
-                        "        relativeReference(\n" +
+                        "        HTTP.relativeReference(\n" +
                         "                rootlessPath(DOT_DOT, segment(\"child-2\")),\n" +
                         "                query(\"extra-query\")\n" +
                         "        )\n" +
-                        ").asString();"),
+                        ").asString();\n"),
                 paragraphTag(xhtmlText("This returns the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(resolutionExample()),
                         xhtmlText(".")),
                 h3Tag(xhtmlText("Implementing scheme-specific rules")),
@@ -199,8 +194,7 @@ final class DocumentationPage {
 
     private static String simpleUrinExample() {
         return
-                urin(
-                        scheme("ftp"),
+                scheme("ftp").urin(
                         hierarchicalPart(
                                 authority(registeredName("ftp.is.co.za")),
                                 path("rfc", "rfc1808.txt"))
@@ -209,8 +203,7 @@ final class DocumentationPage {
 
     private static URI simpleUrinToUriExample() {
         return
-                urin(
-                        scheme("mailto"),
+                scheme("mailto").urin(
                         hierarchicalPart(
                                 rootlessPath("John.Doe@example.com")
                         )
@@ -219,7 +212,7 @@ final class DocumentationPage {
 
     private static String simpleRelativeReferenceExample() {
         return
-                relativeReference(
+                scheme("rsync").relativeReference(
                         rootlessPath(DOT_DOT, segment("sibling")),
                         query("some-query")
                 ).asString();
@@ -242,7 +235,7 @@ final class DocumentationPage {
     private static String parseExample() {
         Urin parsedUrin = null;
         try {
-            parsedUrin = Urin.parse("ldap://[2001:db8::7]/c=GB?objectClass?one");
+            parsedUrin = scheme("ldap").parseUrin("ldap://[2001:db8::7]/c=GB?objectClass?one");
         } catch (ParseException e) {
             // handle parse failure
         }
@@ -256,7 +249,7 @@ final class DocumentationPage {
     private static String normalisationExample() {
         try {
             return
-                    Urin.parse("HTTP://www.example.com/.././some%20pat%68").asString();
+                    HTTP.parseUrin("HTTP://www.example.com/.././some%20pat%68").asString();
         } catch (ParseException e) {
             throw new DocumentationGenerationException(e);
         }
@@ -264,14 +257,11 @@ final class DocumentationPage {
 
     private static String resolutionExample() {
         return
-                urin(
-                        scheme("http"),
-                        hierarchicalPart(
-                                authority(registeredName("www.example.com")),
-                                path("child-1")
-                        )
+                http(
+                        authority(registeredName("www.example.com")),
+                        path("child-1")
                 ).resolve(
-                        relativeReference(
+                        HTTP.relativeReference(
                                 rootlessPath(DOT_DOT, segment("child-2")),
                                 query("extra-query")
                         )
