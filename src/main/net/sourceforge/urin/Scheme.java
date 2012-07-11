@@ -18,7 +18,6 @@ import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
-import static net.sourceforge.urin.Urin.urin;
 
 /**
  * A name component of a URI.
@@ -368,6 +367,50 @@ public abstract class Scheme {
         return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
     }
 
+    /**
+     * Factory method for creating {@code Urin}s with just scheme and hierarchical part components.
+     *
+     * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme} and {@code HierarchicalPart}.
+     */
+    public final Urin urin(final HierarchicalPart hierarchicalPart) {
+        return new UrinWithHierarchicalPart(removeDefaultPort(), hierarchicalPart.normalisePort(this));
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with scheme, hierarchical part, and fragment components.
+     *
+     * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
+     * @param fragment         any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, and {@code Fragment}.
+     */
+    public final Urin urin(final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndFragment(removeDefaultPort(), hierarchicalPart.normalisePort(this), fragment);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with scheme, hierarchical part, and query components.
+     *
+     * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
+     * @param query            any {@code Query} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, and {@code Query}.
+     */
+    public final Urin urin(final HierarchicalPart hierarchicalPart, final Query query) {
+        return new UrinWithHierarchicalPartAndQuery(removeDefaultPort(), hierarchicalPart.normalisePort(this), query);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with scheme, hierarchical part, query, and fragment components.
+     *
+     * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
+     * @param query            any {@code Query} to use in this {@code Urin}.
+     * @param fragment         any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, {@code Query}, and {@code Fragment}.
+     */
+    public final Urin urin(final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndQueryAndFragment(removeDefaultPort(), hierarchicalPart.normalisePort(this), query, fragment);
+    }
+
     public static final class GenericScheme extends Scheme {
         private final String name;
 
@@ -511,24 +554,24 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(path));
+            return scheme.urin(hierarchicalPart.resolve(path));
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
             if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), query);
+                return scheme.urin(hierarchicalPart.resolve(path), query);
             } else {
-                return urin(scheme, hierarchicalPart.resolve(path));
+                return scheme.urin(hierarchicalPart.resolve(path));
             }
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
             if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), query, fragment);
+                return scheme.urin(hierarchicalPart.resolve(path), query, fragment);
             } else {
-                return urin(scheme, hierarchicalPart.resolve(path));
+                return scheme.urin(hierarchicalPart.resolve(path));
             }
         }
 
@@ -601,17 +644,17 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path));
+            return scheme.urin(hierarchicalPart.resolve(authority, path));
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path));
+            return scheme.urin(hierarchicalPart.resolve(authority, path));
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path));
+            return scheme.urin(hierarchicalPart.resolve(authority, path));
         }
 
         @Override
@@ -687,20 +730,20 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(path), query);
+            return scheme.urin(hierarchicalPart.resolve(path), query);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(path), this.query);
+            return scheme.urin(hierarchicalPart.resolve(path), this.query);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
             if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), this.query, fragment);
+                return scheme.urin(hierarchicalPart.resolve(path), this.query, fragment);
             } else {
-                return urin(scheme, hierarchicalPart.resolve(path), this.query);
+                return scheme.urin(hierarchicalPart.resolve(path), this.query);
             }
         }
 
@@ -778,24 +821,24 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(path), fragment);
+            return scheme.urin(hierarchicalPart.resolve(path), fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
             if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), query, fragment);
+                return scheme.urin(hierarchicalPart.resolve(path), query, fragment);
             } else {
-                return urin(scheme, hierarchicalPart.resolve(path), fragment);
+                return scheme.urin(hierarchicalPart.resolve(path), fragment);
             }
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
             if (path.isEmpty()) {
-                return urin(scheme, hierarchicalPart.resolve(path), query, this.fragment);
+                return scheme.urin(hierarchicalPart.resolve(path), query, this.fragment);
             } else {
-                return urin(scheme, hierarchicalPart.resolve(path), this.fragment);
+                return scheme.urin(hierarchicalPart.resolve(path), this.fragment);
             }
         }
 
@@ -896,17 +939,17 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(path), query, fragment);
+            return scheme.urin(hierarchicalPart.resolve(path), query, fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(path), this.query, fragment);
+            return scheme.urin(hierarchicalPart.resolve(path), this.query, fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(path), this.query, this.fragment);
+            return scheme.urin(hierarchicalPart.resolve(path), this.query, this.fragment);
         }
 
         @Override
@@ -971,17 +1014,17 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), query);
+            return scheme.urin(hierarchicalPart.resolve(authority, path), query);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.query);
+            return scheme.urin(hierarchicalPart.resolve(authority, path), this.query);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.query);
+            return scheme.urin(hierarchicalPart.resolve(authority, path), this.query);
         }
 
         @Override
@@ -1064,17 +1107,17 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), fragment);
+            return scheme.urin(hierarchicalPart.resolve(authority, path), fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), fragment);
+            return scheme.urin(hierarchicalPart.resolve(authority, path), fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.fragment);
+            return scheme.urin(hierarchicalPart.resolve(authority, path), this.fragment);
         }
 
         @Override
@@ -1162,17 +1205,17 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), query, fragment);
+            return scheme.urin(hierarchicalPart.resolve(authority, path), query, fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.query, fragment);
+            return scheme.urin(hierarchicalPart.resolve(authority, path), this.query, fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-            return urin(scheme, hierarchicalPart.resolve(authority, path), this.query, this.fragment);
+            return scheme.urin(hierarchicalPart.resolve(authority, path), this.query, this.fragment);
         }
 
         @Override
@@ -1201,6 +1244,342 @@ public abstract class Scheme {
                     ", path=" + path +
                     ", query=" + query +
                     ", fragment=" + fragment +
+                    '}';
+        }
+    }
+
+    private static final class UrinWithHierarchicalPartAndQueryAndFragment extends Urin {
+        private final Scheme scheme;
+        private final HierarchicalPart hierarchicalPart;
+        private final Query query;
+        private final Fragment fragment;
+
+        UrinWithHierarchicalPartAndQueryAndFragment(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
+            if (scheme == null) {
+                throw new NullPointerException("Cannot instantiate Urin with null scheme");
+            }
+            this.scheme = scheme;
+            if (hierarchicalPart == null) {
+                throw new NullPointerException("Cannot instantiate Urin with null hierarchicalPart");
+            }
+            this.hierarchicalPart = hierarchicalPart;
+            if (query == null) {
+                throw new NullPointerException("Cannot instantiate Urin with null query");
+            }
+            this.query = query;
+            if (fragment == null) {
+                throw new NullPointerException("Cannot instantiate Urin with null fragment");
+            }
+            this.fragment = fragment;
+        }
+
+        @Override
+        public String asString() {
+            return scheme.asString() + ':' + hierarchicalPart.asString() + '?' + query.asString() + '#' + fragment.asString();
+        }
+
+        @Override
+        public Path path() {
+            return hierarchicalPart.path();
+        }
+
+        @Override
+        public boolean hasFragment() {
+            return true;
+        }
+
+        @Override
+        public Fragment fragment() {
+            return fragment;
+        }
+
+        @Override
+        public boolean hasQuery() {
+            return true;
+        }
+
+        @Override
+        public Query query() {
+            return query;
+        }
+
+        @Override
+        public Urin resolve(final UrinReference urinReference) {
+            return urinReference.resolve(scheme, hierarchicalPart, query, fragment);
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            UrinWithHierarchicalPartAndQueryAndFragment that = (UrinWithHierarchicalPartAndQueryAndFragment) o;
+            return fragment.equals(that.fragment)
+                    && hierarchicalPart.equals(that.hierarchicalPart)
+                    && query.equals(that.query)
+                    && scheme.equals(that.scheme);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = scheme.hashCode();
+            result = 31 * result + hierarchicalPart.hashCode();
+            result = 31 * result + query.hashCode();
+            result = 31 * result + fragment.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Urin{" +
+                    "scheme=" + scheme +
+                    ", hierarchicalPart=" + hierarchicalPart +
+                    ", query=" + query +
+                    ", fragment=" + fragment +
+                    '}';
+        }
+    }
+
+    private static final class UrinWithHierarchicalPartAndQuery extends Urin {
+        private final Scheme scheme;
+        private final HierarchicalPart hierarchicalPart;
+        private final Query query;
+
+        UrinWithHierarchicalPartAndQuery(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
+            if (scheme == null) {
+                throw new NullPointerException("cannot instantiate Urin with null scheme");
+            }
+            this.scheme = scheme;
+            if (hierarchicalPart == null) {
+                throw new NullPointerException("cannot instantiate Urin with null hierarchicalPart");
+            }
+            this.hierarchicalPart = hierarchicalPart;
+            if (query == null) {
+                throw new NullPointerException("cannot instantiate Urin with null query");
+            }
+            this.query = query;
+        }
+
+        @Override
+        public String asString() {
+            return scheme.asString() + ':' + hierarchicalPart.asString() + '?' + query.asString();
+        }
+
+        @Override
+        public Path path() {
+            return hierarchicalPart.path();
+        }
+
+        @Override
+        public boolean hasFragment() {
+            return false;
+        }
+
+        @Override
+        public Fragment fragment() {
+            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
+        }
+
+        @Override
+        public boolean hasQuery() {
+            return true;
+        }
+
+        @Override
+        public Query query() {
+            return query;
+        }
+
+        @Override
+        public Urin resolve(final UrinReference urinReference) {
+            return urinReference.resolve(scheme, hierarchicalPart, query);
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            UrinWithHierarchicalPartAndQuery that = (UrinWithHierarchicalPartAndQuery) o;
+            return hierarchicalPart.equals(that.hierarchicalPart)
+                    && query.equals(that.query)
+                    && scheme.equals(that.scheme);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = scheme.hashCode();
+            result = 31 * result + hierarchicalPart.hashCode();
+            result = 31 * result + query.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Urin{" +
+                    "scheme=" + scheme +
+                    ", hierarchicalPart=" + hierarchicalPart +
+                    ", query=" + query +
+                    '}';
+        }
+    }
+
+    private static final class UrinWithHierarchicalPartAndFragment extends Urin {
+        private final Scheme scheme;
+        private final HierarchicalPart hierarchicalPart;
+        private final Fragment fragment;
+
+        UrinWithHierarchicalPartAndFragment(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
+            if (scheme == null) {
+                throw new NullPointerException("cannot instantiate Urin with null scheme");
+            }
+            this.scheme = scheme;
+            if (hierarchicalPart == null) {
+                throw new NullPointerException("cannot instantiate Urin with null hierarchicalPart");
+            }
+            this.hierarchicalPart = hierarchicalPart;
+            if (fragment == null) {
+                throw new NullPointerException("cannot instantiate Urin with null fragment");
+            }
+            this.fragment = fragment;
+        }
+
+        @Override
+        public String asString() {
+            return scheme.asString() + ':' + hierarchicalPart.asString() + '#' + fragment.asString();
+        }
+
+        @Override
+        public Path path() {
+            return hierarchicalPart.path();
+        }
+
+        @Override
+        public boolean hasFragment() {
+            return true;
+        }
+
+        @Override
+        public Fragment fragment() {
+            return fragment;
+        }
+
+        @Override
+        public boolean hasQuery() {
+            return false;
+        }
+
+        @Override
+        public Query query() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
+        public Urin resolve(final UrinReference urinReference) {
+            return urinReference.resolve(scheme, hierarchicalPart);
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            UrinWithHierarchicalPartAndFragment that = (UrinWithHierarchicalPartAndFragment) o;
+            return fragment.equals(that.fragment)
+                    && hierarchicalPart.equals(that.hierarchicalPart)
+                    && scheme.equals(that.scheme);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = scheme.hashCode();
+            result = 31 * result + hierarchicalPart.hashCode();
+            result = 31 * result + fragment.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Urin{" +
+                    "scheme=" + scheme +
+                    ", hierarchicalPart=" + hierarchicalPart +
+                    ", fragment=" + fragment +
+                    '}';
+        }
+    }
+
+    private static class UrinWithHierarchicalPart extends Urin {
+        private final Scheme scheme;
+        private final HierarchicalPart hierarchicalPart;
+
+        public UrinWithHierarchicalPart(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
+            if (scheme == null) {
+                throw new NullPointerException("cannot instantiate Urin with null scheme");
+            }
+            this.scheme = scheme;
+            if (hierarchicalPart == null) {
+                throw new NullPointerException("cannot instantiate Urin with null hierarchicalPart");
+            }
+            this.hierarchicalPart = hierarchicalPart;
+        }
+
+        @Override
+        public String asString() {
+            return scheme.asString() + ':' + hierarchicalPart.asString();
+        }
+
+        @Override
+        public Path path() {
+            return hierarchicalPart.path();
+        }
+
+        @Override
+        public boolean hasFragment() {
+            return false;
+        }
+
+        @Override
+        public Fragment fragment() {
+            throw new UnsupportedOperationException("Attempt to get fragment from a UrinReference that does not have one.");
+        }
+
+        @Override
+        public boolean hasQuery() {
+            return false;
+        }
+
+        @Override
+        public Query query() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
+        public Urin resolve(final UrinReference urinReference) {
+            return urinReference.resolve(scheme, hierarchicalPart);
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            UrinWithHierarchicalPart that = (UrinWithHierarchicalPart) o;
+            return hierarchicalPart.equals(that.hierarchicalPart)
+                    && scheme.equals(that.scheme);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = scheme.hashCode();
+            result = 31 * result + hierarchicalPart.hashCode();
+            return result;
+        }
+
+        @Override
+        public String toString() {
+            return "Urin{" +
+                    "scheme=" + scheme +
+                    ", hierarchicalPart=" + hierarchicalPart +
                     '}';
         }
     }
