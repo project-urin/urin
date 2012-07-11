@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
 
-public class HypertextScheme extends SchemeWithDefaultPort {
-    public HypertextScheme(final String name, final Port defaultPort) {
+public abstract class HypertextScheme extends SchemeWithDefaultPort {
+    HypertextScheme(final String name, final Port defaultPort) {
         super(name, defaultPort);
     }
 
