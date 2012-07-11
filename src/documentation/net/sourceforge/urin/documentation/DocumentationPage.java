@@ -13,6 +13,7 @@ package net.sourceforge.urin.documentation;
 import net.sourceforge.urin.*;
 import net.sourceforge.urin.scheme.Http;
 import net.sourceforge.urin.scheme.Https;
+import net.sourceforge.urin.scheme.HypertextScheme;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import java.net.URI;
@@ -114,7 +115,7 @@ final class DocumentationPage {
                 paragraphTag(
                         xhtmlText("Urin provides specific support for generating HTTP and HTTPS URIs for convenience, and to implement " +
                                 "the rules and encoding specified in addition to those specified for general URIs.  These are implemented in " +
-                                "the "), simpleNameOf(Http.class), xhtmlText(" class.  For example:")
+                                "the "), simpleNameOf(Http.class), xhtmlText(" and "), simpleNameOf(Https.class), xhtmlText(" classes.  For example:")
                 ),
                 codeBlock("http(\n" +
                         "        registeredName(\"www.example.com\"),\n" +
@@ -137,7 +138,7 @@ final class DocumentationPage {
                                 xhtmlText("\", rather than \""), codeSnippet("%20"), xhtmlText("\""))
                 ),
                 paragraphTag(
-                        xhtmlText("An equivalent set of methods for generating HTTPS URIs also exist on the "), simpleNameOf(Https.class),
+                        xhtmlText("An equivalent set of methods for generating HTTPS URIs exist on the "), simpleNameOf(Https.class),
                         xhtmlText(" class.")
                 ),
                 h3Tag(xhtmlText("Parsing")),
@@ -187,7 +188,7 @@ final class DocumentationPage {
                 ),
                 paragraphTag(
                         xhtmlText("This is achieved by extending the "), simpleNameOf(Query.class), xhtmlText(" class.  " +
-                        "The source code for "), codeSnippet("Http.HttpQuery"), xhtmlText(" has an example of this in action.")
+                        "The source code for "), simpleNameOf(HypertextScheme.QueryParameter.class), xhtmlText(" has an example of this in action.")
                 )
         );
     }
