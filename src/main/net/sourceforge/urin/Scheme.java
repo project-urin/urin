@@ -551,66 +551,6 @@ public abstract class Scheme {
         }
     }
 
-    private static final class SchemeWithDefaultPort extends Scheme {
-        private final String name;
-        private final Port defaultPort;
-
-        public SchemeWithDefaultPort(final String name, final Port defaultPort) {
-            this.name = name;
-            if (defaultPort == null) {
-                throw new NullPointerException("Cannot instantiate Scheme with null default port");
-            }
-            this.defaultPort = defaultPort;
-        }
-
-        @Override
-        SchemeWithDefaultPort withName(final String name) {
-            return new SchemeWithDefaultPort(name, defaultPort);
-        }
-
-        @Override
-        String asString() {
-            return name.toLowerCase(ENGLISH);
-        }
-
-        @Override
-        Authority normalise(final Authority authority) {
-            return authority.removePort(defaultPort);
-        }
-
-        @Override
-        Scheme removeDefaultPort() {
-            return scheme(name);
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            SchemeWithDefaultPort that = (SchemeWithDefaultPort) o;
-
-            return defaultPort.equals(that.defaultPort)
-                    && name.equals(that.name);
-
-        }
-
-        @Override
-        public int hashCode() {
-            int result = name.hashCode();
-            result = 31 * result + defaultPort.hashCode();
-            return result;
-        }
-
-        @Override
-        public String toString() {
-            return "Scheme{" +
-                    "name='" + name + '\'' +
-                    ", defaultPort=" + defaultPort +
-                    '}';
-        }
-    }
-
     private static final class RelativeReferenceNoAuthority extends RelativeReference {
         private final Path path;
 

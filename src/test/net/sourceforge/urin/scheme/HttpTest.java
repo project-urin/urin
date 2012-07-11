@@ -214,28 +214,28 @@ public class HttpTest {
     @Test
     public void httpsWithNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        assertThat(https(host), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()))));
+        assertThat(Https.https(host), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()))));
     }
 
     @Test
     public void httpsWithPortButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
-        assertThat(https(host, port), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()))));
+        assertThat(Https.https(host, port), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()))));
     }
 
     @Test
     public void port443IsNormalisedAway() throws Exception {
         Host host = aHost();
         Port port = port(443);
-        assertThat(https(host, port), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()))));
+        assertThat(Https.https(host, port), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()))));
     }
 
     @Test
     public void httpsWithPathButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        assertThat(https(host, path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path))));
+        assertThat(Https.https(host, path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path))));
     }
 
     @Test
@@ -243,7 +243,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
         AbsolutePath path = anAbsolutePath();
-        assertThat(https(host, port, path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path))));
+        assertThat(Https.https(host, port, path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path))));
     }
 
     @Test
@@ -251,7 +251,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = port(443);
         AbsolutePath path = anAbsolutePath();
-        assertThat(https(host, port, path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path))));
+        assertThat(Https.https(host, port, path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path))));
     }
 
     @Test
@@ -259,7 +259,7 @@ public class HttpTest {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
-        assertThat(https(host, path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query)));
+        assertThat(Https.https(host, path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query)));
     }
 
     @Test
@@ -268,14 +268,14 @@ public class HttpTest {
         AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
         Port port = aPortDifferentTo(port(443));
-        assertThat(https(host, port, path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path), query)));
+        assertThat(Https.https(host, port, path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path), query)));
     }
 
     @Test
     public void httpsWithQueryButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Query query = aQuery();
-        assertThat(https(host, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), query)));
+        assertThat(Https.https(host, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), query)));
     }
 
     @Test
@@ -283,7 +283,7 @@ public class HttpTest {
         Host host = aHost();
         Query query = aQuery();
         Port port = aPortDifferentTo(port(443));
-        assertThat(https(host, port, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()), query)));
+        assertThat(Https.https(host, port, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()), query)));
     }
 
     @Test
@@ -292,14 +292,14 @@ public class HttpTest {
         AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
         Port port = port(443);
-        assertThat(https(host, port, path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query)));
+        assertThat(Https.https(host, port, path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query)));
     }
 
     @Test
     public void httpsWithJustFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Fragment fragment = aFragment();
-        assertThat(https(host, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), fragment)));
+        assertThat(Https.https(host, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), fragment)));
     }
 
     @Test
@@ -307,7 +307,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
         Fragment fragment = aFragment();
-        assertThat(https(host, port, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()), fragment)));
+        assertThat(Https.https(host, port, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()), fragment)));
     }
 
     @Test
@@ -315,7 +315,7 @@ public class HttpTest {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(https(host, path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), fragment)));
+        assertThat(Https.https(host, path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), fragment)));
     }
 
     @Test
@@ -324,7 +324,7 @@ public class HttpTest {
         Port port = aPortDifferentTo(port(443));
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(https(host, port, path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path), fragment)));
+        assertThat(Https.https(host, port, path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path), fragment)));
     }
 
     @Test
@@ -333,7 +333,7 @@ public class HttpTest {
         Port port = port(443);
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(https(host, port, path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), fragment)));
+        assertThat(Https.https(host, port, path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), fragment)));
     }
 
     @Test
@@ -342,7 +342,7 @@ public class HttpTest {
         AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(https(host, path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query, fragment)));
+        assertThat(Https.https(host, path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query, fragment)));
     }
 
     @Test
@@ -352,7 +352,7 @@ public class HttpTest {
         Query query = aQuery();
         Port port = aPortDifferentTo(port(443));
         Fragment fragment = aFragment();
-        assertThat(https(host, port, path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path), query, fragment)));
+        assertThat(Https.https(host, port, path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path), query, fragment)));
     }
 
     @Test
@@ -360,7 +360,7 @@ public class HttpTest {
         Host host = aHost();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(https(host, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), query, fragment)));
+        assertThat(Https.https(host, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), query, fragment)));
     }
 
     @Test
@@ -369,7 +369,7 @@ public class HttpTest {
         Query query = aQuery();
         Port port = aPortDifferentTo(port(443));
         Fragment fragment = aFragment();
-        assertThat(https(host, port, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()), query, fragment)));
+        assertThat(Https.https(host, port, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()), query, fragment)));
     }
 
     @Test
@@ -379,7 +379,7 @@ public class HttpTest {
         Query query = aQuery();
         Port port = port(443);
         Fragment fragment = aFragment();
-        assertThat(https(host, port, path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query, fragment)));
+        assertThat(Https.https(host, port, path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query, fragment)));
     }
 
     @Test
@@ -490,28 +490,28 @@ public class HttpTest {
     public void httpsWithAuthorityButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
-        assertThat(https(authority(host, port)), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()))));
+        assertThat(Https.https(authority(host, port)), equalTo(urin(scheme("https"), hierarchicalPart(authority(host, port), path()))));
     }
 
     @Test
     public void httpsWithAuthorityAndQueryButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Query query = aQuery();
-        assertThat(https(authority(host), query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), query)));
+        assertThat(Https.https(authority(host), query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), query)));
     }
 
     @Test
     public void httpsPort443IsNormalisedAwayFromAuthority() throws Exception {
         Host host = aHost();
         Port port = port(443);
-        assertThat(https(authority(host, port)), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()))));
+        assertThat(Https.https(authority(host, port)), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()))));
     }
 
     @Test
     public void httpsWithPathAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        assertThat(https(authority(host), path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path))));
+        assertThat(Https.https(authority(host), path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path))));
     }
 
     @Test
@@ -519,7 +519,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = port(443);
         AbsolutePath path = anAbsolutePath();
-        assertThat(https(authority(host, port), path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path))));
+        assertThat(Https.https(authority(host, port), path), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path))));
     }
 
     @Test
@@ -527,7 +527,7 @@ public class HttpTest {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
-        assertThat(https(authority(host), path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query)));
+        assertThat(Https.https(authority(host), path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query)));
     }
 
     @Test
@@ -536,14 +536,14 @@ public class HttpTest {
         AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
         Port port = port(443);
-        assertThat(https(authority(host, port), path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query)));
+        assertThat(Https.https(authority(host, port), path, query), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query)));
     }
 
     @Test
     public void httpsWithOnlyFragmentAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Fragment fragment = aFragment();
-        assertThat(https(authority(host), fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), fragment)));
+        assertThat(Https.https(authority(host), fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), fragment)));
     }
 
     @Test
@@ -551,7 +551,7 @@ public class HttpTest {
         Host host = aHost();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(https(authority(host), query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), query, fragment)));
+        assertThat(Https.https(authority(host), query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path()), query, fragment)));
     }
 
     @Test
@@ -559,7 +559,7 @@ public class HttpTest {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(https(authority(host), path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), fragment)));
+        assertThat(Https.https(authority(host), path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), fragment)));
     }
 
     @Test
@@ -568,7 +568,7 @@ public class HttpTest {
         Port port = port(443);
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(https(authority(host, port), path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), fragment)));
+        assertThat(Https.https(authority(host, port), path, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), fragment)));
     }
 
     @Test
@@ -577,7 +577,7 @@ public class HttpTest {
         AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(https(authority(host), path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query, fragment)));
+        assertThat(Https.https(authority(host), path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query, fragment)));
     }
 
     @Test
@@ -587,7 +587,7 @@ public class HttpTest {
         Query query = aQuery();
         Port port = port(443);
         Fragment fragment = aFragment();
-        assertThat(https(authority(host, port), path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query, fragment)));
+        assertThat(Https.https(authority(host, port), path, query, fragment), equalTo(urin(scheme("https"), hierarchicalPart(authority(host), path), query, fragment)));
     }
 
 }

@@ -17,7 +17,7 @@ import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.documentation.UrinPage.aUrinPage;
 import static net.sourceforge.urin.documentation.UrinPage.href;
-import static net.sourceforge.urin.scheme.Http.https;
+import static net.sourceforge.urin.scheme.Https.https;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class SupportPage {

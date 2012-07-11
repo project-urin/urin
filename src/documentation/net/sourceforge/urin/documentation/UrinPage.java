@@ -13,6 +13,7 @@ package net.sourceforge.urin.documentation;
 import net.sourceforge.urin.Host;
 import net.sourceforge.urin.Urin;
 import net.sourceforge.urin.UrinReference;
+import net.sourceforge.urin.scheme.Https;
 import org.sourceforge.xazzle.xhtml.*;
 
 import static net.sourceforge.urin.Host.registeredName;
@@ -151,7 +152,7 @@ final class UrinPage {
     }
 
     static Urin standardJarUrin(final String version) {
-        return https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
+        return Https.https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
     }
 
     static Href href(final UrinReference urinReference) {

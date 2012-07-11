@@ -21,7 +21,7 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.Http.http;
-import static net.sourceforge.urin.scheme.Http.https;
+import static net.sourceforge.urin.scheme.Https.https;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DownloadsPage {
