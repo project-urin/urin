@@ -100,7 +100,7 @@ final class DocumentationPage {
                 paragraphTag(
                         xhtmlText("This returns a "), simpleNameOf(String.class), xhtmlText(" containing "), codeSnippet(simpleRelativeReferenceExample()),
                         xhtmlText(". It is possible to retrieve this as a "), canonicalNameOf(URI.class), xhtmlText(" in the same way " +
-                        "as for a "), canonicalNameOf(Urin.class), xhtmlText(", by calling the "), codeSnippet("asUri()"), xhtmlText("method.  " +
+                        "as for a "), canonicalNameOf(Urin.class), xhtmlText(", by calling the "), codeSnippet("asUri()"), xhtmlText(" method.  " +
                         "Of note in this example:")
                 ),
                 unorderedListTag(
