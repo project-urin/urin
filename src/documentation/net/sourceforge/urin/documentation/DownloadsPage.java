@@ -18,7 +18,6 @@ import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Scheme.scheme;
-import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.Http.http;
 import static net.sourceforge.urin.scheme.Https.https;
@@ -32,7 +31,7 @@ final class DownloadsPage {
     static HtmlTag downloadsPage(final String version) {
         Urin standardJarUrl = standardJarUrin(version);
         Urin smallJarUrl = https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-small-" + version + ".jar", "download"));
-        Urin gitUri = urin(scheme("git"), hierarchicalPart(authority(registeredName("git.code.sf.net")), path("p", "urin", "code")));
+        Urin gitUri = scheme("git").urin(hierarchicalPart(authority(registeredName("git.code.sf.net")), path("p", "urin", "code")));
         return aUrinPage(
                 h2Tag(xhtmlText("Downloads")),
                 paragraphTag(

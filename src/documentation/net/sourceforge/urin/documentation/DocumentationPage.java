@@ -45,7 +45,7 @@ final class DocumentationPage {
                 h3Tag(xhtmlText("Introduction")),
                 paragraphTag(
                         xhtmlText("This page provides an example-based guide to Urin. In-depth details of the API are available in the "),
-                        anchorTag(xhtmlText("online javadoc")).withHref(href(relativeReference(rootlessPath("javadoc")))),
+                        anchorTag(xhtmlText("online javadoc")).withHref(href(HTTP.relativeReference(rootlessPath("javadoc")))),
                         xhtmlText(", which can also be found in the "),
                         anchorTag(xhtmlText("standard jar")).withHref(href(standardJarUrin(version))),
                         xhtmlText(".")
@@ -57,7 +57,7 @@ final class DocumentationPage {
                 ),
                 unorderedListTag(
                         listItemTag(quotationTag(xhtmlText("URI")), xhtmlText(" - for example "), codeSnippet(http(registeredName("www.example.com"), path("index")).asString())),
-                        listItemTag(quotationTag(xhtmlText("Relative reference")), xhtmlText(" - sometimes loosely called a "), quotationTag(xhtmlText("relative URI")), xhtmlText("; for example "), codeSnippet(relativeReference(path("index")).asString()))
+                        listItemTag(quotationTag(xhtmlText("Relative reference")), xhtmlText(" - sometimes loosely called a "), quotationTag(xhtmlText("relative URI")), xhtmlText("; for example "), codeSnippet(HTTP.relativeReference(path("index")).asString()))
                 ),
                 paragraphTag(
                         xhtmlText("These are modelled in Urin as "), simpleNameOf(Urin.class), xhtmlText(" and "), simpleNameOf(RelativeReference.class),
@@ -101,7 +101,7 @@ final class DocumentationPage {
                         "        query(\"some-query\")\n" +
                         ").asString();"),
                 paragraphTag(
-                        xhtmlText("This rerturns a "), simpleNameOf(String.class), xhtmlText(" containing "), codeSnippet(simpleRelativeReferenceExample()),
+                        xhtmlText("This returns a "), simpleNameOf(String.class), xhtmlText(" containing "), codeSnippet(simpleRelativeReferenceExample()),
                         xhtmlText(". It is possible to retrieve this as a "), canonicalNameOf(URI.class), xhtmlText(" in the same way " +
                         "as for a "), canonicalNameOf(Urin.class), xhtmlText(", by calling the "), codeSnippet("asUri()"), xhtmlText("method.  " +
                         "Of note in this example:")
@@ -139,7 +139,7 @@ final class DocumentationPage {
                                 xhtmlText("\", rather than \""), codeSnippet("%20"), xhtmlText("\""))
                 ),
                 paragraphTag(
-                        xhtmlText("An equivalient set of methods for generating HTTPS URIs also exist on the "), simpleNameOf(Http.class),
+                        xhtmlText("An equivalent set of methods for generating HTTPS URIs also exist on the "), simpleNameOf(Http.class),
                         xhtmlText(" class.")
                 ),
                 h3Tag(xhtmlText("Parsing")),
@@ -264,17 +264,17 @@ final class DocumentationPage {
 
     private static String resolutionExample() {
         return
-urin(
-        scheme("http"),
-        hierarchicalPart(
-                authority(registeredName("www.example.com")),
-                path("child-1")
-        )
-).resolve(
-        relativeReference(
-                rootlessPath(DOT_DOT, segment("child-2")),
-                query("extra-query")
-        )
-).asString();
+                urin(
+                        scheme("http"),
+                        hierarchicalPart(
+                                authority(registeredName("www.example.com")),
+                                path("child-1")
+                        )
+                ).resolve(
+                        relativeReference(
+                                rootlessPath(DOT_DOT, segment("child-2")),
+                                query("extra-query")
+                        )
+                ).asString();
     }
 }

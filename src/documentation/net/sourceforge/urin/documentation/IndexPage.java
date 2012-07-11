@@ -15,8 +15,8 @@ import org.sourceforge.xazzle.xhtml.HtmlTag;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
-import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.documentation.UrinPage.*;
+import static net.sourceforge.urin.scheme.Http.HTTP;
 import static net.sourceforge.urin.scheme.Http.http;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
@@ -35,7 +35,7 @@ final class IndexPage {
                         xhtmlText("The latest version of Urin available for download is "),
                         anchorTag(xhtmlText(version)).withHref(href(standardJarUrin(version))),
                         xhtmlText(".  The "),
-                        anchorTag(xhtmlText("javadoc")).withHref(href(relativeReference(rootlessPath("javadoc")))),
+                        anchorTag(xhtmlText("javadoc")).withHref(href(HTTP.relativeReference(rootlessPath("javadoc")))),
                         xhtmlText(" is also available online.")
                 ),
                 h2Tag(xhtmlText("Example")),

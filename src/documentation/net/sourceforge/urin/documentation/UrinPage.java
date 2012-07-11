@@ -20,7 +20,6 @@ import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.Query.query;
-import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.scheme.Http.*;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
 import static org.sourceforge.xazzle.xhtml.ClassName.className;
@@ -48,11 +47,11 @@ final class UrinPage {
                         linkTag()
                                 .withRelationships(STYLESHEET)
                                 .withMimeType(mimeType("text/css"))
-                                .withHref(href(relativeReference(rootlessPath("urin.css")))),
+                                .withHref(href(HTTP.relativeReference(rootlessPath("urin.css")))),
                         linkTag()
                                 .withRelationships(relationship("icon"))
                                 .withMimeType(mimeType("image/png"))
-                                .withHref(href(relativeReference(rootlessPath("favicon-32x32.png")))),
+                                .withHref(href(HTTP.relativeReference(rootlessPath("favicon-32x32.png")))),
                         metaTag(metaName("description"), metaContent("Urin is a replacement for Java's URI and URL classes.  It implements RFC 3986.  It is free to download and use in your project.")),
                         scriptTag(mimeType("text/javascript"), xhtmlText("  var _gaq = _gaq || [];\n" +
                                 "  _gaq.push(['_setAccount', 'UA-16431822-5']);\n" +
@@ -73,19 +72,19 @@ final class UrinPage {
                                         unorderedListTag(
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Home"))
-                                                                .withHref(href(relativeReference(rootlessPath("index.html"))))
+                                                                .withHref(href(HTTP.relativeReference(rootlessPath("index.html"))))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Downloads"))
-                                                                .withHref(href(relativeReference(rootlessPath("downloads.html"))))
+                                                                .withHref(href(HTTP.relativeReference(rootlessPath("downloads.html"))))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Documentation"))
-                                                                .withHref(href(relativeReference(rootlessPath("documentation.html"))))
+                                                                .withHref(href(HTTP.relativeReference(rootlessPath("documentation.html"))))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Support"))
-                                                                .withHref(href(relativeReference(rootlessPath("support.html"))))
+                                                                .withHref(href(HTTP.relativeReference(rootlessPath("support.html"))))
                                                 ),
                                                 listItemTag(
                                                         anchorTag(xhtmlText("Project Site"))
