@@ -241,11 +241,4 @@ public abstract class RelativeReference extends UrinReference {
         return anyScheme().parseRelativeReference(uri);
     }
 
-    /**
-     * @deprecated use {@link net.sourceforge.urin.Scheme#isValidRelativeReferenceString(String)}
-     */
-    static boolean isValidRelativeReferenceString(final String uriReferenceString) {
-        return Scheme.isValidRelativeReferenceString(uriReferenceString);
-    }
-
 }
