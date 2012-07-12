@@ -166,7 +166,7 @@ public class UrinTest {
     }
 
     @Test
-    public void aUrinWithNoFragmentIsEqualToAnotherWithTheSameParts() throws Exception {
+    public void aUrinWithNoFragmentIsEqualToAnotherWithTheSamePartsWithHierarchicalPart() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Query query = aQuery();
@@ -180,7 +180,7 @@ public class UrinTest {
     }
 
     @Test
-    public void aUrinWithNoFragmentToStringIsCorrect() throws Exception {
+    public void aUrinWithNoFragmentWithHierarchicalPartToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Query query = aQuery();
@@ -188,7 +188,7 @@ public class UrinTest {
     }
 
     @Test
-    public void rejectsNullInFactoryForAUrinWithNoFragment() throws Exception {
+    public void rejectsNullInFactoryForAUrinWithNoFragmentWithHierarchicalPart() throws Exception {
         assertThrowsException("Null scheme should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
@@ -651,161 +651,161 @@ public class UrinTest {
     }
 
     @Test
-    public void aUrinWithNoFrgmtOrAuthorityOrPathIsEqualToAnotherWithTheSameParts() throws Exception {
+    public void aUrinWithNoFragmentOrAuthorityOrPathIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme scheme = aScheme();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(fragment), equalTo(scheme.urin(fragment)));
-        assertThat(scheme.urin(fragment).hashCode(), equalTo(scheme.urin(fragment).hashCode()));
+        Query query = aQuery();
+        assertThat(scheme.urin(query), equalTo(scheme.urin(query)));
+        assertThat(scheme.urin(query).hashCode(), equalTo(scheme.urin(query).hashCode()));
     }
 
     @Test
-    public void aUrinWithNoFrgmtIsNotEqualToAnotherWithTheADifferentSchemeAndFragment() throws Exception {
-        assertThat(aScheme().urin(aFragment()), not(equalTo(aScheme().urin(aFragment()))));
+    public void aUrinWithNoFragmentIsNotEqualToAnotherWithTheADifferentSchemeAndQuery() throws Exception {
+        assertThat(aScheme().urin(aQuery()), not(equalTo(aScheme().urin(aQuery()))));
     }
 
     @Test
-    public void aUrinWithNoFrgmtOrAuthorityOrPathToStringIsCorrect() throws Exception {
+    public void aUrinWithNoFragmentOrAuthorityOrPathToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart() + ", fragment=" + fragment + "}"));
+        Query query = aQuery();
+        assertThat(scheme.urin(query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart() + ", query=" + query + "}"));
     }
 
     @Test
-    public void rejectsNullInFactoryForAUrinWithNoFrgmtOrAuthorityOrPath() throws Exception {
+    public void rejectsNullInFactoryForAUrinWithNoFragmentOrAuthorityOrPath() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
-                aScheme().urin(fragment);
+                Query query = null;
+                aScheme().urin(query);
             }
         });
     }
 
     @Test
-    public void aUrinWithNoFrgmtOrAuthorityIsEqualToAnotherWithTheSameParts() throws Exception {
+    public void aUrinWithNoFragmentOrAuthorityIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme scheme = aScheme();
         Path path = aPath();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(path, fragment), equalTo(scheme.urin(path, fragment)));
-        assertThat(scheme.urin(path, fragment).hashCode(), equalTo(scheme.urin(path, fragment).hashCode()));
+        Query query = aQuery();
+        assertThat(scheme.urin(path, query), equalTo(scheme.urin(path, query)));
+        assertThat(scheme.urin(path, query).hashCode(), equalTo(scheme.urin(path, query).hashCode()));
     }
 
     @Test
-    public void aUrinWithNoFrgmtIsNotEqualToAnotherWithTheADifferentPathAndFragment() throws Exception {
-        assertThat(aScheme().urin(aPath(), aFragment()), not(equalTo(aScheme().urin(aPath(), aFragment()))));
+    public void aUrinWithNoFragmentIsNotEqualToAnotherWithTheADifferentPathAndQuery() throws Exception {
+        assertThat(aScheme().urin(aPath(), aQuery()), not(equalTo(aScheme().urin(aPath(), aQuery()))));
     }
 
     @Test
-    public void aUrinWithNoFrgmtOrAuthorityToStringIsCorrect() throws Exception {
+    public void aUrinWithNoFragmentOrAuthorityToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         Path path = aPath();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(path) + ", fragment=" + fragment + "}"));
+        Query query = aQuery();
+        assertThat(scheme.urin(path, query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(path) + ", query=" + query + "}"));
     }
 
     @Test
-    public void rejectsNullInFactoryForAUrinWithNoFrgmtOrAuthority() throws Exception {
+    public void rejectsNullInFactoryForAUrinWithNoFragmentOrAuthority() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 Path path = null;
-                aScheme().urin(path, aFragment());
+                aScheme().urin(path, aQuery());
             }
         });
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
-                aScheme().urin(aPath(), fragment);
+                Query query = null;
+                aScheme().urin(aPath(), query);
             }
         });
     }
 
     @Test
-    public void aUrinWithNoFrgmtOrPathIsEqualToAnotherWithTheSameParts() throws Exception {
+    public void aUrinWithNoFragmentOrPathIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(authority, fragment), equalTo(scheme.urin(authority, fragment)));
-        assertThat(scheme.urin(authority, fragment).hashCode(), equalTo(scheme.urin(authority, fragment).hashCode()));
+        Query query = aQuery();
+        assertThat(scheme.urin(authority, query), equalTo(scheme.urin(authority, query)));
+        assertThat(scheme.urin(authority, query).hashCode(), equalTo(scheme.urin(authority, query).hashCode()));
     }
 
     @Test
-    public void aUrinWithNoFrgmtIsNotEqualToAnotherWithTheADifferentAuthorityAndFragment() throws Exception {
-        assertThat(aScheme().urin(anAuthority(), aFragment()), not(equalTo(aScheme().urin(anAuthority(), aFragment()))));
+    public void aUrinWithNoFragmentIsNotEqualToAnotherWithTheADifferentAuthorityAndQuery() throws Exception {
+        assertThat(aScheme().urin(anAuthority(), aQuery()), not(equalTo(aScheme().urin(anAuthority(), aQuery()))));
     }
 
     @Test
-    public void aUrinWithNoFrgmtOrPathToStringIsCorrect() throws Exception {
+    public void aUrinWithNoFragmentOrPathToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(authority, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority) + ", fragment=" + fragment + "}"));
+        Query query = aQuery();
+        assertThat(scheme.urin(authority, query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority) + ", query=" + query + "}"));
     }
 
     @Test
-    public void rejectsNullInFactoryForAUrinWithNoFrgmtOrPath() throws Exception {
-        assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                Authority authority = null;
-                aScheme().urin(authority, aFragment());
-            }
-        });
-        assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                Fragment fragment = null;
-                aScheme().urin(anAuthority(), fragment);
-            }
-        });
-    }
-
-    @Test
-    public void aUrinWithNoFrgmtIsEqualToAnotherWithTheSameParts() throws Exception {
-        Scheme scheme = aScheme();
-        Authority authority = anAuthority();
-        AbsolutePath path = anAbsolutePath();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(authority, path, fragment), equalTo(scheme.urin(authority, path, fragment)));
-        assertThat(scheme.urin(authority, path, fragment).hashCode(), equalTo(scheme.urin(authority, path, fragment).hashCode()));
-    }
-
-    @Test
-    public void aUrinWithNoFrgmtOrFragmentIsNotEqualToAnotherWithTheADifferentAuthorityAndPathAndFragment() throws Exception {
-        assertThat(aScheme().urin(anAuthority(), anAbsolutePath(), aFragment()), not(equalTo(aScheme().urin(anAuthority(), anAbsolutePath(), aFragment()))));
-    }
-
-    @Test
-    public void aUrinWithNoFrgmtToStringIsCorrect() throws Exception {
-        Scheme scheme = aScheme();
-        Authority authority = anAuthority();
-        AbsolutePath path = anAbsolutePath();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(authority, path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority, path) + ", fragment=" + fragment + "}"));
-    }
-
-    @Test
-    public void rejectsNullInFactoryForAUrinWithNoFrgmt() throws Exception {
+    public void rejectsNullInFactoryForAUrinWithNoFragmentOrPath() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 Authority authority = null;
-                aScheme().urin(authority, anAbsolutePath(), aFragment());
+                aScheme().urin(authority, aQuery());
+            }
+        });
+        assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Query query = null;
+                aScheme().urin(anAuthority(), query);
+            }
+        });
+    }
+
+    @Test
+    public void aUrinWithNoFragmentIsEqualToAnotherWithTheSameParts() throws Exception {
+        Scheme scheme = aScheme();
+        Authority authority = anAuthority();
+        AbsolutePath path = anAbsolutePath();
+        Query query = aQuery();
+        assertThat(scheme.urin(authority, path, query), equalTo(scheme.urin(authority, path, query)));
+        assertThat(scheme.urin(authority, path, query).hashCode(), equalTo(scheme.urin(authority, path, query).hashCode()));
+    }
+
+    @Test
+    public void aUrinWithNoFragmentOrQueryIsNotEqualToAnotherWithTheADifferentAuthorityAndPathAndQuery() throws Exception {
+        assertThat(aScheme().urin(anAuthority(), anAbsolutePath(), aQuery()), not(equalTo(aScheme().urin(anAuthority(), anAbsolutePath(), aQuery()))));
+    }
+
+    @Test
+    public void aUrinWithNoFragmentToStringIsCorrect() throws Exception {
+        Scheme scheme = aScheme();
+        Authority authority = anAuthority();
+        AbsolutePath path = anAbsolutePath();
+        Query query = aQuery();
+        assertThat(scheme.urin(authority, path, query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority, path) + ", query=" + query + "}"));
+    }
+
+    @Test
+    public void rejectsNullInFactoryForAUrinWithNoFragment() throws Exception {
+        assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
+            public void execute() throws NullPointerException {
+                //noinspection NullableProblems
+                Authority authority = null;
+                aScheme().urin(authority, anAbsolutePath(), aQuery());
             }
         });
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
                 AbsolutePath path = null;
-                aScheme().urin(anAuthority(), path, aFragment());
+                aScheme().urin(anAuthority(), path, aQuery());
             }
         });
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
-                aScheme().urin(anAuthority(), anAbsolutePath(), fragment);
+                Query query = null;
+                aScheme().urin(anAuthority(), anAbsolutePath(), query);
             }
         });
     }
