@@ -428,9 +428,54 @@ public abstract class Scheme {
      * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
      * @param fragment         any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, and {@code Fragment}.
+     * @deprecated
      */
     public final Urin urin(final HierarchicalPart hierarchicalPart, final Fragment fragment) {
         return new UrinWithHierarchicalPartAndFragment(removeDefaultPort(), hierarchicalPart.normalisePort(this), fragment);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with just a scheme, fragment, and empty path.
+     *
+     * @param fragment any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, the given {@code Fragment}, and an empty path.
+     */
+    public final Urin urin(final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndFragment(removeDefaultPort(), hierarchicalPart().normalisePort(this), fragment);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with just scheme, path, and fragment components.
+     *
+     * @param path     any {@code Path} to use in this {@code Urin}.
+     * @param fragment any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code Fragment}, and {@code Path}.
+     */
+    public final Urin urin(final Path path, final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndFragment(removeDefaultPort(), hierarchicalPart(path).normalisePort(this), fragment);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with just scheme, authority, fragment, and empty path components.
+     *
+     * @param authority any {@code Authority} to use in this {@code Urin}.
+     * @param fragment  any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, and {@code Fragment}, and an empty path.
+     */
+    public final Urin urin(final Authority authority, final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndFragment(removeDefaultPort(), hierarchicalPart(authority).normalisePort(this), fragment);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with just scheme, authority, path, and fragment components.
+     *
+     * @param authority any {@code Authority} to use in this {@code Urin}.
+     * @param path      any {@code AbsolutePath} to use in this {@code Urin}.
+     * @param fragment  any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, {@code AbsolutePath}, and {@code Fragment}.
+     */
+    public final Urin urin(final Authority authority, final AbsolutePath path, final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndFragment(removeDefaultPort(), hierarchicalPart(authority, path).normalisePort(this), fragment);
     }
 
     /**
