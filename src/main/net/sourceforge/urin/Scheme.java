@@ -484,6 +484,7 @@ public abstract class Scheme {
      * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
      * @param query            any {@code Query} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, and {@code Query}.
+     * @deprecated
      */
     public final Urin urin(final HierarchicalPart hierarchicalPart, final Query query) {
         return new UrinWithHierarchicalPartAndQuery(removeDefaultPort(), hierarchicalPart.normalisePort(this), query);
