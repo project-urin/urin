@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
+import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 
@@ -375,9 +376,50 @@ public abstract class Scheme {
      *
      * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme} and {@code HierarchicalPart}.
+     * @deprecated
      */
     public final Urin urin(final HierarchicalPart hierarchicalPart) {
         return new UrinWithHierarchicalPart(removeDefaultPort(), hierarchicalPart.normalisePort(this));
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with just a scheme and empty path.
+     *
+     * @return a {@code Urin} with the given {@code Scheme} and an empty path.
+     */
+    public final Urin urin() {
+        return new UrinWithHierarchicalPart(removeDefaultPort(), hierarchicalPart().normalisePort(this));
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with just scheme and path components.
+     *
+     * @param path any {@code Path} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme} and {@code Path}.
+     */
+    public final Urin urin(final Path path) {
+        return new UrinWithHierarchicalPart(removeDefaultPort(), hierarchicalPart(path).normalisePort(this));
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with just scheme, authority, and empty path components.
+     *
+     * @param authority any {@code Authority} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme} and {@code Authority}, and an empty path.
+     */
+    public final Urin urin(final Authority authority) {
+        return new UrinWithHierarchicalPart(removeDefaultPort(), hierarchicalPart(authority).normalisePort(this));
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with just scheme, authority, and path components.
+     *
+     * @param authority any {@code Authority} to use in this {@code Urin}.
+     * @param path      any {@code AbsolutePath} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, and {@code AbsolutePath}.
+     */
+    public final Urin urin(final Authority authority, final AbsolutePath path) {
+        return new UrinWithHierarchicalPart(removeDefaultPort(), hierarchicalPart(authority, path).normalisePort(this));
     }
 
     /**
