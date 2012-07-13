@@ -13,7 +13,6 @@ package net.sourceforge.urin.scheme;
 import net.sourceforge.urin.*;
 
 import static net.sourceforge.urin.Authority.authority;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Port.port;
 
@@ -29,99 +28,99 @@ public final class Http extends HypertextScheme {
     }
 
     public static Urin http(final Host host) {
-        return HTTP.urin(hierarchicalPart(authority(host), path()));
+        return HTTP.urin(authority(host), path());
     }
 
     public static Urin http(final Host host, final Port port) {
-        return HTTP.urin(hierarchicalPart(authority(host, port), path()));
+        return HTTP.urin(authority(host, port), path());
     }
 
     public static Urin http(final Authority authority) {
-        return HTTP.urin(hierarchicalPart(authority, path()));
+        return HTTP.urin(authority, path());
     }
 
     public static Urin http(final Host host, final AbsolutePath path) {
-        return HTTP.urin(hierarchicalPart(authority(host), path));
+        return HTTP.urin(authority(host), path);
     }
 
     public static Urin http(final Host host, final Port port, final AbsolutePath path) {
-        return HTTP.urin(hierarchicalPart(authority(host, port), path));
+        return HTTP.urin(authority(host, port), path);
     }
 
     public static Urin http(final Authority authority, final AbsolutePath path) {
-        return HTTP.urin(hierarchicalPart(authority, path));
+        return HTTP.urin(authority, path);
     }
 
     public static Urin http(final Host host, final AbsolutePath path, final Query query) {
-        return HTTP.urin(hierarchicalPart(authority(host), path), query);
+        return HTTP.urin(authority(host), path, query);
     }
 
     public static Urin http(final Host host, final Port port, final AbsolutePath path, final Query query) {
-        return HTTP.urin(hierarchicalPart(authority(host, port), path), query);
+        return HTTP.urin(authority(host, port), path, query);
     }
 
     public static Urin http(final Authority authority, final AbsolutePath path, final Query query) {
-        return HTTP.urin(hierarchicalPart(authority, path), query);
+        return HTTP.urin(authority, path, query);
     }
 
     public static Urin http(final Host host, final Query query) {
-        return HTTP.urin(hierarchicalPart(authority(host), path()), query);
+        return HTTP.urin(authority(host), path(), query);
     }
 
     public static Urin http(final Host host, final Port port, final Query query) {
-        return HTTP.urin(hierarchicalPart(authority(host, port), path()), query);
+        return HTTP.urin(authority(host, port), path(), query);
     }
 
     public static Urin http(final Authority authority, final Query query) {
-        return HTTP.urin(hierarchicalPart(authority, path()), query);
+        return HTTP.urin(authority, path(), query);
     }
 
     public static Urin http(final Host host, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority(host), path()), fragment);
+        return HTTP.urin(authority(host), path(), fragment);
     }
 
     public static Urin http(final Host host, final Port port, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority(host, port), path()), fragment);
+        return HTTP.urin(authority(host, port), path(), fragment);
     }
 
     public static Urin http(final Authority authority, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority, path()), fragment);
+        return HTTP.urin(authority, path(), fragment);
     }
 
     public static Urin http(final Host host, final AbsolutePath path, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority(host), path), fragment);
+        return HTTP.urin(authority(host), path, fragment);
     }
 
     public static Urin http(final Host host, final Port port, final AbsolutePath path, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority(host, port), path), fragment);
+        return HTTP.urin(authority(host, port), path, fragment);
     }
 
     public static Urin http(final Authority authority, final AbsolutePath path, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority, path), fragment);
+        return HTTP.urin(authority, path, fragment);
     }
 
     public static Urin http(final Host host, final AbsolutePath path, final Query query, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority(host), path), query, fragment);
+        return HTTP.urin(authority(host), path, query, fragment);
     }
 
     public static Urin http(final Host host, final Port port, final AbsolutePath path, final Query query, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority(host, port), path), query, fragment);
+        return HTTP.urin(authority(host, port), path, query, fragment);
     }
 
     public static Urin http(final Authority authority, final AbsolutePath path, final Query query, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority, path), query, fragment);
+        return HTTP.urin(authority, path, query, fragment);
     }
 
     public static Urin http(final Host host, final Query query, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority(host), path()), query, fragment);
+        return HTTP.urin(authority(host), path(), query, fragment);
     }
 
     public static Urin http(final Host host, final Port port, final Query query, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority(host, port), path()), query, fragment);
+        return HTTP.urin(authority(host, port), path(), query, fragment);
     }
 
     public static Urin http(final Authority authority, final Query query, final Fragment fragment) {
-        return HTTP.urin(hierarchicalPart(authority, path()), query, fragment);
+        return HTTP.urin(authority, path(), query, fragment);
     }
 
 }
