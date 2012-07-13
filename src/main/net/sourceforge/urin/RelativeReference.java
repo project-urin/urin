@@ -10,8 +10,6 @@
 
 package net.sourceforge.urin;
 
-import java.net.URI;
-
 /**
  * A relative reference.
  * <p/>
@@ -23,18 +21,6 @@ import java.net.URI;
 public abstract class RelativeReference extends UrinReference {
 
     RelativeReference() {
-    }
-
-    /**
-     * Parses the given {@code URI} to produce a {@code RelativeReference}.
-     *
-     * @param uri a {@code URI} representing a relative reference to parse.
-     * @return a {@code RelativeReference} representing the RFC 3986 relative reference represented by the given {@code URI}.
-     * @throws ParseException if the given {@code URI} is not a valid RFC 3986 relative reference.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#parseRelativeReference(java.net.URI)}
-     */
-    public static RelativeReference parse(URI uri) throws ParseException {
-        return anyScheme().parseRelativeReference(uri);
     }
 
 }
