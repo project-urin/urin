@@ -12,8 +12,10 @@ package net.sourceforge.urin;
 
 import com.google.common.base.Supplier;
 
+import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
-import static net.sourceforge.urin.HierarchicalPartBuilder.aHierarchicalPart;
+import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 
@@ -23,22 +25,82 @@ public class UrinBuilder {
     private static final RandomSupplierSwitcher<Urin> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Urin>(
             new Supplier<Urin>() {
                 public Urin get() {
-                    return aScheme().urin(aHierarchicalPart());
+                    return aScheme().urin();
                 }
             },
             new Supplier<Urin>() {
                 public Urin get() {
-                    return aScheme().urin(aHierarchicalPart(), aFragment());
+                    return aScheme().urin(aPath());
                 }
             },
             new Supplier<Urin>() {
                 public Urin get() {
-                    return aScheme().urin(aHierarchicalPart(), aQuery());
+                    return aScheme().urin(anAuthority());
                 }
             },
             new Supplier<Urin>() {
                 public Urin get() {
-                    return aScheme().urin(aHierarchicalPart(), aQuery(), aFragment());
+                    return aScheme().urin(anAuthority(), anAbsolutePath());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(aFragment());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(aPath(), aFragment());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), aFragment());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), anAbsolutePath(), aFragment());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(aQuery());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(aPath(), aQuery());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), aQuery());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), anAbsolutePath(), aQuery());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(aQuery(), aFragment());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(aPath(), aQuery(), aFragment());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), aQuery(), aFragment());
+                }
+            },
+            new Supplier<Urin>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), anAbsolutePath(), aQuery(), aFragment());
                 }
             }
     );
