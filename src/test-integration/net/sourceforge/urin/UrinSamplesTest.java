@@ -16,7 +16,6 @@ import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
-import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAndParse;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAsUriAndParse;
 
@@ -25,14 +24,14 @@ public class UrinSamplesTest {
     public void canMakeAUrinWithEmptyPath() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
-        assertAsStringAndParse(scheme.asString() + "://" + authority.asString(), urin(scheme, hierarchicalPart(authority)));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString(), scheme.urin(authority));
     }
 
     @Test
     public void canMakeAUrinWithAuthorityAndPathToRoot() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
-        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/", urin(scheme, hierarchicalPart(authority, Path.path())));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/", scheme.urin(authority, Path.path()));
     }
 
     @Test
@@ -40,12 +39,12 @@ public class UrinSamplesTest {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
         Segment segment = aNonDotSegment();
-        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), urin(scheme, hierarchicalPart(authority, Path.path(segment))));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), scheme.urin(hierarchicalPart(authority, Path.path(segment))));
     }
 
     @Test
     public void canMakeAUrinWithPathToRoot() throws Exception {
         Scheme scheme = aScheme();
-        assertAsStringAsUriAndParse(scheme.asString() + ":/", urin(scheme, hierarchicalPart(Path.path())));
+        assertAsStringAsUriAndParse(scheme.asString() + ":/", scheme.urin(hierarchicalPart(Path.path())));
     }
 }

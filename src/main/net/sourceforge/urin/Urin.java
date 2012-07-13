@@ -38,18 +38,6 @@ public abstract class Urin extends UrinReference {
     public abstract Urin resolve(final UrinReference urinReference);
 
     /**
-     * Factory method for creating {@code Urin}s with just scheme and hierarchical part components.
-     *
-     * @param scheme           any {@code Scheme} to use in this {@code Urin}.
-     * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
-     * @return a {@code Urin} with the given {@code Scheme} and {@code HierarchicalPart}.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#urin(HierarchicalPart)}
-     */
-    public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
-        return scheme.urin(hierarchicalPart);
-    }
-
-    /**
      * Factory method for creating {@code Urin}s with scheme, hierarchical part, and fragment components.
      *
      * @param scheme           any {@code Scheme} to use in this {@code Urin}.

@@ -35,8 +35,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void ftpExample() throws Exception {
-        assertAsStringAsUriAndParse("ftp://ftp.is.co.za/rfc/rfc1808.txt", urin(
-                scheme("ftp"),
+        assertAsStringAsUriAndParse("ftp://ftp.is.co.za/rfc/rfc1808.txt", scheme("ftp").urin(
                 hierarchicalPart(
                         authority(registeredName("ftp.is.co.za")),
                         path(segment("rfc"), segment("rfc1808.txt")))
@@ -45,8 +44,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void httpExample() throws Exception {
-        assertAsStringAsUriAndParse("http://www.ietf.org/rfc/rfc2396.txt", urin(
-                scheme("http"),
+        assertAsStringAsUriAndParse("http://www.ietf.org/rfc/rfc2396.txt", scheme("http").urin(
                 hierarchicalPart(
                         authority(registeredName("www.ietf.org")),
                         path(segment("rfc"), segment("rfc2396.txt")))
@@ -66,30 +64,26 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void mailtoExample() throws Exception {
-        assertAsStringAsUriAndParse("mailto:John.Doe@example.com", urin(
-                scheme("mailto"),
+        assertAsStringAsUriAndParse("mailto:John.Doe@example.com", scheme("mailto").urin(
                 hierarchicalPart(rootlessPath(segment("John.Doe@example.com")))));
     }
 
     @Test
     public void newsExample() throws Exception {
-        assertAsStringAsUriAndParse("news:comp.infosystems.www.servers.unix", urin(
-                scheme("news"),
+        assertAsStringAsUriAndParse("news:comp.infosystems.www.servers.unix", scheme("news").urin(
                 hierarchicalPart(
                         rootlessPath(segment("comp.infosystems.www.servers.unix")))));
     }
 
     @Test
     public void telExample() throws Exception {
-        assertAsStringAsUriAndParse("tel:+1-816-555-1212", urin(
-                scheme("tel"),
+        assertAsStringAsUriAndParse("tel:+1-816-555-1212", scheme("tel").urin(
                 hierarchicalPart(rootlessPath(segment("+1-816-555-1212")))));
     }
 
     @Test
     public void telnetExample() throws Exception {
-        assertAsStringAsUriAndParse("telnet://192.0.2.16:80/", urin(
-                scheme("telnet"),
+        assertAsStringAsUriAndParse("telnet://192.0.2.16:80/", scheme("telnet").urin(
                 hierarchicalPart(
                         authority(ipV4Address(octet(192), octet(0), octet(2), octet(16)), port("80")),
                         path())
@@ -98,8 +92,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void urnExample() throws Exception {
-        assertAsStringAsUriAndParse("urn:oasis:names:specification:docbook:dtd:xml:4.1.2", urin(
-                scheme("urn"),
+        assertAsStringAsUriAndParse("urn:oasis:names:specification:docbook:dtd:xml:4.1.2", scheme("urn").urin(
                 hierarchicalPart(rootlessPath(segment("oasis:names:specification:docbook:dtd:xml:4.1.2")))));
     }
 

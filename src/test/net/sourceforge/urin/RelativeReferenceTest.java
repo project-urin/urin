@@ -32,7 +32,6 @@ import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
-import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
@@ -356,7 +355,7 @@ public class RelativeReferenceTest {
         Path relativeReferencePath = aPath();
         assertThat(
                 relativeReference(relativeReferencePath).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath))));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath))));
     }
 
     @Test
@@ -367,7 +366,7 @@ public class RelativeReferenceTest {
         Path relativeReferencePath = aPath();
         assertThat(
                 relativeReference(relativeReferencePath).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath))));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath))));
     }
 
     @Test
@@ -379,7 +378,7 @@ public class RelativeReferenceTest {
         Path relativeReferencePath = aPath();
         assertThat(
                 relativeReference(relativeReferencePath).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath))));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath))));
     }
 
     @Test
@@ -470,7 +469,7 @@ public class RelativeReferenceTest {
         Query relativeReferenceQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
     }
 
     @Test
@@ -482,7 +481,7 @@ public class RelativeReferenceTest {
         Query relativeReferenceQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
     }
 
     @Test
@@ -495,7 +494,7 @@ public class RelativeReferenceTest {
         Query relativeReferenceQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
     }
 
     @Test
@@ -586,7 +585,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferencePath, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceFragment)));
     }
 
     @Test
@@ -598,7 +597,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferencePath, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceFragment)));
     }
 
     @Test
@@ -611,7 +610,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferencePath, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceFragment)));
     }
 
     @Test
@@ -720,7 +719,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferencePath, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
@@ -733,7 +732,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferencePath, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
@@ -747,7 +746,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferencePath, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
@@ -904,7 +903,7 @@ public class RelativeReferenceTest {
         Path relativeReferencePath = aPath();
         assertThat(
                 relativeReference(relativeReferencePath).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath))));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath))));
     }
 
     @Test
@@ -915,7 +914,7 @@ public class RelativeReferenceTest {
         Query baseQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferencePath).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath))));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath))));
     }
 
     @Test
@@ -927,7 +926,7 @@ public class RelativeReferenceTest {
         Fragment baseFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferencePath).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferencePath))));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath))));
     }
 
     @Test
@@ -1001,7 +1000,7 @@ public class RelativeReferenceTest {
         Authority relativeReferenceAuthority = anAuthority();
         assertThat(
                 relativeReference(relativeReferenceAuthority).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
     }
 
     @Test
@@ -1012,7 +1011,7 @@ public class RelativeReferenceTest {
         Authority relativeReferenceAuthority = anAuthority();
         assertThat(
                 relativeReference(relativeReferenceAuthority).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
     }
 
     @Test
@@ -1024,7 +1023,7 @@ public class RelativeReferenceTest {
         Authority relativeReferenceAuthority = anAuthority();
         assertThat(
                 relativeReference(relativeReferenceAuthority).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
     }
 
     @Test
@@ -1112,7 +1111,7 @@ public class RelativeReferenceTest {
         Query relativeReferenceQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery)));
     }
 
     @Test
@@ -1124,7 +1123,7 @@ public class RelativeReferenceTest {
         Query relativeReferenceQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery)));
     }
 
     @Test
@@ -1137,7 +1136,7 @@ public class RelativeReferenceTest {
         Query relativeReferenceQuery = aQuery();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery)));
     }
 
     @Test
@@ -1226,7 +1225,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceFragment)));
     }
 
     @Test
@@ -1238,7 +1237,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceFragment)));
     }
 
     @Test
@@ -1251,7 +1250,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceFragment)));
     }
 
     @Test
@@ -1359,7 +1358,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery, relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
@@ -1372,7 +1371,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery, relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
@@ -1386,7 +1385,7 @@ public class RelativeReferenceTest {
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
                 relativeReference(relativeReferenceAuthority, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(urin(baseScheme, baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery, relativeReferenceFragment)));
+                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test

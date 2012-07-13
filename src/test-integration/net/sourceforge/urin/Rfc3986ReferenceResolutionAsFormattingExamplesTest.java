@@ -22,7 +22,6 @@ import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.RelativeReference.relativeReference;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segment.*;
-import static net.sourceforge.urin.Urin.urin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -30,7 +29,7 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
 
     @Test
     public void normalExamples() throws Exception {
-        assertThat(urin(scheme("g"), hierarchicalPart(Path.rootlessPath("h"))).asString(), equalTo("g:h"));
+        assertThat(scheme("g").urin(hierarchicalPart(Path.rootlessPath("h"))).asString(), equalTo("g:h"));
         assertThat(relativeReference(rootlessPath(segment("g"))).asString(), equalTo("g"));
         assertThat(relativeReference(rootlessPath(DOT, segment("g"))).asString(), equalTo("g"));
         assertThat(relativeReference(Path.rootlessPath("g", "")).asString(), equalTo("g/"));
@@ -75,6 +74,6 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
         assertThat(relativeReference(Path.rootlessPath("g"), query("y/../x")).asString(), equalTo("g?y/../x"));
         assertThat(relativeReference(Path.rootlessPath("g"), fragment("s/./x")).asString(), equalTo("g#s/./x"));
         assertThat(relativeReference(Path.rootlessPath("g"), fragment("s/../x")).asString(), equalTo("g#s/../x"));
-        assertThat(urin(scheme("http"), hierarchicalPart(Path.rootlessPath("g"))).asString(), equalTo("http:g"));
+        assertThat(scheme("http").urin(hierarchicalPart(Path.rootlessPath("g"))).asString(), equalTo("http:g"));
     }
 }
