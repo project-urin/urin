@@ -18,7 +18,7 @@ import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.RelativeReference.parse;
-import static net.sourceforge.urin.RelativeReference.relativeReference;
+import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.segment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.Matchers.contains;
@@ -28,13 +28,13 @@ public class RelativeReferenceSamplesTest {
     @Test
     public void canMakeARelativeReferenceWithColonInTheFirstSegment() throws Exception {
         Segment segment = segment(aStringIncluding(':'));
-        assertThat(relativeReference(rootlessPath(segment)).asString(), equalTo("./" + segment.asString()));
+        assertThat(aScheme().relativeReference(rootlessPath(segment)).asString(), equalTo("./" + segment.asString()));
     }
 
     @Test
     public void canParseARelativeReferenceWithColonInTheFirstSegment() throws Exception {
         Segment segment = segment(aStringIncluding(':'));
-        assertThat(parse("./" + segment.asString()), equalTo(relativeReference(rootlessPath(segment))));
+        assertThat(parse("./" + segment.asString()), equalTo(aScheme().relativeReference(rootlessPath(segment))));
     }
 
     @Test

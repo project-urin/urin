@@ -26,28 +26,6 @@ public abstract class RelativeReference extends UrinReference {
     }
 
     /**
-     * Factory method for creating {@code RelativeReference}s with an authority and an empty path.
-     *
-     * @param authority any {@code Authority} to use in this {@code RelativeReference}.
-     * @return a {@code RelativeReference} with the given {@code Authority} and an empty path.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Authority)}
-     */
-    public static RelativeReference relativeReference(final Authority authority) {
-        return anyScheme().relativeReference(authority);
-    }
-
-    /**
-     * Factory method for creating {@code RelativeReference}s with just a path.
-     *
-     * @param path any {@code Path} to use in this {@code RelativeReference}.
-     * @return a {@code RelativeReference} with the given {@code Path}.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference(Path)}
-     */
-    public static RelativeReference relativeReference(final Path path) {
-        return anyScheme().relativeReference(path);
-    }
-
-    /**
      * Factory method for creating {@code RelativeReference}s with an authority and a path.
      *
      * @param authority any {@code Authority} to use in this {@code RelativeReference}.

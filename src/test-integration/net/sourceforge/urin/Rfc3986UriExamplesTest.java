@@ -25,6 +25,7 @@ import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Scheme.scheme;
+import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAsUriAndParse;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -97,20 +98,20 @@ public class Rfc3986UriExamplesTest {
     @Test
     public void removeDotSegmentsExample1() throws Exception {
         assertThat(
-                RelativeReference.relativeReference(AbsolutePath.path(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asString(),
+                aScheme().relativeReference(AbsolutePath.path(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asString(),
                 equalTo("/a/g"));
         assertThat(
-                RelativeReference.relativeReference(AbsolutePath.path(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asUri(),
+                aScheme().relativeReference(AbsolutePath.path(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"))).asUri(),
                 equalTo(new URI("/a/g")));
     }
 
     @Test
     public void removeDotSegmentsExample2() throws Exception {
         assertThat(
-                RelativeReference.relativeReference(RootlessPath.rootlessPath(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asString(),
+                aScheme().relativeReference(RootlessPath.rootlessPath(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asString(),
                 equalTo("mid/6"));
         assertThat(
-                RelativeReference.relativeReference(RootlessPath.rootlessPath(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asUri(),
+                aScheme().relativeReference(RootlessPath.rootlessPath(segment("mid"), segment("content=5"), DOT_DOT, segment("6"))).asUri(),
                 equalTo(new URI("mid/6")));
     }
 
