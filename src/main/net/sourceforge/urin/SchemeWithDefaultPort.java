@@ -19,6 +19,12 @@ public class SchemeWithDefaultPort extends Scheme {
     private final String name;
     private final Port defaultPort;
 
+    /**
+     * Constructor for subclasses of {@code Scheme} with default ports.
+     *
+     * @param name        the name of the scheme.
+     * @param defaultPort the default port associated with the scheme.
+     */
     protected SchemeWithDefaultPort(final String name, final Port defaultPort) {
         this.name = name;
         if (defaultPort == null) {
