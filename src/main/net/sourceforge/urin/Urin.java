@@ -10,8 +10,6 @@
 
 package net.sourceforge.urin;
 
-import java.net.URI;
-
 /**
  * A URI.
  * <p/>
@@ -36,30 +34,6 @@ public abstract class Urin extends UrinReference {
      * @see <a href="http://tools.ietf.org/html/rfc3986#section-5">RFC 3986 - Reference Resolution</a>
      */
     public abstract Urin resolve(final UrinReference urinReference);
-
-    /**
-     * Parses the given {@code String} as a URI.
-     *
-     * @param uriString a {@code String} that represents a URI.
-     * @return a {@code Urin} representing the URI represented by the given {@code String}.
-     * @throws ParseException if the given {@code String} is not a valid URI.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#parseUrin(String)}
-     */
-    public static Urin parse(final String uriString) throws ParseException {
-        return anyScheme().parseUrin(uriString);
-    }
-
-    /**
-     * Parses the given {@code URI} to produce a {@code Urin}.
-     *
-     * @param uri a {@code URI} to parse.
-     * @return a {@code Urin} representing the RFC 3986 URI represented by the given {@code URI}.
-     * @throws ParseException if the given {@code URI} is not a valid RFC 3986 URI.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#parseUrin(java.net.URI)}
-     */
-    public static Urin parse(final URI uri) throws ParseException {
-        return anyScheme().parseUrin(uri);
-    }
 
     @Override
     final Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {

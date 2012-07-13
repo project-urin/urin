@@ -26,7 +26,6 @@ import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.SchemeBuilder.aValidSchemeName;
-import static net.sourceforge.urin.Urin.parse;
 import static net.sourceforge.urin.UrinBuilder.aUrin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -991,7 +990,7 @@ public class UrinTest {
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(Urin.parse(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(hierarchicalPart, query, fragment)));
+        assertThat(scheme.parseUrin(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(hierarchicalPart, query, fragment)));
     }
 
     @Test
@@ -999,7 +998,7 @@ public class UrinTest {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Query query = aQuery();
-        assertThat(parse(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString()), equalTo(scheme.urin(hierarchicalPart, query)));
+        assertThat(scheme.parseUrin(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString()), equalTo(scheme.urin(hierarchicalPart, query)));
     }
 
     @Test
@@ -1007,14 +1006,14 @@ public class UrinTest {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
         Fragment fragment = aFragment();
-        assertThat(parse(scheme.asString() + ":" + hierarchicalPart.asString() + "#" + fragment.asString()), equalTo(scheme.urin(hierarchicalPart, fragment)));
+        assertThat(scheme.parseUrin(scheme.asString() + ":" + hierarchicalPart.asString() + "#" + fragment.asString()), equalTo(scheme.urin(hierarchicalPart, fragment)));
     }
 
     @Test
     public void parsesUrinWithNoQueryAndNoFragment() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
-        assertThat(parse(scheme.asString() + ":" + hierarchicalPart.asString()), equalTo(scheme.urin(hierarchicalPart)));
+        assertThat(scheme.parseUrin(scheme.asString() + ":" + hierarchicalPart.asString()), equalTo(scheme.urin(hierarchicalPart)));
     }
 
     @Test
