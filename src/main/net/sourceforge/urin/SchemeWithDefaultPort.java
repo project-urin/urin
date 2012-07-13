@@ -12,6 +12,9 @@ package net.sourceforge.urin;
 
 import static java.util.Locale.ENGLISH;
 
+/**
+ * A name component of a URI that refers to a scheme that is associated with a default port.
+ */
 public class SchemeWithDefaultPort extends Scheme {
     private final String name;
     private final Port defaultPort;
