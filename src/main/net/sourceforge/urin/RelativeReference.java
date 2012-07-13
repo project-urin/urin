@@ -26,16 +26,6 @@ public abstract class RelativeReference extends UrinReference {
     }
 
     /**
-     * Factory method for creating {@code RelativeReference}s with just an empty path.
-     *
-     * @return a {@code RelativeReference} with an empty path.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#relativeReference()}
-     */
-    public static RelativeReference relativeReference() {
-        return anyScheme().relativeReference();
-    }
-
-    /**
      * Factory method for creating {@code RelativeReference}s with an authority and an empty path.
      *
      * @param authority any {@code Authority} to use in this {@code RelativeReference}.
