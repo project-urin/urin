@@ -86,18 +86,6 @@ public abstract class UrinReference {
     }
 
     /**
-     * Parses the given {@code String} as a URI reference.
-     *
-     * @param uriReferenceString a {@code String} that represents a URI reference.
-     * @return a {@code UrinReference} representing the URI reference represented by the given {@code String}.
-     * @throws ParseException if the given {@code String} is not a valid URI reference.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#parseUrinReference(String)}
-     */
-    public static UrinReference parse(final String uriReferenceString) throws ParseException {
-        return anyScheme().parseUrinReference(uriReferenceString);
-    }
-
-    /**
      * Parses the given {@code URI} to produce a {@code UrinReference}.
      *
      * @param uriReference a {@code URI} to parse.

@@ -13,6 +13,7 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.RelativeReferenceBuilder.aRelativeReference;
+import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.UrinBuilder.aUrin;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -23,19 +24,19 @@ public class UrinReferenceTest {
     @Test
     public void aUriAsStringParsesToAUri() throws Exception {
         Urin urin = aUrin();
-        assertThat(UrinReference.parse(urin.asString()), equalTo((UrinReference) urin));
+        assertThat(aScheme().parseUrinReference(urin.asString()), equalTo((UrinReference) urin));
     }
 
     @Test
     public void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
         RelativeReference relativeReference = aRelativeReference();
-        assertThat(UrinReference.parse(relativeReference.asString()), equalTo((UrinReference) relativeReference));
+        assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo((UrinReference) relativeReference));
     }
 
     @Test
     public void anInvalidStringThrowsAParseException() throws Exception {
         try {
-            UrinReference.parse("cache_object://");
+            aScheme().parseUrinReference("cache_object://");
             fail("Should have thrown a ParseException");
         } catch (ParseException e) {
         }
