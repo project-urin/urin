@@ -681,7 +681,7 @@ public abstract class Scheme {
         return parseUrinReference(uriReference.toASCIIString());
     }
 
-    public static final class GenericScheme extends Scheme {
+    private static final class GenericScheme extends Scheme {
         private final String name;
 
         public GenericScheme(final String name) {
