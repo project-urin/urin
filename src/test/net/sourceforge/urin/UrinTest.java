@@ -238,46 +238,6 @@ public class UrinTest {
     }
 
     @Test
-    public void aUrinWithNoQueryIsEqualToAnotherWithTheSamePartsWithHierarchcialPart() throws Exception {
-        Scheme scheme = aScheme();
-        HierarchicalPart hierarchicalPart = aHierarchicalPart();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(hierarchicalPart, fragment), equalTo(scheme.urin(hierarchicalPart, fragment)));
-        assertThat(scheme.urin(hierarchicalPart, fragment).hashCode(), equalTo(scheme.urin(hierarchicalPart, fragment).hashCode()));
-    }
-
-    @Test
-    public void aUrinWithNoQueryIsNotEqualToAnotherWithTheADifferentParts() throws Exception {
-        assertThat(aScheme().urin(aHierarchicalPart(), aFragment()), not(equalTo(aScheme().urin(aHierarchicalPart(), aFragment()))));
-    }
-
-    @Test
-    public void aUrinWithNoQueryWithHierarchcialPartToStringIsCorrect() throws Exception {
-        Scheme scheme = aScheme();
-        HierarchicalPart hierarchicalPart = aHierarchicalPart();
-        Fragment fragment = aFragment();
-        assertThat(scheme.urin(hierarchicalPart, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart + ", fragment=" + fragment + "}"));
-    }
-
-    @Test
-    public void rejectsNullInFactoryForAUrinWithNoQueryWithHierarchcialPart() throws Exception {
-        assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                HierarchicalPart hierarchicalPart = null;
-                aScheme().urin(hierarchicalPart, aFragment());
-            }
-        });
-        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                Fragment fragment = null;
-                aScheme().urin(aHierarchicalPart(), fragment);
-            }
-        });
-    }
-
-    @Test
     public void createsUrinWithNoQueryAndNoFragment() throws Exception {
         Scheme scheme = aScheme();
         HierarchicalPart hierarchicalPart = aHierarchicalPart();
