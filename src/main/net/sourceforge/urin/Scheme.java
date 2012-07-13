@@ -541,9 +541,58 @@ public abstract class Scheme {
      * @param query            any {@code Query} to use in this {@code Urin}.
      * @param fragment         any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, {@code Query}, and {@code Fragment}.
+     * @deprecated
      */
     public final Urin urin(final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
         return new UrinWithHierarchicalPartAndQueryAndFragment(removeDefaultPort(), hierarchicalPart.normalisePort(this), query, fragment);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with scheme, empty path, query, and fragment components.
+     *
+     * @param query    any {@code Query} to use in this {@code Urin}.
+     * @param fragment any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code Query}, and {@code Fragment}, and an empty path.
+     */
+    public final Urin urin(final Query query, final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndQueryAndFragment(removeDefaultPort(), hierarchicalPart().normalisePort(this), query, fragment);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with scheme, path, query, and fragment components.
+     *
+     * @param path     any {@code Path} to use in this {@code Urin}.
+     * @param query    any {@code Query} to use in this {@code Urin}.
+     * @param fragment any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code Path}, {@code Query}, and {@code Fragment}.
+     */
+    public final Urin urin(final Path path, final Query query, final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndQueryAndFragment(removeDefaultPort(), hierarchicalPart(path).normalisePort(this), query, fragment);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with scheme, authority, empty path, query, and fragment components.
+     *
+     * @param authority any {@code Authority} to use in this {@code Urin}.
+     * @param query     any {@code Query} to use in this {@code Urin}.
+     * @param fragment  any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, {@code Query}, and {@code Fragment}, and an empty path.
+     */
+    public final Urin urin(final Authority authority, final Query query, final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndQueryAndFragment(removeDefaultPort(), hierarchicalPart(authority).normalisePort(this), query, fragment);
+    }
+
+    /**
+     * Factory method for creating {@code Urin}s with scheme, authority, path, query, and fragment components.
+     *
+     * @param authority any {@code Authority} to use in this {@code Urin}.
+     * @param path      any {@code AbsolutePath} to use in this {@code Urin}.
+     * @param query     any {@code Query} to use in this {@code Urin}.
+     * @param fragment  any {@code Fragment} to use in this {@code Urin}.
+     * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, {@code AbsolutePath}, {@code Query}, and {@code Fragment}.
+     */
+    public final Urin urin(final Authority authority, final AbsolutePath path, final Query query, final Fragment fragment) {
+        return new UrinWithHierarchicalPartAndQueryAndFragment(removeDefaultPort(), hierarchicalPart(authority, path).normalisePort(this), query, fragment);
     }
 
     /**
