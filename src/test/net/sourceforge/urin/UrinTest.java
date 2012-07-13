@@ -27,7 +27,6 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.SchemeBuilder.aValidSchemeName;
 import static net.sourceforge.urin.Urin.parse;
-import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.UrinBuilder.aUrin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -99,12 +98,6 @@ public class UrinTest {
 
     @Test
     public void rejectsNullInFactoryForAUrinWithAllPartsWithHierarchicalPart() throws Exception {
-        assertThrowsException("Null scheme should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                urin(null, aHierarchicalPart(), aQuery(), aFragment());
-            }
-        });
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
@@ -190,12 +183,6 @@ public class UrinTest {
 
     @Test
     public void rejectsNullInFactoryForAUrinWithNoFragmentWithHierarchicalPart() throws Exception {
-        assertThrowsException("Null scheme should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                urin(null, aHierarchicalPart(), aQuery());
-            }
-        });
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
@@ -275,12 +262,6 @@ public class UrinTest {
 
     @Test
     public void rejectsNullInFactoryForAUrinWithNoQueryWithHierarchcialPart() throws Exception {
-        assertThrowsException("Null scheme should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                urin(null, aHierarchicalPart(), aFragment());
-            }
-        });
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems

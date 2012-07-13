@@ -26,7 +26,6 @@ import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segment.*;
-import static net.sourceforge.urin.Urin.urin;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAsUriAndParse;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -53,8 +52,7 @@ public class Rfc3986UriExamplesTest {
 
     @Test
     public void ldapExample() throws Exception {
-        assertAsStringAsUriAndParse("ldap://[2001:db8::7]/c=GB?objectClass?one", urin(
-                scheme("ldap"),
+        assertAsStringAsUriAndParse("ldap://[2001:db8::7]/c=GB?objectClass?one", scheme("ldap").urin(
                 hierarchicalPart(
                         authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
                         path(segment("c=GB"))),

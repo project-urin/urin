@@ -38,46 +38,6 @@ public abstract class Urin extends UrinReference {
     public abstract Urin resolve(final UrinReference urinReference);
 
     /**
-     * Factory method for creating {@code Urin}s with scheme, hierarchical part, and fragment components.
-     *
-     * @param scheme           any {@code Scheme} to use in this {@code Urin}.
-     * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
-     * @param fragment         any {@code Fragment} to use in this {@code Urin}.
-     * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, and {@code Fragment}.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#urin(HierarchicalPart, Fragment)}
-     */
-    public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Fragment fragment) {
-        return scheme.urin(hierarchicalPart, fragment);
-    }
-
-    /**
-     * Factory method for creating {@code Urin}s with scheme, hierarchical part, and query components.
-     *
-     * @param scheme           any {@code Scheme} to use in this {@code Urin}.
-     * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
-     * @param query            any {@code Query} to use in this {@code Urin}.
-     * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, and {@code Query}.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#urin(HierarchicalPart, Query)}
-     */
-    public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
-        return scheme.urin(hierarchicalPart, query);
-    }
-
-    /**
-     * Factory method for creating {@code Urin}s with scheme, hierarchical part, query, and fragment components.
-     *
-     * @param scheme           any {@code Scheme} to use in this {@code Urin}.
-     * @param hierarchicalPart any {@code HierarchicalPart} to use in this {@code Urin}.
-     * @param query            any {@code Query} to use in this {@code Urin}.
-     * @param fragment         any {@code Fragment} to use in this {@code Urin}.
-     * @return a {@code Urin} with the given {@code Scheme}, {@code HierarchicalPart}, {@code Query}, and {@code Fragment}.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#urin(HierarchicalPart, Query, Fragment)}
-     */
-    public static Urin urin(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
-        return scheme.urin(hierarchicalPart, query, fragment);
-    }
-
-    /**
      * Parses the given {@code String} as a URI.
      *
      * @param uriString a {@code String} that represents a URI.
@@ -99,13 +59,6 @@ public abstract class Urin extends UrinReference {
      */
     public static Urin parse(final URI uri) throws ParseException {
         return anyScheme().parseUrin(uri);
-    }
-
-    /**
-     * @deprecated use {@link net.sourceforge.urin.Scheme#isValidRelativeReferenceString(String)}
-     */
-    static boolean isValidUrinString(final String uriReferenceString) {
-        return Scheme.isValidUrinString(uriReferenceString);
     }
 
     @Override
