@@ -26,6 +26,7 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH
  * Immutable and threadsafe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3">RFC 3986 - Syntax Components</a>
+ * @deprecated
  */
 public abstract class HierarchicalPart {
 
