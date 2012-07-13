@@ -26,18 +26,6 @@ public abstract class RelativeReference extends UrinReference {
     }
 
     /**
-     * Parses the given {@code String} as a relative reference.
-     *
-     * @param relativeReferenceString a {@code String} that represents a relative reference.
-     * @return a {@code UrinReference} representing the relative reference represented by the given {@code String}.
-     * @throws ParseException if the given {@code String} is not a valid relative reference.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#parseRelativeReference(String)}
-     */
-    public static RelativeReference parse(final String relativeReferenceString) throws ParseException {
-        return anyScheme().parseRelativeReference(relativeReferenceString);
-    }
-
-    /**
      * Parses the given {@code URI} to produce a {@code RelativeReference}.
      *
      * @param uri a {@code URI} representing a relative reference to parse.

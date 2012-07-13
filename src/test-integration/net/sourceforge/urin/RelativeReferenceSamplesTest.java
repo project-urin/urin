@@ -17,7 +17,6 @@ import static com.google.common.collect.Iterables.transform;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.Path.rootlessPath;
-import static net.sourceforge.urin.RelativeReference.parse;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.segment;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -34,12 +33,12 @@ public class RelativeReferenceSamplesTest {
     @Test
     public void canParseARelativeReferenceWithColonInTheFirstSegment() throws Exception {
         Segment segment = segment(aStringIncluding(':'));
-        assertThat(parse("./" + segment.asString()), equalTo(aScheme().relativeReference(rootlessPath(segment))));
+        assertThat(aScheme().parseRelativeReference("./" + segment.asString()), equalTo(aScheme().relativeReference(rootlessPath(segment))));
     }
 
     @Test
     public void canParseARelativeReferenceAndRetrieveTheValuesOfTheSegments() throws Exception {
-        RelativeReference relativeReference = parse("a/b%2Fc");
+        RelativeReference relativeReference = aScheme().parseRelativeReference("a/b%2Fc");
         assertThat(transform(relativeReference.path(), new Function<Segment, String>() {
             public String apply(final Segment segment) {
                 return segment.value();
@@ -49,7 +48,7 @@ public class RelativeReferenceSamplesTest {
 
     @Test
     public void canParseARelativeReferenceAndRetrieveTheValuesOfTheFragment() throws Exception {
-        RelativeReference relativeReference = parse("a#foo:bar");
+        RelativeReference relativeReference = aScheme().parseRelativeReference("a#foo:bar");
         assertThat(relativeReference.hasFragment(), equalTo(true));
         assertThat(relativeReference.fragment(), equalTo(fragment("foo:bar")));
         assertThat(relativeReference.fragment().value(), equalTo("foo:bar"));
