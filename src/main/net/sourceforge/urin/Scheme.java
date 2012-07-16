@@ -881,6 +881,24 @@ public abstract class Scheme {
         }
 
         @Override
+        Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+            if (this.path.isEmpty()) {
+                return scheme.urin(hierarchicalPart(path).resolve(this.path), query, fragment);
+            } else {
+                return scheme.urin(hierarchicalPart(path).resolve(this.path));
+            }
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+            if (this.path.isEmpty()) {
+                return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.path), query, fragment);
+            } else {
+                return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.path));
+            }
+        }
+
+        @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
             if (path.isEmpty()) {
                 return scheme.urin(hierarchicalPart.resolve(path), query, fragment);
@@ -987,6 +1005,16 @@ public abstract class Scheme {
         }
 
         @Override
+        Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(hierarchicalPart(path).resolve(authority, this.path));
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.authority, this.path));
+        }
+
+        @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
             return scheme.urin(hierarchicalPart.resolve(authority, path));
         }
@@ -1090,6 +1118,24 @@ public abstract class Scheme {
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
             return scheme.urin(hierarchicalPart.resolve(path), this.query);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+            if (this.path.isEmpty()) {
+                return scheme.urin(hierarchicalPart(path).resolve(this.path), this.query, fragment);
+            } else {
+                return scheme.urin(hierarchicalPart(path).resolve(this.path), this.query);
+            }
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+            if (this.path.isEmpty()) {
+                return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.path), this.query, fragment);
+            } else {
+                return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.path), this.query);
+            }
         }
 
         @Override
@@ -1212,6 +1258,24 @@ public abstract class Scheme {
                 return scheme.urin(hierarchicalPart.resolve(path), query, fragment);
             } else {
                 return scheme.urin(hierarchicalPart.resolve(path), fragment);
+            }
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+            if (this.path.isEmpty()) {
+                return scheme.urin(hierarchicalPart(path).resolve(this.path), query, this.fragment);
+            } else {
+                return scheme.urin(hierarchicalPart(path).resolve(this.path), this.fragment);
+            }
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+            if (this.path.isEmpty()) {
+                return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.path), query, this.fragment);
+            } else {
+                return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.path), this.fragment);
             }
         }
 
@@ -1350,6 +1414,16 @@ public abstract class Scheme {
         }
 
         @Override
+        Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(hierarchicalPart(path).resolve(this.path), this.query, this.fragment);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.path), this.query, this.fragment);
+        }
+
+        @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query, final Fragment fragment) {
             return scheme.urin(hierarchicalPart.resolve(path), this.query, this.fragment);
         }
@@ -1442,6 +1516,16 @@ public abstract class Scheme {
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
             return scheme.urin(hierarchicalPart.resolve(authority, path), this.query);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(hierarchicalPart(path).resolve(authority, this.path), this.query);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.authority, this.path), this.query);
         }
 
         @Override
@@ -1555,6 +1639,16 @@ public abstract class Scheme {
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
             return scheme.urin(hierarchicalPart.resolve(authority, path), fragment);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(hierarchicalPart(path).resolve(authority, this.path), this.fragment);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.authority, this.path), this.fragment);
         }
 
         @Override
@@ -1673,6 +1767,16 @@ public abstract class Scheme {
         @Override
         Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
             return scheme.urin(hierarchicalPart.resolve(authority, path), this.query, fragment);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(hierarchicalPart(path).resolve(authority, this.path), this.query, this.fragment);
+        }
+
+        @Override
+        Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.authority, this.path), this.query, this.fragment);
         }
 
         @Override
