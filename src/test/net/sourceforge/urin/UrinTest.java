@@ -800,7 +800,7 @@ public class UrinTest {
         Scheme scheme = aScheme();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(scheme.urin(query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart() + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + new EmptyPath() + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -842,7 +842,7 @@ public class UrinTest {
         Path path = aPath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(scheme.urin(path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(path) + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -891,7 +891,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(scheme.urin(authority, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority) + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(authority, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + new EmptyPath() + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -942,7 +942,7 @@ public class UrinTest {
         AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(scheme.urin(authority, path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority, path) + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(authority, path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
     @Test
