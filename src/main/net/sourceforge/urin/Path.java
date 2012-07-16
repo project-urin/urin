@@ -103,7 +103,7 @@ public abstract class Path implements Iterable<Segment> {
     }
 
     static Path parseRootlessPath(final String rawPath) throws ParseException {
-        return rootlessPath(rawPath == null ? new ArrayList<Segment>() : new ArrayList<Segment>() {{
+        return rootlessPath(rawPath == null || "".equals(rawPath) ? new ArrayList<Segment>() : new ArrayList<Segment>() {{
             for (String segmentString : rawPath.split("/")) {
                 add(Segment.parse(segmentString));
             }

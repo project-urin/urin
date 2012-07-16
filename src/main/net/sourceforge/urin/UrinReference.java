@@ -141,6 +141,10 @@ public abstract class UrinReference {
      */
     public abstract Query query();
 
+    abstract Urin resolve(final Scheme scheme, final Path path);
+
+    abstract Urin resolve(final Scheme scheme, final Authority authority, final Path path);
+
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart);
 
     abstract Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query);

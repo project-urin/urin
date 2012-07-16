@@ -19,6 +19,8 @@ import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.HierarchicalPartBuilder.aHierarchicalPart;
 import static net.sourceforge.urin.HostBuilder.aHost;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
 import static net.sourceforge.urin.PathBuilder.aPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.PortBuilder.aPort;
@@ -323,7 +325,7 @@ public class UrinTest {
     @Test
     public void aUrinWithNoQueryOrFragmentOrAuthorityOrPathToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
-        assertThat(scheme.urin().toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart() + "}"));
+        assertThat(scheme.urin().toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=EmptyPath}"));
     }
 
     @Test
@@ -343,7 +345,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrFragmentOrAuthorityToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         Path path = aPath();
-        assertThat(scheme.urin(path).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(path) + "}"));
+        assertThat(scheme.urin(path).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + "}"));
     }
 
     @Test
@@ -374,7 +376,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrFragmentOrPathToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
-        assertThat(scheme.urin(authority).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority) + "}"));
+        assertThat(scheme.urin(authority).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=EmptyPath}"));
     }
 
     @Test
@@ -407,7 +409,7 @@ public class UrinTest {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath path = anAbsolutePath();
-        assertThat(scheme.urin(authority, path).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority, path) + "}"));
+        assertThat(scheme.urin(authority, path).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + "}"));
     }
 
     @Test
@@ -947,33 +949,99 @@ public class UrinTest {
     @Test
     public void parsesUrinWithAllParts() throws Exception {
         Scheme scheme = aScheme();
-        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Authority authority = anAuthority();
+        AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
-        assertThat(scheme.parseUrin(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(hierarchicalPart, query, fragment)));
+        assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(authority, path, query, fragment)));
+    }
+
+    @Test
+    public void parsesUrinWithNoAuthority() throws Exception {
+        Scheme scheme = aScheme();
+        Path path = aPath();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(path, query, fragment)));
+    }
+
+    @Test
+    public void parsesUrinWithEmptyPath() throws Exception {
+        Scheme scheme = aScheme();
+        Authority authority = anAuthority();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(authority, query, fragment)));
+    }
+
+    @Test
+    public void parsesUrinWithNoAuthorityOrPath() throws Exception {
+        Scheme scheme = aScheme();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(scheme.parseUrin(scheme.asString() + ":" + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(query, fragment)));
     }
 
     @Test
     public void parsesUrinWithNoFragment() throws Exception {
         Scheme scheme = aScheme();
-        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Authority authority = anAuthority();
+        AbsolutePath path = anAbsolutePath();
         Query query = aQuery();
-        assertThat(scheme.parseUrin(scheme.asString() + ":" + hierarchicalPart.asString() + "?" + query.asString()), equalTo(scheme.urin(hierarchicalPart, query)));
+        assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString()), equalTo(scheme.urin(authority, path, query)));
+    }
+
+    @Test
+    public void parsesUrinWithNoFragmentAndNoAuthority() throws Exception {
+        Scheme scheme = aScheme();
+        Path path = aPath();
+        Query query = aQuery();
+        assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + "?" + query.asString()), equalTo(scheme.urin(path, query)));
     }
 
     @Test
     public void parsesUrinWithNoQuery() throws Exception {
         Scheme scheme = aScheme();
-        HierarchicalPart hierarchicalPart = aHierarchicalPart();
+        Authority authority = anAuthority();
+        AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(scheme.parseUrin(scheme.asString() + ":" + hierarchicalPart.asString() + "#" + fragment.asString()), equalTo(scheme.urin(hierarchicalPart, fragment)));
+        assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "#" + fragment.asString()), equalTo(scheme.urin(authority, path, fragment)));
+    }
+
+    @Test
+    public void parsesUrinWithNoQueryOrAuthority() throws Exception {
+        Scheme scheme = aScheme();
+        AbsolutePath path = anAbsolutePath();
+        Fragment fragment = aFragment();
+        assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + "#" + fragment.asString()), equalTo(scheme.urin(path, fragment)));
     }
 
     @Test
     public void parsesUrinWithNoQueryAndNoFragment() throws Exception {
         Scheme scheme = aScheme();
-        HierarchicalPart hierarchicalPart = aHierarchicalPart();
-        assertThat(scheme.parseUrin(scheme.asString() + ":" + hierarchicalPart.asString()), equalTo(scheme.urin(hierarchicalPart)));
+        Authority authority = anAuthority();
+        AbsolutePath path = anAbsolutePath();
+        assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT)), equalTo(scheme.urin(authority, path)));
+    }
+
+    @Test
+    public void parsesUrinWithNoQueryAndNoFragmentAndNoAuthorityAndNoPath() throws Exception {
+        Scheme scheme = aScheme();
+        assertThat(scheme.parseUrin(scheme.asString() + ":"), equalTo(scheme.urin()));
+    }
+
+    @Test
+    public void parsesUrinWithNoQueryAndNoFragmentAndEmptyPath() throws Exception {
+        Scheme scheme = aScheme();
+        Authority authority = anAuthority();
+        assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString()), equalTo(scheme.urin(authority)));
+    }
+
+    @Test
+    public void parsesUrinWithNoQueryAndNoFragmentAndNoAuthority() throws Exception {
+        Scheme scheme = aScheme();
+        AbsolutePath path = anAbsolutePath();
+        assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY)), equalTo(scheme.urin(path)));
     }
 
     @Test

@@ -36,6 +36,16 @@ public abstract class Urin extends UrinReference {
     public abstract Urin resolve(final UrinReference urinReference);
 
     @Override
+    Urin resolve(final Scheme scheme, final Path path) {
+        return this;
+    }
+
+    @Override
+    Urin resolve(final Scheme scheme, final Authority authority, final Path path) {
+        return this;
+    }
+
+    @Override
     final Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart) {
         return this;
     }

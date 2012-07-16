@@ -98,6 +98,13 @@ public abstract class HierarchicalPart {
         return new HierarchicalPartWithAuthority(authority, path);
     }
 
+    /**
+     * @deprecated
+     */
+    static HierarchicalPart backdoorHierarchicalPart(final Authority authority, final Path path) {
+        return new HierarchicalPartWithAuthority(authority, path);
+    }
+
     abstract HierarchicalPart resolve(final Path relativeReferencePath);
 
     abstract HierarchicalPart normalisePort(final Scheme scheme);

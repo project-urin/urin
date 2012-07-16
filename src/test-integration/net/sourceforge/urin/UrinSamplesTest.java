@@ -13,7 +13,6 @@ package net.sourceforge.urin;
 import org.junit.Test;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAndParse;
@@ -39,12 +38,12 @@ public class UrinSamplesTest {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
         Segment segment = aNonDotSegment();
-        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), scheme.urin(hierarchicalPart(authority, Path.path(segment))));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), scheme.urin(authority, Path.path(segment)));
     }
 
     @Test
     public void canMakeAUrinWithPathToRoot() throws Exception {
         Scheme scheme = aScheme();
-        assertAsStringAsUriAndParse(scheme.asString() + ":/", scheme.urin(hierarchicalPart(Path.path())));
+        assertAsStringAsUriAndParse(scheme.asString() + ":/", scheme.urin(Path.path()));
     }
 }
