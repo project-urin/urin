@@ -51,6 +51,16 @@ public abstract class Urin extends UrinReference {
     }
 
     @Override
+    Urin resolve(final Scheme scheme, final Path path, final Query query) {
+        return this;
+    }
+
+    @Override
+    Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query) {
+        return this;
+    }
+
+    @Override
     final Urin resolve(final Scheme scheme, final HierarchicalPart hierarchicalPart, final Query query) {
         return this;
     }

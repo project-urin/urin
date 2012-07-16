@@ -17,7 +17,6 @@ import java.net.URI;
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.Path.path;
@@ -52,9 +51,8 @@ public class Rfc3986UriExamplesTest {
     @Test
     public void ldapExample() throws Exception {
         assertAsStringAsUriAndParse("ldap://[2001:db8::7]/c=GB?objectClass?one", scheme("ldap").urin(
-                hierarchicalPart(
-                        authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
-                        path(segment("c=GB"))),
+                authority(ipV6Address(hexadectet(0x2001), hexadectet(0xDB8), ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x7))),
+                path(segment("c=GB")),
                 query("objectClass?one")
         ));
     }
