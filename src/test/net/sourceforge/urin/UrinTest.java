@@ -16,7 +16,6 @@ import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
@@ -667,7 +666,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrAuthorityOrPathToStringIsCorrect() throws Exception {
         Scheme scheme = aScheme();
         Fragment fragment = aFragment();
-        assertThat(scheme.urin(fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart() + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + new EmptyPath() + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -700,7 +699,7 @@ public class UrinTest {
         Scheme scheme = aScheme();
         Path path = aPath();
         Fragment fragment = aFragment();
-        assertThat(scheme.urin(path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(path) + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -740,7 +739,7 @@ public class UrinTest {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
         Fragment fragment = aFragment();
-        assertThat(scheme.urin(authority, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority) + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(authority, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + new EmptyPath() + ", fragment=" + fragment + "}"));
     }
 
     @Test
@@ -782,7 +781,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(scheme.urin(authority, path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", hierarchicalPart=" + hierarchicalPart(authority, path) + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(authority, path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", fragment=" + fragment + "}"));
     }
 
     @Test

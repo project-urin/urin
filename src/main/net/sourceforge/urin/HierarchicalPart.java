@@ -10,9 +10,6 @@
 
 package net.sourceforge.urin;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
 
@@ -30,28 +27,7 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH
  */
 public abstract class HierarchicalPart {
 
-    private static final Pattern HIERARCHICAL_PART_REFERENCE_PATTERN = Pattern.compile("^(//([^/?#]*))?([^?#]*)");
-
     private HierarchicalPart() {
-    }
-
-    static HierarchicalPart parse(final String hierarchicalPartString) throws ParseException {
-        final Matcher matcher = HIERARCHICAL_PART_REFERENCE_PATTERN.matcher(hierarchicalPartString);
-        matcher.matches();
-        final String authorityString = matcher.group(2);
-        final String path = matcher.group(3);
-        HierarchicalPart hierarchicalPart;
-        if (authorityString == null) {
-            if (path == null || "".equals(path)) {
-                hierarchicalPart = hierarchicalPart();
-            } else {
-                hierarchicalPart = hierarchicalPart(!path.startsWith("/") ? Path.parseRootlessPath(path) : Path.parseParse(path));
-            }
-        } else {
-            Authority authority = Authority.parse(authorityString);
-            hierarchicalPart = (path == null || "".equals(path)) ? hierarchicalPart(authority) : hierarchicalPart(authority, Path.parseParse(path));
-        }
-        return hierarchicalPart;
     }
 
     abstract String asString();
