@@ -477,26 +477,28 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Authority baseAuthority = anAuthority();
+        AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
         Path relativeReferencePath = aPath();
         Query relativeReferenceQuery = aQuery();
         assertThat(
-                aScheme().relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery),
-                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
+                aScheme().relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseAuthority, basePath, baseQuery),
+                equalTo(baseScheme.urin(baseAuthority, (AbsolutePath) relativeReferencePath.resolveRelativeTo(basePath), relativeReferenceQuery)));
     }
 
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Authority baseAuthority = anAuthority();
+        AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
         Path relativeReferencePath = aPath();
         Query relativeReferenceQuery = aQuery();
         assertThat(
-                aScheme().relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery)));
+                aScheme().relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseAuthority, basePath, baseQuery, baseFragment),
+                equalTo(baseScheme.urin(baseAuthority, (AbsolutePath) relativeReferencePath.resolveRelativeTo(basePath), relativeReferenceQuery)));
     }
 
     @Test
