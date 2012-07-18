@@ -1231,15 +1231,15 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final Authority authority, final Path path) {
-            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.path), fragment);
+            return new UrinWithAuthorityAndPathAndFragment(scheme.removeDefaultPort(), scheme.normalise(authority), this.path.resolveRelativeTo(path), fragment);
         }
 
         @Override
         Urin resolve(final Scheme scheme, final Path path, final Query query) {
             if (this.path.isEmpty()) {
-                return scheme.urin(hierarchicalPart(path).resolve(this.path), query, fragment);
+                return scheme.urin(this.path.resolveRelativeTo(path), query, fragment);
             } else {
-                return scheme.urin(hierarchicalPart(path).resolve(this.path), fragment);
+                return scheme.urin(this.path.resolveRelativeTo(path), fragment);
             }
         }
 
