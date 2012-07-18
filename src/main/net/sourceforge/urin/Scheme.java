@@ -840,7 +840,7 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final Path path) {
-            return scheme.urin(hierarchicalPart(path).resolve(this.path));
+            return scheme.urin(path.resolveRelativeTo(this.path));
         }
 
         @Override
@@ -856,9 +856,9 @@ public abstract class Scheme {
         @Override
         Urin resolve(final Scheme scheme, final Path path, final Query query) {
             if (this.path.isEmpty()) {
-                return scheme.urin(hierarchicalPart(path).resolve(this.path), query);
+                return scheme.urin(path.resolveRelativeTo(this.path), query);
             } else {
-                return scheme.urin(hierarchicalPart(path).resolve(this.path));
+                return scheme.urin(path.resolveRelativeTo(this.path));
             }
         }
 
@@ -1741,7 +1741,7 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final Path path) {
-            return scheme.urin(hierarchicalPart(path).resolve(authority, this.path), query, fragment);
+            return new UrinWithAuthorityAndPathAndQueryAndFragment(scheme.removeDefaultPort(), scheme.normalise(authority), this.path, query, fragment);
         }
 
         @Override
@@ -1756,7 +1756,7 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final Path path, final Query query) {
-            return scheme.urin(hierarchicalPart(path).resolve(authority, this.path), this.query, fragment);
+            return new UrinWithAuthorityAndPathAndQueryAndFragment(scheme.removeDefaultPort(), scheme.normalise(authority), this.path, this.query, fragment);
         }
 
         @Override
@@ -1771,7 +1771,7 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
-            return scheme.urin(hierarchicalPart(path).resolve(authority, this.path), this.query, this.fragment);
+            return new UrinWithAuthorityAndPathAndQueryAndFragment(scheme.removeDefaultPort(), scheme.normalise(authority), this.path, this.query, this.fragment);
         }
 
         @Override
