@@ -1009,11 +1009,12 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Authority baseAuthority = anAuthority();
+        AbsolutePath basePath = anAbsolutePath();
         Authority relativeReferenceAuthority = anAuthority();
         assertThat(
-                aScheme().relativeReference(relativeReferenceAuthority).resolve(baseScheme, baseHierarchicalPart),
-                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferenceAuthority, new EmptyPath()))));
+                aScheme().relativeReference(relativeReferenceAuthority).resolve(baseScheme, baseAuthority, basePath),
+                equalTo(baseScheme.urin(relativeReferenceAuthority)));
     }
 
     @Test
