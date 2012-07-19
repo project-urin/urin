@@ -20,7 +20,6 @@ import java.net.URI;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Fragment.fragment;
-import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
@@ -69,9 +68,8 @@ final class DocumentationPage {
                         xhtmlText(" class, for example:")
                 ),
                 codeBlock("scheme(\"ftp\").urin(\n" +
-                        "        hierarchicalPart(\n" +
-                        "                authority(registeredName(\"ftp.is.co.za\")),\n" +
-                        "                path(\"rfc\", \"rfc1808.txt\"))\n" +
+                        "        authority(registeredName(\"ftp.is.co.za\")),\n" +
+                        "        path(\"rfc\", \"rfc1808.txt\")\n" +
                         ").asString();"),
                 paragraphTag(
                         xhtmlText("Generates the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(simpleUrinExample()), xhtmlText(".")
@@ -80,9 +78,7 @@ final class DocumentationPage {
                         xhtmlText("It is also possible to generate an instance of "), canonicalNameOf(URI.class), xhtmlText(", like so:")
                 ),
                 codeBlock("scheme(\"mailto\").urin(\n" +
-                        "        hierarchicalPart(\n" +
-                        "                rootlessPath(\"John.Doe@example.com\")\n" +
-                        "        )\n" +
+                        "        rootlessPath(\"John.Doe@example.com\")\n" +
                         ").asUri();"),
                 paragraphTag(
                         xhtmlText("This produces "), codeSnippet(simpleUrinToUriExample().toString()),
@@ -196,18 +192,15 @@ final class DocumentationPage {
     private static String simpleUrinExample() {
         return
                 scheme("ftp").urin(
-                        hierarchicalPart(
-                                authority(registeredName("ftp.is.co.za")),
-                                path("rfc", "rfc1808.txt"))
+                        authority(registeredName("ftp.is.co.za")),
+                        path("rfc", "rfc1808.txt")
                 ).asString();
     }
 
     private static URI simpleUrinToUriExample() {
         return
                 scheme("mailto").urin(
-                        hierarchicalPart(
-                                rootlessPath("John.Doe@example.com")
-                        )
+                        rootlessPath("John.Doe@example.com")
                 ).asUri();
     }
 
