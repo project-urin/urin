@@ -12,24 +12,22 @@ package net.sourceforge.urin;
 
 import com.google.common.base.Supplier;
 
+import java.util.List;
 import java.util.Random;
 
-import static java.lang.System.arraycopy;
+import static com.google.common.collect.Lists.asList;
 
 public final class RandomSupplierSwitcher<T> implements Supplier<T> {
 
     private static final Random RANDOM = new Random();
 
-    private final Supplier<T>[] suppliers;
+    private final List<Supplier<T>> suppliers;
 
     public RandomSupplierSwitcher(final Supplier<T> supplier, final Supplier<T>... suppliers) {
-        //noinspection unchecked
-        this.suppliers = new Supplier[suppliers.length + 1];
-        this.suppliers[0] = supplier;
-        arraycopy(suppliers, 0, this.suppliers, 1, suppliers.length);
+        this.suppliers = asList(supplier, suppliers);
     }
 
     public T get() {
-        return suppliers[RANDOM.nextInt(suppliers.length)].get();
+        return suppliers.get(RANDOM.nextInt(suppliers.size())).get();
     }
 }

@@ -86,18 +86,6 @@ public abstract class UrinReference {
     }
 
     /**
-     * Parses the given {@code URI} to produce a {@code UrinReference}.
-     *
-     * @param uriReference a {@code URI} to parse.
-     * @return a {@code UrinReference} representing the RFC 3986 URI reference represented by the given {@code URI}.
-     * @throws ParseException if the given {@code URI} is not a valid RFC 3986 URI reference.
-     * @deprecated use {@link net.sourceforge.urin.Scheme#parseUrinReference(java.net.URI)}
-     */
-    public static UrinReference parse(final URI uriReference) throws ParseException {
-        return anyScheme().parseUrinReference(uriReference.toASCIIString());
-    }
-
-    /**
      * Returns the path component of the URI reference this represents.  All URI references have a path, though this maybe
      * the empty path, and in some cases, the path is implicitly the empty path.
      *
