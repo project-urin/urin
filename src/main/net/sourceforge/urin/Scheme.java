@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
-import static net.sourceforge.urin.HierarchicalPart.backdoorHierarchicalPart;
 import static net.sourceforge.urin.HierarchicalPart.hierarchicalPart;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
 
@@ -1776,7 +1775,7 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
-            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.authority, this.path), this.query, this.fragment);
+            return new UrinWithAuthorityAndPathAndQueryAndFragment(scheme.removeDefaultPort(), scheme.normalise(this.authority), this.path, this.query, this.fragment);
         }
 
         @Override
