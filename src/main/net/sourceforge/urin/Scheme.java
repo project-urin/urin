@@ -1525,7 +1525,7 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
-            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.authority, this.path), this.query);
+            return new UrinWithAuthorityAndPathAndQuery(scheme.removeDefaultPort(), scheme.normalise(this.authority), this.path, this.query);
         }
 
         @Override
@@ -1618,7 +1618,7 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final Authority authority, final Path path) {
-            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.authority, this.path), fragment);
+            return new UrinWithAuthorityAndPathAndFragment(scheme.removeDefaultPort(), scheme.normalise(this.authority), this.path, fragment);
         }
 
         @Override
