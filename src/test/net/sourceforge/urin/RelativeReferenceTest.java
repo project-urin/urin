@@ -747,15 +747,16 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
         Scheme baseScheme = aScheme();
-        HierarchicalPart baseHierarchicalPart = hierarchicalPart(anAuthority(), anAbsolutePath());
+        Authority baseAuthority = anAuthority();
+        AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
         Fragment baseFragment = aFragment();
         Path relativeReferencePath = aPath();
         Query relativeReferenceQuery = aQuery();
         Fragment relativeReferenceFragment = aFragment();
         assertThat(
-                aScheme().relativeReference(relativeReferencePath, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseHierarchicalPart, baseQuery, baseFragment),
-                equalTo(baseScheme.urin(baseHierarchicalPart.resolve(relativeReferencePath), relativeReferenceQuery, relativeReferenceFragment)));
+                aScheme().relativeReference(relativeReferencePath, relativeReferenceQuery, relativeReferenceFragment).resolve(baseScheme, baseAuthority, basePath, baseQuery, baseFragment),
+                equalTo(baseScheme.urin(baseAuthority, (AbsolutePath) relativeReferencePath.resolveRelativeTo(basePath), relativeReferenceQuery, relativeReferenceFragment)));
     }
 
     @Test
