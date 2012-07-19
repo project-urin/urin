@@ -18,6 +18,9 @@ import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
 
+/**
+ * Superclass for HTTP and HTTPS schemes.
+ */
 public abstract class HypertextScheme extends SchemeWithDefaultPort {
     HypertextScheme(final String name, final Port defaultPort) {
         super(name, defaultPort);
