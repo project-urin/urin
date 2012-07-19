@@ -87,6 +87,11 @@ public abstract class Segment extends PercentEncodedUnaryValue {
             public String value() {
                 return segment;
             }
+
+            @Override
+            public String toString() {
+                return "Segment{value=" + segment + "}";
+            }
         };
     }
 
@@ -114,7 +119,7 @@ public abstract class Segment extends PercentEncodedUnaryValue {
 
     /**
      * Gets the (non-encoded) value of this segment as a {@code String}, if it is a type that has a value, or throws {@code UnsupportedOperationException} otherwise.
-     *
+     * <p/>
      * Dot segments (. and ..) do not have values, and will throw {@code UnsupportedOperationException}.  This can be tested
      * by equality with the {@code DOT} and {@code DOT_DOT} constants, or by calling {@code hasValue()}.
      *
