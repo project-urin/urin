@@ -996,7 +996,7 @@ public abstract class Scheme {
 
         @Override
         Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query) {
-            return scheme.urin(backdoorHierarchicalPart(authority, path).resolve(this.authority, this.path));
+            return new UrinWithAuthorityAndPath(scheme.removeDefaultPort(), scheme.normalise(this.authority), this.path);
         }
 
         @Override
