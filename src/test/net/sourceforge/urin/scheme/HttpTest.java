@@ -202,18 +202,23 @@ public class HttpTest {
     }
 
     @Test
-    public void multipleQueryParametersCorrectlyConvertsToQuery() throws Exception {
-        assertThat(queryParameters(queryParameter(".+.&.;.=. .", ".+.&.;.=. ."), queryParameter(".+.&.;.=. .", ".+.&.;.=. .")), convertsToQueryString(equalTo(".%2B.%26.%3B.%3D.+.=.%2B.%26.%3B.%3D.+.&.%2B.%26.%3B.%3D.+.=.%2B.%26.%3B.%3D.+.")));
-    }
-
-    @Test
     public void singleQueryParameterCorrectlyConvertsToQuery() throws Exception {
         assertThat(queryParameters(queryParameter(".+.&.;.=. .", ".+.&.;.=. .")), convertsToQueryString(equalTo(".%2B.%26.%3B.%3D.+.=.%2B.%26.%3B.%3D.+.")));
     }
 
     @Test
+    public void multipleQueryParametersCorrectlyConvertsToQuery() throws Exception {
+        assertThat(queryParameters(queryParameter(".+.&.;.=. .", ".+.&.;.=. ."), queryParameter(".+.&.;.=. .", ".+.&.;.=. .")), convertsToQueryString(equalTo(".%2B.%26.%3B.%3D.+.=.%2B.%26.%3B.%3D.+.&.%2B.%26.%3B.%3D.+.=.%2B.%26.%3B.%3D.+.")));
+    }
+
+    @Test
     public void singleValuelessQueryParameterCorrectlyConvertsToQuery() throws Exception {
         assertThat(queryParameters(queryParameter(".+.&.;.=. .")), convertsToQueryString(equalTo(".%2B.%26.%3B.%3D.+.")));
+    }
+
+    @Test
+    public void multiplyValuelessQueryParameterCorrectlyConvertsToQuery() throws Exception {
+        assertThat(queryParameters(queryParameter(".+.&.;.=. ."), queryParameter(".+.&.;.=. .")), convertsToQueryString(equalTo(".%2B.%26.%3B.%3D.+.&.%2B.%26.%3B.%3D.+.")));
     }
 
     @Test
