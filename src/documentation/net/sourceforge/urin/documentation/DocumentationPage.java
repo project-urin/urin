@@ -12,8 +12,8 @@ package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.*;
 import net.sourceforge.urin.scheme.Http;
+import net.sourceforge.urin.scheme.HttpQuery;
 import net.sourceforge.urin.scheme.Https;
-import net.sourceforge.urin.scheme.HypertextScheme;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import java.net.URI;
@@ -29,7 +29,8 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segment.DOT_DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.documentation.UrinPage.*;
-import static net.sourceforge.urin.scheme.Http.*;
+import static net.sourceforge.urin.scheme.Http.HTTP;
+import static net.sourceforge.urin.scheme.Http.http;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DocumentationPage {
@@ -184,7 +185,7 @@ final class DocumentationPage {
                 ),
                 paragraphTag(
                         xhtmlText("This is achieved by extending the "), simpleNameOf(Query.class), xhtmlText(" class.  " +
-                        "The source code for "), simpleNameOf(HypertextScheme.QueryParameter.class), xhtmlText(" has an example of this in action.")
+                        "The source code for "), simpleNameOf(HttpQuery.QueryParameter.class), xhtmlText(" has an example of this in action.")
                 )
         );
     }
@@ -218,9 +219,9 @@ final class DocumentationPage {
                         registeredName("www.example.com"),
                         port(80),
                         path("music", "AC/DC", "Back in Black"),
-                        queryParameters(
-                                queryParameter("track", "Hells Bells"),
-                                queryParameter("version", "Radio edit")
+                        HttpQuery.queryParameters(
+                                HttpQuery.queryParameter("track", "Hells Bells"),
+                                HttpQuery.queryParameter("version", "Radio edit")
                         ),
                         fragment("verse 2")
                 ).asString();

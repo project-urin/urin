@@ -11,11 +11,12 @@
 package net.sourceforge.urin.http;
 
 import net.sourceforge.urin.AbsolutePath;
+import net.sourceforge.urin.scheme.HttpQuery;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Host.registeredName;
-import static net.sourceforge.urin.scheme.Http.*;
+import static net.sourceforge.urin.scheme.Http.http;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -27,7 +28,7 @@ public class HttpExamplesTest {
 
     @Test
     public void canGenerateAnHttpUriWithQueryParameters() throws Exception {
-        assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), queryParameters(queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
+        assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), HttpQuery.queryParameters(HttpQuery.queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
     }
 
     @Test

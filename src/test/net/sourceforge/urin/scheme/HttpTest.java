@@ -22,7 +22,9 @@ import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.Scheme.scheme;
-import static net.sourceforge.urin.scheme.Http.*;
+import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.HttpQuery.queryParameter;
+import static net.sourceforge.urin.scheme.HttpQuery.queryParameters;
 import static net.sourceforge.urin.scheme.QueryMatcher.convertsToQueryString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -207,6 +209,11 @@ public class HttpTest {
     @Test
     public void singleQueryParameterCorrectlyConvertsToQuery() throws Exception {
         assertThat(queryParameters(queryParameter(".+.&.;.=. .", ".+.&.;.=. .")), convertsToQueryString(equalTo(".%2B.%26.%3B.%3D.+.=.%2B.%26.%3B.%3D.+.")));
+    }
+
+    @Test
+    public void singleValuelessQueryParameterCorrectlyConvertsToQuery() throws Exception {
+        assertThat(queryParameters(queryParameter(".+.&.;.=. .")), convertsToQueryString(equalTo(".%2B.%26.%3B.%3D.+.")));
     }
 
     @Test
