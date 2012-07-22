@@ -16,8 +16,8 @@ import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.documentation.UrinPage.*;
-import static net.sourceforge.urin.scheme.Http.HTTP;
-import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.http.Http.HTTP;
+import static net.sourceforge.urin.scheme.http.Http.http;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class IndexPage {

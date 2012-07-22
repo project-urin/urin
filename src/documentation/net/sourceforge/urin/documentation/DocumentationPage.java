@@ -11,9 +11,9 @@
 package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.*;
-import net.sourceforge.urin.scheme.Http;
-import net.sourceforge.urin.scheme.HttpQuery;
-import net.sourceforge.urin.scheme.Https;
+import net.sourceforge.urin.scheme.http.Http;
+import net.sourceforge.urin.scheme.http.HttpQuery;
+import net.sourceforge.urin.scheme.http.Https;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
 
 import java.net.URI;
@@ -29,8 +29,8 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.Segment.DOT_DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.documentation.UrinPage.*;
-import static net.sourceforge.urin.scheme.Http.HTTP;
-import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.http.Http.HTTP;
+import static net.sourceforge.urin.scheme.http.Http.http;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DocumentationPage {

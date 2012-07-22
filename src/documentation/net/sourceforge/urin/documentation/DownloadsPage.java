@@ -18,8 +18,8 @@ import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.documentation.UrinPage.*;
-import static net.sourceforge.urin.scheme.Http.http;
-import static net.sourceforge.urin.scheme.Https.https;
+import static net.sourceforge.urin.scheme.http.Http.http;
+import static net.sourceforge.urin.scheme.http.Https.https;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DownloadsPage {

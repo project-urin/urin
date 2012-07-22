@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-package net.sourceforge.urin.scheme;
+package net.sourceforge.urin.scheme.http;
 
 import net.sourceforge.urin.AbsolutePath;
 import net.sourceforge.urin.Query;
@@ -17,7 +17,7 @@ import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
 import static net.sourceforge.urin.HostBuilder.anIpV4Address;
-import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.http.Http.http;
 
 public class QueryMatcher {
     public static Matcher<Query> convertsToQueryString(final Matcher<String> expected) {

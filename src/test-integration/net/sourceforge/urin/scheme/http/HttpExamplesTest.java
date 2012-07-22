@@ -8,15 +8,14 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-package net.sourceforge.urin.http;
+package net.sourceforge.urin.scheme.http;
 
 import net.sourceforge.urin.AbsolutePath;
-import net.sourceforge.urin.scheme.HttpQuery;
 import org.junit.Test;
 
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Host.registeredName;
-import static net.sourceforge.urin.scheme.Http.http;
+import static net.sourceforge.urin.scheme.http.Http.http;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 

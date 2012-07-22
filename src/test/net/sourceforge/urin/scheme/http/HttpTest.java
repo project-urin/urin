@@ -8,7 +8,7 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-package net.sourceforge.urin.scheme;
+package net.sourceforge.urin.scheme.http;
 
 import net.sourceforge.urin.*;
 import org.junit.Test;
@@ -22,10 +22,10 @@ import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.Scheme.scheme;
-import static net.sourceforge.urin.scheme.Http.http;
-import static net.sourceforge.urin.scheme.HttpQuery.queryParameter;
-import static net.sourceforge.urin.scheme.HttpQuery.queryParameters;
-import static net.sourceforge.urin.scheme.QueryMatcher.convertsToQueryString;
+import static net.sourceforge.urin.scheme.http.Http.http;
+import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
+import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
+import static net.sourceforge.urin.scheme.http.QueryMatcher.convertsToQueryString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
