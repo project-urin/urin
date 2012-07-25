@@ -18,7 +18,7 @@ import net.sourceforge.urin.SchemeWithDefaultPort;
  */
 public abstract class HypertextScheme extends SchemeWithDefaultPort {
     HypertextScheme(final String name, final Port defaultPort) {
-        super(name, defaultPort);
+        super(name, defaultPort, HttpQuery.QUERY_PARSER);
     }
 
 }

@@ -17,7 +17,7 @@ public final class ParseException extends Exception {
     ParseException() {
     }
 
-    ParseException(final String s) {
+    public ParseException(final String s) {
         super(s);
     }
 

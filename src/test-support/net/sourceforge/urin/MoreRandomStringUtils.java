@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -18,12 +18,12 @@ public class MoreRandomStringUtils {
 
     private static final Random RANDOM = new Random();
 
-    static String aStringDifferentTo(final String aString) {
+    public static String aStringDifferentTo(final String aString) {
         String random = aString();
         return random.equals(aString) ? random + random(1) : random;
     }
 
-    static String aStringExcluding(final char excluded) {
+    public static String aStringExcluding(final char excluded) {
         int maximumAttempts = 5;
         for (int i = 0; i < maximumAttempts; i++) {
             String random = aString();
@@ -34,7 +34,7 @@ public class MoreRandomStringUtils {
         throw new RuntimeException("Couldn't make a random String excluding [" + excluded + "] in " + maximumAttempts + " attempts");
     }
 
-    static String aStringIncluding(final char included) {
+    public static String aStringIncluding(final char included) {
         StringBuilder result = new StringBuilder();
         int includeAt = RANDOM.nextInt(5);
         for (int i = 0; i < 5; i++) {
@@ -47,11 +47,11 @@ public class MoreRandomStringUtils {
         return result.toString();
     }
 
-    static char aChar() {
+    public static char aChar() {
         return random(1).charAt(0);
     }
 
-    static String aString() {
+    public static String aString() {
         return random(5);
     }
 }

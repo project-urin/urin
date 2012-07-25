@@ -110,7 +110,7 @@ public abstract class Path implements Iterable<Segment> {
         }});
     }
 
-    static AbsolutePath parseParse(final String rawPath) throws ParseException {
+    static AbsolutePath parsePath(final String rawPath) throws ParseException {
         return path(new ArrayList<Segment>() {{
             boolean isFirst = true;
             for (String segmentString : rawPath.split("/")) {

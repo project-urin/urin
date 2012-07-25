@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin.scheme.http;
 
+import net.sourceforge.urin.ParseException;
 import net.sourceforge.urin.Query;
 
 import java.util.ArrayList;
@@ -17,6 +18,26 @@ import java.util.ArrayList;
 import static java.util.Arrays.asList;
 
 public final class HttpQuery extends Query {
+
+    static final QueryParser QUERY_PARSER = new QueryParser() {
+        public Query parse(final String rawQuery) throws ParseException {
+            return new HttpQuery(new ArrayList<QueryParameter>() {{
+                for (String queryParameter : rawQuery.split("[;&]")) {
+                    if (queryParameter.contains("=")) {
+                        String[] nameValuePair = queryParameter.split("=");
+                        if (nameValuePair.length != 2) {
+                            throw new ParseException("Invalid query parameter - expected only one occurrence of '=' in " + queryParameter);
+                        } else {
+                            add(queryParameter(percentDecode(nameValuePair[0]), percentDecode(nameValuePair[1])));
+                        }
+                    } else {
+                        add(queryParameter(percentDecode(queryParameter)));
+                    }
+                }
+            }});
+        }
+    };
+
     HttpQuery(final Iterable<QueryParameter> queryParameters) {
         super(PercentEncodable.percentEncodableDelimitedValue(';', PercentEncodable.percentEncodableDelimitedValue('&', new ArrayList<PercentEncodable>() {{
             for (QueryParameter queryParameter : queryParameters) {

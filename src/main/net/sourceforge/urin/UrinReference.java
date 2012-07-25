@@ -24,46 +24,6 @@ public abstract class UrinReference {
         // deliberately empty
     }
 
-    static Scheme anyScheme() {
-        return new Scheme() {
-            @Override
-            Scheme withName(final String name) {
-                return scheme(name);
-            }
-
-            @Override
-            String asString() {
-                return "";
-            }
-
-            @Override
-            Authority normalise(final Authority authority) {
-                return authority;
-            }
-
-            @Override
-            Scheme removeDefaultPort() {
-                return this;
-            }
-
-            @Override
-            public boolean equals(final Object o) {
-                return this == o || !(o == null || getClass() != o.getClass());
-
-            }
-
-            @Override
-            public int hashCode() {
-                return 37;
-            }
-
-            @Override
-            public String toString() {
-                return "Scheme{}";
-            }
-        };
-    }
-
     /**
      * Generates the {@code String} representation of this URI reference.
      *

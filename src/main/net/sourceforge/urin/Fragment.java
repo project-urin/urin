@@ -21,7 +21,6 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAG
 public abstract class Fragment extends PercentEncodedUnaryValue {
 
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
-    private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
 
     private Fragment(final String fragment) {
         super(PercentEncodable.percentEncodableString(fragment), PERCENT_ENCODER);
@@ -43,7 +42,7 @@ public abstract class Fragment extends PercentEncodedUnaryValue {
     }
 
     static Fragment parse(final String fragment) throws ParseException {
-        return fragment(PERCENT_DECODER.decode(fragment));
+        return fragment(PERCENT_ENCODER.decode(fragment));
     }
 
     /**

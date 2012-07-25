@@ -55,4 +55,5 @@ public class SchemeBuilder {
     static String aValidSchemeName() {
         return randomAlphabetic(1) + random(4, ALPHA + DIGIT + "+" + "-" + ".");
     }
+
 }

@@ -16,7 +16,10 @@ import java.util.regex.Pattern;
 
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
+import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
+import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
+import static net.sourceforge.urin.Query.BASE_QUERY_PARSER;
 
 /**
  * A name component of a URI.
@@ -27,8 +30,8 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
 public abstract class Scheme {
 
     private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
-    private static final Pattern URI_PATTERN = Pattern.compile("^(([^:/?#]+):)((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
+    private static final Pattern URI_PATTERN = Pattern.compile("^(([^:/?#]+):)((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
     private static final CharacterSetMembershipFunction TRAILING_CHARACTER_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,
             ALPHA_UPPERCASE,
@@ -38,8 +41,10 @@ public abstract class Scheme {
             singleMemberCharacterSet('.')
     );
 
-    Scheme() {
-        // deliberately empty
+    private final Query.QueryParser queryParser;
+
+    Scheme(final Query.QueryParser queryParser) {
+        this.queryParser = queryParser;
     }
 
     /**
@@ -51,7 +56,7 @@ public abstract class Scheme {
      * @throws IllegalArgumentException if the given {@code String} is empty or contains characters not in the Latin alphabet, the digits, or the characters '+', '-', and '.'.
      */
     public static Scheme scheme(final String name) {
-        verify(name, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+        verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
         return new GenericScheme(name.toLowerCase(ENGLISH));
     }
 
@@ -67,12 +72,12 @@ public abstract class Scheme {
      * @throws IllegalArgumentException if the given {@code String} is empty or contains characters not in the Latin alphabet, the digits, or the characters '+', '-', and '.'.
      */
     public static Scheme scheme(final String name, final Port defaultPort) {
-        verify(name, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new SchemeWithDefaultPort(name.toLowerCase(ENGLISH), defaultPort);
+        verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+        return new SchemeWithDefaultPort(name.toLowerCase(ENGLISH), defaultPort, BASE_QUERY_PARSER);
     }
 
     private Scheme parse(final String name) throws ParseException {
-        verify(name, ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY);
+        verify(name, PARSE_EXCEPTION_EXCEPTION_FACTORY);
         return withName(name);
     }
 
@@ -292,7 +297,7 @@ public abstract class Scheme {
                         result = relativeReference(Fragment.parse(fragment));
                     }
                 } else {
-                    final Query query = Query.parse(queryString);
+                    final Query query = queryParser.parse(queryString);
                     if (fragment == null) {
                         result = relativeReference(query);
                     } else {
@@ -300,7 +305,7 @@ public abstract class Scheme {
                     }
                 }
             } else {
-                final Path path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString) : Path.parseParse(pathString);
+                final Path path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString) : Path.parsePath(pathString);
                 if (queryString == null) {
                     if (fragment == null) {
                         result = relativeReference(path);
@@ -308,7 +313,7 @@ public abstract class Scheme {
                         result = relativeReference(path, Fragment.parse(fragment));
                     }
                 } else {
-                    final Query query = Query.parse(queryString);
+                    final Query query = queryParser.parse(queryString);
                     if (fragment == null) {
                         result = relativeReference(path, query);
                     } else {
@@ -326,7 +331,7 @@ public abstract class Scheme {
                         result = relativeReference(authority, Fragment.parse(fragment));
                     }
                 } else {
-                    final Query query = Query.parse(queryString);
+                    final Query query = queryParser.parse(queryString);
                     if (fragment == null) {
                         result = relativeReference(authority, query);
                     } else {
@@ -334,7 +339,7 @@ public abstract class Scheme {
                     }
                 }
             } else {
-                final AbsolutePath path = Path.parseParse(pathString);
+                final AbsolutePath path = Path.parsePath(pathString);
                 if (queryString == null) {
                     if (fragment == null) {
                         result = relativeReference(authority, path);
@@ -342,7 +347,7 @@ public abstract class Scheme {
                         result = relativeReference(authority, path, Fragment.parse(fragment));
                     }
                 } else {
-                    final Query query = Query.parse(queryString);
+                    final Query query = queryParser.parse(queryString);
                     if (fragment == null) {
                         result = relativeReference(authority, path, query);
                     } else {
@@ -562,7 +567,7 @@ public abstract class Scheme {
         final String fragmentString = matcher.group(10);
         final Urin result;
         if (authorityString == null) {
-            final Path path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString) : Path.parseParse(pathString);
+            final Path path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString) : Path.parsePath(pathString);
             if (queryString == null) {
                 if (fragmentString == null) {
                     result = scheme.urin(
@@ -575,7 +580,7 @@ public abstract class Scheme {
                     );
                 }
             } else {
-                final Query query = Query.parse(queryString);
+                final Query query = queryParser.parse(queryString);
                 if (fragmentString == null) {
                     result = scheme.urin(
                             path,
@@ -600,7 +605,7 @@ public abstract class Scheme {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parseParse(pathString)
+                                Path.parsePath(pathString)
                         );
                     }
                 } else {
@@ -613,13 +618,13 @@ public abstract class Scheme {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parseParse(pathString),
+                                Path.parsePath(pathString),
                                 fragment
                         );
                     }
                 }
             } else {
-                final Query query = Query.parse(queryString);
+                final Query query = queryParser.parse(queryString);
                 if (fragmentString == null) {
                     if (pathString == null || "".equals(pathString)) {
                         result = scheme.urin(
@@ -629,7 +634,7 @@ public abstract class Scheme {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parseParse(pathString),
+                                Path.parsePath(pathString),
                                 query
                         );
                     }
@@ -644,7 +649,7 @@ public abstract class Scheme {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parseParse(pathString),
+                                Path.parsePath(pathString),
                                 query,
                                 fragment
                         );
@@ -700,7 +705,8 @@ public abstract class Scheme {
     private static final class GenericScheme extends Scheme {
         private final String name;
 
-        public GenericScheme(final String name) {
+        GenericScheme(final String name) {
+            super(BASE_QUERY_PARSER);
             this.name = name;
         }
 

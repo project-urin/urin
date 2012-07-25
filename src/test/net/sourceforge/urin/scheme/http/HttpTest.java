@@ -11,10 +11,12 @@
 package net.sourceforge.urin.scheme.http;
 
 import net.sourceforge.urin.*;
+import org.junit.Assert;
 import org.junit.Test;
 
 import static net.sourceforge.urin.AbsolutePathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.Path.path;
@@ -22,12 +24,15 @@ import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.Scheme.scheme;
+import static net.sourceforge.urin.scheme.http.Http.HTTP;
 import static net.sourceforge.urin.scheme.http.Http.http;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static net.sourceforge.urin.scheme.http.QueryMatcher.convertsToQueryString;
+import static net.sourceforge.urin.scheme.http.QueryParameterBuilder.aQueryParameter;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.fail;
 
 public class HttpTest {
     @Test
@@ -600,4 +605,24 @@ public class HttpTest {
         assertThat(Https.https(authority(host, port), path, query, fragment), equalTo(scheme("https").urin(authority(host), path, query, fragment)));
     }
 
+    @Test
+    public void roundTrippedHttpUrlsAreEqual() throws Exception {
+        Urin httpUrin = http(anAuthority(), anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(HTTP.parseUrin(httpUrin.asString()), equalTo(httpUrin));
+    }
+
+    @Test
+    public void anInvalidQueryParameterThrowsAnException() throws Exception {
+        try {
+            HTTP.parseUrin("http://somewhere?name=value=somethingbroken");
+            fail("Expected a ParseException to be thrown");
+        } catch (ParseException e) {
+            Assert.assertThat(e.getMessage(), equalTo("Invalid query parameter - expected only one occurrence of '=' in name=value=somethingbroken"));
+        }
+    }
+
+    @Test
+    public void handlesEncodingOfSpaceInHttpQueryParameters() throws Exception {
+        assertThat(HTTP.parseUrin("http://somewhere?name=value+with+space").query(), equalTo(queryParameters(queryParameter("name", "value with space"))));
+    }
 }

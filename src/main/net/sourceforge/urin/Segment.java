@@ -26,7 +26,6 @@ import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
  */
 public abstract class Segment extends PercentEncodedUnaryValue {
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
-    private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(P_CHAR);
     /**
      * An empty segment
      */
@@ -105,7 +104,7 @@ public abstract class Segment extends PercentEncodedUnaryValue {
         } else if ("..".equals(encodedSegment)) {
             return DOT_DOT;
         } else {
-            return segment(PERCENT_DECODER.decode(encodedSegment));
+            return segment(PERCENT_ENCODER.decode(encodedSegment));
         }
     }
 

@@ -11,6 +11,7 @@
 package net.sourceforge.urin;
 
 import static java.util.Locale.ENGLISH;
+import static net.sourceforge.urin.Query.BASE_QUERY_PARSER;
 
 /**
  * A name component of a URI that refers to a scheme that is associated with a default port.
@@ -24,8 +25,10 @@ public class SchemeWithDefaultPort extends Scheme {
      *
      * @param name        the name of the scheme.
      * @param defaultPort the default port associated with the scheme.
+     * @param queryParser the parser to use for parsing queries of this scheme.
      */
-    protected SchemeWithDefaultPort(final String name, final Port defaultPort) {
+    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final Query.QueryParser queryParser) {
+        super(queryParser);
         this.name = name;
         if (defaultPort == null) {
             throw new NullPointerException("Cannot instantiate Scheme with null default port");
@@ -35,7 +38,7 @@ public class SchemeWithDefaultPort extends Scheme {
 
     @Override
     SchemeWithDefaultPort withName(final String name) {
-        return new SchemeWithDefaultPort(name, defaultPort);
+        return new SchemeWithDefaultPort(name, defaultPort, BASE_QUERY_PARSER);
     }
 
     @Override

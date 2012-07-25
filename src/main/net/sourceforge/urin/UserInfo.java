@@ -25,11 +25,6 @@ public final class UserInfo extends PercentEncodedUnaryValue {
             SUB_DELIMITERS,
             singleMemberCharacterSet(':')
     ));
-    private static final PercentDecoder PERCENT_DECODER = new PercentDecoder(or(
-            UNRESERVED,
-            SUB_DELIMITERS,
-            singleMemberCharacterSet(':')
-    ));
 
     private UserInfo(final String userInfo) {
         super(PercentEncodable.percentEncodableString(userInfo), PERCENT_ENCODER);
@@ -46,6 +41,6 @@ public final class UserInfo extends PercentEncodedUnaryValue {
     }
 
     static UserInfo parse(final String userInfoString) throws ParseException {
-        return userInfo(PERCENT_DECODER.decode(userInfoString));
+        return userInfo(PERCENT_ENCODER.decode(userInfoString));
     }
 }
