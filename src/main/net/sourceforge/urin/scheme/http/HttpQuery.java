@@ -28,15 +28,27 @@ public final class HttpQuery extends Query {
                         if (nameValuePair.length != 2) {
                             throw new ParseException("Invalid query parameter - expected only one occurrence of '=' in " + queryParameter);
                         } else {
-                            add(queryParameter(percentDecode(nameValuePair[0]), percentDecode(nameValuePair[1])));
+                            add(queryParameter(decodeSpaces(nameValuePair[0]), decodeSpaces(nameValuePair[1])));
                         }
                     } else {
-                        add(queryParameter(percentDecode(queryParameter)));
+                        add(queryParameter(decodeSpaces(queryParameter)));
                     }
                 }
             }});
         }
     };
+
+    private static String decodeSpaces(final String rawValue) throws ParseException {
+        String[] rawValues = rawValue.split("\\+");
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < rawValues.length; i++) {
+            if (i > 0) {
+                result.append(" ");
+            }
+            result.append(percentDecode(rawValues[i]));
+        }
+        return result.toString();
+    }
 
     HttpQuery(final Iterable<QueryParameter> queryParameters) {
         super(PercentEncodable.percentEncodableDelimitedValue(';', PercentEncodable.percentEncodableDelimitedValue('&', new ArrayList<PercentEncodable>() {{
