@@ -18,7 +18,7 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAG
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.4">RFC 3986 - Query</a>
  */
-public class Query extends PercentEncodedUnaryValue {
+public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
     protected static final QueryParser BASE_QUERY_PARSER = new Query.QueryParser() {
         public Query parse(final String rawQuery) throws ParseException {
@@ -30,15 +30,17 @@ public class Query extends PercentEncodedUnaryValue {
         return PERCENT_ENCODER.decode(percentEncoded);
     }
 
-    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
+    protected static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
+    protected static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(PERCENT_ENCODER);
 
     /**
      * Constructor for subclasses of {@code Query} with scheme specific percent encoding of characters beyond that specified for generic URI {@code Query}s.
      *
-     * @param value a {@code PercentEncodable} specifying the query and the additional scheme specific percent encoding.
+     * @param value           the (non encoded) value this object represents.
+     * @param percentEncoding the {@code PercentEncoding} this subclass will use.
      */
-    protected Query(final PercentEncodable value) {
-        super(value, PERCENT_ENCODER);
+    protected Query(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
+        super(value, percentEncoding);
     }
 
     /**
@@ -47,11 +49,11 @@ public class Query extends PercentEncodedUnaryValue {
      * @param query any {@code String} to represent as a {@code Query}.
      * @return a {@code Query} representing the given {@code String}.
      */
-    public static Query query(final String query) {
-        return new Query(PercentEncodable.percentEncodableString(query));
+    public static Query<String> query(final String query) {
+        return new Query<String>(query, PERCENT_ENCODING);
     }
 
     protected static interface QueryParser {
-        Query parse(String rawQuery) throws ParseException;
+        Query<String> parse(String rawQuery) throws ParseException;
     }
 }

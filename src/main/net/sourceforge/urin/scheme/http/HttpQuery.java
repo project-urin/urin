@@ -14,10 +14,11 @@ import net.sourceforge.urin.ParseException;
 import net.sourceforge.urin.Query;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.util.Arrays.asList;
 
-public final class HttpQuery extends Query {
+public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
 
     static final QueryParser QUERY_PARSER = new QueryParser() {
         public Query parse(final String rawQuery) throws ParseException {
@@ -51,11 +52,68 @@ public final class HttpQuery extends Query {
     }
 
     HttpQuery(final Iterable<QueryParameter> queryParameters) {
-        super(PercentEncodable.percentEncodableDelimitedValue(';', PercentEncodable.percentEncodableDelimitedValue('&', new ArrayList<PercentEncodable>() {{
-            for (QueryParameter queryParameter : queryParameters) {
-                add(queryParameter.asPercentEncodable());
+        super(queryParameters, encodeQueryParameters(
+                percentEncodingDelimitedValue(
+                        '&',
+                        percentEncodingDelimitedValue(
+                                ';',
+                                percentEncodedQueryParameter(
+                                        percentEncodingDelimitedValue('=',
+                                                percentEncodingSubstitutedValue(' ', '+', PERCENT_ENCODING))
+                                )))));
+    }
+
+    private static PercentEncoding<Iterable<QueryParameter>> encodeQueryParameters(final PercentEncoding<Iterable<Iterable<QueryParameter>>> percentEncoding) {
+        return new PercentEncoding<Iterable<QueryParameter>>() {
+
+            @Override
+            public String encode(final Iterable<QueryParameter> notEncoded) {
+                return percentEncoding.encode(new ArrayList<Iterable<QueryParameter>>() {{
+                    for (QueryParameter queryParameter : notEncoded) {
+                        add(Arrays.asList(queryParameter));
+                    }
+                }});
             }
-        }})));
+
+            @Override
+            protected Iterable<QueryParameter> decode(final String encoded) throws ParseException {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public PercentEncoding<Iterable<QueryParameter>> additionallyEncoding(final char additionallyEncodedCharacter) {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            protected boolean isEmpty(final Iterable<QueryParameter> value) {
+                return false;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+        };
+    }
+
+    private static PercentEncoding<QueryParameter> percentEncodedQueryParameter(final PercentEncoding<Iterable<String>> partsEncoding) {
+        return new PercentEncoding<QueryParameter>() {
+            @Override
+            public String encode(final QueryParameter notEncoded) {
+                return notEncoded.encodeWith(partsEncoding);
+            }
+
+            @Override
+            protected QueryParameter decode(final String encoded) throws ParseException {
+                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            }
+
+            @Override
+            public PercentEncoding<QueryParameter> additionallyEncoding(final char additionallyEncodedCharacter) {
+                return percentEncodedQueryParameter(partsEncoding.additionallyEncoding(additionallyEncodedCharacter));
+            }
+
+            @Override
+            protected boolean isEmpty(final QueryParameter value) {
+                return false;
+            }
+        };
     }
 
     /**
@@ -66,12 +124,7 @@ public final class HttpQuery extends Query {
      * @return a {@code QueryParameter} representing the given name and value.
      */
     public static QueryParameter queryParameter(final String name, final String value) {
-        return new QueryParameter() {
-            @Override
-            PercentEncodable asPercentEncodable() {
-                return PercentEncodable.percentEncodableDelimitedValue('=', PercentEncodable.percentEncodableSubstitutedValue(' ', '+', name), PercentEncodable.percentEncodableSubstitutedValue(' ', '+', value));
-            }
-        };
+        return new NameAndValueQueryParameter(name, value);
     }
 
     /**
@@ -81,12 +134,7 @@ public final class HttpQuery extends Query {
      * @return a {@code QueryParameter} representing the given name.
      */
     public static QueryParameter queryParameter(final String name) {
-        return new QueryParameter() {
-            @Override
-            PercentEncodable asPercentEncodable() {
-                return PercentEncodable.percentEncodableDelimitedValue('=', PercentEncodable.percentEncodableSubstitutedValue(' ', '+', name));
-            }
-        };
+        return new NameOnlyQueryParameter(name);
     }
 
     /**
@@ -119,6 +167,78 @@ public final class HttpQuery extends Query {
         private QueryParameter() {
         }
 
-        abstract PercentEncodable asPercentEncodable();
+        abstract String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding);
+    }
+
+    private static final class NameAndValueQueryParameter extends QueryParameter {
+        private final String name;
+        private final String value;
+
+        NameAndValueQueryParameter(final String name, final String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        @Override
+        String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding) {
+            return partsEncoding.encode(Arrays.asList(name, value));
+        }
+
+        @Override
+        public String toString() {
+            return "QueryParameter{name='" + name + "', value='" + value + "'}";
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            NameAndValueQueryParameter that = (NameAndValueQueryParameter) o;
+
+            return name.equals(that.name) && value.equals(that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            int result = name.hashCode();
+            result = 31 * result + value.hashCode();
+            return result;
+        }
+    }
+
+    private static final class NameOnlyQueryParameter extends QueryParameter {
+        private final String name;
+
+        NameOnlyQueryParameter(final String name) {
+            this.name = name;
+        }
+
+        @Override
+        String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding) {
+            return partsEncoding.encode(Arrays.asList(name));
+        }
+
+        @Override
+        public String toString() {
+            return "QueryParameter{name='" + name + "'}";
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            NameOnlyQueryParameter that = (NameOnlyQueryParameter) o;
+
+            if (!name.equals(that.name)) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            return name.hashCode();
+        }
     }
 }
