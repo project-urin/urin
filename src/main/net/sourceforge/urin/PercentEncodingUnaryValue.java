@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 import static java.util.regex.Pattern.quote;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
 
 abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> {
 
@@ -46,6 +47,14 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
 
     protected static PercentEncoding<String> percentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter, final PercentEncoding<String> percentEncoding) {
         return new PercentEncoding.PercentEncodableSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding);
+    }
+
+    protected static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
+        return new PercentEncoding.SpecifiedValueEncoding(encodedValue, percentEncoding);
+    }
+
+    protected static PercentEncoding<String> nonEncoding() {
+        return new PercentEncoding.NonEncodingPercentEncoding();
     }
 
     protected abstract static class PercentEncoding<ENCODES> {
@@ -168,6 +177,42 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             @Override
             public PercentEncoding<String> additionallyEncoding(final char additionallyEncodedCharacter) {
                 return new PercentEncodableSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
+            }
+
+            @Override
+            protected boolean isEmpty(final String value) {
+                return value.isEmpty();
+            }
+
+        }
+
+        private static class SpecifiedValueEncoding extends PercentEncoding<String> {
+
+            private final String encodedValue;
+            private final PercentEncoding<String> percentEncoding;
+
+            SpecifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
+                this.encodedValue = encodedValue;
+                this.percentEncoding = percentEncoding;
+            }
+
+            @Override
+            public String encode(final String notEncoded) {
+                if (encodedValue.equals(notEncoded)) {
+                    return new PercentEncoder(NO_CHARACTERS).encode(notEncoded);
+                } else {
+                    return percentEncoding.encode(notEncoded);
+                }
+            }
+
+            @Override
+            public String decode(final String encoded) throws ParseException {
+                return percentEncoding.decode(encoded);
+            }
+
+            @Override
+            public PercentEncoding<String> additionallyEncoding(final char additionallyEncodedCharacter) {
+                return new SpecifiedValueEncoding(encodedValue, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
             @Override
