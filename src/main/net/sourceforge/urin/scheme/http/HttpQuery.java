@@ -21,8 +21,8 @@ import static java.util.Arrays.asList;
 
 public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
 
-    static final QueryParser QUERY_PARSER = new QueryParser() {
-        public Query parse(final String rawQuery) throws ParseException {
+    static final QueryParser<Iterable<HttpQuery.QueryParameter>> QUERY_PARSER = new QueryParser<Iterable<HttpQuery.QueryParameter>>() {
+        public Query<Iterable<HttpQuery.QueryParameter>> parse(final String rawQuery) throws ParseException {
             return new HttpQuery(new ArrayList<QueryParameter>() {{
                 for (QueryParameter queryParameter : HTTP_QUERY_PERCENT_ENCODING.decode(rawQuery)) {
                     add(queryParameter);

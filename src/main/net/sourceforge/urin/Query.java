@@ -20,8 +20,8 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAG
  */
 public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
-    protected static final QueryParser BASE_QUERY_PARSER = new Query.QueryParser() {
-        public Query parse(final String rawQuery) throws ParseException {
+    protected static final QueryParser<String> BASE_QUERY_PARSER = new Query.QueryParser<String>() {
+        public Query<String> parse(final String rawQuery) throws ParseException {
             return query(PERCENT_ENCODING.decode(rawQuery));
         }
     };
@@ -49,7 +49,7 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         return new Query<String>(query, PERCENT_ENCODING);
     }
 
-    protected static interface QueryParser {
-        Query<String> parse(String rawQuery) throws ParseException;
+    protected static interface QueryParser<ENCODES> {
+        Query<ENCODES> parse(String rawQuery) throws ParseException;
     }
 }
