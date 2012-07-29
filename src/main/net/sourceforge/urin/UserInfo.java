@@ -18,16 +18,16 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2.1">RFC 3986 - User Information</a>
  */
-public final class UserInfo extends PercentEncodedUnaryValue {
+public final class UserInfo extends PercentEncodingUnaryValue<String> {
 
-    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(or(
+    private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(or(
             UNRESERVED,
             SUB_DELIMITERS,
             singleMemberCharacterSet(':')
-    ));
+    )));
 
     private UserInfo(final String userInfo) {
-        super(PercentEncodable.percentEncodableString(userInfo), PERCENT_ENCODER);
+        super(userInfo, PERCENT_ENCODING);
     }
 
     /**
@@ -41,6 +41,6 @@ public final class UserInfo extends PercentEncodedUnaryValue {
     }
 
     static UserInfo parse(final String userInfoString) throws ParseException {
-        return userInfo(PERCENT_ENCODER.decode(userInfoString));
+        return userInfo(PERCENT_ENCODING.decode(userInfoString));
     }
 }
