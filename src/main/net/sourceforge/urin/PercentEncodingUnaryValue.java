@@ -40,7 +40,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
     }
 
     protected static PercentEncoding<String> percentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter, final PercentEncoding<String> percentEncoding) {
-        return new PercentEncoding.PercentEncodableSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding);
+        return new PercentEncoding.PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding);
     }
 
     protected static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
@@ -134,12 +134,12 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             }
         }
 
-        private static class PercentEncodableSubstitutedValue extends PercentEncoding<String> {
+        private static class PercentEncodingSubstitutedValue extends PercentEncoding<String> {
             private final char originalCharacter;
             private final char replacementCharacter;
             private final PercentEncoding<String> percentEncoding;
 
-            PercentEncodableSubstitutedValue(final char originalCharacter, final char replacementCharacter, final PercentEncoding<String> percentEncoding) {
+            PercentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter, final PercentEncoding<String> percentEncoding) {
                 this.originalCharacter = originalCharacter;
                 this.replacementCharacter = replacementCharacter;
                 this.percentEncoding = percentEncoding.additionallyEncoding(replacementCharacter);
@@ -173,7 +173,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
 
             @Override
             public PercentEncoding<String> additionallyEncoding(final char additionallyEncodedCharacter) {
-                return new PercentEncodableSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
+                return new PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
             @Override

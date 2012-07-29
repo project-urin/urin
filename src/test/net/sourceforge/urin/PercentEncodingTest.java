@@ -25,7 +25,7 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.percentEncodingStri
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
-public class PercentEncodableTest {
+public class PercentEncodingTest {
 
     private static final PercentEncoder RESERVED_PERCENT_ENCODER = new PercentEncoder(UNRESERVED);
     private static final PercentEncoder EVERYTHING_PERCENT_ENCODER = new PercentEncoder(NO_CHARACTERS);
