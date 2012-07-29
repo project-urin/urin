@@ -18,12 +18,12 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAG
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.5">RFC 3986 - Fragment</a>
  */
-public abstract class Fragment extends PercentEncodedUnaryValue {
+public abstract class Fragment extends PercentEncodingUnaryValue<String> {
 
-    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
+    private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
     private Fragment(final String fragment) {
-        super(PercentEncodable.percentEncodableString(fragment), PERCENT_ENCODER);
+        super(fragment, PERCENT_ENCODING);
     }
 
     /**
@@ -42,7 +42,7 @@ public abstract class Fragment extends PercentEncodedUnaryValue {
     }
 
     static Fragment parse(final String fragment) throws ParseException {
-        return fragment(PERCENT_ENCODER.decode(fragment));
+        return fragment(PERCENT_ENCODING.decode(fragment));
     }
 
     /**
