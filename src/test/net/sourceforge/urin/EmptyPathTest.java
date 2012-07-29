@@ -32,7 +32,7 @@ public class EmptyPathTest {
     }
 
     @Test
-    public void correctlyIdentifiesFirstPartUnsupplied() throws Exception {
+    public void correctlyIdentifiesFirstPartNotSupplied() throws Exception {
         assertThat(new EmptyPath().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 

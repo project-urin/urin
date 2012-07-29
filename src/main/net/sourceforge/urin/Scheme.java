@@ -370,7 +370,7 @@ public abstract class Scheme {
         return parseRelativeReference(uri.toASCIIString());
     }
 
-    static boolean isValidRelativeReferenceString(final String uriReferenceString) {
+    private static boolean isValidRelativeReferenceString(final String uriReferenceString) {
         return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
     }
 
@@ -671,7 +671,7 @@ public abstract class Scheme {
         return parseUrin(uri.toASCIIString());
     }
 
-    static boolean isValidUrinString(final String uriReferenceString) {
+    private static boolean isValidUrinString(final String uriReferenceString) {
         return URI_PATTERN.matcher(uriReferenceString).matches();
     }
 

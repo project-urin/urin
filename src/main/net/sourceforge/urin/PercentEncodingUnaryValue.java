@@ -27,12 +27,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         this.percentEncoding = percentEncoding;
     }
 
-    @Override
-    final boolean isEmpty() {
-        return percentEncoding.isEmpty(value);
-    }
-
-    @Override
     final String asString() {
         return percentEncoding.encode(value);
     }

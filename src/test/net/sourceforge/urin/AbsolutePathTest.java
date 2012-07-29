@@ -81,7 +81,7 @@ public class AbsolutePathTest {
     }
 
     @Test
-    public void correctlyIdentifiesFirstPartUnsupplied() throws Exception {
+    public void correctlyIdentifiesFirstPartNotSupplied() throws Exception {
         assertThat(AbsolutePath.path().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 

@@ -25,7 +25,7 @@ public class UrinAssert {
         assertThat(aScheme().parseUrin(new URI(stringRepresentation)), equalTo(urinRepresentation));
     }
 
-    public static void assertAsStringAndParse(final String stringRepresentation, final Urin urinRepresentation) throws URISyntaxException, ParseException {
+    public static void assertAsStringAndParse(final String stringRepresentation, final Urin urinRepresentation) throws ParseException {
         assertThat(urinRepresentation.asString(), equalTo(stringRepresentation));
         assertThat(aScheme().parseUrin(stringRepresentation), equalTo(urinRepresentation));
     }

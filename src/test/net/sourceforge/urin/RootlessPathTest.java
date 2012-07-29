@@ -87,7 +87,7 @@ public class RootlessPathTest {
     }
 
     @Test
-    public void correctlyIdentifiesFirstPartUnsupplied() throws Exception {
+    public void correctlyIdentifiesFirstPartNotSupplied() throws Exception {
         assertThat(rootlessPath().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 

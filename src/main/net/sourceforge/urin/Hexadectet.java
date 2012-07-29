@@ -77,14 +77,8 @@ public final class Hexadectet extends UnaryValue<Integer> {
         return isElidable;
     }
 
-    @Override
     String asString() {
         return Integer.toHexString(value);
-    }
-
-    @Override
-    boolean isEmpty() {
-        return false;
     }
 
     @Override

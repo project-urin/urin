@@ -20,14 +20,13 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAG
  */
 public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
-    protected static final QueryParser<String> BASE_QUERY_PARSER = new Query.QueryParser<String>() {
+    static final QueryParser<String> BASE_QUERY_PARSER = new Query.QueryParser<String>() {
         public Query<String> parse(final String rawQuery) throws ParseException {
             return query(PERCENT_ENCODING.decode(rawQuery));
         }
     };
 
-    protected static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
-    protected static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(PERCENT_ENCODER);
+    protected static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
     /**
      * Constructor for subclasses of {@code Query} with scheme specific percent encoding of characters beyond that specified for generic URI {@code Query}s.
