@@ -70,6 +70,9 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             private final PercentEncoder percentEncoder;
 
             PercentEncodingString(final PercentEncoder percentEncoder) {
+                if (percentEncoder == null) {
+                    throw new NullPointerException("Cannot instantiate PercentEncodingString with null PercentEncoder");
+                }
                 this.percentEncoder = percentEncoder;
             }
 
@@ -192,7 +195,13 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             private final PercentEncoding<String> percentEncoding;
 
             SpecifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
+                if (encodedValue == null) {
+                    throw new NullPointerException("Cannot instantiate SpecifiedValueEncoding with null encoded value");
+                }
                 this.encodedValue = encodedValue;
+                if (percentEncoding == null) {
+                    throw new NullPointerException("Cannot instantiate SpecifiedValueEncoding with null PercentEncoding");
+                }
                 this.percentEncoding = percentEncoding;
             }
 
