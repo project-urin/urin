@@ -19,9 +19,9 @@ import static java.util.regex.Pattern.quote;
 
 abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> {
 
-    private final PercentEncoding percentEncoding;
+    private final PercentEncoding<ENCODING> percentEncoding;
 
-    PercentEncodingUnaryValue(final ENCODING value, final PercentEncoding percentEncoding) {
+    PercentEncodingUnaryValue(final ENCODING value, final PercentEncoding<ENCODING> percentEncoding) {
         super(value);
         this.percentEncoding = percentEncoding;
     }
@@ -41,7 +41,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
     }
 
     protected static <T> PercentEncoding<Iterable<T>> percentEncodingDelimitedValue(final char delimiter, final PercentEncoding<T> elementPercentEncoding) {
-        return new PercentEncoding.PercentEncodingDelimitedValue(delimiter, elementPercentEncoding);
+        return new PercentEncoding.PercentEncodingDelimitedValue<T>(delimiter, elementPercentEncoding);
     }
 
     protected static PercentEncoding<String> percentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter, final PercentEncoding<String> percentEncoding) {
@@ -119,7 +119,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
 
             @Override
             public PercentEncoding<Iterable<T>> additionallyEncoding(final char additionallyEncodedCharacter) {
-                return new PercentEncodingDelimitedValue(delimiter, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
+                return new PercentEncodingDelimitedValue<T>(delimiter, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
             @Override
