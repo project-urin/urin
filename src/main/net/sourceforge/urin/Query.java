@@ -22,13 +22,9 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
     protected static final QueryParser BASE_QUERY_PARSER = new Query.QueryParser() {
         public Query parse(final String rawQuery) throws ParseException {
-            return query(PERCENT_ENCODER.decode(rawQuery));
+            return query(PERCENT_ENCODING.decode(rawQuery));
         }
     };
-
-    protected static String percentDecode(final String percentEncoded) throws ParseException {
-        return PERCENT_ENCODER.decode(percentEncoded);
-    }
 
     protected static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS);
     protected static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(PERCENT_ENCODER);

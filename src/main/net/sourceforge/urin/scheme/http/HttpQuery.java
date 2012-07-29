@@ -15,6 +15,7 @@ import net.sourceforge.urin.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 
 import static java.util.Arrays.asList;
 
@@ -23,44 +24,32 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
     static final QueryParser QUERY_PARSER = new QueryParser() {
         public Query parse(final String rawQuery) throws ParseException {
             return new HttpQuery(new ArrayList<QueryParameter>() {{
-                for (String queryParameter : rawQuery.split("[;&]")) {
-                    if (queryParameter.contains("=")) {
-                        String[] nameValuePair = queryParameter.split("=");
-                        if (nameValuePair.length != 2) {
-                            throw new ParseException("Invalid query parameter - expected only one occurrence of '=' in " + queryParameter);
-                        } else {
-                            add(queryParameter(decodeSpaces(nameValuePair[0]), decodeSpaces(nameValuePair[1])));
-                        }
-                    } else {
-                        add(queryParameter(decodeSpaces(queryParameter)));
-                    }
+                for (QueryParameter queryParameter : HTTP_QUERY_PERCENT_ENCODING.decode(rawQuery)) {
+                    add(queryParameter);
                 }
             }});
         }
     };
 
-    private static String decodeSpaces(final String rawValue) throws ParseException {
-        String[] rawValues = rawValue.split("\\+");
-        StringBuilder result = new StringBuilder();
-        for (int i = 0; i < rawValues.length; i++) {
-            if (i > 0) {
-                result.append(" ");
-            }
-            result.append(percentDecode(rawValues[i]));
-        }
-        return result.toString();
-    }
+    static final PercentEncoding<Iterable<QueryParameter>> HTTP_QUERY_PERCENT_ENCODING = encodeQueryParameters(
+            percentEncodingDelimitedValue(
+                    '&',
+                    percentEncodingDelimitedValue(
+                            ';',
+                            percentEncodedQueryParameter(
+                                    percentEncodingDelimitedValue('=',
+                                            percentEncodingSubstitutedValue(' ', '+', PERCENT_ENCODING))
+                            ))));
 
     HttpQuery(final Iterable<QueryParameter> queryParameters) {
-        super(queryParameters, encodeQueryParameters(
-                percentEncodingDelimitedValue(
-                        '&',
-                        percentEncodingDelimitedValue(
-                                ';',
-                                percentEncodedQueryParameter(
-                                        percentEncodingDelimitedValue('=',
-                                                percentEncodingSubstitutedValue(' ', '+', PERCENT_ENCODING))
-                                )))));
+        super(new ArrayList<QueryParameter>() {{
+            for (QueryParameter queryParameter : queryParameters) {
+                if (queryParameter == null) {
+                    throw new NullPointerException("Cannot instantiate QueryParameters with null queryParameter");
+                }
+                add(queryParameter);
+            }
+        }}, HTTP_QUERY_PERCENT_ENCODING);
     }
 
     private static PercentEncoding<Iterable<QueryParameter>> encodeQueryParameters(final PercentEncoding<Iterable<Iterable<QueryParameter>>> percentEncoding) {
@@ -76,18 +65,24 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
             }
 
             @Override
-            protected Iterable<QueryParameter> decode(final String encoded) throws ParseException {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            public Iterable<QueryParameter> decode(final String encoded) throws ParseException {
+                return new ArrayList<QueryParameter>() {{
+                    for (Iterable<QueryParameter> queryParameters : percentEncoding.decode(encoded)) {
+                        for (QueryParameter queryParameter : queryParameters) {
+                            add(queryParameter);
+                        }
+                    }
+                }};
             }
 
             @Override
             public PercentEncoding<Iterable<QueryParameter>> additionallyEncoding(final char additionallyEncodedCharacter) {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+                return encodeQueryParameters(percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
             @Override
             protected boolean isEmpty(final Iterable<QueryParameter> value) {
-                return false;  //To change body of implemented methods use File | Settings | File Templates.
+                return value.iterator().hasNext();
             }
         };
     }
@@ -100,8 +95,22 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
             }
 
             @Override
-            protected QueryParameter decode(final String encoded) throws ParseException {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            public QueryParameter decode(final String encoded) throws ParseException {
+                final QueryParameter result;
+                Iterator<String> iterator = partsEncoding.decode(encoded).iterator();
+                if (!iterator.hasNext()) {
+                    throw new ParseException("Invalid query parameter String [" + encoded + "]");
+                }
+                final String name = iterator.next();
+                if (!iterator.hasNext()) {
+                    result = queryParameter(name);
+                } else {
+                    result = queryParameter(name, iterator.next());
+                    if (iterator.hasNext()) {
+                        throw new ParseException("Invalid query parameter - expected only one occurrence of '=' in [" + encoded + "]");
+                    }
+                }
+                return result;
             }
 
             @Override
@@ -175,7 +184,13 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
         private final String value;
 
         NameAndValueQueryParameter(final String name, final String value) {
+            if (name == null) {
+                throw new NullPointerException("Cannot instantiate QueryParameter with null name");
+            }
             this.name = name;
+            if (value == null) {
+                throw new NullPointerException("Cannot instantiate QueryParameter with null value");
+            }
             this.value = value;
         }
 
@@ -211,6 +226,9 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
         private final String name;
 
         NameOnlyQueryParameter(final String name) {
+            if (name == null) {
+                throw new NullPointerException("Cannot instantiate QueryParameter with null name");
+            }
             this.name = name;
         }
 
@@ -231,9 +249,8 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
 
             NameOnlyQueryParameter that = (NameOnlyQueryParameter) o;
 
-            if (!name.equals(that.name)) return false;
+            return name.equals(that.name);
 
-            return true;
         }
 
         @Override

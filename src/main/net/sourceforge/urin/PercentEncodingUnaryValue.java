@@ -12,6 +12,7 @@ package net.sourceforge.urin;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 import static java.util.regex.Pattern.quote;
@@ -50,7 +51,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
     protected abstract static class PercentEncoding<ENCODES> {
         public abstract String encode(ENCODES notEncoded);
 
-        protected abstract ENCODES decode(String encoded) throws ParseException;
+        public abstract ENCODES decode(String encoded) throws ParseException;
 
         public abstract PercentEncoding<ENCODES> additionallyEncoding(final char additionallyEncodedCharacter);
 
@@ -69,7 +70,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             }
 
             @Override
-            protected String decode(final String encoded) throws ParseException {
+            public String decode(final String encoded) throws ParseException {
                 return percentEncoder.decode(encoded);
             }
 
@@ -107,7 +108,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             }
 
             @Override
-            protected Iterable<T> decode(final String encoded) throws ParseException {
+            public Iterable<T> decode(final String encoded) throws ParseException {
                 final String[] components = encoded.split(quote(Character.toString(delimiter)));
                 return new ArrayList<T>() {{
                     for (String component : components) {
@@ -152,8 +153,16 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             }
 
             @Override
-            protected String decode(final String encoded) throws ParseException {
-                return null;  //To change body of implemented methods use File | Settings | File Templates.
+            public String decode(final String encoded) throws ParseException {
+                final StringBuilder result = new StringBuilder();
+                String[] split = encoded.split(Pattern.quote(Character.toString(replacementCharacter)));
+                for (int i = 0; i < split.length; i++) {
+                    if (i > 0) {
+                        result.append(originalCharacter);
+                    }
+                    result.append(percentEncoding.decode(split[i]));
+                }
+                return result.toString();
             }
 
             @Override
@@ -179,7 +188,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             }
 
             @Override
-            protected String decode(final String encoded) throws ParseException {
+            public String decode(final String encoded) throws ParseException {
                 return encoded;
             }
 
