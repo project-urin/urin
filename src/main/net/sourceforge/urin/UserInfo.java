@@ -20,7 +20,7 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
  */
 public final class UserInfo extends PercentEncodingUnaryValue<String> {
 
-    private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(or(
+    private static final PercentEncoding<String> PERCENT_ENCODING = PercentEncoding.percentEncodingString(new PercentEncoder(or(
             UNRESERVED,
             SUB_DELIMITERS,
             singleMemberCharacterSet(':')

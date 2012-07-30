@@ -31,27 +31,27 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         return percentEncoding.encode(value);
     }
 
-    protected static PercentEncoding<String> percentEncodingString(final PercentEncoder percentEncoder) {
-        return new PercentEncoding.PercentEncodingString(percentEncoder);
-    }
-
-    protected static <T> PercentEncoding<Iterable<T>> percentEncodingDelimitedValue(final char delimiter, final PercentEncoding<T> elementPercentEncoding) {
-        return new PercentEncoding.PercentEncodingDelimitedValue<T>(delimiter, elementPercentEncoding);
-    }
-
-    protected static PercentEncoding<String> percentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter, final PercentEncoding<String> percentEncoding) {
-        return new PercentEncoding.PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding);
-    }
-
-    protected static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
-        return new PercentEncoding.SpecifiedValueEncoding(encodedValue, percentEncoding);
-    }
-
-    protected static PercentEncoding<String> nonEncoding() {
-        return new PercentEncoding.NonEncodingPercentEncoding();
-    }
-
     protected abstract static class PercentEncoding<ENCODES> {
+        protected static PercentEncoding<String> percentEncodingString(final PercentEncoder percentEncoder) {
+            return new PercentEncodingString(percentEncoder);
+        }
+
+        public static <T> PercentEncoding<Iterable<T>> percentEncodingDelimitedValue(final char delimiter, final PercentEncoding<T> elementPercentEncoding) {
+            return new PercentEncodingDelimitedValue<T>(delimiter, elementPercentEncoding);
+        }
+
+        public static PercentEncoding<String> percentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter, final PercentEncoding<String> percentEncoding) {
+            return new PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding);
+        }
+
+        protected static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
+            return new SpecifiedValueEncoding(encodedValue, percentEncoding);
+        }
+
+        protected static PercentEncoding<String> nonEncoding() {
+            return new NonEncodingPercentEncoding();
+        }
+
         public abstract String encode(ENCODES notEncoded);
 
         public abstract ENCODES decode(String encoded) throws ParseException;

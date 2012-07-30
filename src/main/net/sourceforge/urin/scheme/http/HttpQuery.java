@@ -35,13 +35,13 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
     };
 
     private static final PercentEncoding<Iterable<QueryParameter>> HTTP_QUERY_PERCENT_ENCODING = encodeQueryParameters(
-            percentEncodingDelimitedValue(
+            PercentEncoding.percentEncodingDelimitedValue(
                     '&',
-                    percentEncodingDelimitedValue(
+                    PercentEncoding.percentEncodingDelimitedValue(
                             ';',
                             percentEncodedQueryParameter(
-                                    percentEncodingDelimitedValue('=',
-                                            percentEncodingSubstitutedValue(' ', '+', PERCENT_ENCODING))
+                                    PercentEncoding.percentEncodingDelimitedValue('=',
+                                            PercentEncoding.percentEncodingSubstitutedValue(' ', '+', PERCENT_ENCODING))
                             ))));
 
     private HttpQuery(final Iterable<QueryParameter> queryParameters) {

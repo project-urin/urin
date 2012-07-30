@@ -17,10 +17,13 @@ import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Port.port;
 
 /**
- * Utility class providing factory methods for generating HTTP and HTTPS URIs.
+ * Scheme for HTTP URIs.
  */
 public final class Http extends HypertextScheme {
 
+    /**
+     * The HTTP scheme.
+     */
     public static final Scheme HTTP = new Http();
 
     private Http() {

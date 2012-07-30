@@ -33,7 +33,7 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
     /**
      * The segment ".", referring to the current location in the path name hierarchy,
      */
-    public static final Segment DOT = new Segment(".", nonEncoding()) {
+    public static final Segment DOT = new Segment(".", PercentEncoding.nonEncoding()) {
         @Override
         public boolean hasValue() {
             return false;
@@ -47,7 +47,7 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
     /**
      * The segment "..", referring to the parent location in the path name hierarchy,
      */
-    public static final Segment DOT_DOT = new Segment("..", nonEncoding()) {
+    public static final Segment DOT_DOT = new Segment("..", PercentEncoding.nonEncoding()) {
         @Override
         public boolean hasValue() {
             return false;
@@ -70,9 +70,9 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment segment(final String segment) {
-        return new Segment(segment, specifiedValueEncoding(".",
-                specifiedValueEncoding("..",
-                        percentEncodingString(PERCENT_ENCODER)))) {
+        return new Segment(segment, PercentEncoding.specifiedValueEncoding(".",
+                PercentEncoding.specifiedValueEncoding("..",
+                        PercentEncoding.percentEncodingString(PERCENT_ENCODER)))) {
             @Override
             public boolean hasValue() {
                 return true;

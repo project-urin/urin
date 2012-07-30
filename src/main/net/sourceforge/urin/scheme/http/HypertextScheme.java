@@ -13,10 +13,7 @@ package net.sourceforge.urin.scheme.http;
 import net.sourceforge.urin.Port;
 import net.sourceforge.urin.SchemeWithDefaultPort;
 
-/**
- * Superclass for HTTP and HTTPS schemes.
- */
-public abstract class HypertextScheme extends SchemeWithDefaultPort {
+abstract class HypertextScheme extends SchemeWithDefaultPort {
     HypertextScheme(final String name, final Port defaultPort) {
         super(name, defaultPort, HttpQuery.QUERY_PARSER);
     }

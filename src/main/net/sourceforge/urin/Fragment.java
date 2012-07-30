@@ -20,7 +20,7 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAG
  */
 public abstract class Fragment extends PercentEncodingUnaryValue<String> {
 
-    private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
+    private static final PercentEncoding<String> PERCENT_ENCODING = PercentEncoding.percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
     private Fragment(final String fragment) {
         super(fragment, PERCENT_ENCODING);
