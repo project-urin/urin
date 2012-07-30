@@ -623,11 +623,11 @@ public class HttpTest {
 
     @Test
     public void handlesEncodingOfSpaceInHttpQueryParameters() throws Exception {
-        assertThat(HTTP.parseUrin("http://somewhere?name=value+with+space").query(), equalTo(queryParameters(queryParameter("name", "value with space"))));
+        assertThat(HTTP.parseUrin("http://somewhere?name=value+with+space").query(), equalTo((Query) queryParameters(queryParameter("name", "value with space"))));
     }
 
     @Test
     public void handlesDecodingOfPercentEncodedPlusInHttpQueryParameters() throws Exception {
-        assertThat(HTTP.parseUrin("http://somewhere?name=value%2Bwith%2Bplus").query(), equalTo(queryParameters(queryParameter("name", "value+with+plus"))));
+        assertThat(HTTP.parseUrin("http://somewhere?name=value%2Bwith%2Bplus").query(), equalTo((Query) queryParameters(queryParameter("name", "value+with+plus"))));
     }
 }

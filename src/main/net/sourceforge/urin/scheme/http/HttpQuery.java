@@ -19,6 +19,9 @@ import java.util.Iterator;
 
 import static java.util.Arrays.asList;
 
+/**
+ * A query component of a URI with HTTP/HTTPS specific sub-encoding.
+ */
 public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
 
     static final QueryParser<Iterable<HttpQuery.QueryParameter>> QUERY_PARSER = new QueryParser<Iterable<HttpQuery.QueryParameter>>() {
@@ -150,9 +153,9 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
      * Factory method for HTTP and HTTPs encoded query components made up of name/value pairs.
      *
      * @param queryParameters {@code QueryParameter}s that will be represented by this query.
-     * @return a {@code Query} representing the given query parameters.
+     * @return a {@code HttpQuery} representing the given query parameters.
      */
-    public static Query queryParameters(final QueryParameter... queryParameters) {
+    public static HttpQuery queryParameters(final QueryParameter... queryParameters) {
         return queryParameters(asList(queryParameters));
     }
 
@@ -160,9 +163,9 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
      * Factory method for HTTP and HTTPs encoded query components made up of name/value pairs.
      *
      * @param queryParameters {@code Iterable} of {@code QueryParameter}s that will be represented by this query.
-     * @return a {@code Query} representing the given query parameters.
+     * @return a {@code HttpQuery} representing the given query parameters.
      */
-    public static Query queryParameters(final Iterable<QueryParameter> queryParameters) {
+    public static HttpQuery queryParameters(final Iterable<QueryParameter> queryParameters) {
         return new HttpQuery(queryParameters);
     }
 

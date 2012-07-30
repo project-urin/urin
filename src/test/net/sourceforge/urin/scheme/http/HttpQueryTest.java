@@ -43,7 +43,7 @@ public class HttpQueryTest {
         HttpQuery.QueryParameter[] queryParameters = {firstQueryParameter, secondQueryParameter};
         Query query = queryParameters(queryParameters);
         queryParameters[0] = aQueryParameter();
-        assertThat(query, equalTo(queryParameters(firstQueryParameter, secondQueryParameter)));
+        assertThat(query, equalTo((Query) queryParameters(firstQueryParameter, secondQueryParameter)));
 
     }
 
