@@ -19,7 +19,4 @@ abstract class UnaryStringValue extends UnaryValue<String> {
         return value;
     }
 
-    boolean isEmpty() {
-        return value.isEmpty();
-    }
 }

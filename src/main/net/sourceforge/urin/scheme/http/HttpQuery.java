@@ -83,10 +83,6 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
                 return encodeQueryParameters(percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
-            @Override
-            protected boolean isEmpty(final Iterable<QueryParameter> value) {
-                return value.iterator().hasNext();
-            }
         };
     }
 
@@ -121,10 +117,6 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
                 return percentEncodedQueryParameter(partsEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
-            @Override
-            protected boolean isEmpty(final QueryParameter value) {
-                return false;
-            }
         };
     }
 

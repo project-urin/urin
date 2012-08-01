@@ -62,16 +62,6 @@ public class PortTest {
     }
 
     @Test
-    public void zeroLengthStringPortKnowsItIsEmpty() throws Exception {
-        assertThat(port("").isEmpty(), equalTo(true));
-    }
-
-    @Test
-    public void nonZeroLengthStringPortKnowsItIsNotEmpty() throws Exception {
-        assertThat(port("0").isEmpty(), equalTo(false));
-    }
-
-    @Test
     public void rejectsInvalidCharacters() throws Exception {
         try {
             port("a");

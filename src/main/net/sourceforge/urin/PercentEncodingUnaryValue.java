@@ -58,8 +58,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
 
         public abstract PercentEncoding<ENCODES> additionallyEncoding(final char additionallyEncodedCharacter);
 
-        protected abstract boolean isEmpty(final ENCODES value);
-
         private static final class PercentEncodingString extends PercentEncoding<String> {
             private final PercentEncoder percentEncoder;
 
@@ -85,10 +83,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
                 return new PercentEncodingString(percentEncoder.additionallyEncoding(additionallyEncodedCharacter));
             }
 
-            @Override
-            protected boolean isEmpty(final String value) {
-                return value.isEmpty();
-            }
         }
 
         private static final class PercentEncodingDelimitedValue<T> extends PercentEncoding<Iterable<T>> {
@@ -128,10 +122,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
                 return new PercentEncodingDelimitedValue<T>(delimiter, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
-            @Override
-            protected boolean isEmpty(final Iterable<T> value) {
-                return value.iterator().hasNext();
-            }
         }
 
         private static class PercentEncodingSubstitutedValue extends PercentEncoding<String> {
@@ -176,11 +166,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
                 return new PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
-            @Override
-            protected boolean isEmpty(final String value) {
-                return value.isEmpty();
-            }
-
         }
 
         private static class SpecifiedValueEncoding extends PercentEncoding<String> {
@@ -218,11 +203,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
                 return new SpecifiedValueEncoding(encodedValue, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
-            @Override
-            protected boolean isEmpty(final String value) {
-                return value.isEmpty();
-            }
-
         }
 
         private static class NonEncodingPercentEncoding extends PercentEncoding<String> {
@@ -243,11 +223,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             @Override
             public PercentEncoding<String> additionallyEncoding(final char additionallyEncodedCharacter) {
                 return this;
-            }
-
-            @Override
-            protected boolean isEmpty(final String value) {
-                return value.isEmpty();
             }
 
         }
