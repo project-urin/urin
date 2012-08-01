@@ -27,7 +27,7 @@ import static net.sourceforge.urin.Query.BASE_QUERY_PARSER;
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.1">RFC 3986 - Scheme</a>
  */
-public abstract class Scheme {
+public abstract class Scheme<Q extends Query> {
 
     private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
@@ -41,9 +41,9 @@ public abstract class Scheme {
             singleMemberCharacterSet('.')
     );
 
-    private final Query.QueryParser queryParser;
+    protected final Parser<Q> queryParser;
 
-    Scheme(final Query.QueryParser queryParser) {
+    Scheme(final Parser<Q> queryParser) {
         this.queryParser = queryParser;
     }
 
@@ -55,7 +55,7 @@ public abstract class Scheme {
      * @return a {@code Scheme} representing the given {@code String}.
      * @throws IllegalArgumentException if the given {@code String} is empty or contains characters not in the Latin alphabet, the digits, or the characters '+', '-', and '.'.
      */
-    public static Scheme scheme(final String name) {
+    public static Scheme<Query<String>> scheme(final String name) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
         return new GenericScheme(name.toLowerCase(ENGLISH));
     }
@@ -71,9 +71,9 @@ public abstract class Scheme {
      * @return a {@code Scheme} representing the given {@code String}, using the given default port.
      * @throws IllegalArgumentException if the given {@code String} is empty or contains characters not in the Latin alphabet, the digits, or the characters '+', '-', and '.'.
      */
-    public static Scheme scheme(final String name, final Port defaultPort) {
+    public static Scheme<Query<String>> scheme(final String name, final Port defaultPort) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new SchemeWithDefaultPort(name.toLowerCase(ENGLISH), defaultPort, BASE_QUERY_PARSER);
+        return new SchemeWithDefaultPort<Query<String>>(name.toLowerCase(ENGLISH), defaultPort, BASE_QUERY_PARSER);
     }
 
     private Scheme parse(final String name) throws ParseException {
@@ -95,7 +95,7 @@ public abstract class Scheme {
 
     abstract Authority normalise(final Authority authority);
 
-    abstract Scheme removeDefaultPort();
+    abstract Scheme<Q> removeDefaultPort();
 
     /**
      * Factory method for creating {@code RelativeReference}s with just an empty path.
@@ -702,7 +702,7 @@ public abstract class Scheme {
         return parseUrinReference(uriReference.toASCIIString());
     }
 
-    private static final class GenericScheme extends Scheme {
+    static final class GenericScheme extends Scheme<Query<String>> {
         private final String name;
 
         GenericScheme(final String name) {
@@ -726,7 +726,7 @@ public abstract class Scheme {
         }
 
         @Override
-        Scheme removeDefaultPort() {
+        Scheme<Query<String>> removeDefaultPort() {
             return this;
         }
 

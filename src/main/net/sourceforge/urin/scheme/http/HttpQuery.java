@@ -11,6 +11,7 @@
 package net.sourceforge.urin.scheme.http;
 
 import net.sourceforge.urin.ParseException;
+import net.sourceforge.urin.Parser;
 import net.sourceforge.urin.Query;
 
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ import static java.util.Arrays.asList;
  */
 public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
 
-    static final QueryParser<Iterable<HttpQuery.QueryParameter>> QUERY_PARSER = new QueryParser<Iterable<HttpQuery.QueryParameter>>() {
-        public Query<Iterable<HttpQuery.QueryParameter>> parse(final String rawQuery) throws ParseException {
+    static final Parser<HttpQuery> QUERY_PARSER = new Parser<HttpQuery>() {
+        public HttpQuery parse(final String rawQuery) throws ParseException {
             return new HttpQuery(new ArrayList<QueryParameter>() {{
                 for (QueryParameter queryParameter : HTTP_QUERY_PERCENT_ENCODING.decode(rawQuery)) {
                     add(queryParameter);
