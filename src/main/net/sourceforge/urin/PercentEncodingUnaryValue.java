@@ -44,11 +44,11 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             return new PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding);
         }
 
-        protected static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
+        static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
             return new SpecifiedValueEncoding(encodedValue, percentEncoding);
         }
 
-        protected static PercentEncoding<String> nonEncoding() {
+        static PercentEncoding<String> nonEncoding() {
             return new NonEncodingPercentEncoding();
         }
 
