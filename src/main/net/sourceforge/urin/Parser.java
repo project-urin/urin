@@ -10,6 +10,19 @@
 
 package net.sourceforge.urin;
 
+/**
+ * A parser of encoded URI components.
+ *
+ * @param <PRODUCES> the class of the decoded objects produced.
+ */
 public interface Parser<PRODUCES> {
+
+    /**
+     * Parses an encoded URI component.
+     *
+     * @param rawValue the encoded URI component to parse.
+     * @return an object representing the decoded URI component.
+     * @throws ParseException if the given {@code String} is not a valid URI component.
+     */
     PRODUCES parse(String rawValue) throws ParseException;
 }
