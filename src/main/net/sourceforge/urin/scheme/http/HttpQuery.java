@@ -177,6 +177,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
         abstract String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding);
 
+        /**
+         * Gets the (non-encoded) name of this query parameter as a {@code String}.
+         *
+         * @return the (non-encoded) name of this query parameter as a {@code String}.
+         */
         public abstract String name();
     }
 
