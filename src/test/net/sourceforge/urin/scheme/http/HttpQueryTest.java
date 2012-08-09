@@ -108,6 +108,15 @@ public class HttpQueryTest {
     }
 
     @Test
+    public void queryParameterWithNameOnlyValueThrowsException() throws Exception {
+        assertThrowsException("QueryParameter with name only should throw exception when value is queried", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
+            public void execute() throws UnsupportedOperationException {
+                aNameOnlyQueryParameter().value();
+            }
+        });
+    }
+
+    @Test
     public void rejectsNullsInNameAndValueQueryParameter() throws Exception {
         assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -152,6 +161,12 @@ public class HttpQueryTest {
     @Test
     public void queryParameterWithNameAndValueHasValueIsCorrect() throws Exception {
         assertThat(aNameAndValueQueryParameter().hasValue(), equalTo(true));
+    }
+
+    @Test
+    public void queryParameterWithNameAndValueValueIsCorrect() throws Exception {
+        String value = aString();
+        assertThat(queryParameter(aString(), value).value(), equalTo(value));
     }
 
     @Test

@@ -191,6 +191,16 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
          * @return true if {@code value()} can be called on this {@code QueryParameter}.
          */
         public abstract boolean hasValue();
+
+        /**
+         * Gets the value component of this {@code QueryParameter}, as a {@code String}, if it has one, or throws {@code UnsupportedOperationException} otherwise.
+         * <p/>
+         * The existence of a value component can be tested by calling {@code hasValue()}.
+         *
+         * @return the value component of this {@code QueryParameter}.
+         * @throws UnsupportedOperationException if this is a {@code QueryParameter} that does not have a value component.
+         */
+        public abstract String value();
     }
 
     private static final class NameAndValueQueryParameter extends QueryParameter {
@@ -221,6 +231,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         @Override
         public boolean hasValue() {
             return true;
+        }
+
+        @Override
+        public String value() {
+            return value;
         }
 
         @Override
@@ -269,6 +284,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         @Override
         public boolean hasValue() {
             return false;
+        }
+
+        @Override
+        public String value() {
+            throw new UnsupportedOperationException("Attempt to get value from a QueryParameter that does not have one.");
         }
 
         @Override
