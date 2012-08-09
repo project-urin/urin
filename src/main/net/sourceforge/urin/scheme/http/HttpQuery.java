@@ -16,6 +16,7 @@ import net.sourceforge.urin.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 
 import static java.util.Arrays.asList;
@@ -23,7 +24,7 @@ import static java.util.Arrays.asList;
 /**
  * A query component of a URI with HTTP/HTTPS specific sub-encoding.
  */
-public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
+public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> implements Iterable<HttpQuery.QueryParameter> {
 
     static final Parser<HttpQuery> QUERY_PARSER = new Parser<HttpQuery>() {
         public HttpQuery parse(final String rawQuery) throws ParseException {
@@ -44,14 +45,14 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
                             ))));
 
     private HttpQuery(final Iterable<QueryParameter> queryParameters) {
-        super(new ArrayList<QueryParameter>() {{
+        super(Collections.unmodifiableList(new ArrayList<QueryParameter>() {{
             for (QueryParameter queryParameter : queryParameters) {
                 if (queryParameter == null) {
                     throw new NullPointerException("Cannot instantiate QueryParameters with null queryParameter");
                 }
                 add(queryParameter);
             }
-        }}, HTTP_QUERY_PERCENT_ENCODING);
+        }}), HTTP_QUERY_PERCENT_ENCODING);
     }
 
     private static PercentEncoding<Iterable<QueryParameter>> encodeQueryParameters(final PercentEncoding<Iterable<Iterable<QueryParameter>>> percentEncoding) {
@@ -158,6 +159,10 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> {
      */
     public static HttpQuery queryParameters(final Iterable<QueryParameter> queryParameters) {
         return new HttpQuery(queryParameters);
+    }
+
+    public Iterator<HttpQuery.QueryParameter> iterator() {
+        return value().iterator();
     }
 
     /**

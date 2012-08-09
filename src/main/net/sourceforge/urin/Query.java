@@ -48,4 +48,12 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         return new Query<String>(query, PERCENT_ENCODING);
     }
 
+    /**
+     * Gets the (non-encoded) value of this query.
+     *
+     * @return the (non-encoded) value of this query.
+     */
+    public final ENCODES value() {
+        return value;
+    }
 }

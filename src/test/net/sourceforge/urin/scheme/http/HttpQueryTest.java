@@ -22,6 +22,7 @@ import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static net.sourceforge.urin.scheme.http.QueryParameterBuilder.aQueryParameter;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.Matchers.contains;
 import static org.junit.Assert.assertThat;
 
 public class HttpQueryTest {
@@ -131,4 +132,17 @@ public class HttpQueryTest {
         assertThat(queryParameter(name, value).toString(), equalTo("QueryParameter{name='" + name + "', value='" + value + "'}"));
     }
 
+    @Test
+    public void queryParametersAreIterable() throws Exception {
+        HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
+        HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
+        assertThat(queryParameters(firstQueryParameter, secondQueryParameter), contains(firstQueryParameter, secondQueryParameter));
+    }
+
+    @Test
+    public void queryParametersValueIsCorrect() throws Exception {
+        HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
+        HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
+        assertThat(queryParameters(firstQueryParameter, secondQueryParameter).value(), contains(firstQueryParameter, secondQueryParameter));
+    }
 }
