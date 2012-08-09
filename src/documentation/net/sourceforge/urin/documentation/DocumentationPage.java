@@ -187,7 +187,7 @@ final class DocumentationPage {
                 ),
                 paragraphTag(
                         xhtmlText("This is achieved by extending the "), simpleNameOf(Query.class), xhtmlText(" class.  " +
-                        "The source code for "), simpleNameOf(HttpQuery.QueryParameter.class), xhtmlText(" has an example of this in action.")
+                        "The source code for "), simpleNameOf(HttpQuery.class), xhtmlText(" has an example of this in action.")
                 )
         );
     }
