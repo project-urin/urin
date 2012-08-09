@@ -19,7 +19,7 @@ import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
-import static net.sourceforge.urin.scheme.http.QueryParameterBuilder.aQueryParameter;
+import static net.sourceforge.urin.scheme.http.QueryParameterBuilder.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.contains;
@@ -103,6 +103,11 @@ public class HttpQueryTest {
     }
 
     @Test
+    public void queryParameterWithNameOnlyHasValueIsCorrect() throws Exception {
+        assertThat(aNameOnlyQueryParameter().hasValue(), equalTo(false));
+    }
+
+    @Test
     public void rejectsNullsInNameAndValueQueryParameter() throws Exception {
         assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -142,6 +147,11 @@ public class HttpQueryTest {
     public void queryParameterWithNameAndValueNameIsCorrect() throws Exception {
         String name = aString();
         assertThat(queryParameter(name, aString()).name(), equalTo(name));
+    }
+
+    @Test
+    public void queryParameterWithNameAndValueHasValueIsCorrect() throws Exception {
+        assertThat(aNameAndValueQueryParameter().hasValue(), equalTo(true));
     }
 
     @Test

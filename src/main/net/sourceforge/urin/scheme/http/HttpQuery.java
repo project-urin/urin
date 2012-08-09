@@ -183,6 +183,14 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
          * @return the (non-encoded) name of this query parameter as a {@code String}.
          */
         public abstract String name();
+
+        /**
+         * Returns true if {@code value()} can be called on this {@code QueryParameter}.  This method
+         * returns false for {@code QueryParameter}s that do not have a value component.
+         *
+         * @return true if {@code value()} can be called on this {@code QueryParameter}.
+         */
+        public abstract boolean hasValue();
     }
 
     private static final class NameAndValueQueryParameter extends QueryParameter {
@@ -208,6 +216,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         @Override
         public String name() {
             return name;
+        }
+
+        @Override
+        public boolean hasValue() {
+            return true;
         }
 
         @Override
@@ -251,6 +264,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         @Override
         public String name() {
             return name;
+        }
+
+        @Override
+        public boolean hasValue() {
+            return false;
         }
 
         @Override
