@@ -11,20 +11,20 @@
 package net.sourceforge.urin.scheme.http;
 
 import net.sourceforge.urin.AbsolutePath;
-import net.sourceforge.urin.Query;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 
+import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HostBuilder.anIpV4Address;
-import static net.sourceforge.urin.scheme.http.Http.http;
+import static net.sourceforge.urin.scheme.http.Http.HTTP;
 
 public class QueryMatcher {
-    public static Matcher<Query> convertsToQueryString(final Matcher<String> expected) {
-        return new TypeSafeDiagnosingMatcher<Query>() {
+    public static Matcher<HttpQuery> convertsToQueryString(final Matcher<String> expected) {
+        return new TypeSafeDiagnosingMatcher<HttpQuery>() {
             @Override
-            protected boolean matchesSafely(final Query query, final Description description) {
-                String rawQuery = http(anIpV4Address(), AbsolutePath.path(), query).asUri().getRawQuery();
+            protected boolean matchesSafely(final HttpQuery query, final Description description) {
+                String rawQuery = HTTP.urin(authority(anIpV4Address()), AbsolutePath.path(), query).asUri().getRawQuery();
                 boolean matches = expected.matches(rawQuery);
                 if (!matches) {
                     description.appendText("got a Query that as uri String is ").appendValue(rawQuery);

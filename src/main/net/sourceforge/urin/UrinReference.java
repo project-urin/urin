@@ -18,7 +18,7 @@ import java.net.URI;
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-4.1">RFC 3986 - URI Reference</a>
  */
-public abstract class UrinReference {
+public abstract class UrinReference<Q extends Query> {
 
     UrinReference() {
         // deliberately empty
@@ -87,18 +87,18 @@ public abstract class UrinReference {
      * @return the {@code Query} component of this {@code UrinReference}.
      * @throws UnsupportedOperationException if this is a {@code UrinReference} that does not have a {@code Query} component.
      */
-    public abstract Query query();
+    public abstract Q query();
 
-    abstract Urin resolve(final Scheme scheme, final Path path);
+    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Path path);
 
-    abstract Urin resolve(final Scheme scheme, final Authority authority, final Path path);
+    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Authority authority, final Path path);
 
-    abstract Urin resolve(final Scheme scheme, final Path path, final Query query);
+    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Path path, final Q query);
 
-    abstract Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query);
+    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Authority authority, final Path path, final Q query);
 
-    abstract Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment);
+    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Path path, final Q query, final Fragment fragment);
 
-    abstract Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment);
+    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Authority authority, final Path path, final Q query, final Fragment fragment);
 
 }

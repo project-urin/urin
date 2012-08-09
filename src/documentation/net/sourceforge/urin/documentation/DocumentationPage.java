@@ -31,6 +31,8 @@ import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.http.Http.HTTP;
 import static net.sourceforge.urin.scheme.http.Http.http;
+import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
+import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DocumentationPage {
@@ -172,9 +174,9 @@ final class DocumentationPage {
                         ").resolve(\n" +
                         "        HTTP.relativeReference(\n" +
                         "                rootlessPath(DOT_DOT, segment(\"child-2\")),\n" +
-                        "                query(\"extra-query\")\n" +
+                        "                queryParameters(queryParameter(\"extra-query\"))\n" +
                         "        )\n" +
-                        ").asString();\n"),
+                        ").asString();"),
                 paragraphTag(xhtmlText("This returns the "), simpleNameOf(String.class), xhtmlText(" "), codeSnippet(resolutionExample()),
                         xhtmlText(".")),
                 h3Tag(xhtmlText("Implementing scheme-specific rules")),
@@ -258,7 +260,7 @@ final class DocumentationPage {
                 ).resolve(
                         HTTP.relativeReference(
                                 rootlessPath(DOT_DOT, segment("child-2")),
-                                query("extra-query")
+                                queryParameters(queryParameter("extra-query"))
                         )
                 ).asString();
     }

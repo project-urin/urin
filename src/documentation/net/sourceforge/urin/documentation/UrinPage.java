@@ -11,6 +11,7 @@
 package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.Host;
+import net.sourceforge.urin.Query;
 import net.sourceforge.urin.Urin;
 import net.sourceforge.urin.UrinReference;
 import net.sourceforge.urin.scheme.http.HttpQuery;
@@ -20,9 +21,10 @@ import org.sourceforge.xazzle.xhtml.*;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
-import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.scheme.http.Http.HTTP;
 import static net.sourceforge.urin.scheme.http.Http.http;
+import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
+import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
 import static org.sourceforge.xazzle.xhtml.ClassName.className;
 import static org.sourceforge.xazzle.xhtml.Id.id;
@@ -100,7 +102,7 @@ final class UrinPage {
                                                 listItemTag(
                                                         anchorTag(
                                                                 imageTag(
-                                                                        imageSource(http(registeredName("sflogo.sourceforge.net"), path("sflogo.php"), HttpQuery.queryParameters(HttpQuery.queryParameter("group_id", "605761"), HttpQuery.queryParameter("type", "13"))).asString()),
+                                                                        imageSource(http(registeredName("sflogo.sourceforge.net"), path("sflogo.php"), queryParameters(queryParameter("group_id", "605761"), queryParameter("type", "13"))).asString()),
                                                                         alternateText("Get urin at SourceForge.net. Fast, secure and Free Open Source software downloads")
                                                                 )
                                                                         .withHeight(pixels("30"))
@@ -125,7 +127,7 @@ final class UrinPage {
                                                                 )
                                                                         .withHeight(pixels("31"))
                                                                         .withWidth(pixels("88"))
-                                                        ).withHref(href(http(registeredName("validator.w3.org"), path("check"), query("uri=referer"))))
+                                                        ).withHref(href(http(registeredName("validator.w3.org"), path("check"), queryParameters(queryParameter("uri", "referer")))))
                                                 )
                                         )
                                 ).withId(id("footer"))
@@ -152,11 +154,11 @@ final class UrinPage {
         return codeTag(xhtmlText(clazz.getCanonicalName()));
     }
 
-    static Urin standardJarUrin(final String version) {
+    static Urin<HttpQuery> standardJarUrin(final String version) {
         return Https.https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
     }
 
-    static Href href(final UrinReference urinReference) {
+    static Href href(final UrinReference<? extends Query> urinReference) {
         return Href.href(urinReference.asString());
     }
 }

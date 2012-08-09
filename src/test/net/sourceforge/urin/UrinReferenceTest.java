@@ -22,15 +22,21 @@ import static org.junit.Assert.fail;
 public class UrinReferenceTest {
 
     @Test
-    public void aUriAsStringParsesToAUri() throws Exception {
-        Urin urin = aUrin();
-        assertThat(aScheme().parseUrinReference(urin.asString()), equalTo((UrinReference) urin));
+    public void aUriAsStringParsesToAUrin() throws Exception {
+        Urin<Query> urin = aUrin();
+        assertThat(aScheme().parseUrinReference(urin.asString()), equalTo((UrinReference<Query>) urin));
+    }
+
+    @Test
+    public void aUriAsUriParsesToAUrin() throws Exception {
+        Urin<Query> urin = aUrin();
+        assertThat(aScheme().parseUrinReference(urin.asUri()), equalTo((UrinReference<Query>) urin));
     }
 
     @Test
     public void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
-        RelativeReference relativeReference = aRelativeReference();
-        assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo((UrinReference) relativeReference));
+        RelativeReference<Query> relativeReference = aRelativeReference();
+        assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo((UrinReference<Query>) relativeReference));
     }
 
     @Test

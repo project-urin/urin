@@ -22,12 +22,12 @@ import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
-import static net.sourceforge.urin.QueryBuilder.aQuery;
-import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.scheme.http.Http.HTTP;
 import static net.sourceforge.urin.scheme.http.Http.http;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
+import static net.sourceforge.urin.scheme.http.HttpQueryBuilder.anHttpQuery;
+import static net.sourceforge.urin.scheme.http.Https.HTTPS;
 import static net.sourceforge.urin.scheme.http.QueryMatcher.convertsToQueryString;
 import static net.sourceforge.urin.scheme.http.QueryParameterBuilder.aQueryParameter;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -38,43 +38,43 @@ public class HttpTest {
     @Test
     public void httpWithNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        assertThat(http(host), equalTo(scheme("http").urin(authority(host), path())));
+        assertThat(Http.http(host), equalTo(HTTP.urin(authority(host), path())));
     }
 
     @Test
     public void httpWithPortButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
-        assertThat(http(host, port), equalTo(scheme("http").urin(authority(host, port), path())));
+        assertThat(http(host, port), equalTo(HTTP.urin(authority(host, port), path())));
     }
 
     @Test
     public void httpWithQueryButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
-        assertThat(http(host, query), equalTo(scheme("http").urin(authority(host), path(), query)));
+        HttpQuery query = anHttpQuery();
+        assertThat(Http.http(host, query), equalTo(HTTP.urin(authority(host), path(), query)));
     }
 
     @Test
     public void httpWithQueryAndPortButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
-        Query query = aQuery();
-        assertThat(http(host, port, query), equalTo(scheme("http").urin(authority(host, port), path(), query)));
+        HttpQuery query = anHttpQuery();
+        assertThat(http(host, port, query), equalTo(HTTP.urin(authority(host, port), path(), query)));
     }
 
     @Test
     public void port80IsNormalisedAway() throws Exception {
         Host host = aHost();
         Port port = port(80);
-        assertThat(http(host, port), equalTo(scheme("http").urin(authority(host), path())));
+        assertThat(http(host, port), equalTo(HTTP.urin(authority(host), path())));
     }
 
     @Test
     public void httpWithPathButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        assertThat(http(host, path), equalTo(scheme("http").urin(authority(host), path)));
+        assertThat(http(host, path), equalTo(HTTP.urin(authority(host), path)));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
         AbsolutePath path = anAbsolutePath();
-        assertThat(http(host, port, path), equalTo(scheme("http").urin(authority(host, port), path)));
+        assertThat(http(host, port, path), equalTo(HTTP.urin(authority(host, port), path)));
     }
 
     @Test
@@ -90,40 +90,40 @@ public class HttpTest {
         Host host = aHost();
         Port port = port(80);
         AbsolutePath path = anAbsolutePath();
-        assertThat(http(host, port, path), equalTo(scheme("http").urin(authority(host), path)));
+        assertThat(http(host, port, path), equalTo(HTTP.urin(authority(host), path)));
     }
 
     @Test
     public void httpWithPathAndQueryButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
-        assertThat(http(host, path, query), equalTo(scheme("http").urin(authority(host), path, query)));
+        HttpQuery query = anHttpQuery();
+        assertThat(http(host, path, query), equalTo(HTTP.urin(authority(host), path, query)));
     }
 
     @Test
     public void httpWithPathAndQueryAndPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = aPortDifferentTo(port(80));
-        assertThat(http(host, port, path, query), equalTo(scheme("http").urin(authority(host, port), path, query)));
+        assertThat(http(host, port, path, query), equalTo(HTTP.urin(authority(host, port), path, query)));
     }
 
     @Test
     public void httpWithPathAndQueryAndDefaultPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = port(80);
-        assertThat(http(host, port, path, query), equalTo(scheme("http").urin(authority(host), path, query)));
+        assertThat(http(host, port, path, query), equalTo(HTTP.urin(authority(host), path, query)));
     }
 
     @Test
     public void httpWithOnlyFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Fragment fragment = aFragment();
-        assertThat(http(host, fragment), equalTo(scheme("http").urin(authority(host), path(), fragment)));
+        assertThat(http(host, fragment), equalTo(HTTP.urin(authority(host), path(), fragment)));
     }
 
     @Test
@@ -131,24 +131,24 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
         Fragment fragment = aFragment();
-        assertThat(http(host, port, fragment), equalTo(scheme("http").urin(authority(host, port), path(), fragment)));
+        assertThat(http(host, port, fragment), equalTo(HTTP.urin(authority(host, port), path(), fragment)));
     }
 
     @Test
     public void httpWithQueryAndFragmentButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(http(host, query, fragment), equalTo(scheme("http").urin(authority(host), path(), query, fragment)));
+        assertThat(http(host, query, fragment), equalTo(HTTP.urin(authority(host), path(), query, fragment)));
     }
 
     @Test
     public void httpWithQueryAndPortAndFragmentButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(http(host, port, query, fragment), equalTo(scheme("http").urin(authority(host, port), path(), query, fragment)));
+        assertThat(http(host, port, query, fragment), equalTo(HTTP.urin(authority(host, port), path(), query, fragment)));
     }
 
     @Test
@@ -156,7 +156,7 @@ public class HttpTest {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(http(host, path, fragment), equalTo(scheme("http").urin(authority(host), path, fragment)));
+        assertThat(http(host, path, fragment), equalTo(HTTP.urin(authority(host), path, fragment)));
     }
 
     @Test
@@ -165,7 +165,7 @@ public class HttpTest {
         Port port = aPortDifferentTo(port(80));
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(http(host, port, path, fragment), equalTo(scheme("http").urin(authority(host, port), path, fragment)));
+        assertThat(http(host, port, path, fragment), equalTo(HTTP.urin(authority(host, port), path, fragment)));
     }
 
     @Test
@@ -174,36 +174,36 @@ public class HttpTest {
         Port port = port(80);
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(http(host, port, path, fragment), equalTo(scheme("http").urin(authority(host), path, fragment)));
+        assertThat(http(host, port, path, fragment), equalTo(HTTP.urin(authority(host), path, fragment)));
     }
 
     @Test
     public void httpWithPathAndQueryAndFragmentButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(http(host, path, query, fragment), equalTo(scheme("http").urin(authority(host), path, query, fragment)));
+        assertThat(http(host, path, query, fragment), equalTo(HTTP.urin(authority(host), path, query, fragment)));
     }
 
     @Test
     public void httpWithPathAndQueryAndPortAndFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = aPortDifferentTo(port(80));
         Fragment fragment = aFragment();
-        assertThat(http(host, port, path, query, fragment), equalTo(scheme("http").urin(authority(host, port), path, query, fragment)));
+        assertThat(http(host, port, path, query, fragment), equalTo(HTTP.urin(authority(host, port), path, query, fragment)));
     }
 
     @Test
     public void httpWithPathAndQueryAndDefaultPortAndFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = port(80);
         Fragment fragment = aFragment();
-        assertThat(http(host, port, path, query, fragment), equalTo(scheme("http").urin(authority(host), path, query, fragment)));
+        assertThat(http(host, port, path, query, fragment), equalTo(HTTP.urin(authority(host), path, query, fragment)));
     }
 
     @Test
@@ -229,28 +229,28 @@ public class HttpTest {
     @Test
     public void httpsWithNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        assertThat(Https.https(host), equalTo(scheme("https").urin(authority(host), path())));
+        assertThat(Https.https(host), equalTo(HTTPS.urin(authority(host), path())));
     }
 
     @Test
     public void httpsWithPortButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
-        assertThat(Https.https(host, port), equalTo(scheme("https").urin(authority(host, port), path())));
+        assertThat(Https.https(host, port), equalTo(HTTPS.urin(authority(host, port), path())));
     }
 
     @Test
     public void port443IsNormalisedAway() throws Exception {
         Host host = aHost();
         Port port = port(443);
-        assertThat(Https.https(host, port), equalTo(scheme("https").urin(authority(host), path())));
+        assertThat(Https.https(host, port), equalTo(HTTPS.urin(authority(host), path())));
     }
 
     @Test
     public void httpsWithPathButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        assertThat(Https.https(host, path), equalTo(scheme("https").urin(authority(host), path)));
+        assertThat(Https.https(host, path), equalTo(HTTPS.urin(authority(host), path)));
     }
 
     @Test
@@ -258,7 +258,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
         AbsolutePath path = anAbsolutePath();
-        assertThat(Https.https(host, port, path), equalTo(scheme("https").urin(authority(host, port), path)));
+        assertThat(Https.https(host, port, path), equalTo(HTTPS.urin(authority(host, port), path)));
     }
 
     @Test
@@ -266,55 +266,55 @@ public class HttpTest {
         Host host = aHost();
         Port port = port(443);
         AbsolutePath path = anAbsolutePath();
-        assertThat(Https.https(host, port, path), equalTo(scheme("https").urin(authority(host), path)));
+        assertThat(Https.https(host, port, path), equalTo(HTTPS.urin(authority(host), path)));
     }
 
     @Test
     public void httpsWithPathAndQueryButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
-        assertThat(Https.https(host, path, query), equalTo(scheme("https").urin(authority(host), path, query)));
+        HttpQuery query = anHttpQuery();
+        assertThat(Https.https(host, path, query), equalTo(HTTPS.urin(authority(host), path, query)));
     }
 
     @Test
     public void httpsWithPathAndQueryAndPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = aPortDifferentTo(port(443));
-        assertThat(Https.https(host, port, path, query), equalTo(scheme("https").urin(authority(host, port), path, query)));
+        assertThat(Https.https(host, port, path, query), equalTo(HTTPS.urin(authority(host, port), path, query)));
     }
 
     @Test
     public void httpsWithQueryButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
-        assertThat(Https.https(host, query), equalTo(scheme("https").urin(authority(host), path(), query)));
+        HttpQuery query = anHttpQuery();
+        assertThat(Https.https(host, query), equalTo(HTTPS.urin(authority(host), path(), query)));
     }
 
     @Test
     public void httpsWithQueryAndPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = aPortDifferentTo(port(443));
-        assertThat(Https.https(host, port, query), equalTo(scheme("https").urin(authority(host, port), path(), query)));
+        assertThat(Https.https(host, port, query), equalTo(HTTPS.urin(authority(host, port), path(), query)));
     }
 
     @Test
     public void httpsWithPathAndQueryAndDefaultPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = port(443);
-        assertThat(Https.https(host, port, path, query), equalTo(scheme("https").urin(authority(host), path, query)));
+        assertThat(Https.https(host, port, path, query), equalTo(HTTPS.urin(authority(host), path, query)));
     }
 
     @Test
     public void httpsWithJustFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, fragment), equalTo(scheme("https").urin(authority(host), path(), fragment)));
+        assertThat(Https.https(host, fragment), equalTo(HTTPS.urin(authority(host), path(), fragment)));
     }
 
     @Test
@@ -322,7 +322,7 @@ public class HttpTest {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, port, fragment), equalTo(scheme("https").urin(authority(host, port), path(), fragment)));
+        assertThat(Https.https(host, port, fragment), equalTo(HTTPS.urin(authority(host, port), path(), fragment)));
     }
 
     @Test
@@ -330,7 +330,7 @@ public class HttpTest {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, path, fragment), equalTo(scheme("https").urin(authority(host), path, fragment)));
+        assertThat(Https.https(host, path, fragment), equalTo(HTTPS.urin(authority(host), path, fragment)));
     }
 
     @Test
@@ -339,7 +339,7 @@ public class HttpTest {
         Port port = aPortDifferentTo(port(443));
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, port, path, fragment), equalTo(scheme("https").urin(authority(host, port), path, fragment)));
+        assertThat(Https.https(host, port, path, fragment), equalTo(HTTPS.urin(authority(host, port), path, fragment)));
     }
 
     @Test
@@ -348,81 +348,81 @@ public class HttpTest {
         Port port = port(443);
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, port, path, fragment), equalTo(scheme("https").urin(authority(host), path, fragment)));
+        assertThat(Https.https(host, port, path, fragment), equalTo(HTTPS.urin(authority(host), path, fragment)));
     }
 
     @Test
     public void httpsWithPathAndQueryAndFragmentButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, path, query, fragment), equalTo(scheme("https").urin(authority(host), path, query, fragment)));
+        assertThat(Https.https(host, path, query, fragment), equalTo(HTTPS.urin(authority(host), path, query, fragment)));
     }
 
     @Test
     public void httpsWithPathAndQueryAndPortAndFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = aPortDifferentTo(port(443));
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, port, path, query, fragment), equalTo(scheme("https").urin(authority(host, port), path, query, fragment)));
+        assertThat(Https.https(host, port, path, query, fragment), equalTo(HTTPS.urin(authority(host, port), path, query, fragment)));
     }
 
     @Test
     public void httpsWithQueryAndFragmentButNoPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, query, fragment), equalTo(scheme("https").urin(authority(host), path(), query, fragment)));
+        assertThat(Https.https(host, query, fragment), equalTo(HTTPS.urin(authority(host), path(), query, fragment)));
     }
 
     @Test
     public void httpsWithQueryAndPortAndFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = aPortDifferentTo(port(443));
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, port, query, fragment), equalTo(scheme("https").urin(authority(host, port), path(), query, fragment)));
+        assertThat(Https.https(host, port, query, fragment), equalTo(HTTPS.urin(authority(host, port), path(), query, fragment)));
     }
 
     @Test
     public void httpsWithPathAndQueryAndDefaultPortAndFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = port(443);
         Fragment fragment = aFragment();
-        assertThat(Https.https(host, port, path, query, fragment), equalTo(scheme("https").urin(authority(host), path, query, fragment)));
+        assertThat(Https.https(host, port, path, query, fragment), equalTo(HTTPS.urin(authority(host), path, query, fragment)));
     }
 
     @Test
     public void httpWithAuthorityButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(80));
-        assertThat(http(authority(host, port)), equalTo(scheme("http").urin(authority(host, port), path())));
+        assertThat(http(authority(host, port)), equalTo(HTTP.urin(authority(host, port), path())));
     }
 
     @Test
     public void httpWithAuthorityAndQueryButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
-        assertThat(http(authority(host), query), equalTo(scheme("http").urin(authority(host), path(), query)));
+        HttpQuery query = anHttpQuery();
+        assertThat(http(authority(host), query), equalTo(HTTP.urin(authority(host), path(), query)));
     }
 
     @Test
     public void httpPort80IsNormalisedAwayFromAuthority() throws Exception {
         Host host = aHost();
         Port port = port(80);
-        assertThat(http(authority(host, port)), equalTo(scheme("http").urin(authority(host), path())));
+        assertThat(http(authority(host, port)), equalTo(HTTP.urin(authority(host), path())));
     }
 
     @Test
     public void httpWithPathAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        assertThat(http(authority(host), path), equalTo(scheme("http").urin(authority(host), path)));
+        assertThat(http(authority(host), path), equalTo(HTTP.urin(authority(host), path)));
     }
 
     @Test
@@ -430,39 +430,39 @@ public class HttpTest {
         Host host = aHost();
         Port port = port(80);
         AbsolutePath path = anAbsolutePath();
-        assertThat(http(authority(host, port), path), equalTo(scheme("http").urin(authority(host), path)));
+        assertThat(http(authority(host, port), path), equalTo(HTTP.urin(authority(host), path)));
     }
 
     @Test
     public void httpWithPathAndQueryAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
-        assertThat(http(authority(host), path, query), equalTo(scheme("http").urin(authority(host), path, query)));
+        HttpQuery query = anHttpQuery();
+        assertThat(http(authority(host), path, query), equalTo(HTTP.urin(authority(host), path, query)));
     }
 
     @Test
     public void httpWithPathAndQueryAndAuthorityWithDefaultPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = port(80);
-        assertThat(http(authority(host, port), path, query), equalTo(scheme("http").urin(authority(host), path, query)));
+        assertThat(http(authority(host, port), path, query), equalTo(HTTP.urin(authority(host), path, query)));
     }
 
     @Test
     public void httpWithOnlyFragmentAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Fragment fragment = aFragment();
-        assertThat(http(authority(host), fragment), equalTo(scheme("http").urin(authority(host), path(), fragment)));
+        assertThat(http(authority(host), fragment), equalTo(HTTP.urin(authority(host), path(), fragment)));
     }
 
     @Test
     public void httpWithQueryAndFragmentAndAuthorityButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(http(authority(host), query, fragment), equalTo(scheme("http").urin(authority(host), path(), query, fragment)));
+        assertThat(http(authority(host), query, fragment), equalTo(HTTP.urin(authority(host), path(), query, fragment)));
     }
 
     @Test
@@ -470,7 +470,7 @@ public class HttpTest {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(http(authority(host), path, fragment), equalTo(scheme("http").urin(authority(host), path, fragment)));
+        assertThat(http(authority(host), path, fragment), equalTo(HTTP.urin(authority(host), path, fragment)));
     }
 
     @Test
@@ -479,54 +479,54 @@ public class HttpTest {
         Port port = port(80);
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(http(authority(host, port), path, fragment), equalTo(scheme("http").urin(authority(host), path, fragment)));
+        assertThat(http(authority(host, port), path, fragment), equalTo(HTTP.urin(authority(host), path, fragment)));
     }
 
     @Test
     public void httpWithPathAndQueryAndFragmentAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(http(authority(host), path, query, fragment), equalTo(scheme("http").urin(authority(host), path, query, fragment)));
+        assertThat(http(authority(host), path, query, fragment), equalTo(HTTP.urin(authority(host), path, query, fragment)));
     }
 
     @Test
     public void httpWithPathAndQueryAndAuthorityWithDefaultPortAndFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = port(80);
         Fragment fragment = aFragment();
-        assertThat(http(authority(host, port), path, query, fragment), equalTo(scheme("http").urin(authority(host), path, query, fragment)));
+        assertThat(http(authority(host, port), path, query, fragment), equalTo(HTTP.urin(authority(host), path, query, fragment)));
     }
 
     @Test
     public void httpsWithAuthorityButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Port port = aPortDifferentTo(port(443));
-        assertThat(Https.https(authority(host, port)), equalTo(scheme("https").urin(authority(host, port), path())));
+        assertThat(Https.https(authority(host, port)), equalTo(HTTPS.urin(authority(host, port), path())));
     }
 
     @Test
     public void httpsWithAuthorityAndQueryButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
-        assertThat(Https.https(authority(host), query), equalTo(scheme("https").urin(authority(host), path(), query)));
+        HttpQuery query = anHttpQuery();
+        assertThat(Https.https(authority(host), query), equalTo(HTTPS.urin(authority(host), path(), query)));
     }
 
     @Test
     public void httpsPort443IsNormalisedAwayFromAuthority() throws Exception {
         Host host = aHost();
         Port port = port(443);
-        assertThat(Https.https(authority(host, port)), equalTo(scheme("https").urin(authority(host), path())));
+        assertThat(Https.https(authority(host, port)), equalTo(HTTPS.urin(authority(host), path())));
     }
 
     @Test
     public void httpsWithPathAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        assertThat(Https.https(authority(host), path), equalTo(scheme("https").urin(authority(host), path)));
+        assertThat(Https.https(authority(host), path), equalTo(HTTPS.urin(authority(host), path)));
     }
 
     @Test
@@ -534,39 +534,39 @@ public class HttpTest {
         Host host = aHost();
         Port port = port(443);
         AbsolutePath path = anAbsolutePath();
-        assertThat(Https.https(authority(host, port), path), equalTo(scheme("https").urin(authority(host), path)));
+        assertThat(Https.https(authority(host, port), path), equalTo(HTTPS.urin(authority(host), path)));
     }
 
     @Test
     public void httpsWithPathAndQueryAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
-        assertThat(Https.https(authority(host), path, query), equalTo(scheme("https").urin(authority(host), path, query)));
+        HttpQuery query = anHttpQuery();
+        assertThat(Https.https(authority(host), path, query), equalTo(HTTPS.urin(authority(host), path, query)));
     }
 
     @Test
     public void httpsWithPathAndQueryAndAuthorityWithDefaultPortProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = port(443);
-        assertThat(Https.https(authority(host, port), path, query), equalTo(scheme("https").urin(authority(host), path, query)));
+        assertThat(Https.https(authority(host, port), path, query), equalTo(HTTPS.urin(authority(host), path, query)));
     }
 
     @Test
     public void httpsWithOnlyFragmentAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         Fragment fragment = aFragment();
-        assertThat(Https.https(authority(host), fragment), equalTo(scheme("https").urin(authority(host), path(), fragment)));
+        assertThat(Https.https(authority(host), fragment), equalTo(HTTPS.urin(authority(host), path(), fragment)));
     }
 
     @Test
     public void httpsWithQueryAndFragmentAndAuthorityButNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(Https.https(authority(host), query, fragment), equalTo(scheme("https").urin(authority(host), path(), query, fragment)));
+        assertThat(Https.https(authority(host), query, fragment), equalTo(HTTPS.urin(authority(host), path(), query, fragment)));
     }
 
     @Test
@@ -574,7 +574,7 @@ public class HttpTest {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(Https.https(authority(host), path, fragment), equalTo(scheme("https").urin(authority(host), path, fragment)));
+        assertThat(Https.https(authority(host), path, fragment), equalTo(HTTPS.urin(authority(host), path, fragment)));
     }
 
     @Test
@@ -583,26 +583,26 @@ public class HttpTest {
         Port port = port(443);
         AbsolutePath path = anAbsolutePath();
         Fragment fragment = aFragment();
-        assertThat(Https.https(authority(host, port), path, fragment), equalTo(scheme("https").urin(authority(host), path, fragment)));
+        assertThat(Https.https(authority(host, port), path, fragment), equalTo(HTTPS.urin(authority(host), path, fragment)));
     }
 
     @Test
     public void httpsWithPathAndQueryAndFragmentAndAuthorityProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(Https.https(authority(host), path, query, fragment), equalTo(scheme("https").urin(authority(host), path, query, fragment)));
+        assertThat(Https.https(authority(host), path, query, fragment), equalTo(HTTPS.urin(authority(host), path, query, fragment)));
     }
 
     @Test
     public void httpsWithPathAndQueryAndAuthorityWithDefaultPortAndFragmentProducesCorrectUrin() throws Exception {
         Host host = aHost();
         AbsolutePath path = anAbsolutePath();
-        Query query = aQuery();
+        HttpQuery query = anHttpQuery();
         Port port = port(443);
         Fragment fragment = aFragment();
-        assertThat(Https.https(authority(host, port), path, query, fragment), equalTo(scheme("https").urin(authority(host), path, query, fragment)));
+        assertThat(Https.https(authority(host, port), path, query, fragment), equalTo(HTTPS.urin(authority(host), path, query, fragment)));
     }
 
     @Test

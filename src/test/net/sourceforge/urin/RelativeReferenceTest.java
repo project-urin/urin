@@ -347,7 +347,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathResolvesSchemeToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Path relativeReferencePath = aPath();
@@ -358,7 +358,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathResolvesSchemeAndAuthorityToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -370,7 +370,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -463,7 +463,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Path relativeReferencePath = aPath();
@@ -475,7 +475,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -488,7 +488,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -582,7 +582,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentResolvesSchemeToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Path relativeReferencePath = aPath();
@@ -594,7 +594,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -607,7 +607,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -718,7 +718,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Path relativeReferencePath = aPath();
@@ -731,7 +731,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -745,7 +745,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -907,7 +907,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithOnlyPathResolvesSchemeAndAuthorityToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Path relativeReferencePath = aPath();
@@ -918,7 +918,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithOnlyPathResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Path relativeReferencePath = aPath();
@@ -930,7 +930,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithOnlyPathResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Path relativeReferencePath = aPath();
@@ -1007,7 +1007,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Authority relativeReferenceAuthority = anAuthority();
@@ -1018,7 +1018,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -1030,7 +1030,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -1120,7 +1120,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryResolvesSchemeToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Authority relativeReferenceAuthority = anAuthority();
@@ -1132,7 +1132,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryResolvesSchemeAndAuthorityToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -1145,7 +1145,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -1237,7 +1237,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Authority relativeReferenceAuthority = anAuthority();
@@ -1249,7 +1249,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -1262,7 +1262,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -1372,7 +1372,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesSchemeToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Authority relativeReferenceAuthority = anAuthority();
@@ -1385,7 +1385,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -1399,7 +1399,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme baseScheme = aScheme();
+        Scheme<Query> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath basePath = anAbsolutePath();
         Query baseQuery = aQuery();
@@ -1877,6 +1877,15 @@ public class RelativeReferenceTest {
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(aScheme().parseRelativeReference("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()), equalTo(aScheme().relativeReference(authority, absolutePath, query, fragment)));
+    }
+
+    @Test
+    public void parsesRelativeReferenceFromUri() throws Exception {
+        Authority authority = anAuthority();
+        AbsolutePath absolutePath = anAbsolutePath();
+        Query query = aQuery();
+        Fragment fragment = aFragment();
+        assertThat(aScheme().parseRelativeReference(URI.create("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString())), equalTo(aScheme().relativeReference(authority, absolutePath, query, fragment)));
     }
 
 }

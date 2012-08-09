@@ -18,7 +18,7 @@ package net.sourceforge.urin;
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-4.2">RFC 3986 - Relative Reference</a>
  */
-public abstract class RelativeReference extends UrinReference {
+public abstract class RelativeReference<Q extends Query> extends UrinReference<Q> {
 
     RelativeReference() {
     }

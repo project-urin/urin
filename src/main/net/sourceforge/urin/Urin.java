@@ -20,7 +20,7 @@ package net.sourceforge.urin;
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3">RFC 3986 - Syntax Components</a>
  */
-public abstract class Urin extends UrinReference {
+public abstract class Urin<Q extends Query> extends UrinReference<Q> {
 
     Urin() {
         // deliberately empty
@@ -33,35 +33,35 @@ public abstract class Urin extends UrinReference {
      * @return the {@code Urin} resulting from resolving the give {@code UrinReference} relative to this.
      * @see <a href="http://tools.ietf.org/html/rfc3986#section-5">RFC 3986 - Reference Resolution</a>
      */
-    public abstract Urin resolve(final UrinReference urinReference);
+    public abstract Urin resolve(final UrinReference<Q> urinReference);
 
     @Override
-    Urin resolve(final Scheme scheme, final Path path) {
+    Urin<Q> resolve(final Scheme scheme, final Path path) {
         return this;
     }
 
     @Override
-    Urin resolve(final Scheme scheme, final Authority authority, final Path path) {
+    Urin<Q> resolve(final Scheme scheme, final Authority authority, final Path path) {
         return this;
     }
 
     @Override
-    Urin resolve(final Scheme scheme, final Path path, final Query query) {
+    Urin<Q> resolve(final Scheme scheme, final Path path, final Query query) {
         return this;
     }
 
     @Override
-    Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query) {
+    Urin<Q> resolve(final Scheme scheme, final Authority authority, final Path path, final Query query) {
         return this;
     }
 
     @Override
-    Urin resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+    Urin<Q> resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
         return this;
     }
 
     @Override
-    Urin resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+    Urin<Q> resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
         return this;
     }
 
