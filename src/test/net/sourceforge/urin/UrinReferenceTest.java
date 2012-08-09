@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import java.net.URI;
+
 import static net.sourceforge.urin.RelativeReferenceBuilder.aRelativeReference;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.UrinBuilder.aUrin;
@@ -28,9 +30,9 @@ public class UrinReferenceTest {
     }
 
     @Test
-    public void aUriAsUriParsesToAUrin() throws Exception {
-        Urin<Query> urin = aUrin();
-        assertThat(aScheme().parseUrinReference(urin.asUri()), equalTo((UrinReference<Query>) urin));
+    public void aUriRoundTripsAsUrinReference() throws Exception {
+        URI uriReference = URI.create("http://some.where/some/thing");
+        assertThat(aScheme().parseUrinReference(uriReference).asUri(), equalTo(uriReference));
     }
 
     @Test
