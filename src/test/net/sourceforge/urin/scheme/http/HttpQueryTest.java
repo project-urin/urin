@@ -97,6 +97,12 @@ public class HttpQueryTest {
     }
 
     @Test
+    public void queryParameterWithNameOnlyNameIsCorrect() throws Exception {
+        String name = aString();
+        assertThat(queryParameter(name).name(), equalTo(name));
+    }
+
+    @Test
     public void rejectsNullsInNameAndValueQueryParameter() throws Exception {
         assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -130,6 +136,12 @@ public class HttpQueryTest {
         String name = aString();
         String value = aString();
         assertThat(queryParameter(name, value).toString(), equalTo("QueryParameter{name='" + name + "', value='" + value + "'}"));
+    }
+
+    @Test
+    public void queryParameterWithNameAndValueNameIsCorrect() throws Exception {
+        String name = aString();
+        assertThat(queryParameter(name, aString()).name(), equalTo(name));
     }
 
     @Test

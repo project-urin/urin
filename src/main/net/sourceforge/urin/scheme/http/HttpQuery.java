@@ -176,6 +176,8 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         }
 
         abstract String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding);
+
+        public abstract String name();
     }
 
     private static final class NameAndValueQueryParameter extends QueryParameter {
@@ -196,6 +198,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         @Override
         String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding) {
             return partsEncoding.encode(Arrays.asList(name, value));
+        }
+
+        @Override
+        public String name() {
+            return name;
         }
 
         @Override
@@ -234,6 +241,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         @Override
         String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding) {
             return partsEncoding.encode(Arrays.asList(name));
+        }
+
+        @Override
+        public String name() {
+            return name;
         }
 
         @Override
