@@ -123,7 +123,7 @@ public final class Http extends HypertextScheme {
     }
 
     public static Urin<HttpQuery> http(final Authority authority, final HttpQuery query, final Fragment fragment) {
-        return HTTP.urin(authority, path(), query, fragment);
+        return HTTP.urin(authority, query, fragment);
     }
 
 }

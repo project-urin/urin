@@ -462,7 +462,7 @@ public class HttpTest {
         Host host = aHost();
         HttpQuery query = anHttpQuery();
         Fragment fragment = aFragment();
-        assertThat(http(authority(host), query, fragment), equalTo(HTTP.urin(authority(host), path(), query, fragment)));
+        assertThat(http(authority(host), query, fragment), equalTo(HTTP.urin(authority(host), query, fragment)));
     }
 
     @Test
@@ -608,6 +608,30 @@ public class HttpTest {
     @Test
     public void roundTrippedHttpUrlsAreEqual() throws Exception {
         Urin httpUrin = http(anAuthority(), anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(HTTP.parseUrin(httpUrin.asString()), equalTo(httpUrin));
+    }
+
+    @Test
+    public void roundTrippedHttpUrlsWithTrailingEmptySegmentAreEqual() throws Exception {
+        Urin httpUrin = http(anAuthority(), path("blah", ""), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(HTTP.parseUrin(httpUrin.asString()), equalTo(httpUrin));
+    }
+
+    @Test
+    public void roundTrippedHttpUrlsWithSingleEmptySegmentAreEqual() throws Exception {
+        Urin httpUrin = http(anAuthority(), path(""), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(HTTP.parseUrin(httpUrin.asString()), equalTo(httpUrin));
+    }
+
+    @Test
+    public void roundTrippedHttpUrlsWithEmptyPathAreEqual() throws Exception {
+        Urin httpUrin = http(anAuthority(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(HTTP.parseUrin(httpUrin.asString()), equalTo(httpUrin));
+    }
+
+    @Test
+    public void roundTrippedHttpUrlsWithTwoEmptySegmentsAreEqual() throws Exception {
+        Urin httpUrin = http(anAuthority(), path("", ""), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
         assertThat(HTTP.parseUrin(httpUrin.asString()), equalTo(httpUrin));
     }
 

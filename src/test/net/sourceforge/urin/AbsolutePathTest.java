@@ -77,7 +77,7 @@ public class AbsolutePathTest {
 
     @Test
     public void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() throws Exception {
-        assertThat(AbsolutePath.path(EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
+        assertThat(AbsolutePath.path(EMPTY, aNonDotSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(true));
     }
 
     @Test

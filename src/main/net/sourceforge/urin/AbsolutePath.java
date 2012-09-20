@@ -50,7 +50,7 @@ public final class AbsolutePath extends Path {
                 }
             }
         }
-        this.segments = newSegments;
+        this.segments = newSegments.size() == 1 && EMPTY.equals(newSegments.getFirst()) ? new LinkedList<Segment>() : newSegments;
     }
 
 
