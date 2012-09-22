@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import java.util.Random;
+
 import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.Hexadectet.ZERO;
@@ -31,6 +33,7 @@ import static org.junit.Assert.fail;
 public class HostTest {
 
     private static final String IP_V_FUTURE_ADDRESS_CHARACTERS = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
+    private static final Random RANDOM = new Random();
 
     @Test
     public void registeredNameAsStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
@@ -136,6 +139,15 @@ public class HostTest {
         Octet fourthOctet = anOctet();
         assertThat(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet), equalTo(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet)));
         assertThat(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).hashCode(), equalTo(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).hashCode()));
+    }
+
+    @Test
+    public void ipV4AddressCreatedWithIntegersIsEqualToOneCreatedWithEquivalentOctets() throws Exception {
+        int firstOctet = RANDOM.nextInt(256);
+        int secondOctet = RANDOM.nextInt(256);
+        int thirdOctet = RANDOM.nextInt(256);
+        int fourthOctet = RANDOM.nextInt(256);
+        assertThat(ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet), equalTo(ipV4Address(octet(firstOctet), octet(secondOctet), octet(thirdOctet), octet(fourthOctet))));
     }
 
     @Test

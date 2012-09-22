@@ -108,6 +108,16 @@ public abstract class Host {
     }
 
     /**
+     * Factory method for creating IP version 4 type {@code Host}s.
+     * IP version 4 {@code Host}s are made up of four {@code Octet}s, which are created from the given {@code int}s.
+     *
+     * @return a {@code Host} representing the given {@code int}s as an IP version 4 address.
+     */
+    public static Host ipV4Address(final int firstOctet, final int secondOctet, final int thirdOctet, final int fourthOctet) {
+        return new IpV4Address(octet(firstOctet), octet(secondOctet), octet(thirdOctet), octet(fourthOctet));
+    }
+
+    /**
      * Factory method for creating IP version 6 type {@code Host}s with all parts specified as {@code Hexadectet}s.
      *
      * @return a {@code Host} representing the given {@code Hexadectet}s as an IP version 6 address.
