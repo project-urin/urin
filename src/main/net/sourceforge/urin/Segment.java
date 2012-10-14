@@ -22,6 +22,7 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.non
  * <p/>
  * Immutable and threadsafe.
  *
+ * @param <ENCODES> The type of value represented by the segment - {@code String} in the general case.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
  */
 public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {

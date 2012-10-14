@@ -25,9 +25,10 @@ import static net.sourceforge.urin.Query.BASE_QUERY_PARSER;
  * A name component of a URI.
  * Immutable and threadsafe.
  *
+ * @param <QUERY> The type of {@code Query} used by this scheme.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.1">RFC 3986 - Scheme</a>
  */
-public abstract class Scheme<Q extends Query> {
+public abstract class Scheme<QUERY extends Query> {
 
     private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
@@ -41,9 +42,9 @@ public abstract class Scheme<Q extends Query> {
             singleMemberCharacterSet('.')
     );
 
-    protected final Parser<Q> queryParser;
+    protected final Parser<QUERY> queryParser;
 
-    Scheme(final Parser<Q> queryParser) {
+    Scheme(final Parser<QUERY> queryParser) {
         this.queryParser = queryParser;
     }
 
@@ -76,12 +77,12 @@ public abstract class Scheme<Q extends Query> {
         return new SchemeWithDefaultPort<Query<String>>(name.toLowerCase(ENGLISH), defaultPort, BASE_QUERY_PARSER);
     }
 
-    private Scheme<Q> parse(final String name) throws ParseException {
+    private Scheme<QUERY> parse(final String name) throws ParseException {
         verify(name, PARSE_EXCEPTION_EXCEPTION_FACTORY);
         return withName(name);
     }
 
-    abstract Scheme<Q> withName(String name);
+    abstract Scheme<QUERY> withName(String name);
 
     private static <T extends Exception> void verify(final String name, final ExceptionFactory<T> exceptionFactory) throws T {
         if (name.isEmpty()) {
@@ -95,15 +96,15 @@ public abstract class Scheme<Q extends Query> {
 
     abstract Authority normalise(final Authority authority);
 
-    abstract Scheme<Q> removeDefaultPort();
+    abstract Scheme<QUERY> removeDefaultPort();
 
     /**
      * Factory method for creating {@code RelativeReference}s with just an empty path.
      *
      * @return a {@code RelativeReference} with an empty path.
      */
-    public final RelativeReference<Q> relativeReference() {
-        return new RelativeReferenceNoAuthority<Q>(new EmptyPath());
+    public final RelativeReference<QUERY> relativeReference() {
+        return new RelativeReferenceNoAuthority<QUERY>(new EmptyPath());
     }
 
     /**
@@ -112,8 +113,8 @@ public abstract class Scheme<Q extends Query> {
      * @param authority any {@code Authority} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and an empty path.
      */
-    public final RelativeReference<Q> relativeReference(final Authority authority) {
-        return new RelativeReferenceWithAuthority<Q>(authority, new EmptyPath());
+    public final RelativeReference<QUERY> relativeReference(final Authority authority) {
+        return new RelativeReferenceWithAuthority<QUERY>(authority, new EmptyPath());
     }
 
     /**
@@ -122,8 +123,8 @@ public abstract class Scheme<Q extends Query> {
      * @param path any {@code Path} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path}.
      */
-    public final RelativeReference<Q> relativeReference(final Path path) {
-        return new RelativeReferenceNoAuthority<Q>(path);
+    public final RelativeReference<QUERY> relativeReference(final Path path) {
+        return new RelativeReferenceNoAuthority<QUERY>(path);
     }
 
     /**
@@ -133,8 +134,8 @@ public abstract class Scheme<Q extends Query> {
      * @param path      any {@code AbsolutePath} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Path}.
      */
-    public final RelativeReference<Q> relativeReference(final Authority authority, final AbsolutePath path) {
-        return new RelativeReferenceWithAuthority<Q>(authority, path);
+    public final RelativeReference<QUERY> relativeReference(final Authority authority, final AbsolutePath path) {
+        return new RelativeReferenceWithAuthority<QUERY>(authority, path);
     }
 
     /**
@@ -143,8 +144,8 @@ public abstract class Scheme<Q extends Query> {
      * @param query any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Query} and an empty path.
      */
-    public final RelativeReference<Q> relativeReference(final Q query) {
-        return new RelativeReferenceNoAuthorityWithQuery<Q>(new EmptyPath(), query);
+    public final RelativeReference<QUERY> relativeReference(final QUERY query) {
+        return new RelativeReferenceNoAuthorityWithQuery<QUERY>(new EmptyPath(), query);
     }
 
     /**
@@ -154,8 +155,8 @@ public abstract class Scheme<Q extends Query> {
      * @param query     any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Query}, and an empty path.
      */
-    public final RelativeReference<Q> relativeReference(final Authority authority, final Q query) {
-        return new RelativeReferenceWithAuthorityAndQuery<Q>(authority, new EmptyPath(), query);
+    public final RelativeReference<QUERY> relativeReference(final Authority authority, final QUERY query) {
+        return new RelativeReferenceWithAuthorityAndQuery<QUERY>(authority, new EmptyPath(), query);
     }
 
     /**
@@ -165,8 +166,8 @@ public abstract class Scheme<Q extends Query> {
      * @param query any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path} and {@code Query}.
      */
-    public final RelativeReference<Q> relativeReference(final Path path, final Q query) {
-        return new RelativeReferenceNoAuthorityWithQuery<Q>(path, query);
+    public final RelativeReference<QUERY> relativeReference(final Path path, final QUERY query) {
+        return new RelativeReferenceNoAuthorityWithQuery<QUERY>(path, query);
     }
 
     /**
@@ -177,8 +178,8 @@ public abstract class Scheme<Q extends Query> {
      * @param query     any {@code Query} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Query}.
      */
-    public final RelativeReference<Q> relativeReference(final Authority authority, final AbsolutePath path, final Q query) {
-        return new RelativeReferenceWithAuthorityAndQuery<Q>(authority, path, query);
+    public final RelativeReference<QUERY> relativeReference(final Authority authority, final AbsolutePath path, final QUERY query) {
+        return new RelativeReferenceWithAuthorityAndQuery<QUERY>(authority, path, query);
     }
 
     /**
@@ -187,8 +188,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Fragment} and an empty path.
      */
-    public final RelativeReference<Q> relativeReference(final Fragment fragment) {
-        return new RelativeReferenceNoAuthorityWithFragment<Q>(new EmptyPath(), fragment);
+    public final RelativeReference<QUERY> relativeReference(final Fragment fragment) {
+        return new RelativeReferenceNoAuthorityWithFragment<QUERY>(new EmptyPath(), fragment);
     }
 
     /**
@@ -198,8 +199,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Fragment}, and an empty path.
      */
-    public final RelativeReference<Q> relativeReference(final Authority authority, final Fragment fragment) {
-        return new RelativeReferenceWithAuthorityAndFragment<Q>(authority, new EmptyPath(), fragment);
+    public final RelativeReference<QUERY> relativeReference(final Authority authority, final Fragment fragment) {
+        return new RelativeReferenceWithAuthorityAndFragment<QUERY>(authority, new EmptyPath(), fragment);
     }
 
     /**
@@ -209,8 +210,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path} and {@code Fragment}.
      */
-    public final RelativeReference<Q> relativeReference(final Path path, final Fragment fragment) {
-        return new RelativeReferenceNoAuthorityWithFragment<Q>(path, fragment);
+    public final RelativeReference<QUERY> relativeReference(final Path path, final Fragment fragment) {
+        return new RelativeReferenceNoAuthorityWithFragment<QUERY>(path, fragment);
     }
 
     /**
@@ -221,8 +222,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path} and {@code Fragment}.
      */
-    public final RelativeReference<Q> relativeReference(final Authority authority, final AbsolutePath path, final Fragment fragment) {
-        return new RelativeReferenceWithAuthorityAndFragment<Q>(authority, path, fragment);
+    public final RelativeReference<QUERY> relativeReference(final Authority authority, final AbsolutePath path, final Fragment fragment) {
+        return new RelativeReferenceWithAuthorityAndFragment<QUERY>(authority, path, fragment);
     }
 
     /**
@@ -232,8 +233,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Query} and {@code Fragment}, and an empty path.
      */
-    public final RelativeReference<Q> relativeReference(final Q query, final Fragment fragment) {
-        return new RelativeReferenceNoAuthorityWithQueryAndFragment<Q>(new EmptyPath(), query, fragment);
+    public final RelativeReference<QUERY> relativeReference(final QUERY query, final Fragment fragment) {
+        return new RelativeReferenceNoAuthorityWithQueryAndFragment<QUERY>(new EmptyPath(), query, fragment);
     }
 
     /**
@@ -244,8 +245,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Query} and {@code Fragment}, and an empty path.
      */
-    public final RelativeReference<Q> relativeReference(final Authority authority, final Q query, final Fragment fragment) {
-        return new RelativeReferenceWithAuthorityAndQueryAndFragment<Q>(authority, new EmptyPath(), query, fragment);
+    public final RelativeReference<QUERY> relativeReference(final Authority authority, final QUERY query, final Fragment fragment) {
+        return new RelativeReferenceWithAuthorityAndQueryAndFragment<QUERY>(authority, new EmptyPath(), query, fragment);
     }
 
     /**
@@ -256,8 +257,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Path}, {@code Query} and {@code Fragment}.
      */
-    public final RelativeReference<Q> relativeReference(final Path path, final Q query, final Fragment fragment) {
-        return new RelativeReferenceNoAuthorityWithQueryAndFragment<Q>(path, query, fragment);
+    public final RelativeReference<QUERY> relativeReference(final Path path, final QUERY query, final Fragment fragment) {
+        return new RelativeReferenceNoAuthorityWithQueryAndFragment<QUERY>(path, query, fragment);
     }
 
     /**
@@ -269,8 +270,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment  any {@code Fragment} to use in this {@code RelativeReference}.
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Path}, {@code Query} and {@code Fragment}.
      */
-    public final RelativeReference<Q> relativeReference(final Authority authority, final AbsolutePath path, final Q query, final Fragment fragment) {
-        return new RelativeReferenceWithAuthorityAndQueryAndFragment<Q>(authority, path, query, fragment);
+    public final RelativeReference<QUERY> relativeReference(final Authority authority, final AbsolutePath path, final QUERY query, final Fragment fragment) {
+        return new RelativeReferenceWithAuthorityAndQueryAndFragment<QUERY>(authority, path, query, fragment);
     }
 
     /**
@@ -280,12 +281,12 @@ public abstract class Scheme<Q extends Query> {
      * @return a {@code UrinReference} representing the relative reference represented by the given {@code String}.
      * @throws ParseException if the given {@code String} is not a valid relative reference.
      */
-    public final RelativeReference<Q> parseRelativeReference(final String relativeReferenceString) throws ParseException {
+    public final RelativeReference<QUERY> parseRelativeReference(final String relativeReferenceString) throws ParseException {
         final Matcher matcher = RELATIVE_REFERENCE_PATTERN.matcher(relativeReferenceString);
         matcher.matches();
         final String queryString = matcher.group(6);
         final String fragment = matcher.group(8);
-        final RelativeReference<Q> result;
+        final RelativeReference<QUERY> result;
         final String authorityString = matcher.group(3);
         final String pathString = matcher.group(4);
         if (authorityString == null) {
@@ -297,7 +298,7 @@ public abstract class Scheme<Q extends Query> {
                         result = relativeReference(Fragment.parse(fragment));
                     }
                 } else {
-                    final Q query = queryParser.parse(queryString);
+                    final QUERY query = queryParser.parse(queryString);
                     if (fragment == null) {
                         result = relativeReference(query);
                     } else {
@@ -313,7 +314,7 @@ public abstract class Scheme<Q extends Query> {
                         result = relativeReference(path, Fragment.parse(fragment));
                     }
                 } else {
-                    final Q query = queryParser.parse(queryString);
+                    final QUERY query = queryParser.parse(queryString);
                     if (fragment == null) {
                         result = relativeReference(path, query);
                     } else {
@@ -331,7 +332,7 @@ public abstract class Scheme<Q extends Query> {
                         result = relativeReference(authority, Fragment.parse(fragment));
                     }
                 } else {
-                    final Q query = queryParser.parse(queryString);
+                    final QUERY query = queryParser.parse(queryString);
                     if (fragment == null) {
                         result = relativeReference(authority, query);
                     } else {
@@ -347,7 +348,7 @@ public abstract class Scheme<Q extends Query> {
                         result = relativeReference(authority, path, Fragment.parse(fragment));
                     }
                 } else {
-                    final Q query = queryParser.parse(queryString);
+                    final QUERY query = queryParser.parse(queryString);
                     if (fragment == null) {
                         result = relativeReference(authority, path, query);
                     } else {
@@ -366,7 +367,7 @@ public abstract class Scheme<Q extends Query> {
      * @return a {@code RelativeReference} representing the RFC 3986 relative reference represented by the given {@code URI}.
      * @throws ParseException if the given {@code URI} is not a valid RFC 3986 relative reference.
      */
-    public final RelativeReference<Q> parseRelativeReference(URI uri) throws ParseException {
+    public final RelativeReference<QUERY> parseRelativeReference(URI uri) throws ParseException {
         return parseRelativeReference(uri.toASCIIString());
     }
 
@@ -379,8 +380,8 @@ public abstract class Scheme<Q extends Query> {
      *
      * @return a {@code Urin} with the given {@code Scheme} and an empty path.
      */
-    public final Urin<Q> urin() {
-        return new UrinWithPath<Q>(removeDefaultPort(), new EmptyPath());
+    public final Urin<QUERY> urin() {
+        return new UrinWithPath<QUERY>(removeDefaultPort(), new EmptyPath());
     }
 
     /**
@@ -389,8 +390,8 @@ public abstract class Scheme<Q extends Query> {
      * @param path any {@code Path} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme} and {@code Path}.
      */
-    public final Urin<Q> urin(final Path path) {
-        return new UrinWithPath<Q>(removeDefaultPort(), path);
+    public final Urin<QUERY> urin(final Path path) {
+        return new UrinWithPath<QUERY>(removeDefaultPort(), path);
     }
 
     /**
@@ -399,8 +400,8 @@ public abstract class Scheme<Q extends Query> {
      * @param authority any {@code Authority} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme} and {@code Authority}, and an empty path.
      */
-    public final Urin<Q> urin(final Authority authority) {
-        return new UrinWithAuthorityAndPath<Q>(removeDefaultPort(), normalise(authority), new EmptyPath());
+    public final Urin<QUERY> urin(final Authority authority) {
+        return new UrinWithAuthorityAndPath<QUERY>(removeDefaultPort(), normalise(authority), new EmptyPath());
     }
 
     /**
@@ -410,8 +411,8 @@ public abstract class Scheme<Q extends Query> {
      * @param path      any {@code AbsolutePath} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, and {@code AbsolutePath}.
      */
-    public final Urin<Q> urin(final Authority authority, final AbsolutePath path) {
-        return new UrinWithAuthorityAndPath<Q>(removeDefaultPort(), normalise(authority), path);
+    public final Urin<QUERY> urin(final Authority authority, final AbsolutePath path) {
+        return new UrinWithAuthorityAndPath<QUERY>(removeDefaultPort(), normalise(authority), path);
     }
 
     /**
@@ -420,8 +421,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, the given {@code Fragment}, and an empty path.
      */
-    public final Urin<Q> urin(final Fragment fragment) {
-        return new UrinWithPathAndFragment<Q>(removeDefaultPort(), new EmptyPath(), fragment);
+    public final Urin<QUERY> urin(final Fragment fragment) {
+        return new UrinWithPathAndFragment<QUERY>(removeDefaultPort(), new EmptyPath(), fragment);
     }
 
     /**
@@ -431,8 +432,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Fragment}, and {@code Path}.
      */
-    public final Urin<Q> urin(final Path path, final Fragment fragment) {
-        return new UrinWithPathAndFragment<Q>(removeDefaultPort(), path, fragment);
+    public final Urin<QUERY> urin(final Path path, final Fragment fragment) {
+        return new UrinWithPathAndFragment<QUERY>(removeDefaultPort(), path, fragment);
     }
 
     /**
@@ -442,8 +443,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment  any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, and {@code Fragment}, and an empty path.
      */
-    public final Urin<Q> urin(final Authority authority, final Fragment fragment) {
-        return new UrinWithAuthorityAndPathAndFragment<Q>(removeDefaultPort(), normalise(authority), new EmptyPath(), fragment);
+    public final Urin<QUERY> urin(final Authority authority, final Fragment fragment) {
+        return new UrinWithAuthorityAndPathAndFragment<QUERY>(removeDefaultPort(), normalise(authority), new EmptyPath(), fragment);
     }
 
     /**
@@ -454,8 +455,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment  any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, {@code AbsolutePath}, and {@code Fragment}.
      */
-    public final Urin<Q> urin(final Authority authority, final AbsolutePath path, final Fragment fragment) {
-        return new UrinWithAuthorityAndPathAndFragment<Q>(removeDefaultPort(), normalise(authority), path, fragment);
+    public final Urin<QUERY> urin(final Authority authority, final AbsolutePath path, final Fragment fragment) {
+        return new UrinWithAuthorityAndPathAndFragment<QUERY>(removeDefaultPort(), normalise(authority), path, fragment);
     }
 
     /**
@@ -464,8 +465,8 @@ public abstract class Scheme<Q extends Query> {
      * @param query any {@code Query} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, the given {@code Query}, and an empty path.
      */
-    public final Urin<Q> urin(final Q query) {
-        return new UrinWithPathAndQuery<Q>(removeDefaultPort(), new EmptyPath(), query);
+    public final Urin<QUERY> urin(final QUERY query) {
+        return new UrinWithPathAndQuery<QUERY>(removeDefaultPort(), new EmptyPath(), query);
     }
 
     /**
@@ -475,8 +476,8 @@ public abstract class Scheme<Q extends Query> {
      * @param query any {@code Query} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Query}, and {@code Path}.
      */
-    public final Urin<Q> urin(final Path path, final Q query) {
-        return new UrinWithPathAndQuery<Q>(removeDefaultPort(), path, query);
+    public final Urin<QUERY> urin(final Path path, final QUERY query) {
+        return new UrinWithPathAndQuery<QUERY>(removeDefaultPort(), path, query);
     }
 
     /**
@@ -486,8 +487,8 @@ public abstract class Scheme<Q extends Query> {
      * @param query     any {@code Query} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, and {@code Query}, and an empty path.
      */
-    public final Urin<Q> urin(final Authority authority, final Q query) {
-        return new UrinWithAuthorityAndPathAndQuery<Q>(removeDefaultPort(), normalise(authority), new EmptyPath(), query);
+    public final Urin<QUERY> urin(final Authority authority, final QUERY query) {
+        return new UrinWithAuthorityAndPathAndQuery<QUERY>(removeDefaultPort(), normalise(authority), new EmptyPath(), query);
     }
 
     /**
@@ -498,8 +499,8 @@ public abstract class Scheme<Q extends Query> {
      * @param query     any {@code Query} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, {@code AbsolutePath}, and {@code Query}.
      */
-    public final Urin<Q> urin(final Authority authority, final AbsolutePath path, final Q query) {
-        return new UrinWithAuthorityAndPathAndQuery<Q>(removeDefaultPort(), normalise(authority), path, query);
+    public final Urin<QUERY> urin(final Authority authority, final AbsolutePath path, final QUERY query) {
+        return new UrinWithAuthorityAndPathAndQuery<QUERY>(removeDefaultPort(), normalise(authority), path, query);
     }
 
     /**
@@ -509,8 +510,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Query}, and {@code Fragment}, and an empty path.
      */
-    public final Urin<Q> urin(final Q query, final Fragment fragment) {
-        return new UrinWithPathAndQueryAndFragment<Q>(removeDefaultPort(), new EmptyPath(), query, fragment);
+    public final Urin<QUERY> urin(final QUERY query, final Fragment fragment) {
+        return new UrinWithPathAndQueryAndFragment<QUERY>(removeDefaultPort(), new EmptyPath(), query, fragment);
     }
 
     /**
@@ -521,8 +522,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Path}, {@code Query}, and {@code Fragment}.
      */
-    public final Urin<Q> urin(final Path path, final Q query, final Fragment fragment) {
-        return new UrinWithPathAndQueryAndFragment<Q>(removeDefaultPort(), path, query, fragment);
+    public final Urin<QUERY> urin(final Path path, final QUERY query, final Fragment fragment) {
+        return new UrinWithPathAndQueryAndFragment<QUERY>(removeDefaultPort(), path, query, fragment);
     }
 
     /**
@@ -533,8 +534,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment  any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, {@code Query}, and {@code Fragment}, and an empty path.
      */
-    public final Urin<Q> urin(final Authority authority, final Q query, final Fragment fragment) {
-        return new UrinWithAuthorityAndPathAndQueryAndFragment<Q>(removeDefaultPort(), normalise(authority), new EmptyPath(), query, fragment);
+    public final Urin<QUERY> urin(final Authority authority, final QUERY query, final Fragment fragment) {
+        return new UrinWithAuthorityAndPathAndQueryAndFragment<QUERY>(removeDefaultPort(), normalise(authority), new EmptyPath(), query, fragment);
     }
 
     /**
@@ -546,8 +547,8 @@ public abstract class Scheme<Q extends Query> {
      * @param fragment  any {@code Fragment} to use in this {@code Urin}.
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, {@code AbsolutePath}, {@code Query}, and {@code Fragment}.
      */
-    public final Urin<Q> urin(final Authority authority, final AbsolutePath path, final Q query, final Fragment fragment) {
-        return new UrinWithAuthorityAndPathAndQueryAndFragment<Q>(removeDefaultPort(), normalise(authority), path, query, fragment);
+    public final Urin<QUERY> urin(final Authority authority, final AbsolutePath path, final QUERY query, final Fragment fragment) {
+        return new UrinWithAuthorityAndPathAndQueryAndFragment<QUERY>(removeDefaultPort(), normalise(authority), path, query, fragment);
     }
 
     /**
@@ -557,15 +558,15 @@ public abstract class Scheme<Q extends Query> {
      * @return a {@code Urin} representing the URI represented by the given {@code String}.
      * @throws ParseException if the given {@code String} is not a valid URI.
      */
-    public final Urin<Q> parseUrin(final String uriString) throws ParseException {
+    public final Urin<QUERY> parseUrin(final String uriString) throws ParseException {
         final Matcher matcher = URI_PATTERN.matcher(uriString);
         matcher.matches();
-        final Scheme<Q> scheme = parse(matcher.group(2));
+        final Scheme<QUERY> scheme = parse(matcher.group(2));
         final String authorityString = matcher.group(5);
         final String pathString = matcher.group(6);
         final String queryString = matcher.group(8);
         final String fragmentString = matcher.group(10);
-        final Urin<Q> result;
+        final Urin<QUERY> result;
         if (authorityString == null) {
             final Path path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString) : Path.parsePath(pathString);
             if (queryString == null) {
@@ -580,7 +581,7 @@ public abstract class Scheme<Q extends Query> {
                     );
                 }
             } else {
-                final Q query = queryParser.parse(queryString);
+                final QUERY query = queryParser.parse(queryString);
                 if (fragmentString == null) {
                     result = scheme.urin(
                             path,
@@ -624,7 +625,7 @@ public abstract class Scheme<Q extends Query> {
                     }
                 }
             } else {
-                final Q query = queryParser.parse(queryString);
+                final QUERY query = queryParser.parse(queryString);
                 if (fragmentString == null) {
                     if (pathString == null || "".equals(pathString)) {
                         result = scheme.urin(
@@ -667,7 +668,7 @@ public abstract class Scheme<Q extends Query> {
      * @return a {@code Urin} representing the RFC 3986 URI represented by the given {@code URI}.
      * @throws ParseException if the given {@code URI} is not a valid RFC 3986 URI.
      */
-    public final Urin<Q> parseUrin(final URI uri) throws ParseException {
+    public final Urin<QUERY> parseUrin(final URI uri) throws ParseException {
         return parseUrin(uri.toASCIIString());
     }
 
@@ -682,7 +683,7 @@ public abstract class Scheme<Q extends Query> {
      * @return a {@code UrinReference} representing the URI reference represented by the given {@code String}.
      * @throws ParseException if the given {@code String} is not a valid URI reference.
      */
-    public final UrinReference<Q> parseUrinReference(final String uriReferenceString) throws ParseException {
+    public final UrinReference<QUERY> parseUrinReference(final String uriReferenceString) throws ParseException {
         if (isValidUrinString(uriReferenceString)) {
             return parseUrin(uriReferenceString);
         } else if (isValidRelativeReferenceString(uriReferenceString)) {
@@ -698,7 +699,7 @@ public abstract class Scheme<Q extends Query> {
      * @return a {@code UrinReference} representing the RFC 3986 URI reference represented by the given {@code URI}.
      * @throws ParseException if the given {@code URI} is not a valid RFC 3986 URI reference.
      */
-    public final UrinReference<Q> parseUrinReference(final URI uriReference) throws ParseException {
+    public final UrinReference<QUERY> parseUrinReference(final URI uriReference) throws ParseException {
         return parseUrinReference(uriReference.toASCIIString());
     }
 

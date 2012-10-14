@@ -17,6 +17,7 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.per
  * A query component of a URI.
  * Immutable and threadsafe.
  *
+ * @param <ENCODES> The type of value represented by the query - {@code String} in the general case.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.4">RFC 3986 - Query</a>
  */
 public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {

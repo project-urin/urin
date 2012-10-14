@@ -16,9 +16,10 @@ import java.net.URI;
  * A URI reference - either a URI or a relative reference.
  * Immutable and threadsafe.
  *
+ * @param <QUERY> The type of {@code Query} used by this URI reference.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-4.1">RFC 3986 - URI Reference</a>
  */
-public abstract class UrinReference<Q extends Query> {
+public abstract class UrinReference<QUERY extends Query> {
 
     UrinReference() {
         // deliberately empty
@@ -87,18 +88,18 @@ public abstract class UrinReference<Q extends Query> {
      * @return the {@code Query} component of this {@code UrinReference}.
      * @throws UnsupportedOperationException if this is a {@code UrinReference} that does not have a {@code Query} component.
      */
-    public abstract Q query();
+    public abstract QUERY query();
 
-    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Path path);
+    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Path path);
 
-    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Authority authority, final Path path);
+    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Authority authority, final Path path);
 
-    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Path path, final Q query);
+    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Path path, final QUERY query);
 
-    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Authority authority, final Path path, final Q query);
+    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Authority authority, final Path path, final QUERY query);
 
-    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Path path, final Q query, final Fragment fragment);
+    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Path path, final QUERY query, final Fragment fragment);
 
-    abstract Urin<Q> resolve(final Scheme<Q> scheme, final Authority authority, final Path path, final Q query, final Fragment fragment);
+    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Authority authority, final Path path, final QUERY query, final Fragment fragment);
 
 }

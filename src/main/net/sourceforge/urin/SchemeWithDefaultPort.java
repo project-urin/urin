@@ -14,8 +14,10 @@ import static java.util.Locale.ENGLISH;
 
 /**
  * A name component of a URI that refers to a scheme that is associated with a default port.
+ *
+ * @param <QUERY> The type of {@code Query} used by this scheme.
  */
-public class SchemeWithDefaultPort<Q extends Query> extends Scheme<Q> {
+public class SchemeWithDefaultPort<QUERY extends Query> extends Scheme<QUERY> {
     private final String name;
     private final Port defaultPort;
 
@@ -26,7 +28,7 @@ public class SchemeWithDefaultPort<Q extends Query> extends Scheme<Q> {
      * @param defaultPort the default port associated with the scheme.
      * @param queryParser the parser to use for parsing queries of this scheme.
      */
-    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final Parser<Q> queryParser) {
+    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final Parser<QUERY> queryParser) {
         super(queryParser);
         this.name = name;
         if (defaultPort == null) {
@@ -36,8 +38,8 @@ public class SchemeWithDefaultPort<Q extends Query> extends Scheme<Q> {
     }
 
     @Override
-    SchemeWithDefaultPort<Q> withName(final String name) {
-        return new SchemeWithDefaultPort<Q>(name, defaultPort, queryParser);
+    SchemeWithDefaultPort<QUERY> withName(final String name) {
+        return new SchemeWithDefaultPort<QUERY>(name, defaultPort, queryParser);
     }
 
     @Override
