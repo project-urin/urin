@@ -24,7 +24,7 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.non
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
  */
-public abstract class Segment extends PercentEncodingUnaryValue<String> {
+public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
     /**
      * An empty segment
@@ -34,7 +34,7 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
     /**
      * The segment ".", referring to the current location in the path name hierarchy,
      */
-    public static final Segment DOT = new Segment(".", nonEncoding()) {
+    public static final Segment DOT = new Segment<String>(".", nonEncoding()) {
         @Override
         public boolean hasValue() {
             return false;
@@ -48,7 +48,7 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
     /**
      * The segment "..", referring to the parent location in the path name hierarchy,
      */
-    public static final Segment DOT_DOT = new Segment("..", nonEncoding()) {
+    public static final Segment DOT_DOT = new Segment<String>("..", nonEncoding()) {
         @Override
         public boolean hasValue() {
             return false;
@@ -60,7 +60,7 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
         }
     };
 
-    private Segment(final String value, final PercentEncoding<String> percentEncoding) {
+    private Segment(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
         super(value, percentEncoding);
     }
 
@@ -71,7 +71,7 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment segment(final String segment) {
-        return new Segment(segment, PercentEncoding.specifiedValueEncoding(".",
+        return new Segment<String>(segment, PercentEncoding.specifiedValueEncoding(".",
                 PercentEncoding.specifiedValueEncoding("..",
                         PercentEncoding.percentEncodingString(PERCENT_ENCODER)))) {
             @Override
@@ -87,7 +87,7 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
     }
 
     boolean containsColon() {
-        return value.indexOf(':') != -1;
+        return asString().indexOf(':') != -1;
     }
 
     static Segment parse(final String encodedSegment) throws ParseException {
