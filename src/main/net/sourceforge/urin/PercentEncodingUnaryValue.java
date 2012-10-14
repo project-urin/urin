@@ -138,7 +138,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             @Override
             public String encode(final String notEncoded) {
                 StringBuilder result = new StringBuilder();
-                Iterator<String> valuePartsIterator = asList(notEncoded.split(Character.toString(originalCharacter))).iterator();
+                Iterator<String> valuePartsIterator = asList(notEncoded.split(Pattern.quote(Character.toString(originalCharacter)), -1)).iterator();
                 while (valuePartsIterator.hasNext()) {
                     result.append(percentEncoding.encode(valuePartsIterator.next()));
                     if (valuePartsIterator.hasNext()) {

@@ -227,6 +227,11 @@ public class HttpTest {
     }
 
     @Test
+    public void singleValuelessQueryParameterWithSingleCharacterCorrectlyConvertsToQuery() throws Exception {
+        assertThat(queryParameters(queryParameter(" ")), convertsToQueryString(equalTo("+")));
+    }
+
+    @Test
     public void httpsWithNoPathProducesCorrectUrin() throws Exception {
         Host host = aHost();
         assertThat(Https.https(host), equalTo(HTTPS.urin(authority(host), path())));
