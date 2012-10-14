@@ -11,6 +11,7 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS;
+import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.percentEncodingString;
 
 /**
  * A query component of a URI.
@@ -26,7 +27,7 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         }
     };
 
-    protected static final PercentEncoding<String> PERCENT_ENCODING = PercentEncoding.percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
+    protected static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
     /**
      * Constructor for subclasses of {@code Query} with scheme specific percent encoding of characters beyond that specified for generic URI {@code Query}s.
