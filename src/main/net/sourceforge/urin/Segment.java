@@ -11,6 +11,7 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
+import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.nonEncoding;
 
 /**
  * A segment of a URI's path.
@@ -33,7 +34,7 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
     /**
      * The segment ".", referring to the current location in the path name hierarchy,
      */
-    public static final Segment DOT = new Segment(".", PercentEncoding.nonEncoding()) {
+    public static final Segment DOT = new Segment(".", nonEncoding()) {
         @Override
         public boolean hasValue() {
             return false;
@@ -47,7 +48,7 @@ public abstract class Segment extends PercentEncodingUnaryValue<String> {
     /**
      * The segment "..", referring to the parent location in the path name hierarchy,
      */
-    public static final Segment DOT_DOT = new Segment("..", PercentEncoding.nonEncoding()) {
+    public static final Segment DOT_DOT = new Segment("..", nonEncoding()) {
         @Override
         public boolean hasValue() {
             return false;
