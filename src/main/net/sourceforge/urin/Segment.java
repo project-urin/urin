@@ -11,7 +11,7 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
-import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.nonEncoding;
+import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.*;
 
 /**
  * A segment of a URI's path.
@@ -27,6 +27,9 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.non
  */
 public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
+    private static final PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
+            specifiedValueEncoding("..",
+                    percentEncodingString(PERCENT_ENCODER)));
     /**
      * An empty segment
      */
@@ -65,6 +68,10 @@ public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES
         super(value, percentEncoding);
     }
 
+    protected Segment(final ENCODES value, final PercentEncodingPartial<ENCODES, String> percentEncoding) {
+        super(value, percentEncoding.apply(PERCENT_ENCODING));
+    }
+
     /**
      * Factory method for creating {@code Segment}s.
      *
@@ -72,9 +79,7 @@ public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment segment(final String segment) {
-        return new Segment<String>(segment, PercentEncoding.specifiedValueEncoding(".",
-                PercentEncoding.specifiedValueEncoding("..",
-                        PercentEncoding.percentEncodingString(PERCENT_ENCODER)))) {
+        return new Segment<String>(segment, PERCENT_ENCODING) {
             @Override
             public boolean hasValue() {
                 return true;

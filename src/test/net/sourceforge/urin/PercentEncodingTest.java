@@ -67,7 +67,8 @@ public class PercentEncodingTest {
         assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                PercentEncodingUnaryValue.PercentEncoding.percentEncodingDelimitedValue(aChar(), null);
+                final PercentEncodingUnaryValue.PercentEncoding<Object> percentEncoding = null;
+                PercentEncodingUnaryValue.PercentEncoding.percentEncodingDelimitedValue(aChar(), percentEncoding);
             }
         });
     }

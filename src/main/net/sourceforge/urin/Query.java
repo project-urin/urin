@@ -30,14 +30,18 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
     protected static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
+    protected Query(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
+        super(value, percentEncoding);
+    }
+
     /**
      * Constructor for subclasses of {@code Query} with scheme specific percent encoding of characters beyond that specified for generic URI {@code Query}s.
      *
-     * @param value           the (non encoded) value this object represents.
-     * @param percentEncoding the {@code PercentEncoding} this subclass will use.
+     * @param value                  the (non encoded) value this object represents.
+     * @param percentEncodingPartial the {@code PercentEncodingPartial} this subclass will use.
      */
-    protected Query(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
-        super(value, percentEncoding);
+    protected Query(final ENCODES value, final PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
+        this(value, percentEncodingPartial.apply(PERCENT_ENCODING));
     }
 
     /**

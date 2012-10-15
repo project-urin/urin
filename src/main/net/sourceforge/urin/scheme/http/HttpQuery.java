@@ -37,12 +37,12 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
     };
 
     private static final PercentEncoding<Iterable<QueryParameter>> HTTP_QUERY_PERCENT_ENCODING = encodeQueryParameters(
-            PercentEncoding.percentEncodingDelimitedValue('&',
-                    PercentEncoding.percentEncodingDelimitedValue(';',
-                            percentEncodedQueryParameter(
-                                    PercentEncoding.percentEncodingDelimitedValue('=',
-                                            PercentEncoding.percentEncodingSubstitutedValue(' ', '+', PERCENT_ENCODING))
-                            ))));
+            PercentEncoding.percentEncodingSubstitutedValue(' ', '+')
+                    .chain(PercentEncoding.<String>percentEncodingDelimitedValue('='))
+                    .chain(percentEncodedQueryParameter())
+                    .chain(PercentEncoding.<QueryParameter>percentEncodingDelimitedValue(';'))
+                    .chain(PercentEncoding.<Iterable<QueryParameter>>percentEncodingDelimitedValue('&'))
+                    .apply(PERCENT_ENCODING));
 
     private HttpQuery(final Iterable<QueryParameter> queryParameters) {
         super(Collections.unmodifiableList(new ArrayList<QueryParameter>() {{
@@ -83,6 +83,15 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                 return encodeQueryParameters(percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
+        };
+    }
+
+    private static PercentEncodingPartial<QueryParameter, Iterable<String>> percentEncodedQueryParameter() {
+        return new PercentEncodingPartial<QueryParameter, Iterable<String>>() {
+            @Override
+            public PercentEncoding<QueryParameter> apply(PercentEncoding<Iterable<String>> childPercentEncoding) {
+                return percentEncodedQueryParameter(childPercentEncoding);
+            }
         };
     }
 

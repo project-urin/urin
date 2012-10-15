@@ -31,13 +31,43 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         return percentEncoding.encode(value);
     }
 
+    protected static abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
+        public abstract PercentEncoding<ENCODES> apply(PercentEncoding<CHILD_ENCODES> childPercentEncoding);
+
+        public final <SUPER_ENCODES> PercentEncodingPartial<SUPER_ENCODES, CHILD_ENCODES> chain(final PercentEncodingPartial<SUPER_ENCODES, ENCODES> superEncoder) {
+            return new PercentEncodingPartial<SUPER_ENCODES, CHILD_ENCODES>() {
+                @Override
+                public PercentEncoding<SUPER_ENCODES> apply(PercentEncoding<CHILD_ENCODES> childPercentEncoding) {
+                    return superEncoder.apply(PercentEncodingPartial.this.apply(childPercentEncoding));
+                }
+            };
+        }
+    }
+
     protected abstract static class PercentEncoding<ENCODES> {
         protected static PercentEncoding<String> percentEncodingString(final PercentEncoder percentEncoder) {
             return new PercentEncodingString(percentEncoder);
         }
 
+        public static <T> PercentEncodingPartial<Iterable<T>, T> percentEncodingDelimitedValue(final char delimiter) {
+            return new PercentEncodingPartial<Iterable<T>, T>() {
+                public PercentEncoding<Iterable<T>> apply(PercentEncoding<T> childPercentEncoding) {
+                    return new PercentEncodingDelimitedValue<T>(delimiter, childPercentEncoding);
+                }
+            };
+        }
+
         public static <T> PercentEncoding<Iterable<T>> percentEncodingDelimitedValue(final char delimiter, final PercentEncoding<T> elementPercentEncoding) {
             return new PercentEncodingDelimitedValue<T>(delimiter, elementPercentEncoding);
+        }
+
+        public static PercentEncodingPartial<String, String> percentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter) {
+            return new PercentEncodingPartial<String, String>() {
+                @Override
+                public PercentEncoding<String> apply(PercentEncoding<String> childPercentEncoding) {
+                    return new PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, childPercentEncoding);
+                }
+            };
         }
 
         public static PercentEncoding<String> percentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter, final PercentEncoding<String> percentEncoding) {
