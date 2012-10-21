@@ -28,6 +28,7 @@ import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static net.sourceforge.urin.scheme.http.HttpQueryBuilder.anHttpQuery;
 import static net.sourceforge.urin.scheme.http.Https.HTTPS;
+import static net.sourceforge.urin.scheme.http.HypertextScheme.*;
 import static net.sourceforge.urin.scheme.http.QueryMatcher.convertsToQueryString;
 import static net.sourceforge.urin.scheme.http.QueryParameterBuilder.aQueryParameter;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -638,6 +639,24 @@ public class HttpTest {
     public void roundTrippedHttpUrlsWithTwoEmptySegmentsAreEqual() throws Exception {
         Urin httpUrin = http(anAuthority(), path("", ""), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
         assertThat(HTTP.parseUrin(httpUrin.asString()), equalTo(httpUrin));
+    }
+
+    @Test
+    public void roundTrippedHttpUrlsViaStaticAreEqual() throws Exception {
+        Urin httpUrin = http(anAuthority(), anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(parseHttpUrin(httpUrin.asString()), equalTo(httpUrin));
+    }
+
+    @Test
+    public void roundTrippedRelativeReferencesViaStaticAreEqual() throws Exception {
+        RelativeReference<HttpQuery> httpRelativeReference = HTTP.relativeReference(anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(parseHttpRelativeReference(httpRelativeReference.asString()), equalTo(httpRelativeReference));
+    }
+
+    @Test
+    public void roundTrippedUrinReferencesViaStaticAreEqual() throws Exception {
+        UrinReference<HttpQuery> httpRelativeReference = HTTP.relativeReference(anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(parseHttpUrinReference(httpRelativeReference.asString()), equalTo(httpRelativeReference));
     }
 
     @Test

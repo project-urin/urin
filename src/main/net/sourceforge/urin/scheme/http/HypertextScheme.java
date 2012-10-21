@@ -10,12 +10,36 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import net.sourceforge.urin.Port;
-import net.sourceforge.urin.SchemeWithDefaultPort;
+import net.sourceforge.urin.*;
+
+import java.net.URI;
 
 abstract class HypertextScheme extends SchemeWithDefaultPort<HttpQuery> {
     HypertextScheme(final String name, final Port defaultPort) {
         super(name, defaultPort, HttpQuery.QUERY_DECODER);
     }
 
+    public static Urin<HttpQuery> parseHttpUrin(final URI uri) throws ParseException {
+        return Http.HTTP.parseUrin(uri);
+    }
+
+    public static Urin<HttpQuery> parseHttpUrin(final String uri) throws ParseException {
+        return Http.HTTP.parseUrin(uri);
+    }
+
+    public static RelativeReference<HttpQuery> parseHttpRelativeReference(final URI uri) throws ParseException {
+        return Http.HTTP.parseRelativeReference(uri);
+    }
+
+    public static RelativeReference<HttpQuery> parseHttpRelativeReference(final String uri) throws ParseException {
+        return Http.HTTP.parseRelativeReference(uri);
+    }
+
+    public static UrinReference<HttpQuery> parseHttpUrinReference(final URI uri) throws ParseException {
+        return Http.HTTP.parseUrinReference(uri);
+    }
+
+    public static UrinReference<HttpQuery> parseHttpUrinReference(final String uri) throws ParseException {
+        return Http.HTTP.parseUrinReference(uri);
+    }
 }
