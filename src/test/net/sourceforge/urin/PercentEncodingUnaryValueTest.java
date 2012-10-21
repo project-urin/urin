@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.percentEncodingString;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -22,10 +24,13 @@ public class PercentEncodingUnaryValueTest {
     @Test
     public void canChainApplicationsOfPercentEncodingDelimitedValue() throws Exception {
         assertThat(
-                PercentEncodingUnaryValue.PercentEncoding.<Iterable<String>, String>percentEncodingDelimitedValue('a',
-                        PercentEncodingUnaryValue.PercentEncoding.<String, String>percentEncodingDelimitedValue('b', PercentEncodingUnaryValue.PercentEncoding.percentEncodingSubstitutedValue(' ', '+')))
+                PercentEncodingUnaryValue.PercentEncodingPartial.<Iterable<String>, String>percentEncodingDelimitedValue('a',
+                        PercentEncodingUnaryValue.PercentEncodingPartial.<String, String>percentEncodingDelimitedValue('b', PercentEncodingUnaryValue.PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+')))
                         .apply(percentEncodingString(PercentEncoder.ENCODE_EVERYTHING))
-                        .encode(asList((Iterable<String>) asList("c", "d"), asList("c", "d"))),
+                        .encode(new ArrayList<Iterable<String>>() {{
+                            add(asList("c", "d"));
+                            add(asList("c", "d"));
+                        }}),
                 equalTo("%63b%64a%63b%64"));
     }
 }

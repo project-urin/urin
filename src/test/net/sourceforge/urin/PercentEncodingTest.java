@@ -75,7 +75,7 @@ public class PercentEncodingTest {
 
     @Test
     public void encodesPercentEncodableSubstitutedValueCorrectly() throws Exception {
-        assertThat(PercentEncodingUnaryValue.PercentEncoding.percentEncodingSubstitutedValue(' ', '+').apply(percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(". .+."), equalTo(".+.%2B."));
+        assertThat(PercentEncodingUnaryValue.PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+').apply(percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(". .+."), equalTo(".+.%2B."));
     }
 
     @Test

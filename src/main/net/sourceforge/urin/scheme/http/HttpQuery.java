@@ -27,15 +27,15 @@ import static java.util.Arrays.asList;
 public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> implements Iterable<HttpQuery.QueryParameter> {
 
     private static final PercentEncodingPartial<Iterable<QueryParameter>, String> HTTP_QUERY_PERCENT_ENCODING = encodeQueryParameters(
-            PercentEncoding.<Iterable<QueryParameter>, String>percentEncodingDelimitedValue(
+            PercentEncodingPartial.<Iterable<QueryParameter>, String>percentEncodingDelimitedValue(
                     '&',
-                    PercentEncoding.<QueryParameter, String>percentEncodingDelimitedValue(
+                    PercentEncodingPartial.<QueryParameter, String>percentEncodingDelimitedValue(
                             ';',
-                            percentEncodedQueryParameter(PercentEncoding.<String, String>percentEncodingDelimitedValue(
+                            percentEncodedQueryParameter(PercentEncodingPartial.<String, String>percentEncodingDelimitedValue(
                                     '=',
-                                    PercentEncoding.percentEncodingSubstitutedValue(' ', '+'))))));
+                                    PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+'))))));
 
-    static final Parser<HttpQuery> QUERY_PARSER = parser(PercentEncoding.transformingPercentEncodingPartial(HTTP_QUERY_PERCENT_ENCODING, new Transformer<HttpQuery, Iterable<QueryParameter>>() {
+    static final Parser<HttpQuery> QUERY_PARSER = parser(PercentEncodingPartial.transformingPercentEncodingPartial(HTTP_QUERY_PERCENT_ENCODING, new Transformer<HttpQuery, Iterable<QueryParameter>>() {
         public Iterable<QueryParameter> encode(HttpQuery httpQuery) {
             return httpQuery.value();
         }
@@ -57,7 +57,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
     }
 
     private static <T> PercentEncodingPartial<Iterable<QueryParameter>, T> encodeQueryParameters(final PercentEncodingPartial<Iterable<Iterable<QueryParameter>>, T> childPercentEncodingPartial) {
-        return PercentEncoding.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<Iterable<QueryParameter>, Iterable<Iterable<QueryParameter>>>() {
+        return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<Iterable<QueryParameter>, Iterable<Iterable<QueryParameter>>>() {
             public Iterable<Iterable<QueryParameter>> encode(final Iterable<QueryParameter> queryParameters) {
                 return new ArrayList<Iterable<QueryParameter>>() {{
                     for (QueryParameter queryParameter : queryParameters) {
@@ -79,7 +79,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
     }
 
     private static <T> PercentEncodingPartial<QueryParameter, T> percentEncodedQueryParameter(final PercentEncodingPartial<Iterable<String>, T> childPercentEncodingPartial) {
-        return PercentEncoding.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<QueryParameter, Iterable<String>>() {
+        return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<QueryParameter, Iterable<String>>() {
             public Iterable<String> encode(QueryParameter queryParameter) {
                 return queryParameter.encoded();
             }
