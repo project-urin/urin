@@ -10,8 +10,6 @@
 
 package net.sourceforge.urin;
 
-import net.sourceforge.urin.scheme.http.HttpQuery;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
@@ -62,9 +60,12 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
      */
 
     protected static abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
+        PercentEncodingPartial() {
+        }
+
         public abstract PercentEncoding<ENCODES> apply(PercentEncoding<CHILD_ENCODES> childPercentEncoding);
 
-        public final <SUPER_ENCODES> PercentEncodingPartial<SUPER_ENCODES, CHILD_ENCODES> chain(final PercentEncodingPartial<SUPER_ENCODES, ENCODES> superEncoder) {
+        final <SUPER_ENCODES> PercentEncodingPartial<SUPER_ENCODES, CHILD_ENCODES> chain(final PercentEncodingPartial<SUPER_ENCODES, ENCODES> superEncoder) {
             return new PercentEncodingPartial<SUPER_ENCODES, CHILD_ENCODES>() {
                 @Override
                 public PercentEncoding<SUPER_ENCODES> apply(PercentEncoding<CHILD_ENCODES> childPercentEncoding) {
@@ -77,7 +78,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
     protected interface Transformer<ENCODES, CHILD_ENCODES> {
         CHILD_ENCODES encode(ENCODES encodes);
 
-        ENCODES decode(CHILD_ENCODES encodes);
+        ENCODES decode(CHILD_ENCODES encodes) throws ParseException;
     }
 
     protected static final class TransformingPercentEncodingPartial<ENCODES, CHILD_ENCODES> extends PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
@@ -134,8 +135,8 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             };
         }
 
-        public static <T> PercentEncodingPartial<Iterable<HttpQuery.QueryParameter>, T> transformingPercentEncodingPartial(PercentEncodingPartial<Iterable<Iterable<HttpQuery.QueryParameter>>, T> childPercentEncodingPartial, Transformer<Iterable<HttpQuery.QueryParameter>, Iterable<Iterable<HttpQuery.QueryParameter>>> transformer) {
-            return childPercentEncodingPartial.chain(new TransformingPercentEncodingPartial<Iterable<HttpQuery.QueryParameter>, Iterable<Iterable<HttpQuery.QueryParameter>>>(transformer));
+        public static <T, U, V> PercentEncodingPartial<T, V> transformingPercentEncodingPartial(PercentEncodingPartial<U, V> childPercentEncodingPartial, Transformer<T, U> transformer) {
+            return childPercentEncodingPartial.chain(new TransformingPercentEncodingPartial<T, U>(transformer));
         }
 
         static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {

@@ -646,7 +646,7 @@ public class HttpTest {
             HTTP.parseUrin("http://somewhere?name=value=somethingbroken");
             fail("Expected a ParseException to be thrown");
         } catch (ParseException e) {
-            Assert.assertThat(e.getMessage(), equalTo("Invalid query parameter - expected only one occurrence of '=' in [name=value=somethingbroken]"));
+            Assert.assertThat(e.getMessage(), equalTo("Invalid query parameter - expected maximum of two elements in [[name, value, somethingbroken]]"));
         }
     }
 

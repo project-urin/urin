@@ -80,27 +80,16 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
     }
 
     private static <T> PercentEncodingPartial<QueryParameter, T> percentEncodedQueryParameter(final PercentEncodingPartial<Iterable<String>, T> childPercentEncodingPartial) {
-        return childPercentEncodingPartial.chain(new PercentEncodingPartial<QueryParameter, Iterable<String>>() {
-            @Override
-            public PercentEncoding<QueryParameter> apply(PercentEncoding<Iterable<String>> childPercentEncoding) {
-                return percentEncodedQueryParameter(childPercentEncoding);
-            }
-        });
-    }
-
-    private static PercentEncoding<QueryParameter> percentEncodedQueryParameter(final PercentEncoding<Iterable<String>> partsEncoding) {
-        return new PercentEncoding<QueryParameter>() {
-            @Override
-            public String encode(final QueryParameter notEncoded) {
-                return notEncoded.encodeWith(partsEncoding);
+        return PercentEncoding.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<QueryParameter, Iterable<String>>() {
+            public Iterable<String> encode(QueryParameter queryParameter) {
+                return queryParameter.encoded();
             }
 
-            @Override
-            public QueryParameter decode(final String encoded) throws ParseException {
+            public QueryParameter decode(Iterable<String> strings) throws ParseException {
                 final QueryParameter result;
-                Iterator<String> iterator = partsEncoding.decode(encoded).iterator();
+                Iterator<String> iterator = strings.iterator();
                 if (!iterator.hasNext()) {
-                    throw new ParseException("Invalid query parameter String [" + encoded + "]");
+                    throw new ParseException("Invalid query parameter String [" + strings + "]");
                 }
                 final String name = iterator.next();
                 if (!iterator.hasNext()) {
@@ -108,18 +97,12 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                 } else {
                     result = queryParameter(name, iterator.next());
                     if (iterator.hasNext()) {
-                        throw new ParseException("Invalid query parameter - expected only one occurrence of '=' in [" + encoded + "]");
+                        throw new ParseException("Invalid query parameter - expected maximum of two elements in [" + strings + "]");
                     }
                 }
                 return result;
             }
-
-            @Override
-            public PercentEncoding<QueryParameter> additionallyEncoding(final char additionallyEncodedCharacter) {
-                return percentEncodedQueryParameter(partsEncoding.additionallyEncoding(additionallyEncodedCharacter));
-            }
-
-        };
+        });
     }
 
     /**
@@ -177,7 +160,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         private QueryParameter() {
         }
 
-        abstract String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding);
+        abstract Iterable<String> encoded();
 
         /**
          * Gets the (non-encoded) name of this query parameter as a {@code String}.
@@ -221,8 +204,8 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         }
 
         @Override
-        String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding) {
-            return partsEncoding.encode(Arrays.asList(name, value));
+        Iterable<String> encoded() {
+            return Arrays.asList(name, value);
         }
 
         @Override
@@ -274,8 +257,8 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         }
 
         @Override
-        String encodeWith(final PercentEncoding<Iterable<String>> partsEncoding) {
-            return partsEncoding.encode(Arrays.asList(name));
+        Iterable<String> encoded() {
+            return Arrays.asList(name);
         }
 
         @Override
