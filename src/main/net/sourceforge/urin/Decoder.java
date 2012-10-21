@@ -13,16 +13,17 @@ package net.sourceforge.urin;
 /**
  * A parser of encoded URI components.
  *
- * @param <PRODUCES> the class of the decoded objects produced.
+ * @param <NON_ENCODED> the class of the decoded objects produced.
+ * @param <ENCODED>     the class of the encoded objects parsed.
  */
-public interface Parser<PRODUCES> {
+public interface Decoder<NON_ENCODED, ENCODED> {
 
     /**
      * Parses an encoded URI component.
      *
-     * @param rawValue the encoded URI component to parse.
+     * @param rawValue the encoded URI component to decode.
      * @return an object representing the decoded URI component.
      * @throws ParseException if the given {@code String} is not a valid URI component.
      */
-    PRODUCES parse(String rawValue) throws ParseException;
+    NON_ENCODED decode(ENCODED rawValue) throws ParseException;
 }

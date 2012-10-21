@@ -19,7 +19,7 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
-import static net.sourceforge.urin.Query.BASE_QUERY_PARSER;
+import static net.sourceforge.urin.Query.BASE_QUERY_DECODER;
 
 /**
  * A name component of a URI.
@@ -42,10 +42,10 @@ public abstract class Scheme<QUERY extends Query> {
             singleMemberCharacterSet('.')
     );
 
-    protected final Parser<QUERY> queryParser;
+    protected final Decoder<QUERY, String> queryDecoder;
 
-    Scheme(final Parser<QUERY> queryParser) {
-        this.queryParser = queryParser;
+    Scheme(final Decoder<QUERY, String> queryDecoder) {
+        this.queryDecoder = queryDecoder;
     }
 
     /**
@@ -74,7 +74,7 @@ public abstract class Scheme<QUERY extends Query> {
      */
     public static Scheme<Query<String>> scheme(final String name, final Port defaultPort) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new SchemeWithDefaultPort<Query<String>>(name.toLowerCase(ENGLISH), defaultPort, BASE_QUERY_PARSER);
+        return new SchemeWithDefaultPort<Query<String>>(name.toLowerCase(ENGLISH), defaultPort, BASE_QUERY_DECODER);
     }
 
     private Scheme<QUERY> parse(final String name) throws ParseException {
@@ -298,7 +298,7 @@ public abstract class Scheme<QUERY extends Query> {
                         result = relativeReference(Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryParser.parse(queryString);
+                    final QUERY query = queryDecoder.decode(queryString);
                     if (fragment == null) {
                         result = relativeReference(query);
                     } else {
@@ -314,7 +314,7 @@ public abstract class Scheme<QUERY extends Query> {
                         result = relativeReference(path, Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryParser.parse(queryString);
+                    final QUERY query = queryDecoder.decode(queryString);
                     if (fragment == null) {
                         result = relativeReference(path, query);
                     } else {
@@ -332,7 +332,7 @@ public abstract class Scheme<QUERY extends Query> {
                         result = relativeReference(authority, Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryParser.parse(queryString);
+                    final QUERY query = queryDecoder.decode(queryString);
                     if (fragment == null) {
                         result = relativeReference(authority, query);
                     } else {
@@ -348,7 +348,7 @@ public abstract class Scheme<QUERY extends Query> {
                         result = relativeReference(authority, path, Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryParser.parse(queryString);
+                    final QUERY query = queryDecoder.decode(queryString);
                     if (fragment == null) {
                         result = relativeReference(authority, path, query);
                     } else {
@@ -581,7 +581,7 @@ public abstract class Scheme<QUERY extends Query> {
                     );
                 }
             } else {
-                final QUERY query = queryParser.parse(queryString);
+                final QUERY query = queryDecoder.decode(queryString);
                 if (fragmentString == null) {
                     result = scheme.urin(
                             path,
@@ -625,7 +625,7 @@ public abstract class Scheme<QUERY extends Query> {
                     }
                 }
             } else {
-                final QUERY query = queryParser.parse(queryString);
+                final QUERY query = queryDecoder.decode(queryString);
                 if (fragmentString == null) {
                     if (pathString == null || "".equals(pathString)) {
                         result = scheme.urin(
@@ -707,7 +707,7 @@ public abstract class Scheme<QUERY extends Query> {
         private final String name;
 
         GenericScheme(final String name) {
-            super(BASE_QUERY_PARSER);
+            super(BASE_QUERY_DECODER);
             this.name = name;
         }
 

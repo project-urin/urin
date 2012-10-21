@@ -88,12 +88,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         }
     }
 
-    protected interface Transformer<ENCODES, CHILD_ENCODES> {
-        CHILD_ENCODES encode(ENCODES encodes);
-
-        ENCODES decode(CHILD_ENCODES encodes) throws ParseException;
-    }
-
     abstract static class PercentEncoding<ENCODES> {
         static PercentEncoding<String> percentEncodingString(final PercentEncoder percentEncoder) {
             return new PercentEncodingString(percentEncoder);

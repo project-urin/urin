@@ -8,14 +8,21 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-package net.sourceforge.urin.scheme.http;
+package net.sourceforge.urin;
 
-import net.sourceforge.urin.Port;
-import net.sourceforge.urin.SchemeWithDefaultPort;
+/**
+ * An encoder/decoder of URI components.
+ *
+ * @param <NON_ENCODED> the class of the decoded objects produced.
+ * @param <ENCODED>     the class of the encoded objects parsed.
+ */
+public interface Transformer<NON_ENCODED, ENCODED> extends Decoder<NON_ENCODED, ENCODED> {
 
-abstract class HypertextScheme extends SchemeWithDefaultPort<HttpQuery> {
-    HypertextScheme(final String name, final Port defaultPort) {
-        super(name, defaultPort, HttpQuery.QUERY_DECODER);
-    }
-
+    /**
+     * URI encodes a non-encoded object.
+     *
+     * @param nonEncoded the non-encoded Object to be encoded.
+     * @return an Object representing the encoded version.
+     */
+    ENCODED encode(NON_ENCODED nonEncoded);
 }

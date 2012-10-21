@@ -24,12 +24,12 @@ public class SchemeWithDefaultPort<QUERY extends Query> extends Scheme<QUERY> {
     /**
      * Constructor for subclasses of {@code Scheme} with default ports.
      *
-     * @param name        the name of the scheme.
-     * @param defaultPort the default port associated with the scheme.
-     * @param queryParser the parser to use for parsing queries of this scheme.
+     * @param name         the name of the scheme.
+     * @param defaultPort  the default port associated with the scheme.
+     * @param queryDecoder the parser to use for parsing queries of this scheme.
      */
-    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final Parser<QUERY> queryParser) {
-        super(queryParser);
+    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final Decoder<QUERY, String> queryDecoder) {
+        super(queryDecoder);
         this.name = name;
         if (defaultPort == null) {
             throw new NullPointerException("Cannot instantiate Scheme with null default port");
@@ -39,7 +39,7 @@ public class SchemeWithDefaultPort<QUERY extends Query> extends Scheme<QUERY> {
 
     @Override
     SchemeWithDefaultPort<QUERY> withName(final String name) {
-        return new SchemeWithDefaultPort<QUERY>(name, defaultPort, queryParser);
+        return new SchemeWithDefaultPort<QUERY>(name, defaultPort, queryDecoder);
     }
 
     @Override

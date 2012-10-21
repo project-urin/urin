@@ -22,17 +22,17 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.per
  */
 public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
-    static final Parser<Query<String>> BASE_QUERY_PARSER = new Parser<Query<String>>() {
-        public Query<String> parse(final String rawQuery) throws ParseException {
+    static final Decoder<Query<String>, String> BASE_QUERY_DECODER = new Decoder<Query<String>, String>() {
+        public Query<String> decode(final String rawQuery) throws ParseException {
             return query(PERCENT_ENCODING.decode(rawQuery));
         }
     };
 
     private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
-    protected static <T extends Query> Parser<T> parser(final PercentEncodingPartial<T, String> percentEncodingPartial) {
-        return new Parser<T>() {
-            public T parse(String rawValue) throws ParseException {
+    protected static <T extends Query> Decoder<T, String> parser(final PercentEncodingPartial<T, String> percentEncodingPartial) {
+        return new Decoder<T, String>() {
+            public T decode(String rawValue) throws ParseException {
                 return percentEncodingPartial.apply(PERCENT_ENCODING).decode(rawValue);
             }
         };

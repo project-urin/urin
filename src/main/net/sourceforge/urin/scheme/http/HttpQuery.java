@@ -10,9 +10,10 @@
 
 package net.sourceforge.urin.scheme.http;
 
+import net.sourceforge.urin.Decoder;
 import net.sourceforge.urin.ParseException;
-import net.sourceforge.urin.Parser;
 import net.sourceforge.urin.Query;
+import net.sourceforge.urin.Transformer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +36,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                                     '=',
                                     PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+'))))));
 
-    static final Parser<HttpQuery> QUERY_PARSER = parser(PercentEncodingPartial.transformingPercentEncodingPartial(HTTP_QUERY_PERCENT_ENCODING, new Transformer<HttpQuery, Iterable<QueryParameter>>() {
+    static final Decoder<HttpQuery, String> QUERY_DECODER = parser(PercentEncodingPartial.transformingPercentEncodingPartial(HTTP_QUERY_PERCENT_ENCODING, new Transformer<HttpQuery, Iterable<QueryParameter>>() {
         public Iterable<QueryParameter> encode(HttpQuery httpQuery) {
             return httpQuery.value();
         }
