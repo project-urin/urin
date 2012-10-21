@@ -94,8 +94,8 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         ENCODES decode(CHILD_ENCODES encodes) throws ParseException;
     }
 
-    protected abstract static class PercentEncoding<ENCODES> {
-        protected static PercentEncoding<String> percentEncodingString(final PercentEncoder percentEncoder) {
+    abstract static class PercentEncoding<ENCODES> {
+        static PercentEncoding<String> percentEncodingString(final PercentEncoder percentEncoder) {
             return new PercentEncodingString(percentEncoder);
         }
 
