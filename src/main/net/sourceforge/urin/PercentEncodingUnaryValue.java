@@ -10,6 +10,8 @@
 
 package net.sourceforge.urin;
 
+import net.sourceforge.urin.scheme.http.HttpQuery;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.regex.Pattern;
@@ -72,6 +74,40 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         }
     }
 
+    protected interface Transformer<ENCODES, CHILD_ENCODES> {
+        CHILD_ENCODES encode(ENCODES encodes);
+
+        ENCODES decode(CHILD_ENCODES encodes);
+    }
+
+    protected static final class TransformingPercentEncodingPartial<ENCODES, CHILD_ENCODES> extends PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
+        private final Transformer<ENCODES, CHILD_ENCODES> transformer;
+
+        public TransformingPercentEncodingPartial(Transformer<ENCODES, CHILD_ENCODES> transformer) {
+            this.transformer = transformer;
+        }
+
+        @Override
+        public PercentEncoding<ENCODES> apply(final PercentEncoding<CHILD_ENCODES> childPercentEncoding) {
+            return new PercentEncoding<ENCODES>() {
+                @Override
+                public String encode(ENCODES notEncoded) {
+                    return childPercentEncoding.encode(transformer.encode(notEncoded));
+                }
+
+                @Override
+                public ENCODES decode(String encoded) throws ParseException {
+                    return transformer.decode(childPercentEncoding.decode(encoded));
+                }
+
+                @Override
+                public PercentEncoding<ENCODES> additionallyEncoding(char additionallyEncodedCharacter) {
+                    return apply(childPercentEncoding.additionallyEncoding(additionallyEncodedCharacter));
+                }
+            };
+        }
+    }
+
     protected abstract static class PercentEncoding<ENCODES> {
         protected static PercentEncoding<String> percentEncodingString(final PercentEncoder percentEncoder) {
             return new PercentEncodingString(percentEncoder);
@@ -96,6 +132,10 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
                     return new PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, childPercentEncoding);
                 }
             };
+        }
+
+        public static <T> PercentEncodingPartial<Iterable<HttpQuery.QueryParameter>, T> transformingPercentEncodingPartial(PercentEncodingPartial<Iterable<Iterable<HttpQuery.QueryParameter>>, T> childPercentEncodingPartial, Transformer<Iterable<HttpQuery.QueryParameter>, Iterable<Iterable<HttpQuery.QueryParameter>>> transformer) {
+            return childPercentEncodingPartial.chain(new TransformingPercentEncodingPartial<Iterable<HttpQuery.QueryParameter>, Iterable<Iterable<HttpQuery.QueryParameter>>>(transformer));
         }
 
         static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
