@@ -31,34 +31,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         return percentEncoding.encode(value);
     }
 
-
-    /*
-    Encoding Iterable<QueryParameter> -> String
-    interface Encoder<FROM, TO> {
-        TO encode(FROM from);
-    }
-    interface Encoding<FROM, TO> {
-        Encoder<FROM, TO> build(Encoder< percentEncode);
-    }
-    QueryParametersEncoding<TO> implements Encoding<Iterable<QueryParameter, TO> {
-        static queryParametersEncoding Encoding<Iterable<QueryParameter>, QueryParameter>() {
-            return new Encoding<Iterable<QueryParameter>, QueryParameter>() {
-                Encoder<Iterable<QueryParameter>, QueryParameter> build(PercentEncoder percentEncoder) {
-                    return new Encoder<Iterable<QueryParameter>, QueryParameter> {
-                        QueryPara
-                    }
-                }
-            }
-        }
-        QueryParameterEncoding<Iterable<QueryParameter>, <TO>(Encoding<QueryParameter, TO> {
-        }
-
-        encode(PercentEncoder percentEncoder) {
-
-        }
-    }
-     */
-
     protected static abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
         PercentEncodingPartial() {
         }
