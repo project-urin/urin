@@ -81,34 +81,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         ENCODES decode(CHILD_ENCODES encodes) throws ParseException;
     }
 
-    protected static final class TransformingPercentEncodingPartial<ENCODES, CHILD_ENCODES> extends PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
-        private final Transformer<ENCODES, CHILD_ENCODES> transformer;
-
-        public TransformingPercentEncodingPartial(Transformer<ENCODES, CHILD_ENCODES> transformer) {
-            this.transformer = transformer;
-        }
-
-        @Override
-        public PercentEncoding<ENCODES> apply(final PercentEncoding<CHILD_ENCODES> childPercentEncoding) {
-            return new PercentEncoding<ENCODES>() {
-                @Override
-                public String encode(ENCODES notEncoded) {
-                    return childPercentEncoding.encode(transformer.encode(notEncoded));
-                }
-
-                @Override
-                public ENCODES decode(String encoded) throws ParseException {
-                    return transformer.decode(childPercentEncoding.decode(encoded));
-                }
-
-                @Override
-                public PercentEncoding<ENCODES> additionallyEncoding(char additionallyEncodedCharacter) {
-                    return apply(childPercentEncoding.additionallyEncoding(additionallyEncodedCharacter));
-                }
-            };
-        }
-    }
-
     protected abstract static class PercentEncoding<ENCODES> {
         protected static PercentEncoding<String> percentEncodingString(final PercentEncoder percentEncoder) {
             return new PercentEncodingString(percentEncoder);
@@ -135,8 +107,28 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             };
         }
 
-        public static <T, U, V> PercentEncodingPartial<T, V> transformingPercentEncodingPartial(PercentEncodingPartial<U, V> childPercentEncodingPartial, Transformer<T, U> transformer) {
-            return childPercentEncodingPartial.chain(new TransformingPercentEncodingPartial<T, U>(transformer));
+        public static <T, U, V> PercentEncodingPartial<T, V> transformingPercentEncodingPartial(PercentEncodingPartial<U, V> childPercentEncodingPartial, final Transformer<T, U> transformer) {
+            return childPercentEncodingPartial.chain(new PercentEncodingPartial<T, U>() {
+                @Override
+                public PercentEncoding<T> apply(final PercentEncoding<U> childPercentEncoding) {
+                    return new PercentEncoding<T>() {
+                        @Override
+                        public String encode(T notEncoded) {
+                            return childPercentEncoding.encode(transformer.encode(notEncoded));
+                        }
+
+                        @Override
+                        public T decode(String encoded) throws ParseException {
+                            return transformer.decode(childPercentEncoding.decode(encoded));
+                        }
+
+                        @Override
+                        public PercentEncoding<T> additionallyEncoding(char additionallyEncodedCharacter) {
+                            return apply(childPercentEncoding.additionallyEncoding(additionallyEncodedCharacter));
+                        }
+                    };
+                }
+            });
         }
 
         static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
