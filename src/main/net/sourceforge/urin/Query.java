@@ -28,9 +28,17 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         }
     };
 
-    protected static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
+    private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
-    protected Query(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
+    protected static <T extends Query> Parser<T> parser(final PercentEncodingPartial<T, String> percentEncodingPartial) {
+        return new Parser<T>() {
+            public T parse(String rawValue) throws ParseException {
+                return percentEncodingPartial.apply(PERCENT_ENCODING).decode(rawValue);
+            }
+        };
+    }
+
+    private Query(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
         super(value, percentEncoding);
     }
 

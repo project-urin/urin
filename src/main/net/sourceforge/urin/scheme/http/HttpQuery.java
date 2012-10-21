@@ -26,17 +26,6 @@ import static java.util.Arrays.asList;
  */
 public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> implements Iterable<HttpQuery.QueryParameter> {
 
-    static final Parser<HttpQuery> QUERY_PARSER = new Parser<HttpQuery>() {
-        public HttpQuery parse(final String rawQuery) throws ParseException {
-            return new HttpQuery(new ArrayList<QueryParameter>() {{
-                for (QueryParameter queryParameter : HTTP_QUERY_PERCENT_ENCODING.apply(PERCENT_ENCODING)
-                        .decode(rawQuery)) {
-                    add(queryParameter);
-                }
-            }});
-        }
-    };
-
     private static final PercentEncodingPartial<Iterable<QueryParameter>, String> HTTP_QUERY_PERCENT_ENCODING = encodeQueryParameters(
             PercentEncoding.<Iterable<QueryParameter>, String>percentEncodingDelimitedValue(
                     '&',
@@ -45,6 +34,16 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                             percentEncodedQueryParameter(PercentEncoding.<String, String>percentEncodingDelimitedValue(
                                     '=',
                                     PercentEncoding.percentEncodingSubstitutedValue(' ', '+'))))));
+
+    static final Parser<HttpQuery> QUERY_PARSER = parser(PercentEncoding.transformingPercentEncodingPartial(HTTP_QUERY_PERCENT_ENCODING, new Transformer<HttpQuery, Iterable<QueryParameter>>() {
+        public Iterable<QueryParameter> encode(HttpQuery httpQuery) {
+            return httpQuery.value();
+        }
+
+        public HttpQuery decode(Iterable<QueryParameter> queryParameters) throws ParseException {
+            return queryParameters(queryParameters);
+        }
+    }));
 
     private HttpQuery(final Iterable<QueryParameter> queryParameters) {
         super(Collections.unmodifiableList(new ArrayList<QueryParameter>() {{
