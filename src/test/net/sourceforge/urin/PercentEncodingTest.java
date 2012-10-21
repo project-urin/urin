@@ -75,17 +75,7 @@ public class PercentEncodingTest {
 
     @Test
     public void encodesPercentEncodableSubstitutedValueCorrectly() throws Exception {
-        assertThat(PercentEncodingUnaryValue.PercentEncoding.percentEncodingSubstitutedValue(' ', '+', percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(". .+."), equalTo(".+.%2B."));
-    }
-
-    @Test
-    public void rejectsNullInFactoryForPercentEncodableSubstitutedValue() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                PercentEncodingUnaryValue.PercentEncoding.percentEncodingSubstitutedValue(aChar(), aChar(), null);
-            }
-        });
+        assertThat(PercentEncodingUnaryValue.PercentEncoding.percentEncodingSubstitutedValue(' ', '+').apply(percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(". .+."), equalTo(".+.%2B."));
     }
 
     @Test

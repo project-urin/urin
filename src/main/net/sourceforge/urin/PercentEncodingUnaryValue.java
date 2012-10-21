@@ -31,6 +31,34 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         return percentEncoding.encode(value);
     }
 
+
+    /*
+    Encoding Iterable<QueryParameter> -> String
+    interface Encoder<FROM, TO> {
+        TO encode(FROM from);
+    }
+    interface Encoding<FROM, TO> {
+        Encoder<FROM, TO> build(Encoder< percentEncode);
+    }
+    QueryParametersEncoding<TO> implements Encoding<Iterable<QueryParameter, TO> {
+        static queryParametersEncoding Encoding<Iterable<QueryParameter>, QueryParameter>() {
+            return new Encoding<Iterable<QueryParameter>, QueryParameter>() {
+                Encoder<Iterable<QueryParameter>, QueryParameter> build(PercentEncoder percentEncoder) {
+                    return new Encoder<Iterable<QueryParameter>, QueryParameter> {
+                        QueryPara
+                    }
+                }
+            }
+        }
+        QueryParameterEncoding<Iterable<QueryParameter>, <TO>(Encoding<QueryParameter, TO> {
+        }
+
+        encode(PercentEncoder percentEncoder) {
+
+        }
+    }
+     */
+
     protected static abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
         public abstract PercentEncoding<ENCODES> apply(PercentEncoding<CHILD_ENCODES> childPercentEncoding);
 
@@ -49,12 +77,12 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             return new PercentEncodingString(percentEncoder);
         }
 
-        public static <T> PercentEncodingPartial<Iterable<T>, T> percentEncodingDelimitedValue(final char delimiter) {
-            return new PercentEncodingPartial<Iterable<T>, T>() {
+        public static <T, V> PercentEncodingPartial<Iterable<T>, V> percentEncodingDelimitedValue(final char delimiter, PercentEncodingPartial<T, V> childPercentEncodingPartial) {
+            return childPercentEncodingPartial.chain(new PercentEncodingPartial<Iterable<T>, T>() {
                 public PercentEncoding<Iterable<T>> apply(PercentEncoding<T> childPercentEncoding) {
                     return new PercentEncodingDelimitedValue<T>(delimiter, childPercentEncoding);
                 }
-            };
+            });
         }
 
         public static <T> PercentEncoding<Iterable<T>> percentEncodingDelimitedValue(final char delimiter, final PercentEncoding<T> elementPercentEncoding) {
@@ -68,10 +96,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
                     return new PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, childPercentEncoding);
                 }
             };
-        }
-
-        public static PercentEncoding<String> percentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter, final PercentEncoding<String> percentEncoding) {
-            return new PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, percentEncoding);
         }
 
         static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {

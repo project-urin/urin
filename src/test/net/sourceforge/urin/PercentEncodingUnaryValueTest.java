@@ -22,8 +22,8 @@ public class PercentEncodingUnaryValueTest {
     @Test
     public void canChainApplicationsOfPercentEncodingDelimitedValue() throws Exception {
         assertThat(
-                PercentEncodingUnaryValue.PercentEncoding.<String>percentEncodingDelimitedValue('b')
-                        .chain(PercentEncodingUnaryValue.PercentEncoding.<Iterable<String>>percentEncodingDelimitedValue('a'))
+                PercentEncodingUnaryValue.PercentEncoding.<Iterable<String>, String>percentEncodingDelimitedValue('a',
+                        PercentEncodingUnaryValue.PercentEncoding.<String, String>percentEncodingDelimitedValue('b', PercentEncodingUnaryValue.PercentEncoding.percentEncodingSubstitutedValue(' ', '+')))
                         .apply(percentEncodingString(PercentEncoder.ENCODE_EVERYTHING))
                         .encode(asList((Iterable<String>) asList("c", "d"), asList("c", "d"))),
                 equalTo("%63b%64a%63b%64"));
