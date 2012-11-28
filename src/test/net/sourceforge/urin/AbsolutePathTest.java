@@ -29,8 +29,8 @@ import static org.junit.Assert.assertThat;
 public class AbsolutePathTest {
     @Test
     public void anAbsolutePathIsEqualToAnotherAbsolutePathWithTheSameMembers() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment<String> firstSegment = aSegment();
+        Segment<String> secondSegment = aSegment();
         assertThat(AbsolutePath.path(firstSegment, secondSegment), equalTo(AbsolutePath.path(firstSegment, secondSegment)));
         assertThat(AbsolutePath.path(firstSegment, secondSegment).hashCode(), equalTo(AbsolutePath.path(firstSegment, secondSegment).hashCode()));
     }

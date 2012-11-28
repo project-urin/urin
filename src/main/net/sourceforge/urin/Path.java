@@ -58,7 +58,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @return a {@code Path} representing the given {@code Segment}s.
      */
     public static <T> Path<T> rootlessPath(final Segment<T> firstSegment, final Segment<T>... segments) {
-        return rootlessPath(new ArrayList<Segment<T>>() {{
+        return rootlessPath(new ArrayList<Segment<T>>(segments.length + 1) {{
             add(firstSegment);
             for (Segment<T> segment : segments) {
                 add(segment);
@@ -112,7 +112,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
     public static <T> AbsolutePath<T> path(final Segment<T> firstSegment, final Segment<T>... segments) {
-        return path(new ArrayList<Segment<T>>() {{
+        return path(new ArrayList<Segment<T>>(segments.length + 1) {{
             add(firstSegment);
             for (Segment<T> segment : segments) {
                 add(segment);

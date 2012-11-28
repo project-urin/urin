@@ -27,7 +27,7 @@ public class PercentEncodingUnaryValueTest {
                 PercentEncodingUnaryValue.PercentEncodingPartial.<Iterable<String>, String>percentEncodingDelimitedValue('a',
                         PercentEncodingUnaryValue.PercentEncodingPartial.<String, String>percentEncodingDelimitedValue('b', PercentEncodingUnaryValue.PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+')))
                         .apply(percentEncodingString(PercentEncoder.ENCODE_EVERYTHING))
-                        .encode(new ArrayList<Iterable<String>>() {{
+                        .encode(new ArrayList<Iterable<String>>(2) {{
                             add(asList("c", "d"));
                             add(asList("c", "d"));
                         }}),

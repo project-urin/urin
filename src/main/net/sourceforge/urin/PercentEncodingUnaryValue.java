@@ -171,7 +171,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             @Override
             public Iterable<T> decode(final String encoded) throws ParseException {
                 final String[] components = encoded.split(quote(Character.toString(delimiter)));
-                return new ArrayList<T>() {{
+                return new ArrayList<T>(components.length) {{
                     for (String component : components) {
                         add(percentEncoding.decode(component));
                     }
