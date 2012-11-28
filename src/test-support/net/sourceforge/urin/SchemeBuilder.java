@@ -22,13 +22,13 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 public class SchemeBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Scheme<Query>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Scheme<Query>>(
-            new Supplier<Scheme<Query>>() {
+    private static final RandomSupplierSwitcher<Scheme<String, Query>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Scheme<String, Query>>(
+            new Supplier<Scheme<String, Query>>() {
                 public Scheme get() {
                     return aSchemeWithNoDefaultPort();
                 }
             },
-            new Supplier<Scheme<Query>>() {
+            new Supplier<Scheme<String, Query>>() {
                 public Scheme get() {
                     return aSchemeWithDefaultPort();
                 }
@@ -36,7 +36,7 @@ public class SchemeBuilder {
     );
 
 
-    static Scheme<Query> aScheme() {
+    static Scheme<String, Query> aScheme() {
         return RANDOM_SUPPLIER_SWITCHER.get();
     }
 

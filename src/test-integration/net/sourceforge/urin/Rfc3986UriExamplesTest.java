@@ -79,7 +79,7 @@ public class Rfc3986UriExamplesTest {
     public void telnetExample() throws Exception {
         assertAsStringAsUriAndParse("telnet://192.0.2.16:80/", scheme("telnet").urin(
                 authority(ipV4Address(octet(192), octet(0), octet(2), octet(16)), port("80")),
-                path()
+                AbsolutePath.<String>path()
         ));
     }
 

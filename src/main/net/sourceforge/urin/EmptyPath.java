@@ -16,7 +16,7 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 
-final class EmptyPath extends Path {
+final class EmptyPath<T> extends Path<T> {
 
     EmptyPath() {
     }
@@ -35,12 +35,12 @@ final class EmptyPath extends Path {
     }
 
     @Override
-    Path resolveRelativeTo(final Path basePath) {
+    Path<T> resolveRelativeTo(final Path<T> basePath) {
         return basePath;
     }
 
     @Override
-    Path replaceLastSegmentWith(final Iterable<Segment> segments) {
+    Path<T> replaceLastSegmentWith(final Iterable<Segment<T>> segments) {
         return rootlessPath(segments);
     }
 
@@ -50,7 +50,7 @@ final class EmptyPath extends Path {
     }
 
     @Override
-    public List<Segment> segments() {
+    public List<Segment<T>> segments() {
         return emptyList();
     }
 
@@ -73,7 +73,7 @@ final class EmptyPath extends Path {
         return "EmptyPath";
     }
 
-    public Iterator<Segment> iterator() {
-        return Collections.<Segment>emptyList().iterator();
+    public Iterator<Segment<T>> iterator() {
+        return Collections.<Segment<T>>emptyList().iterator();
     }
 }

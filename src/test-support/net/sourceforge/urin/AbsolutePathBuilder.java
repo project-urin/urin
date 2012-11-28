@@ -12,17 +12,18 @@ package net.sourceforge.urin;
 
 import java.util.Random;
 
+import static java.util.Arrays.asList;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
 public class AbsolutePathBuilder {
 
     private static final Random RANDOM = new Random();
 
-    public static AbsolutePath anAbsolutePath() {
-        Segment[] segments = new Segment[RANDOM.nextInt(5)];
+    public static AbsolutePath<String> anAbsolutePath() {
+        Segment<String>[] segments = new Segment[RANDOM.nextInt(5)];
         for (int i = 0; i < segments.length; i++) {
             segments[i] = aSegment();
         }
-        return Path.path(segments);
+        return Path.path(asList(segments));
     }
 }

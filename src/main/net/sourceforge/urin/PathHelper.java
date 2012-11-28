@@ -20,16 +20,16 @@ final class PathHelper {
         // deliberately empty
     }
 
-    static Iterable<Segment> appendSegmentsTo(final Collection<Segment> baseSegments, final Iterable<Segment> appendedSegments) {
-        return new ArrayList<Segment>() {{
-            Iterator<Segment> baseSegmentsIterator = baseSegments.iterator();
+    static <T> Iterable<Segment<T>> appendSegmentsTo(final Collection<Segment<T>> baseSegments, final Iterable<Segment<T>> appendedSegments) {
+        return new ArrayList<Segment<T>>() {{
+            Iterator<Segment<T>> baseSegmentsIterator = baseSegments.iterator();
             while (baseSegmentsIterator.hasNext()) {
-                Segment baseSegment = baseSegmentsIterator.next();
+                Segment<T> baseSegment = baseSegmentsIterator.next();
                 if (baseSegmentsIterator.hasNext()) {
                     add(baseSegment);
                 }
             }
-            for (Segment segment : appendedSegments) {
+            for (Segment<T> segment : appendedSegments) {
                 add(segment);
             }
         }};

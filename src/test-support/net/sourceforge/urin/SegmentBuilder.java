@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Mark Slater
+ * Copyright 2012 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -13,36 +13,34 @@ package net.sourceforge.urin;
 import com.google.common.base.Supplier;
 
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
-import static net.sourceforge.urin.Segment.DOT;
-import static net.sourceforge.urin.Segment.DOT_DOT;
-import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Segment.*;
 
 public class SegmentBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Segment> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Segment>(
-            new Supplier<Segment>() {
-                public Segment get() {
+    private static final RandomSupplierSwitcher<Segment<String>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Segment<String>>(
+            new Supplier<Segment<String>>() {
+                public Segment<String> get() {
                     return aNonDotSegment();
                 }
             },
-            new Supplier<Segment>() {
-                public Segment get() {
+            new Supplier<Segment<String>>() {
+                public Segment<String> get() {
                     return DOT;
                 }
             },
-            new Supplier<Segment>() {
-                public Segment get() {
+            new Supplier<Segment<String>>() {
+                public Segment<String> get() {
                     return DOT_DOT;
                 }
             }
     );
 
-    public static Segment aNonDotSegment() {
+    public static Segment<String> aNonDotSegment() {
         return segment(aString());
     }
 
-    public static Segment aSegment() {
+    public static Segment<String> aSegment() {
         return RANDOM_SUPPLIER_SWITCHER.get();
     }
 

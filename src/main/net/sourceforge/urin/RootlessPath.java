@@ -15,15 +15,15 @@ import java.util.*;
 import static net.sourceforge.urin.PathHelper.appendSegmentsTo;
 import static net.sourceforge.urin.Segment.*;
 
-final class RootlessPath extends Path {
+final class RootlessPath<T> extends Path<T> {
 
-    private final Collection<Segment> segments;
+    private final Collection<Segment<T>> segments;
 
-    RootlessPath(final Iterable<Segment> segments) {
-        LinkedList<Segment> newSegments = new LinkedList<Segment>();
-        Iterator<Segment> segmentIterator = segments.iterator();
+    RootlessPath(final Iterable<Segment<T>> segments) {
+        LinkedList<Segment<T>> newSegments = new LinkedList<Segment<T>>();
+        Iterator<Segment<T>> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
-            Segment segment = segmentIterator.next();
+            Segment<T> segment = segmentIterator.next();
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
             } else {
@@ -74,13 +74,13 @@ final class RootlessPath extends Path {
     }
 
     @Override
-    Path resolveRelativeTo(final Path basePath) {
+    Path<T> resolveRelativeTo(final Path<T> basePath) {
         return basePath.replaceLastSegmentWith(segments);
     }
 
     @Override
-    RootlessPath replaceLastSegmentWith(final Iterable<Segment> segments) {
-        return new RootlessPath(appendSegmentsTo(this.segments, segments));
+    RootlessPath<T> replaceLastSegmentWith(final Iterable<Segment<T>> segments) {
+        return new RootlessPath<T>(appendSegmentsTo(this.segments, segments));
     }
 
     @Override
@@ -89,8 +89,8 @@ final class RootlessPath extends Path {
     }
 
     @Override
-    public List<Segment> segments() {
-        return new ArrayList<Segment>(segments);
+    public List<Segment<T>> segments() {
+        return new ArrayList<Segment<T>>(segments);
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
@@ -98,7 +98,7 @@ final class RootlessPath extends Path {
         if (prefixWithDotSegmentCriteria.matches(this)) {
             result.append("./");
         }
-        Iterator<Segment> segmentIterator = segments.iterator();
+        Iterator<Segment<T>> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
             result.append(segmentIterator.next().asString());
             if (segmentIterator.hasNext()) {
@@ -131,7 +131,7 @@ final class RootlessPath extends Path {
         return segments.toString();
     }
 
-    public Iterator<Segment> iterator() {
+    public Iterator<Segment<T>> iterator() {
         return segments.iterator();
     }
 }

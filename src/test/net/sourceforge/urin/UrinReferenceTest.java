@@ -25,8 +25,8 @@ public class UrinReferenceTest {
 
     @Test
     public void aUriAsStringParsesToAUrin() throws Exception {
-        Urin<Query> urin = aUrin();
-        assertThat(aScheme().parseUrinReference(urin.asString()), equalTo((UrinReference<Query>) urin));
+        Urin<String, Query> urin = aUrin();
+        assertThat(aScheme().parseUrinReference(urin.asString()), equalTo((UrinReference<String, Query>) urin));
     }
 
     @Test
@@ -37,8 +37,8 @@ public class UrinReferenceTest {
 
     @Test
     public void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
-        RelativeReference<Query> relativeReference = aRelativeReference();
-        assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo((UrinReference<Query>) relativeReference));
+        RelativeReference<String, Query> relativeReference = aRelativeReference();
+        assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo((UrinReference<String, Query>) relativeReference));
     }
 
     @Test

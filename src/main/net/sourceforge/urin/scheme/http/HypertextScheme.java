@@ -14,32 +14,32 @@ import net.sourceforge.urin.*;
 
 import java.net.URI;
 
-abstract class HypertextScheme extends SchemeWithDefaultPort<HttpQuery> {
+abstract class HypertextScheme extends SchemeWithDefaultPort<String, HttpQuery> {
     HypertextScheme(final String name, final Port defaultPort) {
-        super(name, defaultPort, HttpQuery.QUERY_DECODER);
+        super(name, defaultPort, Segment.BASE_SEGMENT_DECODER, HttpQuery.QUERY_DECODER);
     }
 
-    public static Urin<HttpQuery> parseHttpUrin(final URI uri) throws ParseException {
+    public static Urin<String, HttpQuery> parseHttpUrin(final URI uri) throws ParseException {
         return Http.HTTP.parseUrin(uri);
     }
 
-    public static Urin<HttpQuery> parseHttpUrin(final String uri) throws ParseException {
+    public static Urin<String, HttpQuery> parseHttpUrin(final String uri) throws ParseException {
         return Http.HTTP.parseUrin(uri);
     }
 
-    public static RelativeReference<HttpQuery> parseHttpRelativeReference(final URI uri) throws ParseException {
+    public static RelativeReference<String, HttpQuery> parseHttpRelativeReference(final URI uri) throws ParseException {
         return Http.HTTP.parseRelativeReference(uri);
     }
 
-    public static RelativeReference<HttpQuery> parseHttpRelativeReference(final String uri) throws ParseException {
+    public static RelativeReference<String, HttpQuery> parseHttpRelativeReference(final String uri) throws ParseException {
         return Http.HTTP.parseRelativeReference(uri);
     }
 
-    public static UrinReference<HttpQuery> parseHttpUrinReference(final URI uri) throws ParseException {
+    public static UrinReference<String, HttpQuery> parseHttpUrinReference(final URI uri) throws ParseException {
         return Http.HTTP.parseUrinReference(uri);
     }
 
-    public static UrinReference<HttpQuery> parseHttpUrinReference(final String uri) throws ParseException {
+    public static UrinReference<String, HttpQuery> parseHttpUrinReference(final String uri) throws ParseException {
         return Http.HTTP.parseUrinReference(uri);
     }
 }

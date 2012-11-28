@@ -37,8 +37,8 @@ public class AbsolutePathTest {
 
     @Test
     public void aPathUsingVarargsFactoryIsEqualToWithTheSameMembersMadeUsingIterableFactory() throws Exception {
-        Segment firstSegment = aSegment();
-        Segment secondSegment = aSegment();
+        Segment<String> firstSegment = aSegment();
+        Segment<String> secondSegment = aSegment();
         assertThat(AbsolutePath.path(firstSegment, secondSegment), equalTo(AbsolutePath.path(asList(firstSegment, secondSegment))));
         assertThat(AbsolutePath.path(firstSegment, secondSegment).hashCode(), equalTo(AbsolutePath.path(asList(firstSegment, secondSegment)).hashCode()));
     }
@@ -46,9 +46,9 @@ public class AbsolutePathTest {
     @Test
     public void aPathUsingSegmentVarargsFactoryIsEqualToWithTheSameMembersMadeUsingStringVarargsFactory() throws Exception {
         String firstSegmentValue = aString();
-        Segment firstSegment = segment(firstSegmentValue);
+        Segment<String> firstSegment = segment(firstSegmentValue);
         String secondSegmentValue = aString();
-        Segment secondSegment = segment(secondSegmentValue);
+        Segment<String> secondSegment = segment(secondSegmentValue);
         assertThat(AbsolutePath.path(firstSegment, secondSegment), equalTo(AbsolutePath.path(firstSegmentValue, secondSegmentValue)));
         assertThat(AbsolutePath.path(firstSegment, secondSegment).hashCode(), equalTo(AbsolutePath.path(firstSegmentValue, secondSegmentValue).hashCode()));
     }
@@ -57,8 +57,8 @@ public class AbsolutePathTest {
     public void aPathUsingSegmentVarargsIsImmutable() throws Exception {
         Segment firstSegment = aNonDotSegment();
         Segment secondSegment = aNonDotSegment();
-        Segment[] segments = {firstSegment, secondSegment};
-        AbsolutePath absolutePath = Path.path(segments);
+        Segment[] segments = {secondSegment};
+        AbsolutePath absolutePath = Path.path(firstSegment, segments);
         segments[0] = aSegment();
         assertThat(absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
@@ -92,7 +92,8 @@ public class AbsolutePathTest {
 
     @Test
     public void removesDotPath() throws Exception {
-        assertThat(AbsolutePath.path(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g")), equalTo(AbsolutePath.path(segment("a"), segment("g"))));
+        final AbsolutePath<String> actual = AbsolutePath.path(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"));
+        assertThat(actual, equalTo(AbsolutePath.path(segment("a"), segment("g"))));
     }
 
     @Test
@@ -122,23 +123,24 @@ public class AbsolutePathTest {
 
     @Test
     public void absolutePathIteratorContainsAllNonDotSegments() throws Exception {
-        Segment segmentOne = aNonDotSegment();
-        Segment segmentTwo = aNonDotSegment();
+        Segment<String> segmentOne = aNonDotSegment();
+        Segment<String> segmentTwo = aNonDotSegment();
         assertThat(path(segmentOne, segmentTwo), contains(segmentOne, segmentTwo));
     }
 
     @Test
     public void absolutePathSegmentsContainsAllNonDotSegments() throws Exception {
-        Segment segmentOne = aNonDotSegment();
-        Segment segmentTwo = aNonDotSegment();
-        assertThat(path(segmentOne, segmentTwo).segments(), contains(segmentOne, segmentTwo));
+        Segment<String> segmentOne = aNonDotSegment();
+        Segment<String> segmentTwo = aNonDotSegment();
+        final AbsolutePath<String> path = path(segmentOne, segmentTwo);
+        assertThat(path.segments(), contains(segmentOne, segmentTwo));
     }
 
     @Test
     public void absolutePathSegmentsDoesNotExposeMutability() throws Exception {
-        Segment segmentOne = aNonDotSegment();
-        Segment segmentTwo = aNonDotSegment();
-        Path absolutePath = path(segmentOne, segmentTwo);
+        Segment<String> segmentOne = aNonDotSegment();
+        Segment<String> segmentTwo = aNonDotSegment();
+        Path<String> absolutePath = path(segmentOne, segmentTwo);
         absolutePath.segments().add(aSegment());
         assertThat(absolutePath.segments(), contains(segmentOne, segmentTwo));
     }

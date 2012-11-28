@@ -14,9 +14,7 @@ import org.junit.Test;
 
 import static net.sourceforge.urin.CharacterSets.P_CHARS;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
-import static net.sourceforge.urin.Segment.DOT;
-import static net.sourceforge.urin.Segment.DOT_DOT;
-import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
@@ -56,32 +54,32 @@ public class SegmentTest {
 
     @Test
     public void parsesUnreservedCharacters() throws Exception {
-        assertThat(Segment.parse(P_CHARS), equalTo(Segment.segment(P_CHARS)));
+        assertThat(Segment.parse(P_CHARS, Segment.BASE_SEGMENT_DECODER), equalTo(Segment.segment(P_CHARS)));
     }
 
     @Test
     public void parsePercentDecodesNonUnreservedCharacters() throws Exception {
-        assertThat(Segment.parse(".%23.%5B.%5D.%20."), equalTo(Segment.segment(".#.[.]. .")));
+        assertThat(Segment.parse(".%23.%5B.%5D.%20.", Segment.BASE_SEGMENT_DECODER), equalTo(Segment.segment(".#.[.]. .")));
     }
 
     @Test
     public void parsesPercentEncodedDotSegment() throws Exception {
-        assertThat(Segment.parse("%2E"), equalTo(Segment.segment(".")));
+        assertThat(Segment.parse("%2E", Segment.BASE_SEGMENT_DECODER), equalTo(Segment.segment(".")));
     }
 
     @Test
     public void parsesPercentEncodedDotDotSegment() throws Exception {
-        assertThat(Segment.parse("%2E%2E"), equalTo(Segment.segment("..")));
+        assertThat(Segment.parse("%2E%2E", Segment.BASE_SEGMENT_DECODER), equalTo(Segment.segment("..")));
     }
 
     @Test
     public void unencodedDotBecomesExplicitDotSegment() throws Exception {
-        assertThat(Segment.parse("."), equalTo(DOT));
+        assertThat(Segment.parse(".", Segment.BASE_SEGMENT_DECODER), equalTo(DOT));
     }
 
     @Test
     public void unencodedDotDotBecomesExplicitDotDotSegment() throws Exception {
-        assertThat(Segment.parse(".."), equalTo(DOT_DOT));
+        assertThat(Segment.parse("..", Segment.BASE_SEGMENT_DECODER), equalTo(DOT_DOT));
     }
 
     @Test

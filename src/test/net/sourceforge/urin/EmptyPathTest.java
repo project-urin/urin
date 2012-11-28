@@ -60,20 +60,20 @@ public class EmptyPathTest {
 
     @Test
     public void emptyPathIteratorIsEmpty() throws Exception {
-        assertThat(new EmptyPath(), Matchers.<Segment>emptyIterable());
+        assertThat(new EmptyPath<String>(), Matchers.<Segment<String>>emptyIterable());
     }
 
     @Test
     public void emptyPathSegmentsIsEmpty() throws Exception {
-        assertThat(new EmptyPath().segments(), Matchers.<Segment>empty());
+        assertThat(new EmptyPath<String>().segments(), Matchers.<Segment<String>>empty());
     }
 
     @Test
     public void emptyPathSegmentsDoesNotExposeMutability() throws Exception {
-        EmptyPath emptyPath = new EmptyPath();
+        EmptyPath<String> emptyPath = new EmptyPath<String>();
         try {
             emptyPath.segments().add(aSegment());
-            assertThat(emptyPath, Matchers.<Segment>emptyIterable());
+            assertThat(emptyPath, Matchers.<Segment<String>>emptyIterable());
         } catch (UnsupportedOperationException e) {
             // expect to end up here
         }

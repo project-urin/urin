@@ -26,6 +26,13 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.*;
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
  */
 public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
+
+    public static final Decoder<Segment<String>, String> BASE_SEGMENT_DECODER = new Decoder<Segment<String>, String>() {
+        public Segment<String> decode(final String rawQuery) throws ParseException {
+            return segment(PERCENT_ENCODING.decode(rawQuery));
+        }
+    };
+
     private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
     private static final PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
             specifiedValueEncoding("..",
@@ -78,7 +85,7 @@ public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES
      * @param segment any {@code String} to represent as a {@code Segment}.
      * @return a {@code Segment} representing the given {@code String}.
      */
-    public static Segment segment(final String segment) {
+    public static Segment<String> segment(final String segment) {
         return new Segment<String>(segment, PERCENT_ENCODING) {
             @Override
             public boolean hasValue() {
@@ -96,13 +103,13 @@ public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES
         return asString().indexOf(':') != -1;
     }
 
-    static Segment parse(final String encodedSegment) throws ParseException {
+    static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, Decoder<Segment<SEGMENT>, String> segmentDecoder) throws ParseException {
         if (".".equals(encodedSegment)) {
             return DOT;
         } else if ("..".equals(encodedSegment)) {
             return DOT_DOT;
         } else {
-            return segment(PERCENT_ENCODER.decode(encodedSegment));
+            return segmentDecoder.decode(encodedSegment);
         }
     }
 

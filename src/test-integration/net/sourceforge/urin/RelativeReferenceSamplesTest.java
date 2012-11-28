@@ -38,9 +38,10 @@ public class RelativeReferenceSamplesTest {
 
     @Test
     public void canParseARelativeReferenceAndRetrieveTheValuesOfTheSegments() throws Exception {
-        RelativeReference relativeReference = aScheme().parseRelativeReference("a/b%2Fc");
-        assertThat(transform(relativeReference.path(), new Function<Segment, String>() {
-            public String apply(final Segment segment) {
+        RelativeReference<String, ?> relativeReference = aScheme().parseRelativeReference("a/b%2Fc");
+        final Path<String> path = relativeReference.path();
+        assertThat(transform(path, new Function<Segment<String>, String>() {
+            public String apply(final Segment<String> segment) {
                 return segment.value();
             }
         }), contains("a", "b/c"));

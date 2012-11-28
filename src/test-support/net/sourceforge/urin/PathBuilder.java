@@ -17,39 +17,39 @@ import java.util.Random;
 public class PathBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Path> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Path>(
-            new Supplier<Path>() {
-                public Path get() {
+    private static final RandomSupplierSwitcher<Path<String>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Path<String>>(
+            new Supplier<Path<String>>() {
+                public Path<String> get() {
                     return anAbsolutePath();
                 }
             },
-            new Supplier<Path>() {
-                public Path get() {
+            new Supplier<Path<String>>() {
+                public Path<String> get() {
                     return aRootlessPath();
                 }
             }
     );
     private static final Random RANDOM = new Random();
 
-    public static AbsolutePath anAbsolutePath() {
-        int numberOfSegments = RANDOM.nextInt(4) + 1;
-        Segment[] tailSegments = new Segment[numberOfSegments];
+    public static AbsolutePath<String> anAbsolutePath() {
+        int numberOfSegments = RANDOM.nextInt(4);
+        Segment<String>[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
             tailSegments[i] = SegmentBuilder.aNonDotSegment();
         }
-        return Path.path(tailSegments);
+        return Path.path(SegmentBuilder.aNonDotSegment(), tailSegments);
     }
 
-    public static Path aRootlessPath() {
-        int numberOfSegments = RANDOM.nextInt(4) + 1;
-        Segment[] tailSegments = new Segment[numberOfSegments];
+    public static Path<String> aRootlessPath() {
+        int numberOfSegments = RANDOM.nextInt(4);
+        Segment<String>[] tailSegments = new Segment[numberOfSegments];
         for (int i = 0; i < tailSegments.length; i++) {
             tailSegments[i] = SegmentBuilder.aNonDotSegment();
         }
-        return RootlessPath.rootlessPath(tailSegments);
+        return RootlessPath.rootlessPath(SegmentBuilder.aNonDotSegment(), tailSegments);
     }
 
-    public static Path aPath() {
+    public static Path<String> aPath() {
         return RANDOM_SUPPLIER_SWITCHER.get();
     }
 

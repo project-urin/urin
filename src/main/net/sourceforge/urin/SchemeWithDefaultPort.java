@@ -17,7 +17,7 @@ import static java.util.Locale.ENGLISH;
  *
  * @param <QUERY> The type of {@code Query} used by this scheme.
  */
-public class SchemeWithDefaultPort<QUERY extends Query> extends Scheme<QUERY> {
+public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<SEGMENT, QUERY> {
     private final String name;
     private final Port defaultPort;
 
@@ -28,8 +28,8 @@ public class SchemeWithDefaultPort<QUERY extends Query> extends Scheme<QUERY> {
      * @param defaultPort  the default port associated with the scheme.
      * @param queryDecoder the parser to use for parsing queries of this scheme.
      */
-    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final Decoder<QUERY, String> queryDecoder) {
-        super(queryDecoder);
+    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final Decoder<Segment<SEGMENT>, String> segmentDecoder, final Decoder<QUERY, String> queryDecoder) {
+        super(segmentDecoder, queryDecoder);
         this.name = name;
         if (defaultPort == null) {
             throw new NullPointerException("Cannot instantiate Scheme with null default port");
@@ -38,8 +38,8 @@ public class SchemeWithDefaultPort<QUERY extends Query> extends Scheme<QUERY> {
     }
 
     @Override
-    SchemeWithDefaultPort<QUERY> withName(final String name) {
-        return new SchemeWithDefaultPort<QUERY>(name, defaultPort, queryDecoder);
+    SchemeWithDefaultPort<SEGMENT, QUERY> withName(final String name) {
+        return new SchemeWithDefaultPort<SEGMENT, QUERY>(name, defaultPort, segmentDecoder, queryDecoder);
     }
 
     @Override

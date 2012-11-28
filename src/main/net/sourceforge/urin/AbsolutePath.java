@@ -20,15 +20,15 @@ import static net.sourceforge.urin.Segment.*;
  * <p/>
  * To create instances, see {@link Path}.
  */
-public final class AbsolutePath extends Path {
+public final class AbsolutePath<T> extends Path<T> {
 
-    private final Collection<Segment> segments;
+    private final Collection<Segment<T>> segments;
 
-    AbsolutePath(final Iterable<Segment> segments) {
-        LinkedList<Segment> newSegments = new LinkedList<Segment>();
-        Iterator<Segment> segmentIterator = segments.iterator();
+    AbsolutePath(final Iterable<Segment<T>> segments) {
+        LinkedList<Segment<T>> newSegments = new LinkedList<Segment<T>>();
+        Iterator<Segment<T>> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
-            Segment segment = segmentIterator.next();
+            Segment<T> segment = segmentIterator.next();
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
             } else {
@@ -50,7 +50,7 @@ public final class AbsolutePath extends Path {
                 }
             }
         }
-        this.segments = newSegments.size() == 1 && EMPTY.equals(newSegments.getFirst()) ? new LinkedList<Segment>() : newSegments;
+        this.segments = newSegments.size() == 1 && EMPTY.equals(newSegments.getFirst()) ? new LinkedList<Segment<T>>() : newSegments;
     }
 
 
@@ -64,13 +64,13 @@ public final class AbsolutePath extends Path {
     }
 
     @Override
-    AbsolutePath resolveRelativeTo(final Path basePath) {
+    AbsolutePath<T> resolveRelativeTo(final Path<T> basePath) {
         return this;
     }
 
     @Override
-    Path replaceLastSegmentWith(final Iterable<Segment> segments) {
-        return new AbsolutePath(appendSegmentsTo(this.segments, segments));
+    Path<T> replaceLastSegmentWith(final Iterable<Segment<T>> segments) {
+        return new AbsolutePath<T>(appendSegmentsTo(this.segments, segments));
     }
 
     @Override
@@ -79,8 +79,8 @@ public final class AbsolutePath extends Path {
     }
 
     @Override
-    public List<Segment> segments() {
-        return new ArrayList<Segment>(segments);
+    public List<Segment<T>> segments() {
+        return new ArrayList<Segment<T>>(segments);
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
@@ -88,7 +88,7 @@ public final class AbsolutePath extends Path {
         if (prefixWithDotSegmentCriteria.matches(this)) {
             result.append("./");
         }
-        Iterator<Segment> segmentIterator = segments.iterator();
+        Iterator<Segment<T>> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
             result.append(segmentIterator.next().asString());
             if (segmentIterator.hasNext()) {
@@ -121,7 +121,7 @@ public final class AbsolutePath extends Path {
         return segments.toString();
     }
 
-    public Iterator<Segment> iterator() {
+    public Iterator<Segment<T>> iterator() {
         return segments.iterator();
     }
 }

@@ -19,7 +19,7 @@ import java.net.URI;
  * @param <QUERY> The type of {@code Query} used by this URI reference.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-4.1">RFC 3986 - URI Reference</a>
  */
-public abstract class UrinReference<QUERY extends Query> {
+public abstract class UrinReference<SEGMENT, QUERY extends Query> {
 
     UrinReference() {
         // deliberately empty
@@ -52,7 +52,7 @@ public abstract class UrinReference<QUERY extends Query> {
      *
      * @return a {@code Path} representing the path component of this URI reference.
      */
-    public abstract Path path();
+    public abstract Path<SEGMENT> path();
 
     /**
      * Returns true if {@code fragment()} can be called on this {@code UrinReference}.  This method
@@ -90,16 +90,16 @@ public abstract class UrinReference<QUERY extends Query> {
      */
     public abstract QUERY query();
 
-    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Path path);
+    abstract Urin<SEGMENT, QUERY> resolve(final Scheme<SEGMENT, QUERY> scheme, final Path<SEGMENT> path);
 
-    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Authority authority, final Path path);
+    abstract Urin<SEGMENT, QUERY> resolve(final Scheme<SEGMENT, QUERY> scheme, final Authority authority, final Path<SEGMENT> path);
 
-    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Path path, final QUERY query);
+    abstract Urin<SEGMENT, QUERY> resolve(final Scheme<SEGMENT, QUERY> scheme, final Path<SEGMENT> path, final QUERY query);
 
-    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Authority authority, final Path path, final QUERY query);
+    abstract Urin<SEGMENT, QUERY> resolve(final Scheme<SEGMENT, QUERY> scheme, final Authority authority, final Path<SEGMENT> path, final QUERY query);
 
-    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Path path, final QUERY query, final Fragment fragment);
+    abstract Urin<SEGMENT, QUERY> resolve(final Scheme<SEGMENT, QUERY> scheme, final Path<SEGMENT> path, final QUERY query, final Fragment fragment);
 
-    abstract Urin<QUERY> resolve(final Scheme<QUERY> scheme, final Authority authority, final Path path, final QUERY query, final Fragment fragment);
+    abstract Urin<SEGMENT, QUERY> resolve(final Scheme<SEGMENT, QUERY> scheme, final Authority authority, final Path<SEGMENT> path, final QUERY query, final Fragment fragment);
 
 }

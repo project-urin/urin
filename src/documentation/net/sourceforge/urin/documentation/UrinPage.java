@@ -154,11 +154,11 @@ final class UrinPage {
         return codeTag(xhtmlText(clazz.getCanonicalName()));
     }
 
-    static Urin<HttpQuery> standardJarUrin(final String version) {
+    static Urin<String, HttpQuery> standardJarUrin(final String version) {
         return Https.https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
     }
 
-    static Href href(final UrinReference<? extends Query> urinReference) {
+    static Href href(final UrinReference<String, ? extends Query> urinReference) {
         return Href.href(urinReference.asString());
     }
 }
