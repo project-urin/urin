@@ -11,7 +11,6 @@
 package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.Host;
-import net.sourceforge.urin.Query;
 import net.sourceforge.urin.Urin;
 import net.sourceforge.urin.UrinReference;
 import net.sourceforge.urin.scheme.http.HttpQuery;
@@ -158,7 +157,7 @@ final class UrinPage {
         return Https.https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
     }
 
-    static Href href(final UrinReference<String, ? extends Query> urinReference) {
+    static Href href(final UrinReference urinReference) {
         return Href.href(urinReference.asString());
     }
 }
