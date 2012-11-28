@@ -53,8 +53,8 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
     }
 
     @Override
-    Scheme removeDefaultPort() {
-        return scheme(name);
+    Scheme<SEGMENT, QUERY> removeDefaultPort() {
+        return new GenericScheme<SEGMENT, QUERY>(name, segmentDecoder, queryDecoder);
     }
 
     @Override

@@ -61,7 +61,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
      */
     public static Scheme<String, Query<String>> scheme(final String name) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new GenericScheme(name.toLowerCase(ENGLISH));
+        return new GenericScheme<String, Query<String>>(name.toLowerCase(ENGLISH), BASE_SEGMENT_DECODER, BASE_QUERY_DECODER);
     }
 
     /**
@@ -706,17 +706,17 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
         return parseUrinReference(uriReference.toASCIIString());
     }
 
-    static final class GenericScheme extends Scheme<String, Query<String>> {
+    static final class GenericScheme<SEGMENT, QUERY extends Query> extends Scheme<SEGMENT, QUERY> {
         private final String name;
 
-        GenericScheme(final String name) {
-            super(BASE_SEGMENT_DECODER, BASE_QUERY_DECODER);
+        public GenericScheme(String name, Decoder<Segment<SEGMENT>, String> segmentDecoder, Decoder<QUERY, String> queryDecoder) {
+            super(segmentDecoder, queryDecoder);
             this.name = name;
         }
 
         @Override
-        GenericScheme withName(final String name) {
-            return new GenericScheme(name);
+        GenericScheme<SEGMENT, QUERY> withName(final String name) {
+            return new GenericScheme<SEGMENT, QUERY>(name, segmentDecoder, queryDecoder);
         }
 
         @Override
@@ -730,7 +730,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
         }
 
         @Override
-        Scheme<String, Query<String>> removeDefaultPort() {
+        Scheme<SEGMENT, QUERY> removeDefaultPort() {
             return this;
         }
 
