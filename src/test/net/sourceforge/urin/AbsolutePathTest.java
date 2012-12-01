@@ -99,8 +99,8 @@ public class AbsolutePathTest {
 
     @Test
     public void resolvesEmptyPath() throws Exception {
-        AbsolutePath path = anAbsolutePath();
-        assertThat(path.resolveRelativeTo(new EmptyPath()), equalTo((Path) path));
+        AbsolutePath<String> path = anAbsolutePath();
+        assertThat(path.resolveRelativeTo(new EmptyPath<String>()), equalTo((Path) path));
     }
 
     @Test

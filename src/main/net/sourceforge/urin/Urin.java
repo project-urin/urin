@@ -34,7 +34,7 @@ public abstract class Urin<SEGMENT, QUERY extends Query> extends UrinReference<S
      * @return the {@code Urin} resulting from resolving the give {@code UrinReference} relative to this.
      * @see <a href="http://tools.ietf.org/html/rfc3986#section-5">RFC 3986 - Reference Resolution</a>
      */
-    public abstract Urin resolve(final UrinReference<SEGMENT, QUERY> urinReference);
+    public abstract Urin<SEGMENT, QUERY> resolve(final UrinReference<SEGMENT, QUERY> urinReference);
 
     @Override
     Urin<SEGMENT, QUERY> resolve(final Scheme scheme, final Path path) {

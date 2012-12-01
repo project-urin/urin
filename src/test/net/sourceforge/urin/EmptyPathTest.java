@@ -38,19 +38,19 @@ public class EmptyPathTest {
 
     @Test
     public void resolvesEmptyPath() throws Exception {
-        assertThat(new EmptyPath().resolveRelativeTo(new EmptyPath()), equalTo((Path) new EmptyPath()));
+        assertThat(new EmptyPath<String>().resolveRelativeTo(new EmptyPath<String>()), equalTo((Path) new EmptyPath()));
     }
 
     @Test
     public void resolvesAbsolutePath() throws Exception {
-        Path basePath = anAbsolutePath();
-        assertThat(new EmptyPath().resolveRelativeTo(basePath), equalTo(basePath));
+        Path<String> basePath = anAbsolutePath();
+        assertThat(new EmptyPath<String>().resolveRelativeTo(basePath), equalTo(basePath));
     }
 
     @Test
     public void resolvesRootlessPath() throws Exception {
-        Path basePath = aRootlessPath();
-        assertThat(new EmptyPath().resolveRelativeTo(basePath), equalTo(basePath));
+        Path<String> basePath = aRootlessPath();
+        assertThat(new EmptyPath<String>().resolveRelativeTo(basePath), equalTo(basePath));
     }
 
     @Test

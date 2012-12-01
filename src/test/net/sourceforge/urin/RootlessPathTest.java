@@ -118,8 +118,8 @@ public class RootlessPathTest {
 
     @Test
     public void resolvesEmptyPath() throws Exception {
-        Path path = aRootlessPath();
-        assertThat(path.resolveRelativeTo(new EmptyPath()), equalTo(path));
+        Path<String> path = aRootlessPath();
+        assertThat(path.resolveRelativeTo(new EmptyPath<String>()), equalTo(path));
     }
 
     @Test
