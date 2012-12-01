@@ -10,9 +10,9 @@
 
 package net.sourceforge.urin;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-import static java.util.Arrays.asList;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
 public class AbsolutePathBuilder {
@@ -20,10 +20,9 @@ public class AbsolutePathBuilder {
     private static final Random RANDOM = new Random();
 
     public static AbsolutePath<String> anAbsolutePath() {
-        Segment<String>[] segments = new Segment[RANDOM.nextInt(5)];
-        for (int i = 0; i < segments.length; i++) {
-            segments[i] = aSegment();
-        }
-        return Path.path(asList(segments));
+        final int segmentCount = RANDOM.nextInt(5);
+        return Path.path(new ArrayList<Segment<String>>(segmentCount) {{
+            add(aSegment());
+        }});
     }
 }
