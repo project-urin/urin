@@ -28,22 +28,22 @@ public class UrinSamplesTest {
 
     @Test
     public void canMakeAUrinWithAuthorityAndPathToRoot() throws Exception {
-        Scheme scheme = aScheme();
+        Scheme<String, Query> scheme = aScheme();
         Authority authority = anAuthority();
-        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/", scheme.urin(authority, Path.path()));
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/", scheme.urin(authority, Path.<String>path()));
     }
 
     @Test
     public void canMakeAUrinWithAuthorityAndAbsolutePath() throws Exception {
-        Scheme scheme = aScheme();
+        Scheme<String, Query> scheme = aScheme();
         Authority authority = anAuthority();
-        Segment segment = aNonDotSegment();
-        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), scheme.urin(authority, Path.path(segment)));
+        Segment<String> segment = aNonDotSegment();
+        assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), scheme.urin(authority, Path.<String>path(segment)));
     }
 
     @Test
     public void canMakeAUrinWithPathToRoot() throws Exception {
-        Scheme scheme = aScheme();
-        assertAsStringAsUriAndParse(scheme.asString() + ":/", scheme.urin(Path.path()));
+        Scheme<String, Query> scheme = aScheme();
+        assertAsStringAsUriAndParse(scheme.asString() + ":/", scheme.urin(Path.<String>path()));
     }
 }
