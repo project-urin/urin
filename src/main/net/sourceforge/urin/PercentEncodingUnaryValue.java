@@ -109,10 +109,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             return new SpecifiedValueEncoding(encodedValue, percentEncoding);
         }
 
-        static PercentEncoding<String> nonEncoding() {
-            return new NonEncodingPercentEncoding();
-        }
-
         public abstract String encode(ENCODES notEncoded);
 
         public abstract ENCODES decode(String encoded) throws ParseException;
@@ -262,28 +258,6 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             @Override
             public PercentEncoding<String> additionallyEncoding(final char additionallyEncodedCharacter) {
                 return new SpecifiedValueEncoding(encodedValue, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
-            }
-
-        }
-
-        private static class NonEncodingPercentEncoding extends PercentEncoding<String> {
-
-            NonEncodingPercentEncoding() {
-            }
-
-            @Override
-            public String encode(final String notEncoded) {
-                return notEncoded;
-            }
-
-            @Override
-            public String decode(final String encoded) throws ParseException {
-                return encoded;
-            }
-
-            @Override
-            public PercentEncoding<String> additionallyEncoding(final char additionallyEncodedCharacter) {
-                return this;
             }
 
         }

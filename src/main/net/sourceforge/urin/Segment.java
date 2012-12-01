@@ -11,7 +11,8 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
-import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.*;
+import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.percentEncodingString;
+import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.specifiedValueEncoding;
 
 /**
  * A segment of a URI's path.
@@ -25,27 +26,76 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.*;
  * @param <ENCODES> The type of value represented by the segment - {@code String} in the general case.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
  */
-public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
+public abstract class Segment<ENCODES> {
 
     public static final Decoder<Segment<String>, String> BASE_SEGMENT_DECODER = new Decoder<Segment<String>, String>() {
         public Segment<String> decode(final String rawQuery) throws ParseException {
-            return segment(PERCENT_ENCODING.decode(rawQuery));
+            return segment(SegmentEncodingUnaryValue.PERCENT_ENCODING.decode(rawQuery));
         }
     };
 
-    private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
-    private static final PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
-            specifiedValueEncoding("..",
-                    percentEncodingString(PERCENT_ENCODER)));
+    public static class ValueSegment<ENCODES> extends Segment<ENCODES> {
+        private final PercentEncodingUnaryValue<ENCODES> delegate;
+
+        public ValueSegment(ENCODES value, PercentEncodingUnaryValue.PercentEncoding<ENCODES> percentEncoding) {
+            this.delegate = new SegmentEncodingUnaryValue<ENCODES>(value, percentEncoding);
+        }
+
+        @Override
+        public boolean hasValue() {
+            return true;
+        }
+
+        @Override
+        public ENCODES value() {
+            return delegate.value;
+        }
+
+        public String asString() {
+            return delegate.asString();
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            ValueSegment that = (ValueSegment) o;
+            return delegate.equals(that.delegate);
+        }
+
+        @Override
+        public int hashCode() {
+            return delegate.hashCode();
+        }
+
+        @Override
+        public String toString() {
+            return "Segment{value='" + delegate + "'}";
+        }
+
+    }
+
+    private static class SegmentEncodingUnaryValue<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
+        private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
+
+        private static final PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
+                specifiedValueEncoding("..",
+                        percentEncodingString(PERCENT_ENCODER)));
+
+        public SegmentEncodingUnaryValue(ENCODES value, PercentEncoding<ENCODES> percentEncoding) {
+            super(value, percentEncoding);
+        }
+    }
+
     /**
      * An empty segment
      */
     public static final Segment EMPTY = segment("");
-
     /**
      * The segment ".", referring to the current location in the path name hierarchy,
      */
-    public static final Segment DOT = new Segment<String>(".", nonEncoding()) {
+    public static final Segment DOT = new Segment() {
         @Override
         public boolean hasValue() {
             return false;
@@ -55,11 +105,16 @@ public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES
         public String value() {
             throw new UnsupportedOperationException("Attempt to get value of . segment");
         }
+
+        public String asString() {
+            return ".";
+        }
     };
+
     /**
      * The segment "..", referring to the parent location in the path name hierarchy,
      */
-    public static final Segment DOT_DOT = new Segment<String>("..", nonEncoding()) {
+    public static final Segment DOT_DOT = new Segment<String>() {
         @Override
         public boolean hasValue() {
             return false;
@@ -69,14 +124,13 @@ public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES
         public String value() {
             throw new UnsupportedOperationException("Attempt to get value of .. segment");
         }
+
+        public String asString() {
+            return "..";
+        }
     };
 
-    private Segment(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
-        super(value, percentEncoding);
-    }
-
-    protected Segment(final ENCODES value, final PercentEncodingPartial<ENCODES, String> percentEncoding) {
-        super(value, percentEncoding.apply(PERCENT_ENCODING));
+    private Segment() {
     }
 
     /**
@@ -86,7 +140,7 @@ public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment<String> segment(final String segment) {
-        return new Segment<String>(segment, PERCENT_ENCODING) {
+        return new ValueSegment<String>(segment, SegmentEncodingUnaryValue.PERCENT_ENCODING) {
             @Override
             public boolean hasValue() {
                 return true;
@@ -103,11 +157,14 @@ public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES
         return asString().indexOf(':') != -1;
     }
 
+    abstract String asString();
+
     static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, Decoder<Segment<SEGMENT>, String> segmentDecoder) throws ParseException {
         if (".".equals(encodedSegment)) {
             return DOT;
         } else if ("..".equals(encodedSegment)) {
-            return DOT_DOT;
+            return
+                    DOT_DOT;
         } else {
             return segmentDecoder.decode(encodedSegment);
         }
@@ -130,5 +187,5 @@ public abstract class Segment<ENCODES> extends PercentEncodingUnaryValue<ENCODES
      * @return the (non-encoded) value of this segment as a {@code String}.
      * @throws UnsupportedOperationException if this is a segment that does not represent a value.
      */
-    public abstract String value();
+    public abstract ENCODES value();
 }
