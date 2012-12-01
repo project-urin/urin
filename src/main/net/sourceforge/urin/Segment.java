@@ -34,6 +34,80 @@ public abstract class Segment<ENCODES> {
         }
     };
 
+    /**
+     * The segment ".", referring to the current location in the path name hierarchy,
+     */
+    public static <ENCODES> Segment<ENCODES> dot() {
+        return new Segment<ENCODES>() {
+            @Override
+            public final boolean hasValue() {
+                return false;
+            }
+
+            @Override
+            public final ENCODES value() {
+                throw new UnsupportedOperationException("Attempt to get value of . segment");
+            }
+
+            final String asString() {
+                return ".";
+            }
+
+            @Override
+            public final boolean equals(final Object o) {
+                return this == o || !(o == null || getClass() != o.getClass());
+            }
+
+            @Override
+            public final int hashCode() {
+                return 37;
+            }
+
+            @Override
+            public final String toString() {
+                return "Segment{.}";
+            }
+
+        };
+    }
+
+    /**
+     * The segment "..", referring to the parent location in the path name hierarchy,
+     */
+    public static <ENCODES> Segment<ENCODES> dotDot() {
+        return new Segment<ENCODES>() {
+            @Override
+            public boolean hasValue() {
+                return false;
+            }
+
+            @Override
+            public ENCODES value() {
+                throw new UnsupportedOperationException("Attempt to get value of .. segment");
+            }
+
+            public String asString() {
+                return "..";
+            }
+
+            @Override
+            public final boolean equals(final Object o) {
+                return this == o || !(o == null || getClass() != o.getClass());
+            }
+
+            @Override
+            public final int hashCode() {
+                return 17;
+            }
+
+            @Override
+            public final String toString() {
+                return "Segment{..}";
+            }
+
+        };
+    }
+
     public static class ValueSegment<ENCODES> extends Segment<ENCODES> {
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
@@ -92,43 +166,6 @@ public abstract class Segment<ENCODES> {
      * An empty segment
      */
     public static final Segment EMPTY = segment("");
-    /**
-     * The segment ".", referring to the current location in the path name hierarchy,
-     */
-    public static final Segment DOT = new Segment() {
-        @Override
-        public boolean hasValue() {
-            return false;
-        }
-
-        @Override
-        public String value() {
-            throw new UnsupportedOperationException("Attempt to get value of . segment");
-        }
-
-        public String asString() {
-            return ".";
-        }
-    };
-
-    /**
-     * The segment "..", referring to the parent location in the path name hierarchy,
-     */
-    public static final Segment DOT_DOT = new Segment<String>() {
-        @Override
-        public boolean hasValue() {
-            return false;
-        }
-
-        @Override
-        public String value() {
-            throw new UnsupportedOperationException("Attempt to get value of .. segment");
-        }
-
-        public String asString() {
-            return "..";
-        }
-    };
 
     private Segment() {
     }
@@ -161,10 +198,10 @@ public abstract class Segment<ENCODES> {
 
     static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, Decoder<Segment<SEGMENT>, String> segmentDecoder) throws ParseException {
         if (".".equals(encodedSegment)) {
-            return DOT;
+            return dot();
         } else if ("..".equals(encodedSegment)) {
             return
-                    DOT_DOT;
+                    dotDot();
         } else {
             return segmentDecoder.decode(encodedSegment);
         }

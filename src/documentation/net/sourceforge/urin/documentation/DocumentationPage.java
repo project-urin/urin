@@ -26,7 +26,6 @@ import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.Port.port;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Scheme.scheme;
-import static net.sourceforge.urin.Segment.DOT_DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.http.Http.HTTP;
@@ -94,7 +93,7 @@ final class DocumentationPage {
                         xhtmlText("Generating a relative reference follows the same pattern, for example:")
                 ),
                 codeBlock("scheme(\"rsync\").relativeReference(\n" +
-                        "        rootlessPath(DOT_DOT, segment(\"sibling\")),\n" +
+                        "        rootlessPath(Segment.<String>dotDot(), segment(\"sibling\")),\n" +
                         "        query(\"some-query\")\n" +
                         ").asString();"),
                 paragraphTag(
@@ -173,7 +172,7 @@ final class DocumentationPage {
                         "        path(\"child-1\")\n" +
                         ").resolve(\n" +
                         "        HTTP.relativeReference(\n" +
-                        "                rootlessPath(DOT_DOT, segment(\"child-2\")),\n" +
+                        "                rootlessPath(Segment.<String>dotDot(), segment(\"child-2\")),\n" +
                         "                queryParameters(queryParameter(\"extra-query\"))\n" +
                         "        )\n" +
                         ").asString();"),
@@ -210,7 +209,7 @@ final class DocumentationPage {
     private static String simpleRelativeReferenceExample() {
         return
                 scheme("rsync").relativeReference(
-                        rootlessPath(DOT_DOT, segment("sibling")),
+                        rootlessPath(Segment.<String>dotDot(), segment("sibling")),
                         query("some-query")
                 ).asString();
     }
@@ -259,7 +258,7 @@ final class DocumentationPage {
                         path("child-1")
                 ).resolve(
                         HTTP.relativeReference(
-                                rootlessPath(DOT_DOT, segment("child-2")),
+                                rootlessPath(Segment.<String>dotDot(), segment("child-2")),
                                 queryParameters(queryParameter("extra-query"))
                         )
                 ).asString();

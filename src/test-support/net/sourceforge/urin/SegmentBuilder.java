@@ -26,12 +26,12 @@ public class SegmentBuilder {
             },
             new Supplier<Segment<String>>() {
                 public Segment<String> get() {
-                    return DOT;
+                    return dot();
                 }
             },
             new Supplier<Segment<String>>() {
                 public Segment<String> get() {
-                    return DOT_DOT;
+                    return dotDot();
                 }
             }
     );

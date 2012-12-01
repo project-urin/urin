@@ -19,7 +19,8 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFI
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON;
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
 import static net.sourceforge.urin.RootlessPath.rootlessPath;
-import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.Segment.EMPTY;
+import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -111,7 +112,7 @@ public class RootlessPathTest {
 
     @Test
     public void removesDotSegments() throws Exception {
-        final Path<String> actual = rootlessPath(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"));
+        final Path<String> actual = rootlessPath(segment("a"), segment("b"), segment("c"), Segment.<String>dot(), Segment.<String>dotDot(), Segment.<String>dotDot(), segment("g"));
         assertThat(actual, equalTo(rootlessPath(segment("a"), segment("g"))));
     }
 

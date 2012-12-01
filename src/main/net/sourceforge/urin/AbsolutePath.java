@@ -32,8 +32,8 @@ public final class AbsolutePath<T> extends Path<T> {
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
             } else {
-                if (!DOT.equals(segment)) {
-                    if (DOT_DOT.equals(segment)) {
+                if (!dot().equals(segment)) {
+                    if (dotDot().equals(segment)) {
                         if (!newSegments.isEmpty()) {
                             newSegments.removeLast();
                             if (!segmentIterator.hasNext()) {

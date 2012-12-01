@@ -44,12 +44,12 @@ public class SegmentTest {
 
     @Test
     public void explicitDotSegmentIsNotEncoded() throws Exception {
-        assertThat(DOT.asString(), equalTo("."));
+        assertThat(dot().asString(), equalTo("."));
     }
 
     @Test
     public void explicitDotDotSegmentIsNotEncoded() throws Exception {
-        assertThat(DOT_DOT.asString(), equalTo(".."));
+        assertThat(dotDot().asString(), equalTo(".."));
     }
 
     @Test
@@ -74,22 +74,22 @@ public class SegmentTest {
 
     @Test
     public void unencodedDotBecomesExplicitDotSegment() throws Exception {
-        assertThat(Segment.parse(".", Segment.BASE_SEGMENT_DECODER), equalTo(DOT));
+        assertThat(Segment.parse(".", Segment.BASE_SEGMENT_DECODER), equalTo(Segment.<String>dot()));
     }
 
     @Test
     public void unencodedDotDotBecomesExplicitDotDotSegment() throws Exception {
-        assertThat(Segment.parse("..", Segment.BASE_SEGMENT_DECODER), equalTo(DOT_DOT));
+        assertThat(Segment.parse("..", Segment.BASE_SEGMENT_DECODER), equalTo(Segment.<String>dotDot()));
     }
 
     @Test
     public void dotHasNoValue() throws Exception {
-        assertThat(DOT.hasValue(), equalTo(false));
+        assertThat(dot().hasValue(), equalTo(false));
     }
 
     @Test
     public void dotDotHasNoValue() throws Exception {
-        assertThat(DOT_DOT.hasValue(), equalTo(false));
+        assertThat(dotDot().hasValue(), equalTo(false));
     }
 
     @Test
@@ -100,7 +100,7 @@ public class SegmentTest {
     @Test
     public void dotThrowsUnsupportedOperationOnValueRetrieval() throws Exception {
         try {
-            DOT.value();
+            dot().value();
             fail("Expected UnsupportedOperationException to be thrown");
         } catch (final UnsupportedOperationException e) {
             assertThat(e.getMessage(), equalTo("Attempt to get value of . segment"));
@@ -110,7 +110,7 @@ public class SegmentTest {
     @Test
     public void dotDotThrowsUnsupportedOperationOnValueRetrieval() throws Exception {
         try {
-            DOT_DOT.value();
+            dotDot().value();
             fail("Expected UnsupportedOperationException to be thrown");
         } catch (final UnsupportedOperationException e) {
             assertThat(e.getMessage(), equalTo("Attempt to get value of .. segment"));

@@ -27,7 +27,6 @@ import static net.sourceforge.urin.PathBuilder.aPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
-import static net.sourceforge.urin.Segment.DOT;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
@@ -853,7 +852,7 @@ public class RelativeReferenceTest {
     public void aSimpleRootlessPathPrependsAColonInFirstSegmentWithDotSlash() throws Exception {
         Segment<String> firstSegment = segment(aStringIncluding(':'));
         Segment<String> secondSegment = aSegment();
-        assertThat(aScheme().relativeReference(rootlessPath(firstSegment, secondSegment)), equalTo(aScheme().relativeReference(rootlessPath(DOT, firstSegment, secondSegment))));
+        assertThat(aScheme().relativeReference(rootlessPath(firstSegment, secondSegment)), equalTo(aScheme().relativeReference(rootlessPath(Segment.<String>dot(), firstSegment, secondSegment))));
     }
 
     @Test

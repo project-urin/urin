@@ -27,17 +27,17 @@ final class RootlessPath<T> extends Path<T> {
             if (segment == null) {
                 throw new NullPointerException("Segment cannot be null");
             } else {
-                if (!DOT.equals(segment)) {
-                    if (DOT_DOT.equals(segment) && !newSegments.isEmpty() && !DOT_DOT.equals(newSegments.getLast())) {
+                if (!dot().equals(segment)) {
+                    if (dotDot().equals(segment) && !newSegments.isEmpty() && !dotDot().equals(newSegments.getLast())) {
                         Segment removedSegment = newSegments.removeLast();
-                        if (DOT.equals(removedSegment)) {
-                            if (!newSegments.isEmpty() && !DOT_DOT.equals(newSegments.getLast())) {
+                        if (dot().equals(removedSegment)) {
+                            if (!newSegments.isEmpty() && !dotDot().equals(newSegments.getLast())) {
                                 newSegments.removeLast();
                                 if (!segmentIterator.hasNext()) {
                                     newSegments.add(EMPTY);
                                 }
                             } else {
-                                newSegments.add(DOT_DOT);
+                                newSegments.add(Segment.<T>dotDot());
                             }
                         } else {
                             if (!segmentIterator.hasNext()) {
@@ -45,14 +45,14 @@ final class RootlessPath<T> extends Path<T> {
                             }
                         }
                     } else {
-                        if (!newSegments.isEmpty() && DOT.equals(newSegments.getLast())) {
+                        if (!newSegments.isEmpty() && dot().equals(newSegments.getLast())) {
                             newSegments.removeLast();
                         }
                         newSegments.add(segment);
                     }
                 } else {
                     if (newSegments.isEmpty()) {
-                        newSegments.add(DOT);
+                        newSegments.add(Segment.<T>dot());
                     } else {
                         if (!segmentIterator.hasNext()) {
                             newSegments.add(EMPTY);

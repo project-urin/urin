@@ -18,7 +18,8 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFI
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
-import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.Segment.EMPTY;
+import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -92,7 +93,7 @@ public class AbsolutePathTest {
 
     @Test
     public void removesDotPath() throws Exception {
-        final AbsolutePath<String> actual = AbsolutePath.path(segment("a"), segment("b"), segment("c"), DOT, DOT_DOT, DOT_DOT, segment("g"));
+        final AbsolutePath<String> actual = AbsolutePath.path(segment("a"), segment("b"), segment("c"), Segment.<String>dot(), Segment.<String>dotDot(), Segment.<String>dotDot(), segment("g"));
         assertThat(actual, equalTo(AbsolutePath.path(segment("a"), segment("g"))));
     }
 
