@@ -56,10 +56,10 @@ public class AbsolutePathTest {
 
     @Test
     public void aPathUsingSegmentVarargsIsImmutable() throws Exception {
-        Segment firstSegment = aNonDotSegment();
-        Segment secondSegment = aNonDotSegment();
+        Segment<String> firstSegment = aNonDotSegment();
+        Segment<String> secondSegment = aNonDotSegment();
         Segment[] segments = {firstSegment, secondSegment};
-        AbsolutePath absolutePath = Path.path(segments);
+        @SuppressWarnings("unchecked") AbsolutePath<String> absolutePath = Path.path(segments);
         segments[0] = aSegment();
         assertThat(absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }
@@ -71,8 +71,8 @@ public class AbsolutePathTest {
 
     @Test
     public void aPathToStringIsCorrect() throws Exception {
-        Segment firstSegment = aNonDotSegment();
-        Segment secondSegment = aNonDotSegment();
+        Segment<String> firstSegment = aNonDotSegment();
+        Segment<String> secondSegment = aNonDotSegment();
         assertThat(AbsolutePath.path(firstSegment, secondSegment).toString(), equalTo("[" + firstSegment + ", " + secondSegment + "]"));
     }
 
@@ -105,15 +105,15 @@ public class AbsolutePathTest {
 
     @Test
     public void resolvesAbsolutePath() throws Exception {
-        AbsolutePath path = anAbsolutePath();
-        Path basePath = anAbsolutePath();
+        AbsolutePath<String> path = anAbsolutePath();
+        Path<String> basePath = anAbsolutePath();
         assertThat(path.resolveRelativeTo(basePath), equalTo((Path) path));
     }
 
     @Test
     public void resolvesRootlessPath() throws Exception {
-        AbsolutePath path = anAbsolutePath();
-        Path basePath = aRootlessPath();
+        AbsolutePath<String> path = anAbsolutePath();
+        Path<String> basePath = aRootlessPath();
         assertThat(path.resolveRelativeTo(basePath), equalTo((Path) path));
     }
 
