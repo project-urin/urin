@@ -93,7 +93,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
             });
         }
 
-        public abstract PercentEncoding<ENCODES> apply(PercentEncoding<CHILD_ENCODES> childPercentEncoding);
+        abstract PercentEncoding<ENCODES> apply(PercentEncoding<CHILD_ENCODES> childPercentEncoding);
 
         final <SUPER_ENCODES> PercentEncodingPartial<SUPER_ENCODES, CHILD_ENCODES> chain(final PercentEncodingPartial<SUPER_ENCODES, ENCODES> superEncoder) {
             return new PercentEncodingPartial<SUPER_ENCODES, CHILD_ENCODES>() {
