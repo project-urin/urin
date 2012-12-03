@@ -58,8 +58,8 @@ public class AbsolutePathTest {
     public void aPathUsingSegmentVarargsIsImmutable() throws Exception {
         Segment firstSegment = aNonDotSegment();
         Segment secondSegment = aNonDotSegment();
-        Segment[] segments = {secondSegment};
-        AbsolutePath absolutePath = Path.path(firstSegment, segments);
+        Segment[] segments = {firstSegment, secondSegment};
+        AbsolutePath absolutePath = Path.path(segments);
         segments[0] = aSegment();
         assertThat(absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT), equalTo("/" + firstSegment.asString() + "/" + secondSegment.asString()));
     }

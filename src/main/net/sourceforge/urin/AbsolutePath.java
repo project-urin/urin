@@ -25,7 +25,7 @@ public final class AbsolutePath<T> extends Path<T> {
     private final Collection<Segment<T>> segments;
 
     AbsolutePath(final Iterable<Segment<T>> segments) {
-        LinkedList<Segment<T>> newSegments = new LinkedList<Segment<T>>();
+        LinkedList<Segment<T>> newSegments = new LinkedList<>();
         Iterator<Segment<T>> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
             Segment<T> segment = segmentIterator.next();
@@ -70,7 +70,7 @@ public final class AbsolutePath<T> extends Path<T> {
 
     @Override
     Path<T> replaceLastSegmentWith(final Iterable<Segment<T>> segments) {
-        return new AbsolutePath<T>(appendSegmentsTo(this.segments, segments));
+        return new AbsolutePath<>(appendSegmentsTo(this.segments, segments));
     }
 
     @Override
@@ -80,7 +80,7 @@ public final class AbsolutePath<T> extends Path<T> {
 
     @Override
     public List<Segment<T>> segments() {
-        return new ArrayList<Segment<T>>(segments);
+        return new ArrayList<>(segments);
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {

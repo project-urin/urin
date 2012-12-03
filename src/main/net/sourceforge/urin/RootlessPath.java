@@ -20,7 +20,7 @@ final class RootlessPath<T> extends Path<T> {
     private final Collection<Segment<T>> segments;
 
     RootlessPath(final Iterable<Segment<T>> segments) {
-        LinkedList<Segment<T>> newSegments = new LinkedList<Segment<T>>();
+        LinkedList<Segment<T>> newSegments = new LinkedList<>();
         Iterator<Segment<T>> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
             Segment<T> segment = segmentIterator.next();
@@ -80,7 +80,7 @@ final class RootlessPath<T> extends Path<T> {
 
     @Override
     RootlessPath<T> replaceLastSegmentWith(final Iterable<Segment<T>> segments) {
-        return new RootlessPath<T>(appendSegmentsTo(this.segments, segments));
+        return new RootlessPath<>(appendSegmentsTo(this.segments, segments));
     }
 
     @Override
@@ -90,7 +90,7 @@ final class RootlessPath<T> extends Path<T> {
 
     @Override
     public List<Segment<T>> segments() {
-        return new ArrayList<Segment<T>>(segments);
+        return new ArrayList<>(segments);
     }
 
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {

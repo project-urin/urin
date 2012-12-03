@@ -18,7 +18,7 @@ import static net.sourceforge.urin.Segment.*;
 public class SegmentBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Segment<String>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Segment<String>>(
+    private static final RandomSupplierSwitcher<Segment<String>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Segment<String>>() {
                 public Segment<String> get() {
                     return aNonDotSegment();

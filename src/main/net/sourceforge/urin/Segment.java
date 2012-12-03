@@ -112,7 +112,7 @@ public abstract class Segment<ENCODES> {
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
         public ValueSegment(ENCODES value, PercentEncodingUnaryValue.PercentEncoding<ENCODES> percentEncoding) {
-            this.delegate = new SegmentEncodingUnaryValue<ENCODES>(value, percentEncoding);
+            this.delegate = new SegmentEncodingUnaryValue<>(value, percentEncoding);
         }
 
         @Override
@@ -197,13 +197,13 @@ public abstract class Segment<ENCODES> {
     abstract String asString();
 
     static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, Decoder<Segment<SEGMENT>, String> segmentDecoder) throws ParseException {
-        if (".".equals(encodedSegment)) {
-            return dot();
-        } else if ("..".equals(encodedSegment)) {
-            return
-                    dotDot();
-        } else {
-            return segmentDecoder.decode(encodedSegment);
+        switch (encodedSegment) {
+            case ".":
+                return dot();
+            case "..":
+                return dotDot();
+            default:
+                return segmentDecoder.decode(encodedSegment);
         }
     }
 

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Segment.segment;
 
 /**
@@ -34,7 +35,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @return a {@code Path} representing the given {@code String}s.
      */
     public static Path<String> rootlessPath(final String firstSegment, final String... segments) {
-        final List<Segment<String>> segmentList = new ArrayList<Segment<String>>(segments.length + 1);
+        final List<Segment<String>> segmentList = new ArrayList<>(segments.length + 1);
         segmentList.add(segment(firstSegment));
         for (String segment : segments) {
             segmentList.add(segment(segment));
@@ -57,13 +58,8 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @param segments {@code Segment}s that will be represented by this {@code Path}.
      * @return a {@code Path} representing the given {@code Segment}s.
      */
-    public static <T> Path<T> rootlessPath(final Segment<T> firstSegment, final Segment<T>... segments) {
-        return rootlessPath(new ArrayList<Segment<T>>(segments.length + 1) {{
-            add(firstSegment);
-            for (Segment<T> segment : segments) {
-                add(segment);
-            }
-        }});
+    public static <T> Path<T> rootlessPath(final Segment<T>... segments) {
+        return rootlessPath(asList(segments));
     }
 
     /**
@@ -74,9 +70,9 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      */
     public static <T> Path<T> rootlessPath(final Iterable<Segment<T>> segments) {
         if (segments.iterator().hasNext()) {
-            return new RootlessPath<T>(segments);
+            return new RootlessPath<>(segments);
         } else {
-            return new EmptyPath<T>();
+            return new EmptyPath<>();
         }
     }
 
@@ -88,7 +84,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @return a {@code AbsolutePath} representing the given {@code String}s.
      */
     public static AbsolutePath<String> path(final String firstSegment, final String... segments) {
-        final List<Segment<String>> segmentList = new ArrayList<Segment<String>>(segments.length + 1);
+        final List<Segment<String>> segmentList = new ArrayList<>(segments.length + 1);
         segmentList.add(segment(firstSegment));
         for (String segment : segments) {
             segmentList.add(segment(segment));
@@ -111,13 +107,8 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @param segments {@code Segment}s that will be represented by this {@code AbsolutePath}.
      * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
-    public static <T> AbsolutePath<T> path(final Segment<T> firstSegment, final Segment<T>... segments) {
-        return path(new ArrayList<Segment<T>>(segments.length + 1) {{
-            add(firstSegment);
-            for (Segment<T> segment : segments) {
-                add(segment);
-            }
-        }});
+    public static <T> AbsolutePath<T> path(final Segment<T>... segments) {
+        return path(asList(segments));
     }
 
     /**
@@ -127,7 +118,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
     public static <T> AbsolutePath<T> path(final Iterable<Segment<T>> segments) {
-        return new AbsolutePath<T>(segments);
+        return new AbsolutePath<>(segments);
     }
 
     static <SEGMENT> Path<SEGMENT> parseRootlessPath(final String rawPath, final Decoder<Segment<SEGMENT>, String> segmentDecoder) throws ParseException {

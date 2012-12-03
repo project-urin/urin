@@ -59,7 +59,7 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
      * @return a {@code Query} representing the given {@code String}.
      */
     public static Query<String> query(final String query) {
-        return new Query<String>(query, PERCENT_ENCODING);
+        return new Query<>(query, PERCENT_ENCODING);
     }
 
     /**

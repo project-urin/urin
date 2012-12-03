@@ -18,7 +18,7 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 public class QueryParameterBuilder {
 
     @SuppressWarnings("unchecked")
-    private static final RandomSupplierSwitcher<HttpQuery.QueryParameter> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<HttpQuery.QueryParameter>(
+    private static final RandomSupplierSwitcher<HttpQuery.QueryParameter> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<HttpQuery.QueryParameter>() {
                 public HttpQuery.QueryParameter get() {
                     return aNameOnlyQueryParameter();

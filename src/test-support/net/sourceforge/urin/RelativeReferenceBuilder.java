@@ -21,7 +21,7 @@ import static net.sourceforge.urin.QueryBuilder.aQuery;
 public class RelativeReferenceBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<RelativeReference<String, Query>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<RelativeReference<String, Query>>(
+    private static final RandomSupplierSwitcher<RelativeReference<String, Query>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<RelativeReference<String, Query>>() {
                 public RelativeReference get() {
                     return SchemeBuilder.aScheme().relativeReference();

@@ -22,7 +22,7 @@ import static net.sourceforge.urin.SchemeBuilder.aScheme;
 public class UrinBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Urin<String, Query>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Urin<String, Query>>(
+    private static final RandomSupplierSwitcher<Urin<String, Query>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Urin<String, Query>>() {
                 public Urin get() {
                     return aScheme().urin();

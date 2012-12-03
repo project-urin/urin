@@ -22,7 +22,7 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 public class SchemeBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Scheme<String, Query>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Scheme<String, Query>>(
+    private static final RandomSupplierSwitcher<Scheme<String, Query>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Scheme<String, Query>>() {
                 public Scheme get() {
                     return aSchemeWithNoDefaultPort();

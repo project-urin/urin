@@ -38,7 +38,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         public static <T, V> PercentEncodingPartial<Iterable<T>, V> percentEncodingDelimitedValue(final char delimiter, PercentEncodingPartial<T, V> childPercentEncodingPartial) {
             return childPercentEncodingPartial.chain(new PercentEncodingPartial<Iterable<T>, T>() {
                 public PercentEncoding<Iterable<T>> apply(PercentEncoding<T> childPercentEncoding) {
-                    return new PercentEncoding.PercentEncodingDelimitedValue<T>(delimiter, childPercentEncoding);
+                    return new PercentEncoding.PercentEncodingDelimitedValue<>(delimiter, childPercentEncoding);
                 }
             });
         }
@@ -46,7 +46,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         public static PercentEncodingPartial<Iterable<String>, String> percentEncodingDelimitedValue(final char delimiter) {
             return new PercentEncodingPartial<Iterable<String>, String>() {
                 public PercentEncoding<Iterable<String>> apply(PercentEncoding<String> childPercentEncoding) {
-                    return new PercentEncoding.PercentEncodingDelimitedValue<String>(delimiter, childPercentEncoding);
+                    return new PercentEncoding.PercentEncodingDelimitedValue<>(delimiter, childPercentEncoding);
                 }
             };
         }
@@ -102,7 +102,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         }
 
         static <T> PercentEncoding<Iterable<T>> percentEncodingDelimitedValue(final char delimiter, final PercentEncoding<T> elementPercentEncoding) {
-            return new PercentEncodingDelimitedValue<T>(delimiter, elementPercentEncoding);
+            return new PercentEncodingDelimitedValue<>(delimiter, elementPercentEncoding);
         }
 
         static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
@@ -176,7 +176,7 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
 
             @Override
             public PercentEncoding<Iterable<T>> additionallyEncoding(final char additionallyEncodedCharacter) {
-                return new PercentEncodingDelimitedValue<T>(delimiter, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
+                return new PercentEncodingDelimitedValue<>(delimiter, percentEncoding.additionallyEncoding(additionallyEncodedCharacter));
             }
 
         }

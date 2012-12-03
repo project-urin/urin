@@ -70,7 +70,7 @@ public class EmptyPathTest {
 
     @Test
     public void emptyPathSegmentsDoesNotExposeMutability() throws Exception {
-        EmptyPath<String> emptyPath = new EmptyPath<String>();
+        EmptyPath<String> emptyPath = new EmptyPath<>();
         try {
             emptyPath.segments().add(aSegment());
             assertThat(emptyPath, Matchers.<Segment<String>>emptyIterable());

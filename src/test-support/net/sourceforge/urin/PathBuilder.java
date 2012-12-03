@@ -12,12 +12,15 @@ package net.sourceforge.urin;
 
 import com.google.common.base.Supplier;
 
+import java.util.ArrayList;
 import java.util.Random;
+
+import static net.sourceforge.urin.Path.path;
 
 public class PathBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Path<String>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<Path<String>>(
+    private static final RandomSupplierSwitcher<Path<String>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Path<String>>() {
                 public Path<String> get() {
                     return anAbsolutePath();
@@ -32,21 +35,21 @@ public class PathBuilder {
     private static final Random RANDOM = new Random();
 
     public static AbsolutePath<String> anAbsolutePath() {
-        int numberOfSegments = RANDOM.nextInt(4);
-        Segment<String>[] tailSegments = new Segment[numberOfSegments];
-        for (int i = 0; i < tailSegments.length; i++) {
-            tailSegments[i] = SegmentBuilder.aNonDotSegment();
-        }
-        return Path.path(SegmentBuilder.aNonDotSegment(), tailSegments);
+        final int numberOfSegments = RANDOM.nextInt(4) + 1;
+        return path(new ArrayList<Segment<String>>(numberOfSegments) {{
+            for (int i = 0; i < numberOfSegments; i++) {
+                add(SegmentBuilder.aNonDotSegment());
+            }
+        }});
     }
 
     public static Path<String> aRootlessPath() {
-        int numberOfSegments = RANDOM.nextInt(4);
-        Segment<String>[] tailSegments = new Segment[numberOfSegments];
-        for (int i = 0; i < tailSegments.length; i++) {
-            tailSegments[i] = SegmentBuilder.aNonDotSegment();
-        }
-        return RootlessPath.rootlessPath(SegmentBuilder.aNonDotSegment(), tailSegments);
+        final int numberOfSegments = RANDOM.nextInt(4) + 1;
+        return RootlessPath.rootlessPath(new ArrayList<Segment<String>>(numberOfSegments) {{
+            for (int i = 0; i < numberOfSegments; i++) {
+                add(SegmentBuilder.aNonDotSegment());
+            }
+        }});
     }
 
     public static Path<String> aPath() {

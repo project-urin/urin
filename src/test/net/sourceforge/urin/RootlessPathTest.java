@@ -59,8 +59,8 @@ public class RootlessPathTest {
     public void aPathUsingSegmentVarargsIsImmutable() throws Exception {
         Segment<String> firstSegment = SegmentBuilder.aNonDotSegment();
         Segment secondSegment = SegmentBuilder.aNonDotSegment();
-        Segment[] segments = {secondSegment};
-        Path relativePath = Path.rootlessPath(firstSegment, segments);
+        Segment[] segments = {firstSegment, secondSegment};
+        Path relativePath = Path.rootlessPath(segments);
         segments[0] = aSegment();
         assertThat(relativePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT), equalTo(firstSegment.asString() + "/" + secondSegment.asString()));
     }

@@ -39,7 +39,7 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
 
     @Override
     SchemeWithDefaultPort<SEGMENT, QUERY> withName(final String name) {
-        return new SchemeWithDefaultPort<SEGMENT, QUERY>(name, defaultPort, segmentDecoder, queryDecoder);
+        return new SchemeWithDefaultPort<>(name, defaultPort, segmentDecoder, queryDecoder);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
 
     @Override
     Scheme<SEGMENT, QUERY> removeDefaultPort() {
-        return new GenericScheme<SEGMENT, QUERY>(name, segmentDecoder, queryDecoder);
+        return new GenericScheme<>(name, segmentDecoder, queryDecoder);
     }
 
     @Override
