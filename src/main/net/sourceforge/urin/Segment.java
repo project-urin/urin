@@ -111,8 +111,9 @@ public abstract class Segment<ENCODES> {
     public static class ValueSegment<ENCODES> extends Segment<ENCODES> {
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
-        public ValueSegment(ENCODES value, PercentEncodingUnaryValue.PercentEncoding<ENCODES> percentEncoding) {
-            this.delegate = new SegmentEncodingUnaryValue<>(value, percentEncoding);
+        protected ValueSegment(ENCODES value, PercentEncodingUnaryValue.PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
+            final PercentEncodingUnaryValue.PercentEncoding<ENCODES> apply = percentEncodingPartial.apply(SegmentEncodingUnaryValue.PERCENT_ENCODING);
+            this.delegate = new SegmentEncodingUnaryValue<>(value, apply);
         }
 
         @Override
@@ -177,7 +178,7 @@ public abstract class Segment<ENCODES> {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment<String> segment(final String segment) {
-        return new ValueSegment<String>(segment, SegmentEncodingUnaryValue.PERCENT_ENCODING) {
+        return new ValueSegment<String>(segment, PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp()) {
             @Override
             public boolean hasValue() {
                 return true;

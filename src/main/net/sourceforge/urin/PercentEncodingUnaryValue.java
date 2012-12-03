@@ -35,6 +35,15 @@ abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> 
         PercentEncodingPartial() {
         }
 
+        public static <T> PercentEncodingPartial<T, T> noOp() {
+            return new PercentEncodingPartial<T, T>() {
+                @Override
+                public PercentEncoding<T> apply(PercentEncoding<T> childPercentEncoding) {
+                    return childPercentEncoding;
+                }
+            };
+        }
+
         public static <T, V> PercentEncodingPartial<Iterable<T>, V> percentEncodingDelimitedValue(final char delimiter, PercentEncodingPartial<T, V> childPercentEncodingPartial) {
             return childPercentEncodingPartial.chain(new PercentEncodingPartial<Iterable<T>, T>() {
                 public PercentEncoding<Iterable<T>> apply(PercentEncoding<T> childPercentEncoding) {
