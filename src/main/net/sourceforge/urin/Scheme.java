@@ -43,7 +43,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
             singleMemberCharacterSet('.')
     );
 
-    protected MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder;
+    protected final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder;
     protected final Decoder<QUERY, String> queryDecoder;
 
     Scheme(final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final Decoder<QUERY, String> queryDecoder) {
