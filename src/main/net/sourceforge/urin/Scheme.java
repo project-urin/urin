@@ -20,7 +20,6 @@ import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_E
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
 import static net.sourceforge.urin.Query.stringQueryMaker;
-import static net.sourceforge.urin.Segment.PERCENT_ENCODING;
 import static net.sourceforge.urin.Segment.stringSegmentMaker;
 
 /**
@@ -310,7 +309,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     }
                 }
             } else {
-                final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)) : Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING));
+                final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder) : Path.parsePath(pathString, segmentMakingDecoder);
                 if (queryString == null) {
                     if (fragment == null) {
                         result = relativeReference(path);
@@ -344,7 +343,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     }
                 }
             } else {
-                final AbsolutePath<SEGMENT> path = Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING));
+                final AbsolutePath<SEGMENT> path = Path.parsePath(pathString, segmentMakingDecoder);
                 if (queryString == null) {
                     if (fragment == null) {
                         result = relativeReference(authority, path);
@@ -572,7 +571,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
         final String fragmentString = matcher.group(10);
         final Urin<SEGMENT, QUERY> result;
         if (authorityString == null) {
-            final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)) : Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING));
+            final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder) : Path.parsePath(pathString, segmentMakingDecoder);
             if (queryString == null) {
                 if (fragmentString == null) {
                     result = scheme.urin(
@@ -610,7 +609,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING))
+                                Path.parsePath(pathString, segmentMakingDecoder)
                         );
                     }
                 } else {
@@ -623,7 +622,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)),
+                                Path.parsePath(pathString, segmentMakingDecoder),
                                 fragment
                         );
                     }
@@ -639,7 +638,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)),
+                                Path.parsePath(pathString, segmentMakingDecoder),
                                 query
                         );
                     }
@@ -654,7 +653,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)),
+                                Path.parsePath(pathString, segmentMakingDecoder),
                                 query,
                                 fragment
                         );

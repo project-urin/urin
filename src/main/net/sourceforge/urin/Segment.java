@@ -154,7 +154,7 @@ public abstract class Segment<ENCODES> {
 
     }
 
-    static final PercentEncodingUnaryValue.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
+    private static final PercentEncodingUnaryValue.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
             specifiedValueEncoding("..",
                     percentEncodingString(new PercentEncoder(P_CHAR))));
 
@@ -199,14 +199,14 @@ public abstract class Segment<ENCODES> {
 
     abstract String asString();
 
-    static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, Maker<Segment<SEGMENT>> segmentMaker) throws ParseException {
+    static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
         switch (encodedSegment) {
             case ".":
                 return dot();
             case "..":
                 return dotDot();
             default:
-                return segmentMaker.make(encodedSegment);
+                return segmentMakingDecoder.toMaker(PERCENT_ENCODING).make(encodedSegment);
         }
     }
 

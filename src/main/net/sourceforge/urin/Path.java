@@ -121,20 +121,20 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
         return new AbsolutePath<>(segments);
     }
 
-    static <SEGMENT> Path<SEGMENT> parseRootlessPath(final String rawPath, final Maker<Segment<SEGMENT>> segmentMaker) throws ParseException {
+    static <SEGMENT> Path<SEGMENT> parseRootlessPath(final String rawPath, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
         return rootlessPath(rawPath == null || "".equals(rawPath) ? new ArrayList<Segment<SEGMENT>>() : new ArrayList<Segment<SEGMENT>>() {{
             for (String segmentString : rawPath.split("/")) {
-                add(Segment.parse(segmentString, segmentMaker));
+                add(Segment.parse(segmentString, segmentMakingDecoder));
             }
         }});
     }
 
-    static <SEGMENT> AbsolutePath<SEGMENT> parsePath(final String rawPath, final Maker<Segment<SEGMENT>> segmentMaker) throws ParseException {
+    static <SEGMENT> AbsolutePath<SEGMENT> parsePath(final String rawPath, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
         return path("/".equals(rawPath) ? new ArrayList<Segment<SEGMENT>>() : new ArrayList<Segment<SEGMENT>>() {{
             boolean isFirst = true;
             for (String segmentString : rawPath.split("/", -1)) {
                 if (!isFirst) {
-                    add(Segment.parse(segmentString, segmentMaker));
+                    add(Segment.parse(segmentString, segmentMakingDecoder));
                 }
                 isFirst = false;
             }
