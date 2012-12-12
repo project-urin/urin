@@ -24,12 +24,12 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
     /**
      * Constructor for subclasses of {@code Scheme} with default ports.
      *
-     * @param name         the name of the scheme.
-     * @param defaultPort  the default port associated with the scheme.
-     * @param queryDecoder the parser to use for parsing queries of this scheme.
+     * @param name               the name of the scheme.
+     * @param defaultPort        the default port associated with the scheme.
+     * @param queryMakingDecoder the parser to use for parsing queries of this scheme.
      */
-    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final Decoder<QUERY, String> queryDecoder) {
-        super(segmentMakingDecoder, queryDecoder);
+    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder) {
+        super(segmentMakingDecoder, queryMakingDecoder);
         this.name = name;
         if (defaultPort == null) {
             throw new NullPointerException("Cannot instantiate Scheme with null default port");
@@ -39,7 +39,7 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
 
     @Override
     SchemeWithDefaultPort<SEGMENT, QUERY> withName(final String name) {
-        return new SchemeWithDefaultPort<>(name, defaultPort, segmentMakingDecoder, queryDecoder);
+        return new SchemeWithDefaultPort<>(name, defaultPort, segmentMakingDecoder, queryMakingDecoder);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
 
     @Override
     Scheme<SEGMENT, QUERY> removeDefaultPort() {
-        return new GenericScheme<>(name, segmentMakingDecoder, queryDecoder);
+        return new GenericScheme<>(name, segmentMakingDecoder, queryMakingDecoder);
     }
 
     @Override

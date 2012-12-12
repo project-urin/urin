@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import net.sourceforge.urin.Decoder;
+import net.sourceforge.urin.MakingDecoder;
 import net.sourceforge.urin.ParseException;
 import net.sourceforge.urin.Query;
 import net.sourceforge.urin.Transformer;
@@ -27,7 +27,7 @@ import static java.util.Arrays.asList;
  */
 public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> implements Iterable<HttpQuery.QueryParameter> {
 
-    private static final PercentEncodingPartial<Iterable<QueryParameter>, String> HTTP_QUERY_PERCENT_ENCODING = encodeQueryParameters(
+    private static final PercentEncodingPartial<Iterable<QueryParameter>, String> HTTP_QUERY_PERCENT_ENCODING_PARTIAL = encodeQueryParameters(
             PercentEncodingPartial.<Iterable<QueryParameter>, String>percentEncodingDelimitedValue(
                     '&',
                     PercentEncodingPartial.<QueryParameter, String>percentEncodingDelimitedValue(
@@ -36,15 +36,14 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                                     '=',
                                     PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+'))))));
 
-    static final Decoder<HttpQuery, String> QUERY_DECODER = parser(PercentEncodingPartial.transformingPercentEncodingPartial(HTTP_QUERY_PERCENT_ENCODING, new Transformer<HttpQuery, Iterable<QueryParameter>>() {
-        public Iterable<QueryParameter> encode(HttpQuery httpQuery) {
-            return httpQuery.value();
-        }
-
-        public HttpQuery decode(Iterable<QueryParameter> queryParameters) throws ParseException {
-            return queryParameters(queryParameters);
-        }
-    }));
+    public static MakingDecoder<HttpQuery, Iterable<QueryParameter>, String> httpQueryMakingDecoder() {
+        return new MakingDecoder<HttpQuery, Iterable<QueryParameter>, String>(HTTP_QUERY_PERCENT_ENCODING_PARTIAL) {
+            @Override
+            protected HttpQuery makeOne(Iterable<QueryParameter> queryParameters) {
+                return new HttpQuery(queryParameters);
+            }
+        };
+    }
 
     private HttpQuery(final Iterable<QueryParameter> queryParameters) {
         super(Collections.unmodifiableList(new ArrayList<QueryParameter>() {{
@@ -54,7 +53,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                 }
                 add(queryParameter);
             }
-        }}), HTTP_QUERY_PERCENT_ENCODING);
+        }}), HTTP_QUERY_PERCENT_ENCODING_PARTIAL);
     }
 
     private static <T> PercentEncodingPartial<Iterable<QueryParameter>, T> encodeQueryParameters(final PercentEncodingPartial<Iterable<Iterable<QueryParameter>>, T> childPercentEncodingPartial) {

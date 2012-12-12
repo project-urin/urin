@@ -28,15 +28,7 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         }
     };
 
-    private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
-
-    protected static <T extends Query> Decoder<T, String> parser(final PercentEncodingPartial<T, String> percentEncodingPartial) {
-        return new Decoder<T, String>() {
-            public T decode(String rawValue) throws ParseException {
-                return percentEncodingPartial.apply(PERCENT_ENCODING).decode(rawValue);
-            }
-        };
-    }
+    static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
     private Query(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
         super(value, percentEncoding);
@@ -60,6 +52,15 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
      */
     public static Query<String> query(final String query) {
         return new Query<>(query, PERCENT_ENCODING);
+    }
+
+    public static MakingDecoder<Query<String>, String, String> stringQueryMaker() {
+        return new MakingDecoder<Query<String>, String, String>(PercentEncodingPartial.<String>noOp()) {
+            @Override
+            protected Query<String> makeOne(String value) {
+                return query(value);
+            }
+        };
     }
 
     /**

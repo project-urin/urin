@@ -19,8 +19,9 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
-import static net.sourceforge.urin.Query.BASE_QUERY_DECODER;
+import static net.sourceforge.urin.Query.stringQueryMaker;
 import static net.sourceforge.urin.Segment.PERCENT_ENCODING;
+import static net.sourceforge.urin.Segment.stringSegmentMaker;
 
 /**
  * A name component of a URI.
@@ -44,11 +45,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
     );
 
     protected final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder;
-    protected final Decoder<QUERY, String> queryDecoder;
+    protected final MakingDecoder<QUERY, ?, String> queryMakingDecoder;
 
-    Scheme(final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final Decoder<QUERY, String> queryDecoder) {
+    Scheme(final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder) {
         this.segmentMakingDecoder = segmentMakingDecoder;
-        this.queryDecoder = queryDecoder;
+        this.queryMakingDecoder = queryMakingDecoder;
     }
 
     /**
@@ -61,7 +62,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
      */
     public static Scheme<String, Query<String>> scheme(final String name) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new GenericScheme<>(name.toLowerCase(ENGLISH), Segment.stringSegmentMaker(), BASE_QUERY_DECODER);
+        return new GenericScheme<>(name.toLowerCase(ENGLISH), stringSegmentMaker(), stringQueryMaker());
     }
 
     /**
@@ -77,7 +78,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
      */
     public static Scheme<String, Query<String>> scheme(final String name, final Port defaultPort) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new SchemeWithDefaultPort<>(name.toLowerCase(ENGLISH), defaultPort, Segment.stringSegmentMaker(), BASE_QUERY_DECODER);
+        return new SchemeWithDefaultPort<>(name.toLowerCase(ENGLISH), defaultPort, stringSegmentMaker(), stringQueryMaker());
     }
 
     private Scheme<SEGMENT, QUERY> parse(final String name) throws ParseException {
@@ -301,7 +302,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                         result = relativeReference(Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryDecoder.decode(queryString);
+                    final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
                     if (fragment == null) {
                         result = relativeReference(query);
                     } else {
@@ -317,7 +318,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                         result = relativeReference(path, Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryDecoder.decode(queryString);
+                    final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
                     if (fragment == null) {
                         result = relativeReference(path, query);
                     } else {
@@ -335,7 +336,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                         result = relativeReference(authority, Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryDecoder.decode(queryString);
+                    final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
                     if (fragment == null) {
                         result = relativeReference(authority, query);
                     } else {
@@ -351,7 +352,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                         result = relativeReference(authority, path, Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryDecoder.decode(queryString);
+                    final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
                     if (fragment == null) {
                         result = relativeReference(authority, path, query);
                     } else {
@@ -584,7 +585,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     );
                 }
             } else {
-                final QUERY query = queryDecoder.decode(queryString);
+                final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
                 if (fragmentString == null) {
                     result = scheme.urin(
                             path,
@@ -628,7 +629,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     }
                 }
             } else {
-                final QUERY query = queryDecoder.decode(queryString);
+                final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
                 if (fragmentString == null) {
                     if (pathString == null || "".equals(pathString)) {
                         result = scheme.urin(
@@ -709,14 +710,14 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
     static final class GenericScheme<SEGMENT, QUERY extends Query> extends Scheme<SEGMENT, QUERY> {
         private final String name;
 
-        public GenericScheme(String name, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMaker, Decoder<QUERY, String> queryDecoder) {
-            super(segmentMaker, queryDecoder);
+        public GenericScheme(String name, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, MakingDecoder<QUERY, ?, String> queryMakingDecoder) {
+            super(segmentMakingDecoder, queryMakingDecoder);
             this.name = name;
         }
 
         @Override
         GenericScheme<SEGMENT, QUERY> withName(final String name) {
-            return new GenericScheme<>(name, segmentMakingDecoder, queryDecoder);
+            return new GenericScheme<>(name, segmentMakingDecoder, queryMakingDecoder);
         }
 
         @Override
