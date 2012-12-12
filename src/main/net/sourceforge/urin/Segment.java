@@ -154,11 +154,9 @@ public abstract class Segment<ENCODES> {
 
     }
 
-    static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
-
     static final PercentEncodingUnaryValue.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
             specifiedValueEncoding("..",
-                    percentEncodingString(PERCENT_ENCODER)));
+                    percentEncodingString(new PercentEncoder(P_CHAR))));
 
 
     private static class SegmentEncodingUnaryValue<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
