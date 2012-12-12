@@ -28,6 +28,10 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.spe
  */
 public abstract class Segment<ENCODES> {
 
+    private static final PercentEncodingUnaryValue.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
+            specifiedValueEncoding("..",
+                    percentEncodingString(new PercentEncoder(P_CHAR))));
+
     /**
      * The segment ".", referring to the current location in the path name hierarchy,
      */
@@ -153,11 +157,6 @@ public abstract class Segment<ENCODES> {
         }
 
     }
-
-    private static final PercentEncodingUnaryValue.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
-            specifiedValueEncoding("..",
-                    percentEncodingString(new PercentEncoder(P_CHAR))));
-
 
     private static class SegmentEncodingUnaryValue<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         public SegmentEncodingUnaryValue(ENCODES value, PercentEncoding<ENCODES> percentEncoding) {
