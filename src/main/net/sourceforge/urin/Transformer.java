@@ -16,7 +16,7 @@ package net.sourceforge.urin;
  * @param <NON_ENCODED> the class of the decoded objects produced.
  * @param <ENCODED>     the class of the encoded objects parsed.
  */
-public interface Transformer<NON_ENCODED, ENCODED> extends Decoder<NON_ENCODED, ENCODED> {
+public interface Transformer<NON_ENCODED, ENCODED> {
 
     /**
      * URI encodes a non-encoded object.
@@ -25,4 +25,14 @@ public interface Transformer<NON_ENCODED, ENCODED> extends Decoder<NON_ENCODED, 
      * @return an Object representing the encoded version.
      */
     ENCODED encode(NON_ENCODED nonEncoded);
+
+    /**
+     * Parses an encoded URI component.
+     *
+     * @param rawValue the encoded URI component to decode.
+     * @return an object representing the decoded URI component.
+     * @throws net.sourceforge.urin.ParseException
+     *          if the given {@code String} is not a valid URI component.
+     */
+    NON_ENCODED decode(ENCODED rawValue) throws ParseException;
 }
