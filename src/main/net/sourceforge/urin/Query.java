@@ -22,7 +22,7 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.per
  */
 public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
-    static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
+    private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
     private Query(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
         super(value, percentEncoding);
@@ -55,6 +55,10 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
                 return query(value);
             }
         };
+    }
+
+    static <QUERY extends Query> QUERY parseQuery(String queryString, MakingDecoder<QUERY, ?, String> queryMakingDecoder) throws ParseException {
+        return queryMakingDecoder.toMaker(PERCENT_ENCODING).make(queryString);
     }
 
     /**

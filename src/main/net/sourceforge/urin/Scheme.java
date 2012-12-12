@@ -301,7 +301,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                         result = relativeReference(Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
+                    final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
                     if (fragment == null) {
                         result = relativeReference(query);
                     } else {
@@ -317,7 +317,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                         result = relativeReference(path, Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
+                    final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
                     if (fragment == null) {
                         result = relativeReference(path, query);
                     } else {
@@ -335,7 +335,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                         result = relativeReference(authority, Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
+                    final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
                     if (fragment == null) {
                         result = relativeReference(authority, query);
                     } else {
@@ -351,7 +351,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                         result = relativeReference(authority, path, Fragment.parse(fragment));
                     }
                 } else {
-                    final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
+                    final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
                     if (fragment == null) {
                         result = relativeReference(authority, path, query);
                     } else {
@@ -584,7 +584,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     );
                 }
             } else {
-                final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
+                final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
                 if (fragmentString == null) {
                     result = scheme.urin(
                             path,
@@ -628,7 +628,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     }
                 }
             } else {
-                final QUERY query = queryMakingDecoder.toMaker(Query.PERCENT_ENCODING).make(queryString);
+                final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
                 if (fragmentString == null) {
                     if (pathString == null || "".equals(pathString)) {
                         result = scheme.urin(

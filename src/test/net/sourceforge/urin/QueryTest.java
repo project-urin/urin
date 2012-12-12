@@ -30,12 +30,12 @@ public class QueryTest {
 
     @Test
     public void parsesUnreservedCharacters() throws Exception {
-        assertThat(Query.stringQueryMaker().toMaker(Query.PERCENT_ENCODING).make(QUERY_AND_FRAGMENT_CHARACTERS), equalTo(Query.query(QUERY_AND_FRAGMENT_CHARACTERS)));
+        assertThat(Query.parseQuery(QUERY_AND_FRAGMENT_CHARACTERS, Query.stringQueryMaker()), equalTo(Query.query(QUERY_AND_FRAGMENT_CHARACTERS)));
     }
 
     @Test
     public void parsesNonUnreservedCharacters() throws Exception {
-        assertThat(Query.stringQueryMaker().toMaker(Query.PERCENT_ENCODING).make(".%23.%5B.%5D.%20."), equalTo(Query.query(".#.[.]. .")));
+        assertThat(Query.parseQuery(".%23.%5B.%5D.%20.", Query.stringQueryMaker()), equalTo(Query.query(".#.[.]. .")));
     }
 
 }
