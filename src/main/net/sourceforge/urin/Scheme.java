@@ -20,7 +20,7 @@ import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_E
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
 import static net.sourceforge.urin.Query.BASE_QUERY_DECODER;
-import static net.sourceforge.urin.Segment.BASE_SEGMENT_DECODER;
+import static net.sourceforge.urin.Segment.PERCENT_ENCODING;
 
 /**
  * A name component of a URI.
@@ -43,11 +43,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
             singleMemberCharacterSet('.')
     );
 
-    protected final Decoder<Segment<SEGMENT>, String> segmentDecoder;
+    protected MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder;
     protected final Decoder<QUERY, String> queryDecoder;
 
-    Scheme(final Decoder<Segment<SEGMENT>, String> segmentDecoder, final Decoder<QUERY, String> queryDecoder) {
-        this.segmentDecoder = segmentDecoder;
+    Scheme(final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final Decoder<QUERY, String> queryDecoder) {
+        this.segmentMakingDecoder = segmentMakingDecoder;
         this.queryDecoder = queryDecoder;
     }
 
@@ -61,7 +61,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
      */
     public static Scheme<String, Query<String>> scheme(final String name) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new GenericScheme<>(name.toLowerCase(ENGLISH), BASE_SEGMENT_DECODER, BASE_QUERY_DECODER);
+        return new GenericScheme<>(name.toLowerCase(ENGLISH), Segment.stringSegmentMaker(), BASE_QUERY_DECODER);
     }
 
     /**
@@ -77,7 +77,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
      */
     public static Scheme<String, Query<String>> scheme(final String name, final Port defaultPort) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new SchemeWithDefaultPort<>(name.toLowerCase(ENGLISH), defaultPort, BASE_SEGMENT_DECODER, BASE_QUERY_DECODER);
+        return new SchemeWithDefaultPort<>(name.toLowerCase(ENGLISH), defaultPort, Segment.stringSegmentMaker(), BASE_QUERY_DECODER);
     }
 
     private Scheme<SEGMENT, QUERY> parse(final String name) throws ParseException {
@@ -309,7 +309,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     }
                 }
             } else {
-                final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentDecoder) : Path.parsePath(pathString, segmentDecoder);
+                final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)) : Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING));
                 if (queryString == null) {
                     if (fragment == null) {
                         result = relativeReference(path);
@@ -343,7 +343,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     }
                 }
             } else {
-                final AbsolutePath<SEGMENT> path = Path.parsePath(pathString, segmentDecoder);
+                final AbsolutePath<SEGMENT> path = Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING));
                 if (queryString == null) {
                     if (fragment == null) {
                         result = relativeReference(authority, path);
@@ -571,7 +571,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
         final String fragmentString = matcher.group(10);
         final Urin<SEGMENT, QUERY> result;
         if (authorityString == null) {
-            final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentDecoder) : Path.parsePath(pathString, segmentDecoder);
+            final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)) : Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING));
             if (queryString == null) {
                 if (fragmentString == null) {
                     result = scheme.urin(
@@ -609,7 +609,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parsePath(pathString, segmentDecoder)
+                                Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING))
                         );
                     }
                 } else {
@@ -622,7 +622,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parsePath(pathString, segmentDecoder),
+                                Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)),
                                 fragment
                         );
                     }
@@ -638,7 +638,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parsePath(pathString, segmentDecoder),
+                                Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)),
                                 query
                         );
                     }
@@ -653,7 +653,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
                     } else {
                         result = scheme.urin(
                                 authority,
-                                Path.parsePath(pathString, segmentDecoder),
+                                Path.parsePath(pathString, segmentMakingDecoder.toMaker(PERCENT_ENCODING)),
                                 query,
                                 fragment
                         );
@@ -709,14 +709,14 @@ public abstract class Scheme<SEGMENT, QUERY extends Query> {
     static final class GenericScheme<SEGMENT, QUERY extends Query> extends Scheme<SEGMENT, QUERY> {
         private final String name;
 
-        public GenericScheme(String name, Decoder<Segment<SEGMENT>, String> segmentDecoder, Decoder<QUERY, String> queryDecoder) {
-            super(segmentDecoder, queryDecoder);
+        public GenericScheme(String name, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMaker, Decoder<QUERY, String> queryDecoder) {
+            super(segmentMaker, queryDecoder);
             this.name = name;
         }
 
         @Override
         GenericScheme<SEGMENT, QUERY> withName(final String name) {
-            return new GenericScheme<>(name, segmentDecoder, queryDecoder);
+            return new GenericScheme<>(name, segmentMakingDecoder, queryDecoder);
         }
 
         @Override

@@ -28,8 +28,8 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
      * @param defaultPort  the default port associated with the scheme.
      * @param queryDecoder the parser to use for parsing queries of this scheme.
      */
-    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final Decoder<Segment<SEGMENT>, String> segmentDecoder, final Decoder<QUERY, String> queryDecoder) {
-        super(segmentDecoder, queryDecoder);
+    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final Decoder<QUERY, String> queryDecoder) {
+        super(segmentMakingDecoder, queryDecoder);
         this.name = name;
         if (defaultPort == null) {
             throw new NullPointerException("Cannot instantiate Scheme with null default port");
@@ -39,7 +39,7 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
 
     @Override
     SchemeWithDefaultPort<SEGMENT, QUERY> withName(final String name) {
-        return new SchemeWithDefaultPort<>(name, defaultPort, segmentDecoder, queryDecoder);
+        return new SchemeWithDefaultPort<>(name, defaultPort, segmentMakingDecoder, queryDecoder);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
 
     @Override
     Scheme<SEGMENT, QUERY> removeDefaultPort() {
-        return new GenericScheme<>(name, segmentDecoder, queryDecoder);
+        return new GenericScheme<>(name, segmentMakingDecoder, queryDecoder);
     }
 
     @Override

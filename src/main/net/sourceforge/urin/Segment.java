@@ -28,12 +28,6 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.spe
  */
 public abstract class Segment<ENCODES> {
 
-    public static final Decoder<Segment<String>, String> BASE_SEGMENT_DECODER = new Decoder<Segment<String>, String>() {
-        public Segment<String> decode(final String rawQuery) throws ParseException {
-            return segment(SegmentEncodingUnaryValue.PERCENT_ENCODING.decode(rawQuery));
-        }
-    };
-
     /**
      * The segment ".", referring to the current location in the path name hierarchy,
      */
@@ -108,11 +102,20 @@ public abstract class Segment<ENCODES> {
         };
     }
 
+    public static MakingDecoder<Segment<String>, String, String> stringSegmentMaker() {
+        return new MakingDecoder<Segment<String>, String, String>(PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp()) {
+            @Override
+            protected Segment<String> makeOne(String value) {
+                return segment(value);
+            }
+        };
+    }
+
     public static class ValueSegment<ENCODES> extends Segment<ENCODES> {
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
         protected ValueSegment(ENCODES value, PercentEncodingUnaryValue.PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
-            final PercentEncodingUnaryValue.PercentEncoding<ENCODES> apply = percentEncodingPartial.apply(SegmentEncodingUnaryValue.PERCENT_ENCODING);
+            final PercentEncodingUnaryValue.PercentEncoding<ENCODES> apply = percentEncodingPartial.apply(PERCENT_ENCODING);
             this.delegate = new SegmentEncodingUnaryValue<>(value, apply);
         }
 
@@ -151,13 +154,14 @@ public abstract class Segment<ENCODES> {
 
     }
 
+    static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
+
+    static final PercentEncodingUnaryValue.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
+            specifiedValueEncoding("..",
+                    percentEncodingString(PERCENT_ENCODER)));
+
+
     private static class SegmentEncodingUnaryValue<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
-        private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(P_CHAR);
-
-        private static final PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
-                specifiedValueEncoding("..",
-                        percentEncodingString(PERCENT_ENCODER)));
-
         public SegmentEncodingUnaryValue(ENCODES value, PercentEncoding<ENCODES> percentEncoding) {
             super(value, percentEncoding);
         }
@@ -197,14 +201,14 @@ public abstract class Segment<ENCODES> {
 
     abstract String asString();
 
-    static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, Decoder<Segment<SEGMENT>, String> segmentDecoder) throws ParseException {
+    static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, Maker<Segment<SEGMENT>> segmentMaker) throws ParseException {
         switch (encodedSegment) {
             case ".":
                 return dot();
             case "..":
                 return dotDot();
             default:
-                return segmentDecoder.decode(encodedSegment);
+                return segmentMaker.make(encodedSegment);
         }
     }
 
