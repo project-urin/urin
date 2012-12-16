@@ -18,11 +18,11 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class UrinAssert {
-    public static void assertAsStringAsUriAndParse(final String stringRepresentation, final Urin urinRepresentation) throws URISyntaxException, ParseException {
+    public static void assertAsStringAsUriAndParse(Scheme scheme, final String stringRepresentation, final Urin urinRepresentation) throws URISyntaxException, ParseException {
         assertThat(urinRepresentation.asString(), equalTo(stringRepresentation));
         assertThat(urinRepresentation.asUri(), equalTo(new URI(stringRepresentation)));
-        assertThat(aScheme().parseUrin(stringRepresentation), equalTo(urinRepresentation));
-        assertThat(aScheme().parseUrin(new URI(stringRepresentation)), equalTo(urinRepresentation));
+        assertThat(scheme.parseUrin(stringRepresentation), equalTo(urinRepresentation));
+        assertThat(scheme.parseUrin(new URI(stringRepresentation)), equalTo(urinRepresentation));
     }
 
     public static void assertAsStringAndParse(final String stringRepresentation, final Urin urinRepresentation) throws ParseException {
