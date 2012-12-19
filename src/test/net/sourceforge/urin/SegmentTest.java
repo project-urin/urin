@@ -59,37 +59,37 @@ public class SegmentTest {
 
     @Test
     public void parsesUnreservedCharacters() throws Exception {
-        assertThat(Segment.parse(P_CHARS, stringSegmentMaker()), equalTo(Segment.segment(P_CHARS)));
+        assertThat(Segment.parse(P_CHARS, STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment(P_CHARS)));
     }
 
     @Test
     public void parsePercentDecodesNonUnreservedCharacters() throws Exception {
-        assertThat(Segment.parse(".%23.%5B.%5D.%20.", stringSegmentMaker()), equalTo(Segment.segment(".#.[.]. .")));
+        assertThat(Segment.parse(".%23.%5B.%5D.%20.", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment(".#.[.]. .")));
     }
 
     @Test
     public void parsesPercentEncodedDotSegment() throws Exception {
-        assertThat(Segment.parse("%2E", stringSegmentMaker()), equalTo(Segment.segment(".")));
+        assertThat(Segment.parse("%2E", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment(".")));
     }
 
     @Test
     public void parsesPercentEncodedDotDotSegment() throws Exception {
-        assertThat(Segment.parse("%2E%2E", stringSegmentMaker()), equalTo(Segment.segment("..")));
+        assertThat(Segment.parse("%2E%2E", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment("..")));
     }
 
     @Test
     public void unencodedDotBecomesExplicitDotSegment() throws Exception {
-        assertThat(Segment.parse(".", stringSegmentMaker()), equalTo(Segment.<String>dot()));
+        assertThat(Segment.parse(".", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>dot()));
     }
 
     @Test
     public void unencodedDotDotBecomesExplicitDotDotSegment() throws Exception {
-        assertThat(Segment.parse("..", stringSegmentMaker()), equalTo(Segment.<String>dotDot()));
+        assertThat(Segment.parse("..", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>dotDot()));
     }
 
     @Test
     public void unencodedEmptyBecomesExplicitEmptySegment() throws Exception {
-        assertThat(Segment.parse("", stringSegmentMaker()), equalTo(Segment.<String>empty()));
+        assertThat(Segment.parse("", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>empty()));
     }
 
     @Test

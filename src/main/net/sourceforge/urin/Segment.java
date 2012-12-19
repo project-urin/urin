@@ -31,6 +31,12 @@ public abstract class Segment<ENCODES> {
     private static final PercentEncodingUnaryValue.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
             specifiedValueEncoding("..",
                     percentEncodingString(new PercentEncoder(P_CHAR))));
+    public static final MakingDecoder<Segment<String>, String, String> STRING_SEGMENT_MAKING_DECODER = new MakingDecoder<Segment<String>, String, String>(PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp()) {
+        @Override
+        protected Segment<String> makeOne(String value) {
+            return segment(value);
+        }
+    };
 
     /**
      * The segment ".", referring to the current location in the path name hierarchy,
@@ -155,15 +161,6 @@ public abstract class Segment<ENCODES> {
                 return "Segment{empty}";
             }
 
-        };
-    }
-
-    public static MakingDecoder<Segment<String>, String, String> stringSegmentMaker() {
-        return new MakingDecoder<Segment<String>, String, String>(PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp()) {
-            @Override
-            protected Segment<String> makeOne(String value) {
-                return segment(value);
-            }
         };
     }
 
