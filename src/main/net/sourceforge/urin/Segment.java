@@ -270,19 +270,19 @@ public abstract class Segment<ENCODES> {
 
     /**
      * Returns true if {@code value()} can be called on this {@code Segment}.  This method
-     * returns false for . and .. segments.
+     * returns false for empty, . and .. segments.
      *
      * @return true if {@code value()} can be called on this {@code Segment}.
      */
     public abstract boolean hasValue();
 
     /**
-     * Gets the (non-encoded) value of this segment as a {@code String}, if it is a type that has a value, or throws {@code UnsupportedOperationException} otherwise.
+     * Gets the (non-encoded) value of this segment, if it is a type that has a value, or throws {@code UnsupportedOperationException} otherwise.
      * <p/>
-     * Dot segments (. and ..) do not have values, and will throw {@code UnsupportedOperationException}.  This can be tested
-     * by equality with the {@code DOT} and {@code DOT_DOT} constants, or by calling {@code hasValue()}.
+     * Dot segments (. and ..) and the empty segment do not have values, and will throw {@code UnsupportedOperationException}.
+     * This can be tested by equality with the objects returned by {@link #dot()}, {@link #dotDot()}, and {@link #empty()} methods, or by calling {@code hasValue()}.
      *
-     * @return the (non-encoded) value of this segment as a {@code String}.
+     * @return the (non-encoded) value of this segment.
      * @throws UnsupportedOperationException if this is a segment that does not represent a value.
      */
     public abstract ENCODES value();
