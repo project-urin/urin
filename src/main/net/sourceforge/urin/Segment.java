@@ -31,6 +31,10 @@ public abstract class Segment<ENCODES> {
     private static final PercentEncodingUnaryValue.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
             specifiedValueEncoding("..",
                     percentEncodingString(new PercentEncoder(P_CHAR))));
+
+    /**
+     * The {@code MakingDecoder} used by standard segments.
+     */
     public static final MakingDecoder<Segment<String>, String, String> STRING_SEGMENT_MAKING_DECODER = new MakingDecoder<Segment<String>, String, String>(PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp()) {
         @Override
         protected Segment<String> makeOne(String value) {
@@ -164,10 +168,10 @@ public abstract class Segment<ENCODES> {
         };
     }
 
-    public static class ValueSegment<ENCODES> extends Segment<ENCODES> {
+    private static final class ValueSegment<ENCODES> extends Segment<ENCODES> {
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
-        protected ValueSegment(ENCODES value, PercentEncodingUnaryValue.PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
+        private ValueSegment(ENCODES value, PercentEncodingUnaryValue.PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
             final PercentEncodingUnaryValue.PercentEncoding<ENCODES> apply = percentEncodingPartial.apply(PERCENT_ENCODING);
             this.delegate = new SegmentEncodingUnaryValue<>(value, apply);
         }
@@ -192,7 +196,7 @@ public abstract class Segment<ENCODES> {
         }
 
         @Override
-        public boolean equals(final Object o) {
+        public final boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
@@ -201,12 +205,12 @@ public abstract class Segment<ENCODES> {
         }
 
         @Override
-        public int hashCode() {
+        public final int hashCode() {
             return delegate.hashCode();
         }
 
         @Override
-        public String toString() {
+        public final String toString() {
             return "Segment{value='" + delegate + "'}";
         }
 
@@ -228,8 +232,19 @@ public abstract class Segment<ENCODES> {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment<String> segment(final String segment) {
-        return new ValueSegment<String>(segment, PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp()) {
-        };
+        return new ValueSegment<>(segment, PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp());
+    }
+
+    /**
+     * Factory method for creating non-{@code String} {@code Segment}s.
+     *
+     * @param <T>                    the type of {@code Object} the {@code Segment} encodes.
+     * @param segment                any {@code Object} to represent as a {@code Segment}.
+     * @param percentEncodingPartial an encoding from {@code T} to {@code String}.
+     * @return a {@code Segment} representing the given {@code Object}.
+     */
+    public static <T> Segment<T> segment(final T segment, PercentEncodingUnaryValue.PercentEncodingPartial<T, String> percentEncodingPartial) {
+        return new ValueSegment<>(segment, percentEncodingPartial);
     }
 
     final boolean containsColon() {

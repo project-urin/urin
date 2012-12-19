@@ -79,11 +79,11 @@ public class UrinSamplesTest {
                 return anIterableOfStringsSegment(o, percentEncodingPartial);
             }
         }, aScheme().queryMakingDecoder);
-        final Segment.ValueSegment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.<String>emptyList(), percentEncodingPartial);
+        final Segment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.<String>emptyList(), percentEncodingPartial);
         assertAsStringAsUriAndParse(scheme, scheme.asString() + ":/.//", scheme.urin(Path.<Iterable<String>>path(emptySegment, emptySegment, Segment.<Iterable<String>>dotDot())));
     }
 
-    private static Segment.ValueSegment<Iterable<String>> anIterableOfStringsSegment(Iterable<String> o, PercentEncodingUnaryValue.PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
-        return new Segment.ValueSegment<>(o, percentEncodingPartial);
+    private static Segment<Iterable<String>> anIterableOfStringsSegment(Iterable<String> o, PercentEncodingUnaryValue.PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
+        return Segment.segment(o, percentEncodingPartial);
     }
 }
