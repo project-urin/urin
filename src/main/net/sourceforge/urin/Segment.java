@@ -52,7 +52,7 @@ public abstract class Segment<ENCODES> {
             }
 
             @Override
-            boolean isEmpty() {
+            final boolean isEmpty() {
                 return false;
             }
 
@@ -80,21 +80,21 @@ public abstract class Segment<ENCODES> {
     public static <ENCODES> Segment<ENCODES> dotDot() {
         return new Segment<ENCODES>() {
             @Override
-            public boolean hasValue() {
+            public final boolean hasValue() {
                 return false;
             }
 
             @Override
-            public ENCODES value() {
+            public final ENCODES value() {
                 throw new UnsupportedOperationException("Attempt to get value of .. segment");
             }
 
-            public String asString() {
+            public final String asString() {
                 return "..";
             }
 
             @Override
-            boolean isEmpty() {
+            final boolean isEmpty() {
                 return false;
             }
 
@@ -122,21 +122,21 @@ public abstract class Segment<ENCODES> {
     public static <ENCODES> Segment<ENCODES> empty() {
         return new Segment<ENCODES>() {
             @Override
-            public boolean hasValue() {
+            public final boolean hasValue() {
                 return false;
             }
 
             @Override
-            public ENCODES value() {
+            public final ENCODES value() {
                 throw new UnsupportedOperationException("Attempt to get value of empty segment");
             }
 
-            public String asString() {
+            public final String asString() {
                 return "";
             }
 
             @Override
-            boolean isEmpty() {
+            final boolean isEmpty() {
                 return true;
             }
 
@@ -176,21 +176,21 @@ public abstract class Segment<ENCODES> {
         }
 
         @Override
-        public boolean hasValue() {
+        public final boolean hasValue() {
             return true;
         }
 
         @Override
-        public ENCODES value() {
+        public final ENCODES value() {
             return delegate.value;
         }
 
-        public String asString() {
+        public final String asString() {
             return delegate.asString();
         }
 
         @Override
-        boolean isEmpty() {
+        final boolean isEmpty() {
             return "".equals(asString());
         }
 
@@ -215,8 +215,8 @@ public abstract class Segment<ENCODES> {
 
     }
 
-    private static class SegmentEncodingUnaryValue<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
-        public SegmentEncodingUnaryValue(ENCODES value, PercentEncoding<ENCODES> percentEncoding) {
+    private static final class SegmentEncodingUnaryValue<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
+        public SegmentEncodingUnaryValue(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
             super(value, percentEncoding);
         }
     }
@@ -232,19 +232,10 @@ public abstract class Segment<ENCODES> {
      */
     public static Segment<String> segment(final String segment) {
         return new ValueSegment<String>(segment, PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp()) {
-            @Override
-            public boolean hasValue() {
-                return true;
-            }
-
-            @Override
-            public String value() {
-                return segment;
-            }
         };
     }
 
-    boolean containsColon() {
+    final boolean containsColon() {
         return asString().indexOf(':') != -1;
     }
 
@@ -252,7 +243,7 @@ public abstract class Segment<ENCODES> {
 
     abstract boolean isEmpty();
 
-    static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
+    static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
         switch (encodedSegment) {
             case "":
                 return empty();
