@@ -26,7 +26,7 @@ public abstract class MakingDecoder<NON_ENCODED, FACTORY_INPUT, ENCODED> {
 
     protected abstract NON_ENCODED makeOne(FACTORY_INPUT input);
 
-    Maker<NON_ENCODED> toMaker(final PercentEncodingUnaryValue.PercentEncoding<ENCODED> percentEncoding) {
+    final Maker<NON_ENCODED> toMaker(final PercentEncodingUnaryValue.PercentEncoding<ENCODED> percentEncoding) {
         return new Maker<NON_ENCODED>() {
             public NON_ENCODED make(String encoded) throws ParseException {
                 return makeOne(percentEncodingPartial.apply(percentEncoding).decode(encoded));
