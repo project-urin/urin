@@ -12,8 +12,11 @@ package net.sourceforge.urin;
 
 import org.junit.Test;
 
+import java.util.Collections;
+
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
+import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncodingPartial.percentEncodingDelimitedValue;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
@@ -26,6 +29,12 @@ public class UrinSamplesTest {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
         assertAsStringAndParse(scheme.asString() + "://" + authority.asString(), scheme.urin(authority));
+    }
+
+    @Test
+    public void canMakeAUrinWithNoAuthorityAndTwoEmptySegments() throws Exception {
+        Scheme<String, Query> scheme = aScheme();
+        assertAsStringAndParse(scheme.asString() + ":/.//", scheme.urin(path("", "")));
     }
 
     @Test
@@ -58,7 +67,20 @@ public class UrinSamplesTest {
                 return anIterableOfStringsSegment(o, percentEncodingPartial);
             }
         }, aScheme().queryMakingDecoder);
-        assertAsStringAsUriAndParse(scheme, scheme.asString() + ":/a!b!c", scheme.urin(Path.<Iterable<String>>path(anIterableOfStringsSegment(asList("a", "b", "c"), percentEncodingPartial))));
+        assertAsStringAsUriAndParse(scheme, scheme.asString() + ":/a!%21!c", scheme.urin(Path.<Iterable<String>>path(anIterableOfStringsSegment(asList("a", "!", "c"), percentEncodingPartial))));
+    }
+
+    @Test
+    public void canMakeAUrinWithSubencodedEmptySegments() throws Exception {
+        final PercentEncodingUnaryValue.PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = percentEncodingDelimitedValue('!');
+        Scheme<Iterable<String>, Query> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String>(percentEncodingPartial) {
+            @Override
+            protected Segment<Iterable<String>> makeOne(Iterable<String> o) {
+                return anIterableOfStringsSegment(o, percentEncodingPartial);
+            }
+        }, aScheme().queryMakingDecoder);
+        final Segment.ValueSegment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.<String>emptyList(), percentEncodingPartial);
+        assertAsStringAsUriAndParse(scheme, scheme.asString() + ":/.//", scheme.urin(Path.<Iterable<String>>path(emptySegment, emptySegment, Segment.<Iterable<String>>dotDot())));
     }
 
     private static Segment.ValueSegment<Iterable<String>> anIterableOfStringsSegment(Iterable<String> o, PercentEncodingUnaryValue.PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {

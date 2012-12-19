@@ -52,6 +52,11 @@ public abstract class Segment<ENCODES> {
             }
 
             @Override
+            boolean isEmpty() {
+                return false;
+            }
+
+            @Override
             public final boolean equals(final Object o) {
                 return this == o || !(o == null || getClass() != o.getClass());
             }
@@ -86,6 +91,11 @@ public abstract class Segment<ENCODES> {
 
             public String asString() {
                 return "..";
+            }
+
+            @Override
+            boolean isEmpty() {
+                return false;
             }
 
             @Override
@@ -135,6 +145,11 @@ public abstract class Segment<ENCODES> {
 
         public String asString() {
             return delegate.asString();
+        }
+
+        @Override
+        boolean isEmpty() {
+            return "".equals(asString());
         }
 
         @Override
@@ -197,6 +212,8 @@ public abstract class Segment<ENCODES> {
     }
 
     abstract String asString();
+
+    abstract boolean isEmpty();
 
     static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
         switch (encodedSegment) {

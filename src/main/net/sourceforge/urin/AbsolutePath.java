@@ -50,12 +50,12 @@ public final class AbsolutePath<T> extends Path<T> {
                 }
             }
         }
-        this.segments = newSegments.size() == 1 && EMPTY.equals(newSegments.getFirst()) ? new LinkedList<Segment<T>>() : newSegments;
+        this.segments = newSegments.size() == 1 && newSegments.getFirst().isEmpty() ? new LinkedList<Segment<T>>() : newSegments;
     }
 
 
     boolean firstPartIsSuppliedButIsEmpty() {
-        return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
+        return !segments.isEmpty() && segments.iterator().next().isEmpty();
     }
 
     @Override
