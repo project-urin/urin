@@ -17,9 +17,9 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.spe
 /**
  * A segment of a URI's path.
  * <p/>
- * Note that the special segments "." and ".." are defined as constants.  Passing "." or ".." as an argument to the
- * factory method {@link #segment(String)} is not equivalent, as the argument to this method is a literal string, i.e.
- * subject to encoding where necessary.
+ * Note that the special segments "." and ".." are obtained via the factory methods {@link #dot()} and {@link #dotDot()}
+ * respectively.  Passing "." or ".." as an argument to the factory method {@link #segment(String)} is not equivalent,
+ * as the argument to this method is a literal string, i.e. subject to encoding where necessary.
  * <p/>
  * Immutable and threadsafe.
  *
