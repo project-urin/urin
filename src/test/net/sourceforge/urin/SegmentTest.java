@@ -53,6 +53,11 @@ public class SegmentTest {
     }
 
     @Test
+    public void emptySegmentIsNotEncoded() throws Exception {
+        assertThat(empty().asString(), equalTo(""));
+    }
+
+    @Test
     public void parsesUnreservedCharacters() throws Exception {
         assertThat(Segment.parse(P_CHARS, stringSegmentMaker()), equalTo(Segment.segment(P_CHARS)));
     }
@@ -83,6 +88,11 @@ public class SegmentTest {
     }
 
     @Test
+    public void unencodedEmptyBecomesExplicitEmptySegment() throws Exception {
+        assertThat(Segment.parse("", stringSegmentMaker()), equalTo(Segment.<String>empty()));
+    }
+
+    @Test
     public void dotHasNoValue() throws Exception {
         assertThat(dot().hasValue(), equalTo(false));
     }
@@ -90,6 +100,11 @@ public class SegmentTest {
     @Test
     public void dotDotHasNoValue() throws Exception {
         assertThat(dotDot().hasValue(), equalTo(false));
+    }
+
+    @Test
+    public void emptyHasNoValue() throws Exception {
+        assertThat(empty().hasValue(), equalTo(false));
     }
 
     @Test
@@ -114,6 +129,16 @@ public class SegmentTest {
             fail("Expected UnsupportedOperationException to be thrown");
         } catch (final UnsupportedOperationException e) {
             assertThat(e.getMessage(), equalTo("Attempt to get value of .. segment"));
+        }
+    }
+
+    @Test
+    public void emptyThrowsUnsupportedOperationOnValueRetrieval() throws Exception {
+        try {
+            empty().value();
+            fail("Expected UnsupportedOperationException to be thrown");
+        } catch (final UnsupportedOperationException e) {
+            assertThat(e.getMessage(), equalTo("Attempt to get value of empty segment"));
         }
     }
 

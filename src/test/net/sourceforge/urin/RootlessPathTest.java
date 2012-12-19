@@ -19,7 +19,7 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFI
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON;
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
 import static net.sourceforge.urin.RootlessPath.rootlessPath;
-import static net.sourceforge.urin.Segment.EMPTY;
+import static net.sourceforge.urin.Segment.empty;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
@@ -84,7 +84,7 @@ public class RootlessPathTest {
 
     @Test
     public void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() throws Exception {
-        assertThat(rootlessPath(EMPTY).firstPartIsSuppliedButIsEmpty(), equalTo(true));
+        assertThat(rootlessPath(empty()).firstPartIsSuppliedButIsEmpty(), equalTo(true));
     }
 
     @Test

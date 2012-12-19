@@ -13,7 +13,8 @@ package net.sourceforge.urin;
 import java.util.*;
 
 import static net.sourceforge.urin.PathHelper.appendSegmentsTo;
-import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.Segment.dot;
+import static net.sourceforge.urin.Segment.dotDot;
 
 final class RootlessPath<T> extends Path<T> {
 
@@ -34,28 +35,28 @@ final class RootlessPath<T> extends Path<T> {
                             if (!newSegments.isEmpty() && !dotDot().equals(newSegments.getLast())) {
                                 newSegments.removeLast();
                                 if (!segmentIterator.hasNext()) {
-                                    newSegments.add(EMPTY);
+                                    newSegments.add(Segment.<T>empty());
                                 }
                             } else {
                                 newSegments.add(Segment.<T>dotDot());
                             }
                         } else {
                             if (!segmentIterator.hasNext()) {
-                                newSegments.add(EMPTY);
+                                newSegments.add(Segment.<T>empty());
                             }
                         }
                     } else {
                         if (!newSegments.isEmpty() && dot().equals(newSegments.getLast())) {
                             newSegments.removeLast();
                         }
-                        newSegments.add(segment);
+                        newSegments.add(segment.isEmpty() ? Segment.<T>empty() : segment);
                     }
                 } else {
                     if (newSegments.isEmpty()) {
                         newSegments.add(Segment.<T>dot());
                     } else {
                         if (!segmentIterator.hasNext()) {
-                            newSegments.add(EMPTY);
+                            newSegments.add(Segment.<T>empty());
                         }
                     }
                 }
@@ -65,7 +66,7 @@ final class RootlessPath<T> extends Path<T> {
     }
 
     boolean firstPartIsSuppliedButIsEmpty() {
-        return !segments.isEmpty() && EMPTY.equals(segments.iterator().next());
+        return !segments.isEmpty() && segments.iterator().next().isEmpty();
     }
 
     @Override

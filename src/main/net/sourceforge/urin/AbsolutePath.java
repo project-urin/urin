@@ -13,7 +13,8 @@ package net.sourceforge.urin;
 import java.util.*;
 
 import static net.sourceforge.urin.PathHelper.appendSegmentsTo;
-import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.Segment.dot;
+import static net.sourceforge.urin.Segment.dotDot;
 
 /**
  * A path that begins with a '/' - typically representing a path relative to root.
@@ -37,15 +38,15 @@ public final class AbsolutePath<T> extends Path<T> {
                         if (!newSegments.isEmpty()) {
                             newSegments.removeLast();
                             if (!segmentIterator.hasNext()) {
-                                newSegments.add(EMPTY);
+                                newSegments.add(Segment.<T>empty());
                             }
                         }
                     } else {
-                        newSegments.add(segment);
+                        newSegments.add(segment.isEmpty() ? Segment.<T>empty() : segment);
                     }
                 } else {
                     if (!segmentIterator.hasNext()) {
-                        newSegments.add(EMPTY);
+                        newSegments.add(Segment.<T>empty());
                     }
                 }
             }

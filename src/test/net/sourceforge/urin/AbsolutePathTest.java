@@ -18,7 +18,6 @@ import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFI
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
-import static net.sourceforge.urin.Segment.EMPTY;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
@@ -78,7 +77,7 @@ public class AbsolutePathTest {
 
     @Test
     public void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() throws Exception {
-        assertThat(AbsolutePath.path(EMPTY, aNonDotSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(true));
+        assertThat(AbsolutePath.path(Segment.<String>empty(), aNonDotSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(true));
     }
 
     @Test

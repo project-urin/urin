@@ -116,6 +116,48 @@ public abstract class Segment<ENCODES> {
         };
     }
 
+    /**
+     * An empty segment - one that is encoded as "" in a URI.
+     */
+    public static <ENCODES> Segment<ENCODES> empty() {
+        return new Segment<ENCODES>() {
+            @Override
+            public boolean hasValue() {
+                return false;
+            }
+
+            @Override
+            public ENCODES value() {
+                throw new UnsupportedOperationException("Attempt to get value of empty segment");
+            }
+
+            public String asString() {
+                return "";
+            }
+
+            @Override
+            boolean isEmpty() {
+                return true;
+            }
+
+            @Override
+            public final boolean equals(final Object o) {
+                return this == o || !(o == null || getClass() != o.getClass());
+            }
+
+            @Override
+            public final int hashCode() {
+                return 19;
+            }
+
+            @Override
+            public final String toString() {
+                return "Segment{empty}";
+            }
+
+        };
+    }
+
     public static MakingDecoder<Segment<String>, String, String> stringSegmentMaker() {
         return new MakingDecoder<Segment<String>, String, String>(PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp()) {
             @Override
@@ -179,11 +221,6 @@ public abstract class Segment<ENCODES> {
         }
     }
 
-    /**
-     * An empty segment
-     */
-    public static final Segment EMPTY = segment("");
-
     private Segment() {
     }
 
@@ -217,6 +254,8 @@ public abstract class Segment<ENCODES> {
 
     static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
         switch (encodedSegment) {
+            case "":
+                return empty();
             case ".":
                 return dot();
             case "..":
