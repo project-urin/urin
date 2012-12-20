@@ -232,7 +232,7 @@ public abstract class Segment<ENCODES> {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment<String> segment(final String segment) {
-        return new ValueSegment<>(segment, PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp());
+        return segment(segment, PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp());
     }
 
     /**
@@ -244,7 +244,8 @@ public abstract class Segment<ENCODES> {
      * @return a {@code Segment} representing the given {@code Object}.
      */
     public static <T> Segment<T> segment(final T segment, PercentEncodingUnaryValue.PercentEncodingPartial<T, String> percentEncodingPartial) {
-        return new ValueSegment<>(segment, percentEncodingPartial);
+        final ValueSegment<T> result = new ValueSegment<>(segment, percentEncodingPartial);
+        return result.isEmpty() ? Segment.<T>empty() : result;
     }
 
     final boolean containsColon() {
