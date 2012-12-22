@@ -23,8 +23,7 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 import static net.sourceforge.urin.Path.rootlessPath;
-import static net.sourceforge.urin.PathBuilder.aPath;
-import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
+import static net.sourceforge.urin.PathBuilder.*;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.segment;
@@ -1778,21 +1777,21 @@ public class RelativeReferenceTest {
 
     @Test
     public void parsesARelativeReferenceWithPathAndQuery() throws Exception {
-        Path<String> path = aPath();
+        Path<String> path = anUnpollutedPath();
         Query query = aQuery();
         assertThat(aScheme().parseRelativeReference(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString()), equalTo(aScheme().relativeReference(path, query)));
     }
 
     @Test
     public void parsesARelativeReferenceWithPathAndFragment() throws Exception {
-        Path<String> path = aPath();
+        Path<String> path = anUnpollutedPath();
         Fragment fragment = aFragment();
         assertThat(aScheme().parseRelativeReference(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "#" + fragment.asString()), equalTo(aScheme().relativeReference(path, fragment)));
     }
 
     @Test
     public void parsesARelativeReferenceWithPathAndQueryAndFragment() throws Exception {
-        Path<String> path = aPath();
+        Path<String> path = anUnpollutedPath();
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(aScheme().parseRelativeReference(path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + "?" + query.asString() + "#" + fragment.asString()), equalTo(aScheme().relativeReference(path, query, fragment)));

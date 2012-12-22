@@ -16,11 +16,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import static net.sourceforge.urin.Path.path;
+import static net.sourceforge.urin.SegmentBuilder.aNonTypedSegment;
 
 public class PathBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Path<String>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+    private static final RandomSupplierSwitcher<Path<String>> RANDOM_POLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Path<String>>() {
                 public Path<String> get() {
                     return anAbsolutePath();
@@ -29,6 +30,20 @@ public class PathBuilder {
             new Supplier<Path<String>>() {
                 public Path<String> get() {
                     return aRootlessPath();
+                }
+            }
+    );
+
+    @SuppressWarnings({"unchecked"})
+    private static final RandomSupplierSwitcher<Path<String>> RANDOM_UNPOLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+            new Supplier<Path<String>>() {
+                public Path<String> get() {
+                    return anAbsolutePath();
+                }
+            },
+            new Supplier<Path<String>>() {
+                public Path<String> get() {
+                    return anUnpollutedRootlessPath();
                 }
             }
     );
@@ -43,8 +58,9 @@ public class PathBuilder {
         }});
     }
 
-    public static Path<String> aRootlessPath() {
+    public static Path<String> anUnpollutedRootlessPath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
+
         return RootlessPath.rootlessPath(new ArrayList<Segment<String>>(numberOfSegments) {{
             for (int i = 0; i < numberOfSegments; i++) {
                 add(SegmentBuilder.aNonDotSegment());
@@ -52,8 +68,34 @@ public class PathBuilder {
         }});
     }
 
+    public static Path<String> aRootlessPath() {
+        final int numberOfSegments = RANDOM.nextInt(4) + 1;
+        final Path<String> result;
+        switch (numberOfSegments) {
+            case 1:
+                result = Path.rootlessPath(new Segment[]{aNonTypedSegment()});
+                break;
+            case 2:
+                result = Path.rootlessPath(new Segment[]{aNonTypedSegment(), aNonTypedSegment()});
+                break;
+            case 3:
+                result = Path.rootlessPath(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                break;
+            case 4:
+                result = Path.rootlessPath(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                break;
+            default:
+                result = Path.rootlessPath(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+        }
+        return RootlessPath.rootlessPath(result);
+    }
+
     public static Path<String> aPath() {
-        return RANDOM_SUPPLIER_SWITCHER.get();
+        return RANDOM_POLLUTED_PATH_SUPPLIER_SWITCHER.get();
+    }
+
+    public static Path<String> anUnpollutedPath() {
+        return RANDOM_UNPOLLUTED_PATH_SUPPLIER_SWITCHER.get();
     }
 
 }

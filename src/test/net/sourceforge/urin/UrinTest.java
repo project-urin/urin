@@ -19,8 +19,7 @@ import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
-import static net.sourceforge.urin.PathBuilder.aPath;
-import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
+import static net.sourceforge.urin.PathBuilder.*;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.Scheme.scheme;
@@ -1178,7 +1177,7 @@ public class UrinTest {
     @Test
     public void parsesUrinWithNoAuthority() throws Exception {
         Scheme<String, Query> scheme = aScheme();
-        Path<String> path = aPath();
+        Path<String> path = anUnpollutedPath();
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(path, query, fragment)));

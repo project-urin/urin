@@ -12,13 +12,19 @@ package net.sourceforge.urin;
 
 import com.google.common.base.Supplier;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
+import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncodingPartial.percentEncodingDelimitedValue;
 import static net.sourceforge.urin.Segment.*;
 
 public class SegmentBuilder {
 
+    private static final Random RANDOM = new Random();
+
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Segment<String>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+    private static final RandomSupplierSwitcher<Segment<String>> RANDOM_STRING_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Segment<String>>() {
                 public Segment<String> get() {
                     return aNonDotSegment();
@@ -36,12 +42,38 @@ public class SegmentBuilder {
             }
     );
 
+    @SuppressWarnings({"unchecked"})
+    private static final RandomSupplierSwitcher<Segment> RANDOM_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+            new Supplier<Segment>() {
+                public Segment get() {
+                    return aNonDotSegment();
+                }
+            },
+            new Supplier<Segment>() {
+                public Segment get() {
+                    return aNonStringSegment();
+                }
+            }
+    );
+
     public static Segment<String> aNonDotSegment() {
         return segment(aString());
     }
 
     public static Segment<String> aSegment() {
-        return RANDOM_SUPPLIER_SWITCHER.get();
+        return RANDOM_STRING_SEGMENT_SUPPLIER_SWITCHER.get();
     }
 
+    public static Segment<Iterable<String>> aNonStringSegment() {
+        final int numberOfElements = RANDOM.nextInt(5);
+        return segment(new ArrayList<String>(numberOfElements) {{
+            for (int i = 0; i < numberOfElements; i++) {
+                add(aString());
+            }
+        }}, percentEncodingDelimitedValue('!'));
+    }
+
+    public static Segment aNonTypedSegment() {
+        return RANDOM_SEGMENT_SUPPLIER_SWITCHER.get();
+    }
 }

@@ -171,4 +171,5 @@ public class RootlessPathTest {
         rootlessPath.segments().add(aSegment());
         assertThat(rootlessPath.segments(), contains(segmentOne, segmentTwo));
     }
+
 }

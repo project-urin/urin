@@ -58,6 +58,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @param segments {@code Segment}s that will be represented by this {@code Path}.
      * @return a {@code Path} representing the given {@code Segment}s.
      */
+    @SafeVarargs
     public static <T> Path<T> rootlessPath(final Segment<T>... segments) {
         return rootlessPath(asList(segments));
     }
