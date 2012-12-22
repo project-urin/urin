@@ -14,9 +14,9 @@ import org.junit.Test;
 
 import java.net.URI;
 
-import static net.sourceforge.urin.RelativeReferenceBuilder.aRelativeReference;
+import static net.sourceforge.urin.RelativeReferenceBuilder.anUnpollutedRelativeReference;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
-import static net.sourceforge.urin.UrinBuilder.aUrin;
+import static net.sourceforge.urin.UrinBuilder.anUnpollutedUrin;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.fail;
@@ -25,7 +25,7 @@ public class UrinReferenceTest {
 
     @Test
     public void aUriAsStringParsesToAUrin() throws Exception {
-        Urin<String, Query> urin = aUrin();
+        Urin<String, Query> urin = anUnpollutedUrin();
         assertThat(aScheme().parseUrinReference(urin.asString()), equalTo((UrinReference<String, Query>) urin));
     }
 
@@ -37,7 +37,7 @@ public class UrinReferenceTest {
 
     @Test
     public void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
-        RelativeReference<String, Query> relativeReference = aRelativeReference();
+        RelativeReference<String, Query> relativeReference = anUnpollutedRelativeReference();
         assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo((UrinReference<String, Query>) relativeReference));
     }
 

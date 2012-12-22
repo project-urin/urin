@@ -14,15 +14,98 @@ import com.google.common.base.Supplier;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
-import static net.sourceforge.urin.PathBuilder.aPath;
-import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
+import static net.sourceforge.urin.PathBuilder.*;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 
 public class UrinBuilder {
 
     @SuppressWarnings({"unchecked"})
-    private static final RandomSupplierSwitcher<Urin<String, Query>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+    private static final RandomSupplierSwitcher<Urin<String, Query>> RANDOM_UNPOLLUTED_URIN_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin();
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anUnpollutedPath());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), anUnpollutedAbsolutePath());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(aFragment());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anUnpollutedPath(), aFragment());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), aFragment());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), anUnpollutedAbsolutePath(), aFragment());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(aQuery());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anUnpollutedPath(), aQuery());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), aQuery());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), anUnpollutedAbsolutePath(), aQuery());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(aQuery(), aFragment());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anUnpollutedPath(), aQuery(), aFragment());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), aQuery(), aFragment());
+                }
+            },
+            new Supplier<Urin<String, Query>>() {
+                public Urin get() {
+                    return aScheme().urin(anAuthority(), anUnpollutedAbsolutePath(), aQuery(), aFragment());
+                }
+            }
+    );
+
+    @SuppressWarnings({"unchecked"})
+    private static final RandomSupplierSwitcher<Urin<String, Query>> RANDOM_POLLUTED_URIN_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Urin<String, Query>>() {
                 public Urin get() {
                     return aScheme().urin();
@@ -106,7 +189,11 @@ public class UrinBuilder {
     );
 
     public static Urin<String, Query> aUrin() {
-        return RANDOM_SUPPLIER_SWITCHER.get();
+        return RANDOM_POLLUTED_URIN_SUPPLIER_SWITCHER.get();
+    }
+
+    public static Urin<String, Query> anUnpollutedUrin() {
+        return RANDOM_UNPOLLUTED_URIN_SUPPLIER_SWITCHER.get();
     }
 
 }

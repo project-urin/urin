@@ -1857,7 +1857,7 @@ public class RelativeReferenceTest {
     @Test
     public void parsesRelativeReferenceWithAuthorityAndPathAndQuery() throws Exception {
         Authority authority = anAuthority();
-        AbsolutePath<String> absolutePath = anAbsolutePath();
+        AbsolutePath<String> absolutePath = anUnpollutedAbsolutePath();
         Query query = aQuery();
         assertThat(aScheme().parseRelativeReference("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString()), equalTo(aScheme().relativeReference(authority, absolutePath, query)));
     }
@@ -1865,7 +1865,7 @@ public class RelativeReferenceTest {
     @Test
     public void parsesRelativeReferenceWithAuthorityAndPathAndFragment() throws Exception {
         Authority authority = anAuthority();
-        AbsolutePath<String> absolutePath = anAbsolutePath();
+        AbsolutePath<String> absolutePath = anUnpollutedAbsolutePath();
         Fragment fragment = aFragment();
         assertThat(aScheme().parseRelativeReference("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "#" + fragment.asString()), equalTo(aScheme().relativeReference(authority, absolutePath, fragment)));
     }
@@ -1873,7 +1873,7 @@ public class RelativeReferenceTest {
     @Test
     public void parsesRelativeReferenceWithAuthorityAndPathAndQueryAndFragment() throws Exception {
         Authority authority = anAuthority();
-        AbsolutePath<String> absolutePath = anAbsolutePath();
+        AbsolutePath<String> absolutePath = anUnpollutedAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(aScheme().parseRelativeReference("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()), equalTo(aScheme().relativeReference(authority, absolutePath, query, fragment)));
@@ -1882,7 +1882,7 @@ public class RelativeReferenceTest {
     @Test
     public void parsesRelativeReferenceFromUri() throws Exception {
         Authority authority = authority(aRegisteredName());
-        AbsolutePath<String> absolutePath = anAbsolutePath();
+        AbsolutePath<String> absolutePath = anUnpollutedAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(aScheme().parseRelativeReference(URI.create("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString())), equalTo(aScheme().relativeReference(authority, absolutePath, query, fragment)));

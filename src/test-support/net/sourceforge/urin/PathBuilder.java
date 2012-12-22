@@ -38,7 +38,7 @@ public class PathBuilder {
     private static final RandomSupplierSwitcher<Path<String>> RANDOM_UNPOLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Path<String>>() {
                 public Path<String> get() {
-                    return anAbsolutePath();
+                    return anUnpollutedAbsolutePath();
                 }
             },
             new Supplier<Path<String>>() {
@@ -49,13 +49,35 @@ public class PathBuilder {
     );
     private static final Random RANDOM = new Random();
 
-    public static AbsolutePath<String> anAbsolutePath() {
+    public static AbsolutePath<String> anUnpollutedAbsolutePath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
         return path(new ArrayList<Segment<String>>(numberOfSegments) {{
             for (int i = 0; i < numberOfSegments; i++) {
                 add(SegmentBuilder.aNonDotSegment());
             }
         }});
+    }
+
+    public static AbsolutePath<String> anAbsolutePath() {
+        final int numberOfSegments = RANDOM.nextInt(4) + 1;
+        final AbsolutePath<String> result;
+        switch (numberOfSegments) {
+            case 1:
+                result = Path.path(new Segment[]{aNonTypedSegment()});
+                break;
+            case 2:
+                result = Path.path(new Segment[]{aNonTypedSegment(), aNonTypedSegment()});
+                break;
+            case 3:
+                result = Path.path(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                break;
+            case 4:
+                result = Path.path(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                break;
+            default:
+                result = Path.path(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+        }
+        return result;
     }
 
     public static Path<String> anUnpollutedRootlessPath() {
@@ -87,7 +109,7 @@ public class PathBuilder {
             default:
                 result = Path.rootlessPath(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
         }
-        return RootlessPath.rootlessPath(result);
+        return result;
     }
 
     public static Path<String> aPath() {

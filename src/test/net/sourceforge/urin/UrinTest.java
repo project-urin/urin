@@ -1168,7 +1168,7 @@ public class UrinTest {
     public void parsesUrinWithAllParts() throws Exception {
         Scheme<String, Query> scheme = aScheme();
         Authority authority = anAuthority();
-        AbsolutePath<String> path = anAbsolutePath();
+        AbsolutePath<String> path = anUnpollutedAbsolutePath();
         Query query = aQuery();
         Fragment fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(authority, path, query, fragment)));
@@ -1204,7 +1204,7 @@ public class UrinTest {
     public void parsesUrinWithNoFragment() throws Exception {
         Scheme<String, Query> scheme = aScheme();
         Authority authority = anAuthority();
-        AbsolutePath<String> path = anAbsolutePath();
+        AbsolutePath<String> path = anUnpollutedAbsolutePath();
         Query query = aQuery();
         assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString()), equalTo(scheme.urin(authority, path, query)));
     }
@@ -1212,7 +1212,7 @@ public class UrinTest {
     @Test
     public void parsesUrinWithNoFragmentAndNoAuthority() throws Exception {
         Scheme<String, Query> scheme = aScheme();
-        Path<String> path = aPath();
+        Path<String> path = anUnpollutedPath();
         Query query = aQuery();
         assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + "?" + query.asString()), equalTo(scheme.urin(path, query)));
     }
@@ -1221,7 +1221,7 @@ public class UrinTest {
     public void parsesUrinWithNoQuery() throws Exception {
         Scheme<String, Query> scheme = aScheme();
         Authority authority = anAuthority();
-        AbsolutePath<String> path = anAbsolutePath();
+        AbsolutePath<String> path = anUnpollutedAbsolutePath();
         Fragment fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "#" + fragment.asString()), equalTo(scheme.urin(authority, path, fragment)));
     }
@@ -1229,7 +1229,7 @@ public class UrinTest {
     @Test
     public void parsesUrinWithNoQueryOrAuthority() throws Exception {
         Scheme<String, Query> scheme = aScheme();
-        AbsolutePath<String> path = anAbsolutePath();
+        AbsolutePath<String> path = anUnpollutedAbsolutePath();
         Fragment fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + "#" + fragment.asString()), equalTo(scheme.urin(path, fragment)));
     }
@@ -1238,7 +1238,7 @@ public class UrinTest {
     public void parsesUrinWithNoQueryAndNoFragment() throws Exception {
         Scheme<String, Query> scheme = aScheme();
         Authority authority = anAuthority();
-        AbsolutePath<String> path = anAbsolutePath();
+        AbsolutePath<String> path = anUnpollutedAbsolutePath();
         assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT)), equalTo(scheme.urin(authority, path)));
     }
 
@@ -1258,7 +1258,7 @@ public class UrinTest {
     @Test
     public void parsesUrinWithNoQueryAndNoFragmentAndNoAuthority() throws Exception {
         Scheme<String, Query> scheme = aScheme();
-        AbsolutePath<String> path = anAbsolutePath();
+        AbsolutePath<String> path = anUnpollutedAbsolutePath();
         assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY)), equalTo(scheme.urin(path)));
     }
 

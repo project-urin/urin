@@ -108,6 +108,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @param segments {@code Segment}s that will be represented by this {@code AbsolutePath}.
      * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
+    @SafeVarargs
     public static <T> AbsolutePath<T> path(final Segment<T>... segments) {
         return path(asList(segments));
     }

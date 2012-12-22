@@ -65,7 +65,7 @@ public class SegmentBuilder {
     }
 
     public static Segment<Iterable<String>> aNonStringSegment() {
-        final int numberOfElements = RANDOM.nextInt(5);
+        final int numberOfElements = RANDOM.nextInt(4) + 1;
         return segment(new ArrayList<String>(numberOfElements) {{
             for (int i = 0; i < numberOfElements; i++) {
                 add(aString());
