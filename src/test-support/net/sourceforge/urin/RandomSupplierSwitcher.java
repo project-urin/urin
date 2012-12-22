@@ -23,6 +23,7 @@ public final class RandomSupplierSwitcher<T> implements Supplier<T> {
 
     private final List<Supplier<T>> suppliers;
 
+    @SafeVarargs
     public RandomSupplierSwitcher(final Supplier<T> supplier, final Supplier<T>... suppliers) {
         this.suppliers = asList(supplier, suppliers);
     }
