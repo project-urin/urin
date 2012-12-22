@@ -19,169 +19,167 @@ import static net.sourceforge.urin.QueryBuilder.aQuery;
 
 public class RelativeReferenceBuilder {
 
-    @SuppressWarnings({"unchecked"})
     private static final RandomSupplierSwitcher<RelativeReference<String, Query>> RANDOM_POLLUTED_RELATIVE_REFERENCE_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference();
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aQuery());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aPath());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aPath(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aPath(), aQuery());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aPath(), aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), aQuery());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), anAbsolutePath());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), anAbsolutePath(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), anAbsolutePath(), aQuery());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), anAbsolutePath(), aQuery(), aFragment());
                 }
             }
     );
 
-    @SuppressWarnings({"unchecked"})
     private static final RandomSupplierSwitcher<RelativeReference<String, Query>> RANDOM_UNPOLLUTED_RELATIVE_REFERENCE_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference();
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aQuery());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anUnpollutedPath());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anUnpollutedPath(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anUnpollutedPath(), aQuery());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anUnpollutedPath(), aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), aQuery());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), aQuery(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), anUnpollutedAbsolutePath());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), anUnpollutedAbsolutePath(), aFragment());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), anUnpollutedAbsolutePath(), aQuery());
                 }
             },
             new Supplier<RelativeReference<String, Query>>() {
-                public RelativeReference get() {
+                public RelativeReference<String, Query> get() {
                     return SchemeBuilder.aScheme().relativeReference(anAuthority(), anUnpollutedAbsolutePath(), aQuery(), aFragment());
                 }
             }

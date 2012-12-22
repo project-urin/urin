@@ -20,7 +20,6 @@ import static net.sourceforge.urin.SegmentBuilder.aNonTypedSegment;
 
 public class PathBuilder {
 
-    @SuppressWarnings({"unchecked"})
     private static final RandomSupplierSwitcher<Path<String>> RANDOM_POLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Path<String>>() {
                 public Path<String> get() {
@@ -34,7 +33,6 @@ public class PathBuilder {
             }
     );
 
-    @SuppressWarnings({"unchecked"})
     private static final RandomSupplierSwitcher<Path<String>> RANDOM_UNPOLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Path<String>>() {
                 public Path<String> get() {

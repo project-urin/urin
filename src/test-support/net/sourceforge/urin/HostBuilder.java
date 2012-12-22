@@ -21,7 +21,6 @@ import static org.apache.commons.lang3.RandomStringUtils.random;
 
 public class HostBuilder {
 
-    @SuppressWarnings({"unchecked"})
     private static final RandomSupplierSwitcher<Host> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Host>() {
                 public Host get() {

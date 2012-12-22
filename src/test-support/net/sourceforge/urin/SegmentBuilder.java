@@ -23,7 +23,6 @@ public class SegmentBuilder {
 
     private static final Random RANDOM = new Random();
 
-    @SuppressWarnings({"unchecked"})
     private static final RandomSupplierSwitcher<Segment<String>> RANDOM_STRING_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Segment<String>>() {
                 public Segment<String> get() {
@@ -42,7 +41,6 @@ public class SegmentBuilder {
             }
     );
 
-    @SuppressWarnings({"unchecked"})
     private static final RandomSupplierSwitcher<Segment> RANDOM_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             new Supplier<Segment>() {
                 public Segment get() {
