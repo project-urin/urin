@@ -61,19 +61,19 @@ public class PathBuilder {
         final AbsolutePath<String> result;
         switch (numberOfSegments) {
             case 1:
-                result = Path.path(new Segment[]{aNonTypedSegment()});
+                result = Path.<String>path(aNonTypedSegment());
                 break;
             case 2:
-                result = Path.path(new Segment[]{aNonTypedSegment(), aNonTypedSegment()});
+                result = Path.<String>path(aNonTypedSegment(), aNonTypedSegment());
                 break;
             case 3:
-                result = Path.path(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                result = Path.<String>path(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
                 break;
             case 4:
-                result = Path.path(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                result = Path.<String>path(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
                 break;
             default:
-                result = Path.path(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                result = Path.<String>path(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
         }
         return result;
     }
@@ -93,19 +93,19 @@ public class PathBuilder {
         final Path<String> result;
         switch (numberOfSegments) {
             case 1:
-                result = Path.rootlessPath(new Segment[]{aNonTypedSegment()});
+                result = Path.<String>rootlessPath(aNonTypedSegment());
                 break;
             case 2:
-                result = Path.rootlessPath(new Segment[]{aNonTypedSegment(), aNonTypedSegment()});
+                result = Path.<String>rootlessPath(aNonTypedSegment(), aNonTypedSegment());
                 break;
             case 3:
-                result = Path.rootlessPath(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                result = Path.<String>rootlessPath(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
                 break;
             case 4:
-                result = Path.rootlessPath(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                result = Path.<String>rootlessPath(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
                 break;
             default:
-                result = Path.rootlessPath(new Segment[]{aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment()});
+                result = Path.<String>rootlessPath(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
         }
         return result;
     }
