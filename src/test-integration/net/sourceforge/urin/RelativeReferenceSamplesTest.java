@@ -26,13 +26,13 @@ import static org.junit.Assert.assertThat;
 public class RelativeReferenceSamplesTest {
     @Test
     public void canMakeARelativeReferenceWithColonInTheFirstSegment() throws Exception {
-        Segment segment = segment(aStringIncluding(':'));
+        Segment<String> segment = segment(aStringIncluding(':'));
         assertThat(aScheme().relativeReference(rootlessPath(segment)).asString(), equalTo("./" + segment.asString()));
     }
 
     @Test
     public void canParseARelativeReferenceWithColonInTheFirstSegment() throws Exception {
-        Segment segment = segment(aStringIncluding(':'));
+        Segment<String> segment = segment(aStringIncluding(':'));
         assertThat(aScheme().parseRelativeReference("./" + segment.asString()), equalTo(aScheme().relativeReference(rootlessPath(segment))));
     }
 
