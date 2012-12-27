@@ -43,7 +43,13 @@ final class IndexPage {
                 ),
                 h2Tag(xhtmlText("Example")),
                 paragraphTag(xhtmlText("A brief example demonstrates the generation of an HTTP URI:")),
-                codeBlock("http(\n" +
+                codeBlock("import static net.sourceforge.urin.Host.*;\n" +
+                        "import static net.sourceforge.urin.Path.*;\n" +
+                        "import static net.sourceforge.urin.scheme.http.Http.*;\n" +
+                        "\n" +
+                        "...\n" +
+                        "\n" +
+                        "http(\n" +
                         "    registeredName(\"www.example.com\"),\n" +
                         "    path(\"music\", \"AC/DC\", \"Back in Black\")\n" +
                         ").asString();"),
@@ -54,13 +60,17 @@ final class IndexPage {
                 paragraphTag(xhtmlText("In the above example, the registered name and path could be any Java "), simpleNameOf(String.class),
                         xhtmlText("s we choose; the library will encode them appropriately to the part of the URI where they appear.")),
                 paragraphTag(xhtmlText("It's equally easy to go back to the non-encoded version:")),
-                codeBlock("parseHttpUrin(\"http://www.example.com/music/AC%2FDC/Back%20in%20Black\")\n" +
-                        "        .path()\n" +
-                        "        .segments();\n"),
+                codeBlock("import static net.sourceforge.urin.scheme.http.Http.*;\n" +
+                        "\n" +
+                        "...\n" +
+                        "\n" +
+                        "parseHttpUrin(\n" +
+                        "        \"http://www.example.com/music/AC%2FDC/Back%20in%20Black\"\n" +
+                        ").path().segments();\n"),
                 paragraphTag(xhtmlText("This produces a "), codeSnippet("List"), xhtmlText(" of three "), codeSnippet("Segment"),
-                        xhtmlText("s, with the values "), codeSnippet(acDcSegments().get(0).value()), xhtmlText(", "),
-                        codeSnippet(acDcSegments().get(1).value()), xhtmlText(", and "),
-                        codeSnippet(acDcSegments().get(2).value()), xhtmlText("."))
+                        xhtmlText("s, with the values \""), codeSnippet(acDcSegments().get(0).value()), xhtmlText("\", \""),
+                        codeSnippet(acDcSegments().get(1).value()), xhtmlText("\", and \""),
+                        codeSnippet(acDcSegments().get(2).value()), xhtmlText("\"."))
         );
     }
 
@@ -75,9 +85,9 @@ final class IndexPage {
     private static List<Segment<String>> acDcSegments() {
         try {
             return
-                    parseHttpUrin("http://www.example.com/music/AC%2FDC/Back%20in%20Black")
-                            .path()
-                            .segments();
+                    parseHttpUrin(
+                            "http://www.example.com/music/AC%2FDC/Back%20in%20Black"
+                    ).path().segments();
         } catch (ParseException e) {
             throw new DocumentationGenerationException(e);
         }
