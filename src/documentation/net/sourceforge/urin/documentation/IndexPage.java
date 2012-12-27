@@ -10,14 +10,17 @@
 
 package net.sourceforge.urin.documentation;
 
+import net.sourceforge.urin.ParseException;
+import net.sourceforge.urin.Segment;
 import org.sourceforge.xazzle.xhtml.HtmlTag;
+
+import java.util.List;
 
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.documentation.UrinPage.*;
-import static net.sourceforge.urin.scheme.http.Http.HTTP;
-import static net.sourceforge.urin.scheme.http.Http.http;
+import static net.sourceforge.urin.scheme.http.Http.*;
 import static org.sourceforge.xazzle.xhtml.Tags.*;
 
 final class IndexPage {
@@ -44,21 +47,40 @@ final class IndexPage {
                         "    registeredName(\"www.example.com\"),\n" +
                         "    path(\"music\", \"AC/DC\", \"Back in Black\")\n" +
                         ").asString();"),
-                paragraphTag(xhtmlText("This produces the "), simpleNameOf(String.class), xhtmlText(" \""), codeSnippet(acDcString()),
+                paragraphTag(xhtmlText("This produces the "), simpleNameOf(String.class), xhtmlText(" \""), codeSnippet(acDcUri()),
                         xhtmlText("\".  Note that the '"), codeSnippet("/"), xhtmlText("' character in \""), codeSnippet("AC/DC"),
                         xhtmlText("\" has been encoded as \""), codeSnippet("%2F"), xhtmlText("\", and that the space characters in \""),
                         codeSnippet("Back in Black"), xhtmlText("\" have been encoded as \""), codeSnippet("%20"), xhtmlText("\".")),
                 paragraphTag(xhtmlText("In the above example, the registered name and path could be any Java "), simpleNameOf(String.class),
-                        xhtmlText("s we choose; the library will encode them appropriately to the part of the URI where they appear."))
+                        xhtmlText("s we choose; the library will encode them appropriately to the part of the URI where they appear.")),
+                paragraphTag(xhtmlText("It's equally easy to go back to the non-encoded version:")),
+                codeBlock("parseHttpUrin(\"http://www.example.com/music/AC%2FDC/Back%20in%20Black\")\n" +
+                        "        .path()\n" +
+                        "        .segments();\n"),
+                paragraphTag(xhtmlText("This produces a "), codeSnippet("List"), xhtmlText(" of three "), codeSnippet("Segment"),
+                        xhtmlText("s, with the values "), codeSnippet(acDcSegments().get(0).value()), xhtmlText(", "),
+                        codeSnippet(acDcSegments().get(1).value()), xhtmlText(", and "),
+                        codeSnippet(acDcSegments().get(2).value()), xhtmlText("."))
         );
     }
 
-    private static String acDcString() {
+    private static String acDcUri() {
         return
                 http(
                         registeredName("www.example.com"),
                         path("music", "AC/DC", "Back in Black")
                 ).asString();
+    }
+
+    private static List<Segment<String>> acDcSegments() {
+        try {
+            return
+                    parseHttpUrin("http://www.example.com/music/AC%2FDC/Back%20in%20Black")
+                            .path()
+                            .segments();
+        } catch (ParseException e) {
+            throw new DocumentationGenerationException(e);
+        }
     }
 
 }
