@@ -18,7 +18,9 @@ package net.sourceforge.urin;
  * <p/>
  * Immutable and threadsafe.
  *
- * @param <QUERY> The type of {@code Query} used by this URI.
+ * @param <SEGMENT>  The type of {@code Segment} used by paths of this URI.
+ * @param <QUERY>    The type of {@code Query} used by this URI.
+ * @param <FRAGMENT> The type of {@code Fragment} used by this URI.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3">RFC 3986 - Syntax Components</a>
  */
 public abstract class Urin<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends UrinReference<SEGMENT, QUERY, FRAGMENT> {
