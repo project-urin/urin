@@ -17,6 +17,7 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.per
  * A fragment component of a URI.
  * Immutable and threadsafe.
  *
+ * @param <ENCODES> The type of value represented by the fragment - {@code String} in the general case.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.5">RFC 3986 - Fragment</a>
  */
 public abstract class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
@@ -59,10 +60,6 @@ public abstract class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODE
                 return fragment(value);
             }
         };
-    }
-
-    static Fragment parse(final String fragment) throws ParseException {
-        return fragment(PERCENT_ENCODING.decode(fragment));
     }
 
     static <FRAGMENT extends Fragment> FRAGMENT parseFragment(final String fragmentString, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) throws ParseException {

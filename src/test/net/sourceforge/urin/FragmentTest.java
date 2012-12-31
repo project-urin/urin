@@ -34,7 +34,7 @@ public class FragmentTest {
     @Test
     public void roundTripsAString() throws Exception {
         Fragment fragment = aFragment();
-        assertThat(Fragment.parse(fragment.asString()), equalTo(fragment));
+        assertThat(Fragment.parseFragment(fragment.asString(), Fragment.stringFragmentMaker()), equalTo(fragment));
     }
 
     @Test
