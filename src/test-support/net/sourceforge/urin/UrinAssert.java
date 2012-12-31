@@ -13,7 +13,6 @@ package net.sourceforge.urin;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -25,8 +24,8 @@ public class UrinAssert {
         assertThat(scheme.parseUrin(new URI(stringRepresentation)), equalTo(urinRepresentation));
     }
 
-    public static void assertAsStringAndParse(final String stringRepresentation, final Urin urinRepresentation) throws ParseException {
+    public static void assertAsStringAndParse(final Scheme scheme, final String stringRepresentation, final Urin urinRepresentation) throws ParseException {
         assertThat(urinRepresentation.asString(), equalTo(stringRepresentation));
-        assertThat(aScheme().parseUrin(stringRepresentation), equalTo(urinRepresentation));
+        assertThat(scheme.parseUrin(stringRepresentation), equalTo(urinRepresentation));
     }
 }

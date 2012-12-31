@@ -20,7 +20,7 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.per
  * @param <ENCODES> The type of value represented by the fragment - {@code String} in the general case.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.5">RFC 3986 - Fragment</a>
  */
-public abstract class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
+public class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
     private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
@@ -45,12 +45,7 @@ public abstract class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODE
      * @return a {@code Fragment} representing the given {@code String}.
      */
     public static Fragment<String> fragment(final String fragment) {
-        return new Fragment<String>(fragment, PERCENT_ENCODING) {
-            @Override
-            public String value() {
-                return fragment;
-            }
-        };
+        return new Fragment<>(fragment, PERCENT_ENCODING);
     }
 
     public static MakingDecoder<Fragment<String>, String, String> stringFragmentMaker() {
@@ -67,10 +62,12 @@ public abstract class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODE
     }
 
     /**
-     * Gets the (non-encoded) value of this fragment as a {@code String}.
+     * Gets the (non-encoded) value of this fragment.
      *
-     * @return the (non-encoded) value of this fragment as a {@code String}.
+     * @return the (non-encoded) value of this fragment.
      */
-    public abstract String value();
+    public final ENCODES value() {
+        return value;
+    }
 
 }
