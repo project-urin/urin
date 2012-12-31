@@ -38,7 +38,7 @@ public class RelativeReferenceSamplesTest {
 
     @Test
     public void canParseARelativeReferenceAndRetrieveTheValuesOfTheSegments() throws Exception {
-        RelativeReference<String, ?> relativeReference = aScheme().parseRelativeReference("a/b%2Fc");
+        RelativeReference<String, ?, ?> relativeReference = aScheme().parseRelativeReference("a/b%2Fc");
         final Path<String> path = relativeReference.path();
         assertThat(transform(path, new Function<Segment<String>, String>() {
             public String apply(final Segment<String> segment) {
@@ -49,7 +49,7 @@ public class RelativeReferenceSamplesTest {
 
     @Test
     public void canParseARelativeReferenceAndRetrieveTheValuesOfTheFragment() throws Exception {
-        RelativeReference relativeReference = aScheme().parseRelativeReference("a#foo:bar");
+        RelativeReference<?, ?, Fragment<String>> relativeReference = aScheme().parseRelativeReference("a#foo:bar");
         assertThat(relativeReference.hasFragment(), equalTo(true));
         assertThat(relativeReference.fragment(), equalTo(fragment("foo:bar")));
         assertThat(relativeReference.fragment().value(), equalTo("foo:bar"));

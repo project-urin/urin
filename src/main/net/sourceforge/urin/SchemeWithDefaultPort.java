@@ -17,19 +17,21 @@ import static java.util.Locale.ENGLISH;
  *
  * @param <QUERY> The type of {@code Query} used by this scheme.
  */
-public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<SEGMENT, QUERY> {
+public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Scheme<SEGMENT, QUERY, FRAGMENT> {
     private final String name;
     private final Port defaultPort;
 
     /**
      * Constructor for subclasses of {@code Scheme} with default ports.
      *
-     * @param name               the name of the scheme.
-     * @param defaultPort        the default port associated with the scheme.
-     * @param queryMakingDecoder the parser to use for parsing queries of this scheme.
+     * @param name                  the name of the scheme.
+     * @param defaultPort           the default port associated with the scheme.
+     * @param segmentMakingDecoder  the parser to use for parsing segments of this scheme.
+     * @param queryMakingDecoder    the parser to use for parsing queries of this scheme.
+     * @param fragmentMakingDecoder the parser to use for parsing fragments of this scheme.
      */
-    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder) {
-        super(segmentMakingDecoder, queryMakingDecoder);
+    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
+        super(segmentMakingDecoder, queryMakingDecoder, fragmentMakingDecoder);
         this.name = name;
         if (defaultPort == null) {
             throw new NullPointerException("Cannot instantiate Scheme with null default port");
@@ -38,8 +40,8 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
     }
 
     @Override
-    SchemeWithDefaultPort<SEGMENT, QUERY> withName(final String name) {
-        return new SchemeWithDefaultPort<>(name, defaultPort, segmentMakingDecoder, queryMakingDecoder);
+    SchemeWithDefaultPort<SEGMENT, QUERY, FRAGMENT> withName(final String name) {
+        return new SchemeWithDefaultPort<>(name, defaultPort, segmentMakingDecoder, queryMakingDecoder, fragmentMakingDecoder);
     }
 
     @Override
@@ -53,8 +55,8 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query> extends Scheme<
     }
 
     @Override
-    Scheme<SEGMENT, QUERY> removeDefaultPort() {
-        return new GenericScheme<>(name, segmentMakingDecoder, queryMakingDecoder);
+    Scheme<SEGMENT, QUERY, FRAGMENT> removeDefaultPort() {
+        return new GenericScheme<>(name, segmentMakingDecoder, queryMakingDecoder, fragmentMakingDecoder);
     }
 
     @Override

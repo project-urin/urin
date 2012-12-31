@@ -21,33 +21,33 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public class SchemeBuilder {
 
-    private static final RandomSupplierSwitcher<Scheme<String, Query<String>>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<Scheme<String, Query<String>>>() {
-                public Scheme<String, Query<String>> get() {
+    private static final RandomSupplierSwitcher<Scheme<String, Query<String>, Fragment<String>>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+            new Supplier<Scheme<String, Query<String>, Fragment<String>>>() {
+                public Scheme<String, Query<String>, Fragment<String>> get() {
                     return aSchemeWithNoDefaultPort();
                 }
             },
-            new Supplier<Scheme<String, Query<String>>>() {
-                public Scheme<String, Query<String>> get() {
+            new Supplier<Scheme<String, Query<String>, Fragment<String>>>() {
+                public Scheme<String, Query<String>, Fragment<String>> get() {
                     return aSchemeWithDefaultPort();
                 }
             }
     );
 
 
-    static Scheme<String, Query<String>> aScheme() {
+    static Scheme<String, Query<String>, Fragment<String>> aScheme() {
         return RANDOM_SUPPLIER_SWITCHER.get();
     }
 
-    static Scheme<String, Query<String>> aSchemeWithNoDefaultPort() {
+    static Scheme<String, Query<String>, Fragment<String>> aSchemeWithNoDefaultPort() {
         return scheme(aValidSchemeName());
     }
 
-    static Scheme<String, Query<String>> aSchemeWithDefaultPort() {
+    static Scheme<String, Query<String>, Fragment<String>> aSchemeWithDefaultPort() {
         return scheme(aValidSchemeName(), aPort());
     }
 
-    static Scheme<String, Query<String>> aSchemeWithDefaultPort(Port defaultPort) {
+    static Scheme<String, Query<String>, Fragment<String>> aSchemeWithDefaultPort(Port defaultPort) {
         return scheme(aValidSchemeName(), defaultPort);
     }
 

@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin.documentation;
 
+import net.sourceforge.urin.Fragment;
 import net.sourceforge.urin.Host;
 import net.sourceforge.urin.Urin;
 import net.sourceforge.urin.UrinReference;
@@ -153,7 +154,7 @@ final class UrinPage {
         return codeTag(xhtmlText(clazz.getCanonicalName()));
     }
 
-    static Urin<String, HttpQuery> standardJarUrin(final String version) {
+    static Urin<String, HttpQuery, Fragment<String>> standardJarUrin(final String version) {
         return Https.https(registeredName("sourceforge.net"), path("projects", "urin", "files", version, "urin-" + version + ".jar", "download"));
     }
 

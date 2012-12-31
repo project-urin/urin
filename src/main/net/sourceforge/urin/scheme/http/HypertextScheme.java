@@ -14,34 +14,35 @@ import net.sourceforge.urin.*;
 
 import java.net.URI;
 
+import static net.sourceforge.urin.Fragment.stringFragmentMaker;
 import static net.sourceforge.urin.scheme.http.HttpQuery.httpQueryMakingDecoder;
 
-abstract class HypertextScheme extends SchemeWithDefaultPort<String, HttpQuery> {
+abstract class HypertextScheme extends SchemeWithDefaultPort<String, HttpQuery, Fragment<String>> {
     HypertextScheme(final String name, final Port defaultPort) {
-        super(name, defaultPort, Segment.STRING_SEGMENT_MAKING_DECODER, httpQueryMakingDecoder());
+        super(name, defaultPort, Segment.STRING_SEGMENT_MAKING_DECODER, httpQueryMakingDecoder(), stringFragmentMaker());
     }
 
-    public static Urin<String, HttpQuery> parseHttpUrin(final URI uri) throws ParseException {
+    public static Urin<String, HttpQuery, Fragment<String>> parseHttpUrin(final URI uri) throws ParseException {
         return Http.HTTP.parseUrin(uri);
     }
 
-    public static Urin<String, HttpQuery> parseHttpUrin(final String uri) throws ParseException {
+    public static Urin<String, HttpQuery, Fragment<String>> parseHttpUrin(final String uri) throws ParseException {
         return Http.HTTP.parseUrin(uri);
     }
 
-    public static RelativeReference<String, HttpQuery> parseHttpRelativeReference(final URI uri) throws ParseException {
+    public static RelativeReference<String, HttpQuery, Fragment<String>> parseHttpRelativeReference(final URI uri) throws ParseException {
         return Http.HTTP.parseRelativeReference(uri);
     }
 
-    public static RelativeReference<String, HttpQuery> parseHttpRelativeReference(final String uri) throws ParseException {
+    public static RelativeReference<String, HttpQuery, Fragment<String>> parseHttpRelativeReference(final String uri) throws ParseException {
         return Http.HTTP.parseRelativeReference(uri);
     }
 
-    public static UrinReference<String, HttpQuery> parseHttpUrinReference(final URI uri) throws ParseException {
+    public static UrinReference<String, HttpQuery, Fragment<String>> parseHttpUrinReference(final URI uri) throws ParseException {
         return Http.HTTP.parseUrinReference(uri);
     }
 
-    public static UrinReference<String, HttpQuery> parseHttpUrinReference(final String uri) throws ParseException {
+    public static UrinReference<String, HttpQuery, Fragment<String>> parseHttpUrinReference(final String uri) throws ParseException {
         return Http.HTTP.parseUrinReference(uri);
     }
 }

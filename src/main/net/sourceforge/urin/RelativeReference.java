@@ -19,7 +19,7 @@ package net.sourceforge.urin;
  * @param <QUERY> The type of {@code Query} used by this relative reference.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-4.2">RFC 3986 - Relative Reference</a>
  */
-public abstract class RelativeReference<SEGMENT, QUERY extends Query> extends UrinReference<SEGMENT, QUERY> {
+public abstract class RelativeReference<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends UrinReference<SEGMENT, QUERY, FRAGMENT> {
 
     RelativeReference() {
     }

@@ -19,12 +19,22 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.per
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.5">RFC 3986 - Fragment</a>
  */
-public abstract class Fragment extends PercentEncodingUnaryValue<String> {
+public abstract class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
     private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
-    private Fragment(final String fragment) {
-        super(fragment, PERCENT_ENCODING);
+    private Fragment(final ENCODES fragment, final PercentEncoding<ENCODES> percentEncoding) {
+        super(fragment, percentEncoding);
+    }
+
+    /**
+     * Constructor for subclasses of {@code Fragment} with scheme specific percent encoding of characters beyond that specified for generic URI {@code Fragment}s.
+     *
+     * @param value                  the (non encoded) value this object represents.
+     * @param percentEncodingPartial the {@code PercentEncodingPartial} this subclass will use.
+     */
+    protected Fragment(final ENCODES value, final PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
+        this(value, percentEncodingPartial.apply(PERCENT_ENCODING));
     }
 
     /**
@@ -33,8 +43,8 @@ public abstract class Fragment extends PercentEncodingUnaryValue<String> {
      * @param fragment any {@code String} to represent as a {@code Fragment}.
      * @return a {@code Fragment} representing the given {@code String}.
      */
-    public static Fragment fragment(final String fragment) {
-        return new Fragment(fragment) {
+    public static Fragment<String> fragment(final String fragment) {
+        return new Fragment<String>(fragment, PERCENT_ENCODING) {
             @Override
             public String value() {
                 return fragment;
@@ -42,8 +52,21 @@ public abstract class Fragment extends PercentEncodingUnaryValue<String> {
         };
     }
 
+    public static MakingDecoder<Fragment<String>, String, String> stringFragmentMaker() {
+        return new MakingDecoder<Fragment<String>, String, String>(PercentEncodingPartial.<String>noOp()) {
+            @Override
+            protected Fragment<String> makeOne(String value) {
+                return fragment(value);
+            }
+        };
+    }
+
     static Fragment parse(final String fragment) throws ParseException {
         return fragment(PERCENT_ENCODING.decode(fragment));
+    }
+
+    static <FRAGMENT extends Fragment> FRAGMENT parseFragment(final String fragmentString, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) throws ParseException {
+        return fragmentMakingDecoder.toMaker(PERCENT_ENCODING).make(fragmentString);
     }
 
     /**

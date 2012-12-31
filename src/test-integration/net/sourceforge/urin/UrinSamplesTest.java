@@ -33,20 +33,20 @@ public class UrinSamplesTest {
 
     @Test
     public void canMakeAUrinWithNoAuthorityAndTwoEmptySegments() throws Exception {
-        Scheme<String, Query<String>> scheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         assertAsStringAndParse(scheme.asString() + ":/.//", scheme.urin(path("", "")));
     }
 
     @Test
     public void canMakeAUrinWithAuthorityAndPathToRoot() throws Exception {
-        Scheme<String, Query<String>> scheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/", scheme.urin(authority, Path.<String>path()));
     }
 
     @Test
     public void canMakeAUrinWithAuthorityAndAbsolutePath() throws Exception {
-        Scheme<String, Query<String>> scheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Segment<String> segment = aNonDotSegment();
         assertAsStringAndParse(scheme.asString() + "://" + authority.asString() + "/" + segment.asString(), scheme.urin(authority, Path.<String>path(segment)));
@@ -54,31 +54,31 @@ public class UrinSamplesTest {
 
     @Test
     public void canMakeAUrinWithPathToRoot() throws Exception {
-        Scheme<String, Query<String>> scheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         assertAsStringAsUriAndParse(aScheme(), scheme.asString() + ":/", scheme.urin(Path.<String>path()));
     }
 
     @Test
     public void canMakeAUrinWithSubencodedSegments() throws Exception {
         final PercentEncodingUnaryValue.PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = percentEncodingDelimitedValue('!');
-        Scheme<Iterable<String>, Query<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String>(percentEncodingPartial) {
+        Scheme<Iterable<String>, Query<String>, Fragment<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String>(percentEncodingPartial) {
             @Override
             protected Segment<Iterable<String>> makeOne(Iterable<String> o) {
                 return anIterableOfStringsSegment(o, percentEncodingPartial);
             }
-        }, aScheme().queryMakingDecoder);
+        }, aScheme().queryMakingDecoder, aScheme().fragmentMakingDecoder);
         assertAsStringAsUriAndParse(scheme, scheme.asString() + ":/a!%21!c", scheme.urin(Path.<Iterable<String>>path(anIterableOfStringsSegment(asList("a", "!", "c"), percentEncodingPartial))));
     }
 
     @Test
     public void canMakeAUrinWithSubencodedEmptySegments() throws Exception {
         final PercentEncodingUnaryValue.PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = percentEncodingDelimitedValue('!');
-        Scheme<Iterable<String>, Query<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String>(percentEncodingPartial) {
+        Scheme<Iterable<String>, Query<String>, Fragment<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String>(percentEncodingPartial) {
             @Override
             protected Segment<Iterable<String>> makeOne(Iterable<String> o) {
                 return anIterableOfStringsSegment(o, percentEncodingPartial);
             }
-        }, aScheme().queryMakingDecoder);
+        }, aScheme().queryMakingDecoder, aScheme().fragmentMakingDecoder);
         final Segment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.<String>emptyList(), percentEncodingPartial);
         assertAsStringAsUriAndParse(scheme, scheme.asString() + ":/.//", scheme.urin(Path.<Iterable<String>>path(emptySegment, emptySegment, Segment.<Iterable<String>>dotDot())));
     }

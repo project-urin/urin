@@ -21,7 +21,7 @@ package net.sourceforge.urin;
  * @param <QUERY> The type of {@code Query} used by this URI.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3">RFC 3986 - Syntax Components</a>
  */
-public abstract class Urin<SEGMENT, QUERY extends Query> extends UrinReference<SEGMENT, QUERY> {
+public abstract class Urin<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends UrinReference<SEGMENT, QUERY, FRAGMENT> {
 
     Urin() {
         // deliberately empty
@@ -34,35 +34,35 @@ public abstract class Urin<SEGMENT, QUERY extends Query> extends UrinReference<S
      * @return the {@code Urin} resulting from resolving the give {@code UrinReference} relative to this.
      * @see <a href="http://tools.ietf.org/html/rfc3986#section-5">RFC 3986 - Reference Resolution</a>
      */
-    public abstract Urin<SEGMENT, QUERY> resolve(final UrinReference<SEGMENT, QUERY> urinReference);
+    public abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final UrinReference<SEGMENT, QUERY, FRAGMENT> urinReference);
 
     @Override
-    Urin<SEGMENT, QUERY> resolve(final Scheme scheme, final Path path) {
+    Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme scheme, final Path path) {
         return this;
     }
 
     @Override
-    Urin<SEGMENT, QUERY> resolve(final Scheme scheme, final Authority authority, final Path path) {
+    Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme scheme, final Authority authority, final Path path) {
         return this;
     }
 
     @Override
-    Urin<SEGMENT, QUERY> resolve(final Scheme scheme, final Path path, final Query query) {
+    Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme scheme, final Path path, final Query query) {
         return this;
     }
 
     @Override
-    Urin<SEGMENT, QUERY> resolve(final Scheme scheme, final Authority authority, final Path path, final Query query) {
+    Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme scheme, final Authority authority, final Path path, final Query query) {
         return this;
     }
 
     @Override
-    Urin<SEGMENT, QUERY> resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
+    Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme scheme, final Path path, final Query query, final Fragment fragment) {
         return this;
     }
 
     @Override
-    Urin<SEGMENT, QUERY> resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
+    Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme scheme, final Authority authority, final Path path, final Query query, final Fragment fragment) {
         return this;
     }
 

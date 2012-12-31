@@ -94,7 +94,7 @@ public class RelativeReferenceTest {
     @Test
     public void aRelativeReferenceWithEmptyPathWithQueryQueryIsCorrect() throws Exception {
         Query<String> query = aQuery();
-        final RelativeReference<String, Query<String>> relativeReference = aScheme().relativeReference(query);
+        final RelativeReference<String, Query<String>, Fragment<String>> relativeReference = aScheme().relativeReference(query);
         assertThat(relativeReference.hasQuery(), equalTo(true));
         assertThat(relativeReference.query(), equalTo(query));
     }
@@ -221,7 +221,7 @@ public class RelativeReferenceTest {
     public void aRelativeReferenceWithEmptyPathWithQueryAndFragmentQueryIsCorrect() throws Exception {
         Query<String> query = aQuery();
         Fragment fragment = aFragment();
-        RelativeReference<String, Query<String>> relativeReference = aScheme().relativeReference(query, fragment);
+        RelativeReference<String, Query<String>, Fragment<String>> relativeReference = aScheme().relativeReference(query, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(true));
         assertThat(relativeReference.query(), equalTo(query));
     }
@@ -347,7 +347,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathResolvesSchemeToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Path<String> relativeReferencePath = aPath();
@@ -358,7 +358,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathResolvesSchemeAndAuthorityToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -370,7 +370,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -400,7 +400,7 @@ public class RelativeReferenceTest {
     public void aRelativeReferenceWithPathAndQueryQueryIsCorrect() throws Exception {
         Path<String> path = aPath();
         Query<String> query = aQuery();
-        final RelativeReference<String, Query<String>> relativeReference = aScheme().relativeReference(path, query);
+        final RelativeReference<String, Query<String>, Fragment<String>> relativeReference = aScheme().relativeReference(path, query);
         assertThat(relativeReference.hasQuery(), equalTo(true));
         assertThat(relativeReference.query(), equalTo(query));
     }
@@ -463,7 +463,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Path<String> relativeReferencePath = aPath();
@@ -475,7 +475,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -488,7 +488,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -582,7 +582,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentResolvesSchemeToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Path<String> relativeReferencePath = aPath();
@@ -594,7 +594,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -607,7 +607,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -641,7 +641,7 @@ public class RelativeReferenceTest {
         Path<String> path = aPath();
         Query<String> query = aQuery();
         Fragment fragment = aFragment();
-        RelativeReference<String, Query<String>> relativeReference = aScheme().relativeReference(path, query, fragment);
+        RelativeReference<String, Query<String>, Fragment<String>> relativeReference = aScheme().relativeReference(path, query, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(true));
         assertThat(relativeReference.query(), equalTo(query));
     }
@@ -718,7 +718,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Path<String> relativeReferencePath = aPath();
@@ -731,7 +731,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -745,7 +745,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithPathAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -907,7 +907,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithOnlyPathResolvesSchemeAndAuthorityToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Path<String> relativeReferencePath = aPath();
@@ -918,7 +918,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithOnlyPathResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Path<String> relativeReferencePath = aPath();
@@ -930,7 +930,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithOnlyPathResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Path<String> relativeReferencePath = aPath();
@@ -1007,7 +1007,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Authority relativeReferenceAuthority = anAuthority();
@@ -1018,7 +1018,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -1030,7 +1030,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndEmptyPathResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -1079,7 +1079,7 @@ public class RelativeReferenceTest {
     public void aRelativeReferenceWithAuthorityAndQueryQueryIsCorrect() throws Exception {
         Authority authority = anAuthority();
         Query<String> query = aQuery();
-        final RelativeReference<String, Query<String>> relativeReference = aScheme().relativeReference(authority, query);
+        final RelativeReference<String, Query<String>, Fragment<String>> relativeReference = aScheme().relativeReference(authority, query);
         assertThat(relativeReference.hasQuery(), equalTo(true));
         assertThat(relativeReference.query(), equalTo(query));
     }
@@ -1120,7 +1120,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryResolvesSchemeToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Authority relativeReferenceAuthority = anAuthority();
@@ -1132,7 +1132,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryResolvesSchemeAndAuthorityToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -1145,7 +1145,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -1237,7 +1237,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Authority relativeReferenceAuthority = anAuthority();
@@ -1249,7 +1249,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -1262,7 +1262,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -1325,7 +1325,7 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         Query<String> query = aQuery();
         Fragment fragment = aFragment();
-        RelativeReference<String, Query<String>> relativeReference = aScheme().relativeReference(authority, query, fragment);
+        RelativeReference<String, Query<String>, Fragment<String>> relativeReference = aScheme().relativeReference(authority, query, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(true));
         assertThat(relativeReference.query(), equalTo(query));
     }
@@ -1372,7 +1372,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesSchemeToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Authority relativeReferenceAuthority = anAuthority();
@@ -1385,7 +1385,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -1399,7 +1399,7 @@ public class RelativeReferenceTest {
 
     @Test
     public void aRelativeReferenceWithAuthorityAndQueryAndFragmentResolvesSchemeAndAuthorityAndQueryAndFragmentToTheBase() throws Exception {
-        Scheme<String, Query<String>> baseScheme = aScheme();
+        Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         Authority baseAuthority = anAuthority();
         AbsolutePath<String> basePath = anAbsolutePath();
         Query<String> baseQuery = aQuery();
@@ -1526,7 +1526,7 @@ public class RelativeReferenceTest {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
         Query<String> query = aQuery();
-        final RelativeReference<String, Query<String>> relativeReference = aScheme().relativeReference(authority, absolutePath, query);
+        final RelativeReference<String, Query<String>, Fragment<String>> relativeReference = aScheme().relativeReference(authority, absolutePath, query);
         assertThat(relativeReference.hasQuery(), equalTo(true));
         assertThat(relativeReference.query(), equalTo(query));
     }
@@ -1698,7 +1698,7 @@ public class RelativeReferenceTest {
         AbsolutePath<String> absolutePath = anAbsolutePath();
         Query<String> query = aQuery();
         Fragment fragment = aFragment();
-        RelativeReference<String, Query<String>> relativeReference = aScheme().relativeReference(authority, absolutePath, query, fragment);
+        RelativeReference<String, Query<String>, Fragment<String>> relativeReference = aScheme().relativeReference(authority, absolutePath, query, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(true));
         assertThat(relativeReference.query(), equalTo(query));
     }

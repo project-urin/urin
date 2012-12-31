@@ -28,7 +28,7 @@ import static org.junit.Assert.assertThat;
 
 public class Rfc3986ReferenceResolutionExamplesTest {
 
-    private static final Urin<String, HttpQuery> BASE_URI = http(registeredName("a"), Path.path(segment("b"), segment("c"), segment("d;p")), queryParameters(queryParameter("q")));
+    private static final Urin<String, HttpQuery, Fragment<String>> BASE_URI = http(registeredName("a"), Path.path(segment("b"), segment("c"), segment("d;p")), queryParameters(queryParameter("q")));
 
     @Test
     public void normalExamples() throws Exception {

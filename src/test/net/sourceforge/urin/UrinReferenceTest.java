@@ -25,8 +25,8 @@ public class UrinReferenceTest {
 
     @Test
     public void aUriAsStringParsesToAUrin() throws Exception {
-        Urin<String, Query<String>> urin = anUnpollutedUrin();
-        assertThat(aScheme().parseUrinReference(urin.asString()), equalTo((UrinReference<String, Query<String>>) urin));
+        Urin<String, Query<String>, Fragment<String>> urin = anUnpollutedUrin();
+        assertThat(aScheme().parseUrinReference(urin.asString()), equalTo((UrinReference<String, Query<String>, Fragment<String>>) urin));
     }
 
     @Test
@@ -37,8 +37,8 @@ public class UrinReferenceTest {
 
     @Test
     public void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
-        RelativeReference<String, Query<String>> relativeReference = anUnpollutedRelativeReference();
-        assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo((UrinReference<String, Query<String>>) relativeReference));
+        RelativeReference<String, Query<String>, Fragment<String>> relativeReference = anUnpollutedRelativeReference();
+        assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo((UrinReference<String, Query<String>, Fragment<String>>) relativeReference));
     }
 
     @Test
