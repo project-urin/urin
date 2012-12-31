@@ -38,7 +38,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, query, fragment).asString(), equalTo(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()));
     }
 
@@ -48,7 +48,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, query, fragment).path(), equalTo((Path) path));
     }
 
@@ -58,7 +58,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, query, fragment).hasQuery(), equalTo(true));
         assertThat(scheme.urin(authority, path, query, fragment).query(), equalTo(query));
     }
@@ -68,7 +68,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(path, query, fragment).hasQuery(), equalTo(true));
         assertThat(scheme.urin(path, query, fragment).query(), equalTo(query));
     }
@@ -78,7 +78,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, query, fragment).hasQuery(), equalTo(true));
         assertThat(scheme.urin(authority, query, fragment).query(), equalTo(query));
     }
@@ -87,7 +87,7 @@ public class UrinTest {
     public void urinWithAllPartsButAuthorityAndPathQueryIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(query, fragment).hasQuery(), equalTo(true));
         assertThat(scheme.urin(query, fragment).query(), equalTo(query));
     }
@@ -98,7 +98,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, query, fragment).hasFragment(), equalTo(true));
         assertThat(scheme.urin(authority, path, query, fragment).fragment(), equalTo(fragment));
     }
@@ -114,7 +114,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
@@ -235,7 +235,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, fragment).asString(), equalTo(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "#" + fragment.asString()));
     }
 
@@ -244,7 +244,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, fragment).path(), equalTo((Path) path));
     }
 
@@ -252,7 +252,7 @@ public class UrinTest {
     public void urinWithNoAuthorityNoQueryPathIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(path, fragment).path(), equalTo(path));
     }
 
@@ -260,14 +260,14 @@ public class UrinTest {
     public void urinWithNoPathNoQueryPathIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, fragment).path(), equalTo((Path) new EmptyPath()));
     }
 
     @Test
     public void urinWithNoAuthorityNoPathNoQueryPathIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(fragment).path(), equalTo((Path) new EmptyPath()));
     }
 
@@ -276,7 +276,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         final Urin urin = scheme.urin(authority, path, fragment);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
@@ -290,7 +290,7 @@ public class UrinTest {
     public void urinWithNoAuthorityNoQueryQueryIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         final Urin urin = scheme.urin(path, fragment);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
@@ -304,7 +304,7 @@ public class UrinTest {
     public void urinWithNoPathNoQueryQueryIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         final Urin urin = scheme.urin(authority, fragment);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
@@ -317,7 +317,7 @@ public class UrinTest {
     @Test
     public void urinWithNoAuthorityNoPathNoQueryQueryIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         final Urin urin = scheme.urin(fragment);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower<java.lang.UnsupportedOperationException>() {
@@ -332,7 +332,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, fragment).hasFragment(), equalTo(true));
         assertThat(scheme.urin(authority, path, fragment).fragment(), equalTo(fragment));
     }
@@ -341,7 +341,7 @@ public class UrinTest {
     public void urinWithNoAuthorityNoQueryFragmentIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         AbsolutePath<String> path = anAbsolutePath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(path, fragment).hasFragment(), equalTo(true));
         assertThat(scheme.urin(path, fragment).fragment(), equalTo(fragment));
     }
@@ -350,7 +350,7 @@ public class UrinTest {
     public void urinWithNoPathNoQueryFragmentIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, fragment).hasFragment(), equalTo(true));
         assertThat(scheme.urin(authority, fragment).fragment(), equalTo(fragment));
     }
@@ -358,7 +358,7 @@ public class UrinTest {
     @Test
     public void urinWithNoAuthorityNoPathNoQueryFragmentIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(fragment).hasFragment(), equalTo(true));
         assertThat(scheme.urin(fragment).fragment(), equalTo(fragment));
     }
@@ -651,7 +651,7 @@ public class UrinTest {
     @Test
     public void aUrinWithNoQueryOrAuthorityOrPathIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(fragment), equalTo(scheme.urin(fragment)));
         assertThat(scheme.urin(fragment).hashCode(), equalTo(scheme.urin(fragment).hashCode()));
     }
@@ -664,7 +664,7 @@ public class UrinTest {
     @Test
     public void aUrinWithNoQueryOrAuthorityOrPathToStringIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + new EmptyPath() + ", fragment=" + fragment + "}"));
     }
 
@@ -673,7 +673,7 @@ public class UrinTest {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
+                Fragment<String> fragment = null;
                 aScheme().urin(fragment);
             }
         });
@@ -683,7 +683,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrAuthorityIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(path, fragment), equalTo(scheme.urin(path, fragment)));
         assertThat(scheme.urin(path, fragment).hashCode(), equalTo(scheme.urin(path, fragment).hashCode()));
     }
@@ -697,7 +697,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrAuthorityToStringIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", fragment=" + fragment + "}"));
     }
 
@@ -713,7 +713,7 @@ public class UrinTest {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
+                Fragment<String> fragment = null;
                 aScheme().urin(aPath(), fragment);
             }
         });
@@ -723,7 +723,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrPathIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, fragment), equalTo(scheme.urin(authority, fragment)));
         assertThat(scheme.urin(authority, fragment).hashCode(), equalTo(scheme.urin(authority, fragment).hashCode()));
     }
@@ -737,7 +737,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrPathToStringIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + new EmptyPath() + ", fragment=" + fragment + "}"));
     }
 
@@ -753,7 +753,7 @@ public class UrinTest {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
+                Fragment<String> fragment = null;
                 aScheme().urin(anAuthority(), fragment);
             }
         });
@@ -764,7 +764,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, fragment), equalTo(scheme.urin(authority, path, fragment)));
         assertThat(scheme.urin(authority, path, fragment).hashCode(), equalTo(scheme.urin(authority, path, fragment).hashCode()));
     }
@@ -779,7 +779,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", fragment=" + fragment + "}"));
     }
 
@@ -802,7 +802,7 @@ public class UrinTest {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
+                Fragment<String> fragment = null;
                 aScheme().urin(anAuthority(), anAbsolutePath(), fragment);
             }
         });
@@ -972,7 +972,7 @@ public class UrinTest {
     public void aUrinWithNoAuthorityOrPathIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(query, fragment), equalTo(scheme.urin(query, fragment)));
         assertThat(scheme.urin(query, fragment).hashCode(), equalTo(scheme.urin(query, fragment).hashCode()));
     }
@@ -986,7 +986,7 @@ public class UrinTest {
     public void aUrinWithNoAuthorityOrPathToStringIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + new EmptyPath() + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
@@ -1002,7 +1002,7 @@ public class UrinTest {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
+                Fragment<String> fragment = null;
                 aScheme().urin(aQuery(), fragment);
             }
         });
@@ -1013,7 +1013,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(path, query, fragment), equalTo(scheme.urin(path, query, fragment)));
         assertThat(scheme.urin(path, query, fragment).hashCode(), equalTo(scheme.urin(path, query, fragment).hashCode()));
     }
@@ -1028,7 +1028,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
@@ -1051,7 +1051,7 @@ public class UrinTest {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
+                Fragment<String> fragment = null;
                 aScheme().urin(aPath(), aQuery(), fragment);
             }
         });
@@ -1062,7 +1062,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, query, fragment), equalTo(scheme.urin(authority, query, fragment)));
         assertThat(scheme.urin(authority, query, fragment).hashCode(), equalTo(scheme.urin(authority, query, fragment).hashCode()));
     }
@@ -1077,7 +1077,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + new EmptyPath() + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
@@ -1100,7 +1100,7 @@ public class UrinTest {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
+                Fragment<String> fragment = null;
                 aScheme().urin(anAuthority(), aQuery(), fragment);
             }
         });
@@ -1112,7 +1112,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, query, fragment), equalTo(scheme.urin(authority, path, query, fragment)));
         assertThat(scheme.urin(authority, path, query, fragment).hashCode(), equalTo(scheme.urin(authority, path, query, fragment).hashCode()));
     }
@@ -1128,7 +1128,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
     }
 
@@ -1158,7 +1158,7 @@ public class UrinTest {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                Fragment fragment = null;
+                Fragment<String> fragment = null;
                 aScheme().urin(anAuthority(), anAbsolutePath(), aQuery(), fragment);
             }
         });
@@ -1170,7 +1170,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anUnpollutedAbsolutePath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(authority, path, query, fragment)));
     }
 
@@ -1179,7 +1179,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = anUnpollutedPath();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(path, query, fragment)));
     }
 
@@ -1188,7 +1188,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(authority, query, fragment)));
     }
 
@@ -1196,7 +1196,7 @@ public class UrinTest {
     public void parsesUrinWithNoAuthorityOrPath() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + ":" + "?" + query.asString() + "#" + fragment.asString()), equalTo(scheme.urin(query, fragment)));
     }
 
@@ -1222,7 +1222,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anUnpollutedAbsolutePath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "#" + fragment.asString()), equalTo(scheme.urin(authority, path, fragment)));
     }
 
@@ -1230,7 +1230,7 @@ public class UrinTest {
     public void parsesUrinWithNoQueryOrAuthority() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         AbsolutePath<String> path = anUnpollutedAbsolutePath();
-        Fragment fragment = aFragment();
+        Fragment<String> fragment = aFragment();
         assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + "#" + fragment.asString()), equalTo(scheme.urin(path, fragment)));
     }
 
