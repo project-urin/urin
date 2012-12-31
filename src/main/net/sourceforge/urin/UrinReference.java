@@ -16,7 +16,9 @@ import java.net.URI;
  * A URI reference - either a URI or a relative reference.
  * Immutable and threadsafe.
  *
- * @param <QUERY> The type of {@code Query} used by this URI reference.
+ * @param <SEGMENT>  The type of {@code Segment} used by paths of this URI reference.
+ * @param <QUERY>    The type of {@code Query} used by this URI reference.
+ * @param <FRAGMENT> The type of {@code Fragment} used by this URI reference.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-4.1">RFC 3986 - URI Reference</a>
  */
 public abstract class UrinReference<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> {
