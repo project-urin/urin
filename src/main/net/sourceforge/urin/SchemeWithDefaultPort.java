@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -39,9 +39,18 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query, FRAGMENT extend
         this.defaultPort = defaultPort;
     }
 
+    private SchemeWithDefaultPort(final String name, final Port defaultPort, final Scheme<SEGMENT, QUERY, FRAGMENT> prototype) {
+        super(prototype);
+        this.name = name;
+        if (defaultPort == null) {
+            throw new NullPointerException("Cannot instantiate Scheme with null default port");
+        }
+        this.defaultPort = defaultPort;
+    }
+
     @Override
     SchemeWithDefaultPort<SEGMENT, QUERY, FRAGMENT> withName(final String name) {
-        return new SchemeWithDefaultPort<>(name, defaultPort, segmentMakingDecoder, queryMakingDecoder, fragmentMakingDecoder);
+        return new SchemeWithDefaultPort<>(name, defaultPort, this);
     }
 
     @Override
@@ -56,7 +65,7 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query, FRAGMENT extend
 
     @Override
     Scheme<SEGMENT, QUERY, FRAGMENT> removeDefaultPort() {
-        return new GenericScheme<>(name, segmentMakingDecoder, queryMakingDecoder, fragmentMakingDecoder);
+        return new GenericScheme<>(name, this);
     }
 
     @Override

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -66,7 +66,7 @@ public class UrinSamplesTest {
             protected Segment<Iterable<String>> makeOne(Iterable<String> o) {
                 return anIterableOfStringsSegment(o, percentEncodingPartial);
             }
-        }, aScheme().queryMakingDecoder, aScheme().fragmentMakingDecoder);
+        }, Query.stringQueryMaker(), Fragment.stringFragmentMaker());
         assertAsStringAsUriAndParse(scheme, scheme.asString() + ":/a!%21!c", scheme.urin(Path.<Iterable<String>>path(anIterableOfStringsSegment(asList("a", "!", "c"), percentEncodingPartial))));
     }
 
@@ -78,7 +78,7 @@ public class UrinSamplesTest {
             protected Segment<Iterable<String>> makeOne(Iterable<String> o) {
                 return anIterableOfStringsSegment(o, percentEncodingPartial);
             }
-        }, aScheme().queryMakingDecoder, aScheme().fragmentMakingDecoder);
+        }, Query.stringQueryMaker(), Fragment.stringFragmentMaker());
         final Segment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.<String>emptyList(), percentEncodingPartial);
         assertAsStringAsUriAndParse(scheme, scheme.asString() + ":/.//", scheme.urin(Path.<Iterable<String>>path(emptySegment, emptySegment, Segment.<Iterable<String>>dotDot())));
     }
@@ -90,7 +90,7 @@ public class UrinSamplesTest {
     @Test
     public void canMakeAUrinWithSubencodedFragment() throws Exception {
         final PercentEncodingUnaryValue.PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = percentEncodingDelimitedValue('!');
-        Scheme<String, Query<String>, MyFragment> scheme = new Scheme.GenericScheme<>("xyz", aScheme().segmentMakingDecoder, aScheme().queryMakingDecoder, new MakingDecoder<MyFragment, Iterable<String>, String>(percentEncodingPartial) {
+        Scheme<String, Query<String>, MyFragment> scheme = new Scheme.GenericScheme<>("xyz", Segment.STRING_SEGMENT_MAKING_DECODER, Query.stringQueryMaker(), new MakingDecoder<MyFragment, Iterable<String>, String>(percentEncodingPartial) {
             @Override
             protected MyFragment makeOne(Iterable<String> strings) {
                 return new MyFragment(strings, percentEncodingPartial);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -17,15 +17,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class UrinAssert {
-    public static void assertAsStringAsUriAndParse(Scheme scheme, final String stringRepresentation, final Urin urinRepresentation) throws URISyntaxException, ParseException {
-        assertThat(urinRepresentation.asString(), equalTo(stringRepresentation));
-        assertThat(urinRepresentation.asUri(), equalTo(new URI(stringRepresentation)));
-        assertThat(scheme.parseUrin(stringRepresentation), equalTo(urinRepresentation));
-        assertThat(scheme.parseUrin(new URI(stringRepresentation)), equalTo(urinRepresentation));
-    }
 
     public static void assertAsStringAndParse(final Scheme scheme, final String stringRepresentation, final Urin urinRepresentation) throws ParseException {
         assertThat(urinRepresentation.asString(), equalTo(stringRepresentation));
         assertThat(scheme.parseUrin(stringRepresentation), equalTo(urinRepresentation));
+    }
+
+    public static void assertAsStringAsUriAndParse(final Scheme scheme, final String stringRepresentation, final Urin urinRepresentation) throws URISyntaxException, ParseException {
+        assertAsStringAndParse(scheme, stringRepresentation, urinRepresentation);
+        assertThat(urinRepresentation.asUri(), equalTo(new URI(stringRepresentation)));
+        assertThat(scheme.parseUrin(new URI(stringRepresentation)), equalTo(urinRepresentation));
     }
 }

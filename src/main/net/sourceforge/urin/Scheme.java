@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -45,14 +45,20 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             singleMemberCharacterSet('.')
     );
 
-    protected final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder;
-    protected final MakingDecoder<QUERY, ?, String> queryMakingDecoder;
-    protected final MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder;
+    private final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder;
+    private final MakingDecoder<QUERY, ?, String> queryMakingDecoder;
+    private final MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder;
 
     Scheme(final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
         this.segmentMakingDecoder = segmentMakingDecoder;
         this.queryMakingDecoder = queryMakingDecoder;
         this.fragmentMakingDecoder = fragmentMakingDecoder;
+    }
+
+    Scheme(final Scheme<SEGMENT, QUERY, FRAGMENT> prototype) {
+        this.segmentMakingDecoder = prototype.segmentMakingDecoder;
+        this.queryMakingDecoder = prototype.queryMakingDecoder;
+        this.fragmentMakingDecoder = prototype.fragmentMakingDecoder;
     }
 
     /**
@@ -718,9 +724,14 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             this.name = name;
         }
 
+        GenericScheme(String name, Scheme<SEGMENT, QUERY, FRAGMENT> prototype) {
+            super(prototype);
+            this.name = name;
+        }
+
         @Override
         GenericScheme<SEGMENT, QUERY, FRAGMENT> withName(final String name) {
-            return new GenericScheme<>(name, segmentMakingDecoder, queryMakingDecoder, fragmentMakingDecoder);
+            return new GenericScheme<>(name, this);
         }
 
         @Override
