@@ -11,10 +11,15 @@
 package net.sourceforge.urin.scheme.http;
 
 import net.sourceforge.urin.AbsolutePath;
+import net.sourceforge.urin.Fragment;
+import net.sourceforge.urin.Urin;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
+import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Host.registeredName;
+import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.scheme.http.Http.http;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -32,8 +37,14 @@ public class HttpExamplesTest {
     }
 
     @Test
-    public void aUrinWithEmptyVarargsHttpParametersHasNoQueryPart() throws Exception {
-        assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), queryParameters(new HttpQuery.QueryParameter[]{})).asString(), equalTo("http://urin.sourceforge.net/javadoc"));
+    public void aUrinWithEmptyVarargsHttpParametersHasEmptyQueryPart() throws Exception {
+        final Urin<String, HttpQuery, Fragment<String>> uriWithEmptyParameters = http(
+                anAuthority(),
+                anAbsolutePath(),
+                queryParameters(new HttpQuery.QueryParameter[]{})
+        );
+        assertThat(uriWithEmptyParameters.hasQuery(), equalTo(true));
+        assertThat(uriWithEmptyParameters.query(), Matchers.<HttpQuery.QueryParameter>emptyIterable());
     }
 
     @Test
