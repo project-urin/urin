@@ -16,8 +16,10 @@ import java.util.Collections;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
+import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncodingPartial.percentEncodingDelimitedValue;
+import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAndParse;
@@ -56,6 +58,18 @@ public class UrinSamplesTest {
     public void canMakeAUrinWithPathToRoot() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         assertAsStringAsUriAndParse(aScheme(), scheme.asString() + ":/", scheme.urin(Path.<String>path()));
+    }
+
+    @Test
+    public void emptyPathIsPreserved() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        assertAsStringAsUriAndParse(aScheme(), scheme.asString() + ":/?", scheme.urin(Path.<String>path(), query("")));
+    }
+
+    @Test
+    public void emptyFragmentIsPreserved() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        assertAsStringAsUriAndParse(aScheme(), scheme.asString() + ":/#", scheme.urin(Path.<String>path(), fragment("")));
     }
 
     @Test
