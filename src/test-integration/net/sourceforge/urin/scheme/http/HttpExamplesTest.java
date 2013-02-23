@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -16,6 +16,7 @@ import org.junit.Test;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.scheme.http.Http.http;
+import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -28,6 +29,11 @@ public class HttpExamplesTest {
     @Test
     public void canGenerateAnHttpUriWithQueryParameters() throws Exception {
         assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), HttpQuery.queryParameters(HttpQuery.queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
+    }
+
+    @Test
+    public void aUrinWithEmptyVarargsHttpParametersHasNoQueryPart() throws Exception {
+        assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), queryParameters(new HttpQuery.QueryParameter[]{})).asString(), equalTo("http://urin.sourceforge.net/javadoc"));
     }
 
     @Test
