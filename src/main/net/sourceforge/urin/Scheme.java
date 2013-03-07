@@ -716,7 +716,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         return parseUrinReference(uriReference.toASCIIString());
     }
 
-    static final class GenericScheme<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Scheme<SEGMENT, QUERY, FRAGMENT> {
+    public static final class GenericScheme<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Scheme<SEGMENT, QUERY, FRAGMENT> {
         private final String name;
 
         public GenericScheme(String name, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, MakingDecoder<QUERY, ?, String> queryMakingDecoder, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {

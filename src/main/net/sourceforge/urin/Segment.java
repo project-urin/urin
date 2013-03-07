@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -11,8 +11,8 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
-import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.percentEncodingString;
-import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.specifiedValueEncoding;
+import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percentEncodingString;
+import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.specifiedValueEncoding;
 
 /**
  * A segment of a URI's path.
@@ -28,14 +28,14 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.spe
  */
 public abstract class Segment<ENCODES> {
 
-    private static final PercentEncodingUnaryValue.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
+    private static final PercentEncodingPartial.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
             specifiedValueEncoding("..",
                     percentEncodingString(new PercentEncoder(P_CHAR))));
 
     /**
      * The {@code MakingDecoder} used by standard segments.
      */
-    public static final MakingDecoder<Segment<String>, String, String> STRING_SEGMENT_MAKING_DECODER = new MakingDecoder<Segment<String>, String, String>(PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp()) {
+    public static final MakingDecoder<Segment<String>, String, String> STRING_SEGMENT_MAKING_DECODER = new MakingDecoder<Segment<String>, String, String>(PercentEncodingPartial.<String>noOp()) {
         @Override
         protected Segment<String> makeOne(String value) {
             return segment(value);
@@ -99,7 +99,7 @@ public abstract class Segment<ENCODES> {
                 throw new UnsupportedOperationException("Attempt to get value of .. segment");
             }
 
-            public final String asString() {
+            final String asString() {
                 return "..";
             }
 
@@ -141,7 +141,7 @@ public abstract class Segment<ENCODES> {
                 throw new UnsupportedOperationException("Attempt to get value of empty segment");
             }
 
-            public final String asString() {
+            final String asString() {
                 return "";
             }
 
@@ -171,8 +171,8 @@ public abstract class Segment<ENCODES> {
     private static final class ValueSegment<ENCODES> extends Segment<ENCODES> {
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
-        private ValueSegment(ENCODES value, PercentEncodingUnaryValue.PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
-            final PercentEncodingUnaryValue.PercentEncoding<ENCODES> apply = percentEncodingPartial.apply(PERCENT_ENCODING);
+        private ValueSegment(ENCODES value, PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
+            final PercentEncodingPartial.PercentEncoding<ENCODES> apply = percentEncodingPartial.apply(PERCENT_ENCODING);
             this.delegate = new SegmentEncodingUnaryValue<>(value, apply);
         }
 
@@ -186,7 +186,7 @@ public abstract class Segment<ENCODES> {
             return delegate.value;
         }
 
-        public final String asString() {
+        final String asString() {
             return delegate.asString();
         }
 
@@ -217,7 +217,7 @@ public abstract class Segment<ENCODES> {
     }
 
     private static final class SegmentEncodingUnaryValue<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
-        public SegmentEncodingUnaryValue(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
+        public SegmentEncodingUnaryValue(final ENCODES value, final PercentEncodingPartial.PercentEncoding<ENCODES> percentEncoding) {
             super(value, percentEncoding);
         }
     }
@@ -232,7 +232,7 @@ public abstract class Segment<ENCODES> {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment<String> segment(final String segment) {
-        return segment(segment, PercentEncodingUnaryValue.PercentEncodingPartial.<String>noOp());
+        return segment(segment, PercentEncodingPartial.<String>noOp());
     }
 
     /**
@@ -243,7 +243,7 @@ public abstract class Segment<ENCODES> {
      * @param percentEncodingPartial an encoding from {@code T} to {@code String}.
      * @return a {@code Segment} representing the given {@code Object}.
      */
-    public static <T> Segment<T> segment(final T segment, PercentEncodingUnaryValue.PercentEncodingPartial<T, String> percentEncodingPartial) {
+    public static <T> Segment<T> segment(final T segment, PercentEncodingPartial<T, String> percentEncodingPartial) {
         final ValueSegment<T> result = new ValueSegment<>(segment, percentEncodingPartial);
         return result.isEmpty() ? Segment.<T>empty() : result;
     }

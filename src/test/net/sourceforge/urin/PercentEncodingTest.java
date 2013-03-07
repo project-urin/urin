@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -21,7 +21,7 @@ import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.MoreRandomStringUtils.*;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_EVERYTHING;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
-import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.percentEncodingString;
+import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percentEncodingString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -41,25 +41,25 @@ public class PercentEncodingTest {
         assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                PercentEncodingUnaryValue.PercentEncoding.percentEncodingString(null);
+                PercentEncodingPartial.PercentEncoding.percentEncodingString(null);
             }
         });
     }
 
     @Test
     public void encodesPercentEncodableDelimitedValueWithNoSubDelimitersCorrectly() throws Exception {
-        assertThat(PercentEncodingUnaryValue.PercentEncoding.percentEncodingDelimitedValue('&', percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(asList(CharacterSets.UNRESERVED, CharacterSets.UNRESERVED)), equalTo(CharacterSets.UNRESERVED + "&" + CharacterSets.UNRESERVED));
+        assertThat(PercentEncodingPartial.PercentEncoding.percentEncodingDelimitedValue('&', percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(asList(CharacterSets.UNRESERVED, CharacterSets.UNRESERVED)), equalTo(CharacterSets.UNRESERVED + "&" + CharacterSets.UNRESERVED));
     }
 
     @Test
     public void encodesPercentEncodableDelimitedValueWithSubDelimitersCorrectly() throws Exception {
-        assertThat(PercentEncodingUnaryValue.PercentEncoding.percentEncodingDelimitedValue('&', percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(asList(". ./.&.")), equalTo(".%20.%2F.%26."));
+        assertThat(PercentEncodingPartial.PercentEncoding.percentEncodingDelimitedValue('&', percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(asList(". ./.&.")), equalTo(".%20.%2F.%26."));
     }
 
     @Test
     public void percentEncodableDelimitedValueIdentifiesEmptinessCorrectly() throws Exception {
-        assertThat(PercentEncodingUnaryValue.PercentEncoding.percentEncodingDelimitedValue(aChar(), percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(asList(CharacterSets.UNRESERVED, CharacterSets.UNRESERVED)).isEmpty(), equalTo(false));
-        assertThat(PercentEncodingUnaryValue.PercentEncoding.percentEncodingDelimitedValue(aChar(), percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(Collections.<String>emptyList()).isEmpty(), equalTo(true));
+        assertThat(PercentEncodingPartial.PercentEncoding.percentEncodingDelimitedValue(aChar(), percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(asList(CharacterSets.UNRESERVED, CharacterSets.UNRESERVED)).isEmpty(), equalTo(false));
+        assertThat(PercentEncodingPartial.PercentEncoding.percentEncodingDelimitedValue(aChar(), percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(Collections.<String>emptyList()).isEmpty(), equalTo(true));
     }
 
     @Test
@@ -67,23 +67,23 @@ public class PercentEncodingTest {
         assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                final PercentEncodingUnaryValue.PercentEncoding<Object> percentEncoding = null;
-                PercentEncodingUnaryValue.PercentEncoding.percentEncodingDelimitedValue(aChar(), percentEncoding);
+                final PercentEncodingPartial.PercentEncoding<Object> percentEncoding = null;
+                PercentEncodingPartial.PercentEncoding.percentEncodingDelimitedValue(aChar(), percentEncoding);
             }
         });
     }
 
     @Test
     public void encodesPercentEncodableSubstitutedValueCorrectly() throws Exception {
-        assertThat(PercentEncodingUnaryValue.PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+').apply(percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(". .+."), equalTo(".+.%2B."));
+        assertThat(PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+').apply(percentEncodingString(RESERVED_PERCENT_ENCODER)).encode(". .+."), equalTo(".+.%2B."));
     }
 
     @Test
     public void encodesPercentEncodableSpecifiedValuesCorrectly() throws Exception {
         String aString = aString();
-        assertThat(PercentEncodingUnaryValue.PercentEncoding.specifiedValueEncoding(aString, percentEncodingString(ENCODE_NOTHING)).encode(aString), equalTo(ENCODE_EVERYTHING.encode(aString)));
-        PercentEncodingUnaryValue.PercentEncoding<String> percentEncoding = percentEncodingString(ENCODE_NOTHING);
-        assertThat(PercentEncodingUnaryValue.PercentEncoding.specifiedValueEncoding(aStringDifferentTo(aString), percentEncoding).encode(aString), equalTo(percentEncoding.encode(aString)));
+        assertThat(PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(aString, percentEncodingString(ENCODE_NOTHING)).encode(aString), equalTo(ENCODE_EVERYTHING.encode(aString)));
+        PercentEncodingPartial.PercentEncoding<String> percentEncoding = percentEncodingString(ENCODE_NOTHING);
+        assertThat(PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(aStringDifferentTo(aString), percentEncoding).encode(aString), equalTo(percentEncoding.encode(aString)));
     }
 
     @Test
@@ -91,13 +91,13 @@ public class PercentEncodingTest {
         assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                PercentEncodingUnaryValue.PercentEncoding.specifiedValueEncoding(null, percentEncodingString(EVERYTHING_PERCENT_ENCODER));
+                PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(null, percentEncodingString(EVERYTHING_PERCENT_ENCODER));
             }
         });
         assertThrowsException("Null specified value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
                 //noinspection NullableProblems
-                PercentEncodingUnaryValue.PercentEncoding.specifiedValueEncoding(aString(), null);
+                PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(aString(), null);
             }
         });
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -35,7 +35,7 @@ public class SchemeBuilder {
     );
 
 
-    static Scheme<String, Query<String>, Fragment<String>> aScheme() {
+    public static Scheme<String, Query<String>, Fragment<String>> aScheme() {
         return RANDOM_SUPPLIER_SWITCHER.get();
     }
 

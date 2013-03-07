@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -19,15 +19,15 @@ package net.sourceforge.urin;
  */
 public abstract class MakingDecoder<NON_ENCODED, FACTORY_INPUT, ENCODED> {
 
-    private final PercentEncodingUnaryValue.PercentEncodingPartial<FACTORY_INPUT, ENCODED> percentEncodingPartial;
+    private final PercentEncodingPartial<FACTORY_INPUT, ENCODED> percentEncodingPartial;
 
-    protected MakingDecoder(PercentEncodingUnaryValue.PercentEncodingPartial<FACTORY_INPUT, ENCODED> percentEncodingPartial) {
+    protected MakingDecoder(PercentEncodingPartial<FACTORY_INPUT, ENCODED> percentEncodingPartial) {
         this.percentEncodingPartial = percentEncodingPartial;
     }
 
     protected abstract NON_ENCODED makeOne(FACTORY_INPUT input);
 
-    final Maker<NON_ENCODED> toMaker(final PercentEncodingUnaryValue.PercentEncoding<ENCODED> percentEncoding) {
+    final Maker<NON_ENCODED> toMaker(final PercentEncodingPartial.PercentEncoding<ENCODED> percentEncoding) {
         return new Maker<NON_ENCODED>() {
             public NON_ENCODED make(String encoded) throws ParseException {
                 return makeOne(percentEncodingPartial.apply(percentEncoding).decode(encoded));

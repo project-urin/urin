@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -15,7 +15,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
-import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.percentEncodingString;
+import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percentEncodingString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -24,8 +24,8 @@ public class PercentEncodingUnaryValueTest {
     @Test
     public void canChainApplicationsOfPercentEncodingDelimitedValue() throws Exception {
         assertThat(
-                PercentEncodingUnaryValue.PercentEncodingPartial.<Iterable<String>, String>percentEncodingDelimitedValue('a',
-                        PercentEncodingUnaryValue.PercentEncodingPartial.<String, String>percentEncodingDelimitedValue('b'))
+                PercentEncodingPartial.<Iterable<String>, String>percentEncodingDelimitedValue('a',
+                        PercentEncodingPartial.<String, String>percentEncodingDelimitedValue('b'))
                         .apply(percentEncodingString(PercentEncoder.ENCODE_EVERYTHING))
                         .encode(new ArrayList<Iterable<String>>(2) {{
                             add(asList("c", "d"));

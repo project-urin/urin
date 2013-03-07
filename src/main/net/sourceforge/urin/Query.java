@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -11,7 +11,7 @@
 package net.sourceforge.urin;
 
 import static net.sourceforge.urin.CharacterSetMembershipFunction.QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS;
-import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.percentEncodingString;
+import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percentEncodingString;
 
 /**
  * A query component of a URI.
@@ -22,9 +22,9 @@ import static net.sourceforge.urin.PercentEncodingUnaryValue.PercentEncoding.per
  */
 public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
-    private static final PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
+    private static final PercentEncodingPartial.PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
-    private Query(final ENCODES value, final PercentEncoding<ENCODES> percentEncoding) {
+    private Query(final ENCODES value, final PercentEncodingPartial.PercentEncoding<ENCODES> percentEncoding) {
         super(value, percentEncoding);
     }
 

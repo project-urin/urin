@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,10 +10,7 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import net.sourceforge.urin.MakingDecoder;
-import net.sourceforge.urin.ParseException;
-import net.sourceforge.urin.Query;
-import net.sourceforge.urin.Transformer;
+import net.sourceforge.urin.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

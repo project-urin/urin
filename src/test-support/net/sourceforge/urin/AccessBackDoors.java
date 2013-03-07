@@ -10,17 +10,20 @@
 
 package net.sourceforge.urin;
 
-abstract class PercentEncodingUnaryValue<ENCODING> extends UnaryValue<ENCODING> {
+public class AccessBackDoors {
 
-    private final PercentEncodingPartial.PercentEncoding<ENCODING> percentEncoding;
-
-    PercentEncodingUnaryValue(final ENCODING value, final PercentEncodingPartial.PercentEncoding<ENCODING> percentEncoding) {
-        super(value);
-        this.percentEncoding = percentEncoding;
+    private AccessBackDoors() {
     }
 
-    final String asString() {
-        return percentEncoding.encode(value);
+    public static String asString(Scheme scheme) {
+        return scheme.asString();
     }
 
+    public static String asString(Authority authority) {
+        return authority.asString();
+    }
+
+    public static String asString(Segment segment) {
+        return segment.asString();
+    }
 }
