@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -744,7 +744,9 @@ public abstract class Host {
 
         static IpVFutureAddress parse(final String hostString) throws ParseException {
             Matcher matcher = IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN.matcher(hostString);
-            matcher.matches();
+            if (!matcher.matches()) {
+                throw new ParseException("Not a valid host :" + hostString);
+            }
             return makeIpVFutureAddress(matcher.group(1), matcher.group(2), PARSE_EXCEPTION_EXCEPTION_FACTORY);
         }
 
