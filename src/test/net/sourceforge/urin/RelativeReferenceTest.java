@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -32,6 +32,7 @@ import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class RelativeReferenceTest {
     @Test
@@ -1886,6 +1887,16 @@ public class RelativeReferenceTest {
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
         assertThat(aScheme().parseRelativeReference(URI.create("//" + authority.asString() + absolutePath.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + "?" + query.asString() + "#" + fragment.asString())), equalTo(aScheme().relativeReference(authority, absolutePath, query, fragment)));
+    }
+
+    @Test
+    public void parsingNullThrowsNullPointerException() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        try {
+            scheme.parseRelativeReference((String) null);
+            fail("Should have thrown a NullPointerException");
+        } catch (final NullPointerException e) {
+        }
     }
 
 }

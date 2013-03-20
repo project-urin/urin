@@ -1274,6 +1274,16 @@ public class UrinTest {
     }
 
     @Test
+    public void parsingNullThrowsNullPointerException() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        try {
+            scheme.parseUrin((String) null);
+            fail("Should have thrown a NullPointerException");
+        } catch (final NullPointerException e) {
+        }
+    }
+
+    @Test
     public void ResolvesAUrinToItself() throws Exception {
         Urin<String, Query<String>, Fragment<String>> urinReference = aUrin();
         assertThat(aUrin().resolve(urinReference), equalTo(urinReference));

@@ -51,6 +51,16 @@ public class UrinReferenceTest {
     }
 
     @Test
+    public void parsingNullThrowsNullPointerException() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        try {
+            scheme.parseUrinReference((String) null);
+            fail("Should have thrown a NullPointerException");
+        } catch (final NullPointerException e) {
+        }
+    }
+
+    @Test
     public void anEmptyStringParsesToARelativeReferenceOfEmptyPath() throws Exception {
         final UrinReference<String, Query<String>, Fragment<String>> urinReference = aScheme().parseUrinReference("");
         assertThat(urinReference.asString(), equalTo(""));
