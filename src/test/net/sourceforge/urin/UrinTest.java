@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -29,6 +29,7 @@ import static net.sourceforge.urin.UrinBuilder.aUrin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 public class UrinTest {
 
@@ -1260,6 +1261,16 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         AbsolutePath<String> path = anUnpollutedAbsolutePath();
         assertThat(scheme.parseUrin(scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY)), equalTo(scheme.urin(path)));
+    }
+
+    @Test
+    public void parsingEmptyStringThrowsParseException() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        try {
+            scheme.parseUrin("");
+            fail("Should have thrown a ParseException");
+        } catch (final ParseException e) {
+        }
     }
 
     @Test

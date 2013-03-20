@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -48,5 +48,11 @@ public class UrinReferenceTest {
             fail("Should have thrown a ParseException");
         } catch (ParseException e) {
         }
+    }
+
+    @Test
+    public void anEmptyStringParsesToARelativeReferenceOfEmptyPath() throws Exception {
+        final UrinReference<String, Query<String>, Fragment<String>> urinReference = aScheme().parseUrinReference("");
+        assertThat(urinReference.asString(), equalTo(""));
     }
 }
