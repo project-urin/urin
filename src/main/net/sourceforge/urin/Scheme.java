@@ -574,7 +574,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
     public final Urin<SEGMENT, QUERY, FRAGMENT> parseUrin(final String uriString) throws ParseException {
         final Matcher matcher = URI_PATTERN.matcher(uriString);
         if (!matcher.matches()) {
-            throw new ParseException(uriString + " is not a valid URI");
+            throw new ParseException("[" + uriString + "] is not a valid URI");
         }
         final Scheme<SEGMENT, QUERY, FRAGMENT> scheme = parse(matcher.group(2));
         final String authorityString = matcher.group(5);
