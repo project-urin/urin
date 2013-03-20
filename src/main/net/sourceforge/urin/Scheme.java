@@ -296,7 +296,9 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> parseRelativeReference(final String relativeReferenceString) throws ParseException {
         final Matcher matcher = RELATIVE_REFERENCE_PATTERN.matcher(relativeReferenceString);
-        matcher.matches();
+        if (!matcher.matches()) {
+            throw new ParseException("[" + relativeReferenceString + "] is not a valid relative reference");
+        }
         final String queryString = matcher.group(6);
         final String fragment = matcher.group(8);
         final RelativeReference<SEGMENT, QUERY, FRAGMENT> result;
