@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -82,7 +82,9 @@ public abstract class Authority {
      */
     public static Authority parse(final String authority) throws ParseException {
         Matcher matcher = AUTHORITY_PATTERN.matcher(authority);
-        matcher.matches();
+        if (!matcher.matches()) {
+            throw new ParseException("[" + authority + "] is not a valid authority");
+        }
         final String userInfoString = matcher.group(2);
         final String hostString = matcher.group(3);
         final String port = matcher.group(5);
