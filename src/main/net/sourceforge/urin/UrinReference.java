@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -55,6 +55,14 @@ public abstract class UrinReference<SEGMENT, QUERY extends Query, FRAGMENT exten
      * @return a {@code Path} representing the path component of this URI reference.
      */
     public abstract Path<SEGMENT> path();
+
+    /**
+     * Returns a copy of this {@code UrinReference} with the path replaced with the given path.
+     *
+     * @param path the path to use in the new {@code UrinReference}.
+     * @return a copy of this {@code UrinReference} with the path replaced with the given path.
+     */
+    public abstract UrinReference<SEGMENT, QUERY, FRAGMENT> withPath(AbsolutePath<SEGMENT> path);
 
     /**
      * Returns true if {@code fragment()} can be called on this {@code UrinReference}.  This method

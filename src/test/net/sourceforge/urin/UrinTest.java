@@ -548,6 +548,13 @@ public class UrinTest {
     }
 
     @Test
+    public void aUrinWithNoQueryOrFragmentOrAuthorityOrPathReplacedWithANewPathIsCorrect() throws Exception {
+        final Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin().withPath(newPath), equalTo(scheme.urin(newPath)));
+    }
+
+    @Test
     public void aUrinWithNoQueryOrFragmentOrAuthorityIsEqualToAnotherWithTheSameParts() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
@@ -565,6 +572,14 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
         assertThat(scheme.urin(path).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + "}"));
+    }
+
+    @Test
+    public void aUrinWithNoQueryOrFragmentOrAuthorityReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Path<String> path = aPath();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(path).withPath(newPath), equalTo(scheme.urin(newPath)));
     }
 
     @Test
@@ -599,6 +614,14 @@ public class UrinTest {
     }
 
     @Test
+    public void aUrinWithNoQueryOrFragmentOrPathReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Authority authority = anAuthority();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(authority).withPath(newPath), equalTo(scheme.urin(authority, newPath)));
+    }
+
+    @Test
     public void rejectsNullInFactoryForAUrinWithNoQueryOrNoFragmentOrPath() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -629,6 +652,15 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         assertThat(scheme.urin(authority, path).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + "}"));
+    }
+
+    @Test
+    public void aUrinWithNoQueryOrFragmentReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Authority authority = anAuthority();
+        AbsolutePath<String> path = anAbsolutePath();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(authority, path).withPath(newPath), equalTo(scheme.urin(authority, newPath)));
     }
 
     @Test
@@ -670,6 +702,14 @@ public class UrinTest {
     }
 
     @Test
+    public void aUrinWithNoQueryOrAuthorityOrPathReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(fragment).withPath(newPath), equalTo(scheme.urin(newPath, fragment)));
+    }
+
+    @Test
     public void rejectsNullInFactoryForAUrinWithNoQueryOrAuthorityOrPath() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -700,6 +740,15 @@ public class UrinTest {
         Path<String> path = aPath();
         Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", fragment=" + fragment + "}"));
+    }
+
+    @Test
+    public void aUrinWithNoQueryOrAuthorityReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Path<String> path = aPath();
+        Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(path, fragment).withPath(newPath), equalTo(scheme.urin(newPath, fragment)));
     }
 
     @Test
@@ -743,6 +792,15 @@ public class UrinTest {
     }
 
     @Test
+    public void aUrinWithNoQueryOrPathReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Authority authority = anAuthority();
+        Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(authority, fragment).withPath(newPath), equalTo(scheme.urin(authority, newPath, fragment)));
+    }
+
+    @Test
     public void rejectsNullInFactoryForAUrinWithNoQueryOrPath() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -782,6 +840,16 @@ public class UrinTest {
         AbsolutePath<String> path = anAbsolutePath();
         Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", fragment=" + fragment + "}"));
+    }
+
+    @Test
+    public void aUrinWithNoQueryReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Authority authority = anAuthority();
+        AbsolutePath<String> path = anAbsolutePath();
+        Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(authority, path, fragment).withPath(newPath), equalTo(scheme.urin(authority, newPath, fragment)));
     }
 
     @Test
@@ -830,6 +898,14 @@ public class UrinTest {
     }
 
     @Test
+    public void aUrinWithNoFragmentOrAuthorityOrPathReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Query<String> query = aQuery();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(query).withPath(newPath), equalTo(scheme.urin(newPath, query)));
+    }
+
+    @Test
     public void rejectsNullInFactoryForAUrinWithNoFragmentOrAuthorityOrPath() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -860,6 +936,15 @@ public class UrinTest {
         Path<String> path = aPath();
         Query<String> query = aQuery();
         assertThat(scheme.urin(path, query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", query=" + query + "}"));
+    }
+
+    @Test
+    public void aUrinWithNoFragmentOrAuthorityReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Path<String> path = aPath();
+        Query<String> query = aQuery();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(path, query).withPath(newPath), equalTo(scheme.urin(newPath, query)));
     }
 
     @Test
@@ -903,6 +988,15 @@ public class UrinTest {
     }
 
     @Test
+    public void aUrinWithNoFragmentOrPathReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Authority authority = anAuthority();
+        Query<String> query = aQuery();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(authority, query).withPath(newPath), equalTo(scheme.urin(authority, newPath, query)));
+    }
+
+    @Test
     public void rejectsNullInFactoryForAUrinWithNoFragmentOrPath() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -942,6 +1036,16 @@ public class UrinTest {
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
         assertThat(scheme.urin(authority, path, query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", query=" + query + "}"));
+    }
+
+    @Test
+    public void aUrinWithNoFragmentReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Authority authority = anAuthority();
+        AbsolutePath<String> path = anAbsolutePath();
+        Query<String> query = aQuery();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(authority, path, query).withPath(newPath), equalTo(scheme.urin(authority, newPath, query)));
     }
 
     @Test
@@ -992,6 +1096,15 @@ public class UrinTest {
     }
 
     @Test
+    public void aUrinWithNoAuthorityOrPathReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Query<String> query = aQuery();
+        Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(query, fragment).withPath(newPath), equalTo(scheme.urin(newPath, query, fragment)));
+    }
+
+    @Test
     public void rejectsNullInFactoryForAUrinWithNoAuthorityOrPath() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -1031,6 +1144,16 @@ public class UrinTest {
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
+    }
+
+    @Test
+    public void aUrinWithNoAuthorityReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Path<String> path = aPath();
+        Query<String> query = aQuery();
+        Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(path, query, fragment).withPath(newPath), equalTo(scheme.urin(newPath, query, fragment)));
     }
 
     @Test
@@ -1083,6 +1206,16 @@ public class UrinTest {
     }
 
     @Test
+    public void aUrinWithNoPathToStringIsCorrectReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Authority authority = anAuthority();
+        Query<String> query = aQuery();
+        Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(authority, query, fragment).withPath(newPath), equalTo(scheme.urin(authority, newPath, query, fragment)));
+    }
+
+    @Test
     public void rejectsNullInFactoryForAUrinWithNoPath() throws Exception {
         assertThrowsException("Null hierarchicalPart should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower<NullPointerException>() {
             public void execute() throws NullPointerException {
@@ -1131,6 +1264,17 @@ public class UrinTest {
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
         assertThat(scheme.urin(authority, path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
+    }
+
+    @Test
+    public void aUrinWithAllPartsReplacedWithANewPathIsCorrect() throws Exception {
+        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        Authority authority = anAuthority();
+        AbsolutePath<String> path = anAbsolutePath();
+        Query<String> query = aQuery();
+        Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> newPath = anAbsolutePath();
+        assertThat(scheme.urin(authority, path, query, fragment).withPath(newPath), equalTo(scheme.urin(authority, newPath, query, fragment)));
     }
 
     @Test

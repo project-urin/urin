@@ -788,6 +788,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new RelativeReferenceNoAuthority<>(path);
+        }
+
+        @Override
         public String asString() {
             return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON);
         }
@@ -901,6 +906,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new RelativeReferenceWithAuthority<>(authority, path);
+        }
+
+        @Override
         public String asString() {
             return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT);
         }
@@ -999,6 +1009,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
                 throw new NullPointerException("Cannot instantiate RelativeReference with null query");
             }
             this.query = query;
+        }
+
+        @Override
+        public RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new RelativeReferenceNoAuthorityWithQuery<>(path, query);
         }
 
         @Override
@@ -1109,6 +1124,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
                 throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
             }
             this.fragment = fragment;
+        }
+
+        @Override
+        public RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new RelativeReferenceNoAuthorityWithFragment<>(path, fragment);
         }
 
         @Override
@@ -1235,6 +1255,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new RelativeReferenceNoAuthorityWithQueryAndFragment<>(path, query, fragment);
+        }
+
+        @Override
         public String asString() {
             return path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON) + '?' + query.asString() + '#' + fragment.asString();
         }
@@ -1343,6 +1368,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new RelativeReferenceWithAuthorityAndQuery<>(authority, path, query);
+        }
+
+        @Override
         public String asString() {
             return "//" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + '?' + query.asString();
         }
@@ -1448,6 +1478,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
                 throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
             }
             this.fragment = fragment;
+        }
+
+        @Override
+        public RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new RelativeReferenceWithAuthorityAndFragment<>(authority, path, fragment);
         }
 
         @Override
@@ -1561,6 +1596,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
                 throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
             }
             this.fragment = fragment;
+        }
+
+        @Override
+        public RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new RelativeReferenceWithAuthorityAndQueryAndFragment<>(authority, path, query, fragment);
         }
 
         @Override
@@ -1679,6 +1719,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public Urin<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new UrinWithPathAndQueryAndFragment<>(scheme, path, query, fragment);
+        }
+
+        @Override
         public String asString() {
             return scheme.asString() + ':' + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + '?' + query.asString() + '#' + fragment.asString();
         }
@@ -1776,6 +1821,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public Urin<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new UrinWithAuthorityAndPathAndQueryAndFragment<>(scheme, authority, path, query, fragment);
+        }
+
+        @Override
         public String asString() {
             return scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + '?' + query.asString() + '#' + fragment.asString();
         }
@@ -1861,6 +1911,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
                 throw new NullPointerException("cannot instantiate Urin with null query");
             }
             this.query = query;
+        }
+
+        @Override
+        public Urin<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new UrinWithPathAndQuery<>(scheme, path, query);
         }
 
         @Override
@@ -1950,6 +2005,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
                 throw new NullPointerException("cannot instantiate Urin with null query");
             }
             this.query = query;
+        }
+
+        @Override
+        public Urin<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new UrinWithAuthorityAndPathAndQuery<>(scheme, authority, path, query);
         }
 
         @Override
@@ -2044,6 +2104,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public Urin<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new UrinWithAuthorityAndPathAndFragment<>(scheme, authority, path, fragment);
+        }
+
+        @Override
         public String asString() {
             return scheme.asString() + "://" + authority.asString() + path.asString(NEVER_PREFIX_WITH_DOT_SEGMENT) + '#' + fragment.asString();
         }
@@ -2130,6 +2195,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public Urin<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new UrinWithPathAndFragment<>(scheme, path, fragment);
+        }
+
+        @Override
         public String asString() {
             return scheme.asString() + ":" + path.asString(PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY) + '#' + fragment.asString();
         }
@@ -2206,6 +2276,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
                 throw new NullPointerException("cannot instantiate Urin with null path");
             }
             this.path = path;
+        }
+
+        @Override
+        public Urin<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new UrinWithPath<>(scheme, path);
         }
 
         @Override
@@ -2288,6 +2363,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
                 throw new NullPointerException("cannot instantiate Urin with null path");
             }
             this.path = path;
+        }
+
+        @Override
+        public Urin<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path) {
+            return new UrinWithAuthorityAndPath<>(scheme, authority, path);
         }
 
         @Override
