@@ -18,7 +18,6 @@ import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
-import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -240,7 +239,6 @@ public class AuthorityTest {
 
     @Test
     public void parsingNullThrowsNullPointerException() throws Exception {
-        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         try {
             Authority.parse(null);
             fail("Should have thrown a NullPointerException");
