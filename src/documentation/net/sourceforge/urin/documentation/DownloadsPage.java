@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -11,7 +11,7 @@
 package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.Urin;
-import org.sourceforge.xazzle.xhtml.HtmlTag;
+import net.sourceforge.xazzle.xhtml.HtmlTag;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Host.registeredName;
@@ -20,7 +20,7 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.http.Http.http;
 import static net.sourceforge.urin.scheme.http.Https.https;
-import static org.sourceforge.xazzle.xhtml.Tags.*;
+import static net.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DownloadsPage {
 

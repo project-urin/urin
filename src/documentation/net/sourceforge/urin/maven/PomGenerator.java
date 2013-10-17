@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin.maven;
 
-import org.sourceforge.writexml.*;
+import net.sourceforge.writexml.*;
 
 import java.io.File;
 import java.io.FileReader;
@@ -20,10 +20,11 @@ import java.net.URI;
 import java.util.Properties;
 
 import static java.util.Arrays.asList;
-import static org.sourceforge.writexml.Attributes.attributes;
-import static org.sourceforge.writexml.Namespace.namespace;
-import static org.sourceforge.writexml.TagName.tagName;
-import static org.sourceforge.writexml.Text.text;
+import static net.sourceforge.writexml.Attributes.attributes;
+import static net.sourceforge.writexml.Namespace.namespace;
+import static net.sourceforge.writexml.Tag.tag;
+import static net.sourceforge.writexml.TagName.tagName;
+import static net.sourceforge.writexml.Text.text;
 
 public class PomGenerator {
 
@@ -87,12 +88,12 @@ public class PomGenerator {
         );
     }
 
-    private static Tag pomTag(final TagName tagName, final WriteableToXml... children) {
-        return new Tag(namespace(URI.create("http://maven.apache.org/POM/4.0.0")), tagName, attributes(), asList(children));
+    private static Tag pomTag(final TagName tagName, final TagContent... children) {
+        return tag(namespace(URI.create("http://maven.apache.org/POM/4.0.0")), tagName, attributes(), asList(children));
     }
 
-    private static Tag settingsTag(final TagName tagName, final WriteableToXml... children) {
-        return new Tag(namespace(URI.create("http://maven.apache.org/SETTINGS/1.0.0")), tagName, attributes(), asList(children));
+    private static Tag settingsTag(final TagName tagName, final TagContent... children) {
+        return tag(namespace(URI.create("http://maven.apache.org/SETTINGS/1.0.0")), tagName, attributes(), asList(children));
     }
 
     private static String versionString() throws IOException {
@@ -101,10 +102,10 @@ public class PomGenerator {
         return properties.getProperty("urin.version.major") + "." + properties.getProperty("urin.version.minor");
     }
 
-    private static void writeXml(final Tag root, final File destination, final String fileName) throws IOException, XmlWriterException {
+    private static void writeXml(final Tag root, final File destination, final String fileName) throws IOException, XmlWriteException {
         final File file = new File(destination, fileName);
         final FileWriter fileWriter = new FileWriter(file);
-        new JaxpXmlWriter(fileWriter).write(new Document(root));
+        new PrettyXmlFormatter().write(Document.document(root), fileWriter);
         fileWriter.close();
     }
 

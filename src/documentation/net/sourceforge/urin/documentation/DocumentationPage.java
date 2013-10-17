@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -14,7 +14,7 @@ import net.sourceforge.urin.*;
 import net.sourceforge.urin.scheme.http.Http;
 import net.sourceforge.urin.scheme.http.HttpQuery;
 import net.sourceforge.urin.scheme.http.Https;
-import org.sourceforge.xazzle.xhtml.HtmlTag;
+import net.sourceforge.xazzle.xhtml.HtmlTag;
 
 import java.net.URI;
 
@@ -32,7 +32,7 @@ import static net.sourceforge.urin.scheme.http.Http.HTTP;
 import static net.sourceforge.urin.scheme.http.Http.http;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
-import static org.sourceforge.xazzle.xhtml.Tags.*;
+import static net.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DocumentationPage {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -16,7 +16,7 @@ import net.sourceforge.urin.Urin;
 import net.sourceforge.urin.UrinReference;
 import net.sourceforge.urin.scheme.http.HttpQuery;
 import net.sourceforge.urin.scheme.http.Https;
-import org.sourceforge.xazzle.xhtml.*;
+import net.sourceforge.xazzle.xhtml.*;
 
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
@@ -25,17 +25,17 @@ import static net.sourceforge.urin.scheme.http.Http.HTTP;
 import static net.sourceforge.urin.scheme.http.Http.http;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
-import static org.sourceforge.xazzle.xhtml.AlternateText.alternateText;
-import static org.sourceforge.xazzle.xhtml.ClassName.className;
-import static org.sourceforge.xazzle.xhtml.Id.id;
-import static org.sourceforge.xazzle.xhtml.ImageSource.imageSource;
-import static org.sourceforge.xazzle.xhtml.MetaContent.metaContent;
-import static org.sourceforge.xazzle.xhtml.MetaName.metaName;
-import static org.sourceforge.xazzle.xhtml.MimeType.mimeType;
-import static org.sourceforge.xazzle.xhtml.Relationship.STYLESHEET;
-import static org.sourceforge.xazzle.xhtml.Relationship.relationship;
-import static org.sourceforge.xazzle.xhtml.Tags.*;
-import static org.sourceforge.xazzle.xhtml.XhtmlDimension.pixels;
+import static net.sourceforge.xazzle.xhtml.AlternateText.alternateText;
+import static net.sourceforge.xazzle.xhtml.ClassName.className;
+import static net.sourceforge.xazzle.xhtml.Id.id;
+import static net.sourceforge.xazzle.xhtml.ImageSource.imageSource;
+import static net.sourceforge.xazzle.xhtml.MetaContent.metaContent;
+import static net.sourceforge.xazzle.xhtml.MetaName.metaName;
+import static net.sourceforge.xazzle.xhtml.MimeType.mimeType;
+import static net.sourceforge.xazzle.xhtml.Relationship.STYLESHEET;
+import static net.sourceforge.xazzle.xhtml.Relationship.relationship;
+import static net.sourceforge.xazzle.xhtml.Tags.*;
+import static net.sourceforge.xazzle.xhtml.XhtmlDimension.pixels;
 
 final class UrinPage {
     static final Host SOURCEFORGE = registeredName("sourceforge.net");
@@ -43,7 +43,7 @@ final class UrinPage {
     static final Host W3_WWW = registeredName("www.w3.org");
     static final AnchorTag RFC_3986 = anchorTag(xhtmlText("RFC 3986")).withHref(href(http(registeredName("tools.ietf.org"), path("html", "rfc3986"))));
 
-    public static HtmlTag aUrinPage(final BodyElement... body) {
+    public static HtmlTag aUrinPage(final BlockElement<DoesNotContainFormTag>... body) {
         final Href projectSiteHref = href(http(SOURCEFORGE, path("projects", "urin")));
         return htmlTag(
                 headTag(
@@ -140,7 +140,7 @@ final class UrinPage {
         return codeTag(xhtmlText(snippet));
     }
 
-    static BlockLevelTag codeBlock(String someCode) {
+    static BlockElement<DoesNotContainFormTag> codeBlock(String someCode) {
         return divTag(
                 xhtmlText(someCode)
         ).withClass(className("code"));

@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2013 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -12,7 +12,7 @@ package net.sourceforge.urin.documentation;
 
 import net.sourceforge.urin.ParseException;
 import net.sourceforge.urin.Segment;
-import org.sourceforge.xazzle.xhtml.HtmlTag;
+import net.sourceforge.xazzle.xhtml.HtmlTag;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.documentation.UrinPage.*;
 import static net.sourceforge.urin.scheme.http.Http.*;
-import static org.sourceforge.xazzle.xhtml.Tags.*;
+import static net.sourceforge.xazzle.xhtml.Tags.*;
 
 final class IndexPage {
 
