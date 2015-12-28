@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Mark Slater
+ * Copyright 2015 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -112,4 +112,8 @@ public abstract class UrinReference<SEGMENT, QUERY extends Query, FRAGMENT exten
 
     abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Authority authority, final Path<SEGMENT> path, final QUERY query, final FRAGMENT fragment);
 
+    @Override
+    public final String toString() {
+        return asString();
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Mark Slater
+ * Copyright 2015 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -116,7 +116,7 @@ public class UrinTest {
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(authority, path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(authority, path, query, fragment).toString(), equalTo(scheme.urin(authority, path, query, fragment).asString()));
     }
 
 
@@ -544,7 +544,7 @@ public class UrinTest {
     @Test
     public void aUrinWithNoQueryOrFragmentOrAuthorityOrPathToStringIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertThat(scheme.urin().toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=EmptyPath}"));
+        assertThat(scheme.urin().toString(), equalTo(scheme.urin().asString()));
     }
 
     @Test
@@ -571,7 +571,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrFragmentOrAuthorityToStringIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
-        assertThat(scheme.urin(path).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + "}"));
+        assertThat(scheme.urin(path).toString(), equalTo(scheme.urin(path).asString()));
     }
 
     @Test
@@ -610,7 +610,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrFragmentOrPathToStringIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        assertThat(scheme.urin(authority).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=EmptyPath}"));
+        assertThat(scheme.urin(authority).toString(), equalTo(scheme.urin(authority).asString()));
     }
 
     @Test
@@ -651,7 +651,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        assertThat(scheme.urin(authority, path).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + "}"));
+        assertThat(scheme.urin(authority, path).toString(), equalTo(scheme.urin(authority, path).asString()));
     }
 
     @Test
@@ -698,7 +698,7 @@ public class UrinTest {
     public void aUrinWithNoQueryOrAuthorityOrPathToStringIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + new EmptyPath() + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(fragment).toString(), equalTo(scheme.urin(fragment).asString()));
     }
 
     @Test
@@ -739,7 +739,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(path, fragment).toString(), equalTo(scheme.urin(path, fragment).asString()));
     }
 
     @Test
@@ -788,7 +788,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(authority, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + new EmptyPath() + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(authority, fragment).toString(), equalTo(scheme.urin(authority, fragment).asString()));
     }
 
     @Test
@@ -839,7 +839,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(authority, path, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(authority, path, fragment).toString(), equalTo(scheme.urin(authority, path, fragment).asString()));
     }
 
     @Test
@@ -894,7 +894,7 @@ public class UrinTest {
     public void aUrinWithNoFragmentOrAuthorityOrPathToStringIsCorrect() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
-        assertThat(scheme.urin(query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + new EmptyPath() + ", query=" + query + "}"));
+        assertThat(scheme.urin(query).toString(), equalTo(scheme.urin(query).asString()));
     }
 
     @Test
@@ -935,7 +935,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
         Query<String> query = aQuery();
-        assertThat(scheme.urin(path, query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", query=" + query + "}"));
+        assertThat(scheme.urin(path, query).toString(), equalTo(scheme.urin(path, query).asString()));
     }
 
     @Test
@@ -984,7 +984,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Query<String> query = aQuery();
-        assertThat(scheme.urin(authority, query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + new EmptyPath() + ", query=" + query + "}"));
+        assertThat(scheme.urin(authority, query).toString(), equalTo(scheme.urin(authority, query).asString()));
     }
 
     @Test
@@ -1035,7 +1035,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
-        assertThat(scheme.urin(authority, path, query).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", query=" + query + "}"));
+        assertThat(scheme.urin(authority, path, query).toString(), equalTo(scheme.urin(authority, path, query).asString()));
     }
 
     @Test
@@ -1092,7 +1092,7 @@ public class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + new EmptyPath() + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(query, fragment).toString(), equalTo(scheme.urin(query, fragment).asString()));
     }
 
     @Test
@@ -1143,7 +1143,7 @@ public class UrinTest {
         Path<String> path = aPath();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(path, query, fragment).toString(), equalTo(scheme.urin(path, query, fragment).asString()));
     }
 
     @Test
@@ -1202,7 +1202,7 @@ public class UrinTest {
         Authority authority = anAuthority();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(authority, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + new EmptyPath() + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(authority, query, fragment).toString(), equalTo(scheme.urin(authority, query, fragment).asString()));
     }
 
     @Test
@@ -1263,7 +1263,7 @@ public class UrinTest {
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(authority, path, query, fragment).toString(), equalTo("Urin{scheme=" + scheme.removeDefaultPort() + ", authority=" + authority + ", path=" + path + ", query=" + query + ", fragment=" + fragment + "}"));
+        assertThat(scheme.urin(authority, path, query, fragment).toString(), equalTo(scheme.urin(authority, path, query, fragment).asString()));
     }
 
     @Test
