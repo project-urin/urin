@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Mark Slater
+ * Copyright 2015 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -881,13 +881,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         public int hashCode() {
             return path.hashCode();
         }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "path=" + path +
-                    '}';
-        }
     }
 
     private static final class RelativeReferenceWithAuthority<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
@@ -985,14 +978,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             int result = authority.hashCode();
             result = 31 * result + path.hashCode();
             return result;
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "authority=" + authority +
-                    ", path=" + path +
-                    '}';
         }
     }
 
@@ -1100,14 +1085,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             int result = path.hashCode();
             result = 31 * result + query.hashCode();
             return result;
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "path=" + path +
-                    ", query=" + query +
-                    '}';
         }
     }
 
@@ -1224,14 +1201,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + fragment.hashCode();
             return result;
         }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "path=" + path +
-                    ", fragment=" + fragment +
-                    '}';
-        }
     }
 
     private static final class RelativeReferenceNoAuthorityWithQueryAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
@@ -1335,15 +1304,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         @Override
         Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Authority authority, final Path<SEGMENT> path, final QUERY query, final FRAGMENT fragment) {
             return new UrinWithAuthorityAndPathAndQueryAndFragment<>(scheme.removeDefaultPort(), scheme.normalise(authority), this.path.resolveRelativeTo(path), this.query, this.fragment);
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "path=" + path +
-                    ", query=" + query +
-                    ", fragment=" + fragment +
-                    '}';
         }
     }
 
@@ -1449,15 +1409,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + query.hashCode();
             return result;
         }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "authority=" + authority +
-                    ", path=" + path +
-                    ", query=" + query +
-                    '}';
-        }
     }
 
     private static final class RelativeReferenceWithAuthorityAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
@@ -1561,15 +1512,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + path.hashCode();
             result = 31 * result + fragment.hashCode();
             return result;
-        }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "authority=" + authority +
-                    ", path=" + path +
-                    ", fragment=" + fragment +
-                    '}';
         }
     }
 
@@ -1681,16 +1623,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + fragment.hashCode();
             return result;
         }
-
-        @Override
-        public String toString() {
-            return "RelativeReference{" +
-                    "authority=" + authority +
-                    ", path=" + path +
-                    ", query=" + query +
-                    ", fragment=" + fragment +
-                    '}';
-        }
     }
 
     private static final class UrinWithPathAndQueryAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
@@ -1777,16 +1709,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + query.hashCode();
             result = 31 * result + fragment.hashCode();
             return result;
-        }
-
-        @Override
-        public String toString() {
-            return "Urin{" +
-                    "scheme=" + scheme +
-                    ", path=" + path +
-                    ", query=" + query +
-                    ", fragment=" + fragment +
-                    '}';
         }
     }
 
@@ -1880,17 +1802,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + fragment.hashCode();
             return result;
         }
-
-        @Override
-        public String toString() {
-            return "Urin{" +
-                    "scheme=" + scheme +
-                    ", authority=" + authority +
-                    ", path=" + path +
-                    ", query=" + query +
-                    ", fragment=" + fragment +
-                    '}';
-        }
     }
 
     private static final class UrinWithPathAndQuery<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
@@ -1970,15 +1881,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + path.hashCode();
             result = 31 * result + query.hashCode();
             return result;
-        }
-
-        @Override
-        public String toString() {
-            return "Urin{" +
-                    "scheme=" + scheme +
-                    ", path=" + path +
-                    ", query=" + query +
-                    '}';
         }
     }
 
@@ -2066,16 +1968,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + query.hashCode();
             return result;
         }
-
-        @Override
-        public String toString() {
-            return "Urin{" +
-                    "scheme=" + scheme +
-                    ", authority=" + authority +
-                    ", path=" + path +
-                    ", query=" + query +
-                    '}';
-        }
     }
 
     private static final class UrinWithAuthorityAndPathAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
@@ -2162,16 +2054,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + fragment.hashCode();
             return result;
         }
-
-        @Override
-        public String toString() {
-            return "Urin{" +
-                    "scheme=" + scheme +
-                    ", authority=" + authority +
-                    ", path=" + path +
-                    ", fragment=" + fragment +
-                    '}';
-        }
     }
 
     private static final class UrinWithPathAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
@@ -2252,15 +2134,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + fragment.hashCode();
             return result;
         }
-
-        @Override
-        public String toString() {
-            return "Urin{" +
-                    "scheme=" + scheme +
-                    ", path=" + path +
-                    ", fragment=" + fragment +
-                    '}';
-        }
     }
 
     private static class UrinWithPath<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
@@ -2334,14 +2207,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             int result = scheme.hashCode();
             result = 31 * result + path.hashCode();
             return result;
-        }
-
-        @Override
-        public String toString() {
-            return "Urin{" +
-                    "scheme=" + scheme +
-                    ", path=" + path +
-                    '}';
         }
     }
 
@@ -2422,15 +2287,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             result = 31 * result + authority.hashCode();
             result = 31 * result + path.hashCode();
             return result;
-        }
-
-        @Override
-        public String toString() {
-            return "Urin{" +
-                    "scheme=" + scheme +
-                    ", authority=" + authority +
-                    ", path=" + path +
-                    '}';
         }
     }
 }
