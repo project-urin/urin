@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2012 Mark Slater
+  ~ Copyright 2015 Mark Slater
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
   ~
@@ -331,6 +331,8 @@
             <artifact:arg value="-DtargetRepositoryId=releases"/>
             <!--<artifact:arg value="-X"/>-->
         </artifact:mvn>
+
+        <echo message="Now go to https://oss.sonatype.org/ and check if the artifact has been closed and released from the staging repository"/>
     </target>
 
     <target name="distribute-release" description="Does a real release">
@@ -377,6 +379,7 @@
         <propertyfile file="version.properties">
             <entry key="urin.version.minor" type="int" default="0" operation="+"/>
         </propertyfile>
+        <echo message="Now go to https://sourceforge.net/projects/urin/files/ and make the new version the default download."/>
         <!--TODO commit post-release version.properties -->
     </target>
 
