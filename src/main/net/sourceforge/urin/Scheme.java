@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Mark Slater
+ * Copyright 2016 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -823,6 +823,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public boolean hasAuthority() {
+            return false;
+        }
+
+        @Override
+        public Authority authority() {
+            throw new UnsupportedOperationException("Attempt to get authority from a UrinReference that does not have one.");
+        }
+
+        @Override
         Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path) {
             return scheme.urin(path.resolveRelativeTo(this.path));
         }
@@ -934,6 +944,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public boolean hasAuthority() {
+            return true;
+        }
+
+        @Override
+        public Authority authority() {
+            return authority;
+        }
+
+        @Override
         Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path) {
             return new UrinWithAuthorityAndPath<>(scheme.removeDefaultPort(), scheme.normalise(authority), this.path);
         }
@@ -1029,6 +1049,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         @Override
         public QUERY query() {
             return query;
+        }
+
+        @Override
+        public boolean hasAuthority() {
+            return false;
+        }
+
+        @Override
+        public Authority authority() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
         }
 
         @Override
@@ -1135,6 +1165,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
 
         @Override
         public QUERY query() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
+        public boolean hasAuthority() {
+            return false;
+        }
+
+        @Override
+        public Authority authority() {
             throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
         }
 
@@ -1259,6 +1299,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public boolean hasAuthority() {
+            return false;
+        }
+
+        @Override
+        public Authority authority() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
         public boolean equals(final Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
@@ -1363,6 +1413,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public boolean hasAuthority() {
+            return true;
+        }
+
+        @Override
+        public Authority authority() {
+            return authority;
+        }
+
+        @Override
         Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path) {
             return new UrinWithAuthorityAndPathAndQuery<>(scheme.removeDefaultPort(), scheme.normalise(authority), this.path, query);
         }
@@ -1464,6 +1524,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         @Override
         public QUERY query() {
             throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
+        public boolean hasAuthority() {
+            return true;
+        }
+
+        @Override
+        public Authority authority() {
+            return authority;
         }
 
         @Override
@@ -1573,6 +1643,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         @Override
         public QUERY query() {
             return query;
+        }
+
+        @Override
+        public boolean hasAuthority() {
+            return true;
+        }
+
+        @Override
+        public Authority authority() {
+            return authority;
         }
 
         @Override
@@ -1686,6 +1766,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public boolean hasAuthority() {
+            return false;
+        }
+
+        @Override
+        public Authority authority() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
         public Urin<SEGMENT, QUERY, FRAGMENT> resolve(final UrinReference<SEGMENT, QUERY, FRAGMENT> urinReference) {
             return urinReference.resolve(scheme, path, query, fragment);
         }
@@ -1778,6 +1868,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public boolean hasAuthority() {
+            return true;
+        }
+
+        @Override
+        public Authority authority() {
+            return authority;
+        }
+
+        @Override
         public Urin<SEGMENT, QUERY, FRAGMENT> resolve(final UrinReference<SEGMENT, QUERY, FRAGMENT> urinReference) {
             return urinReference.resolve(scheme, authority, path, query, fragment);
         }
@@ -1857,6 +1957,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         @Override
         public QUERY query() {
             return query;
+        }
+
+        @Override
+        public boolean hasAuthority() {
+            return false;
+        }
+
+        @Override
+        public Authority authority() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
         }
 
         @Override
@@ -1942,6 +2052,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         @Override
         public QUERY query() {
             return query;
+        }
+
+        @Override
+        public boolean hasAuthority() {
+            return true;
+        }
+
+        @Override
+        public Authority authority() {
+            return authority;
         }
 
         @Override
@@ -2031,6 +2151,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public boolean hasAuthority() {
+            return true;
+        }
+
+        @Override
+        public Authority authority() {
+            return authority;
+        }
+
+        @Override
         public Urin<SEGMENT, QUERY, FRAGMENT> resolve(final UrinReference<SEGMENT, QUERY, FRAGMENT> urinReference) {
             return urinReference.resolve(scheme, authority, path);
         }
@@ -2112,6 +2242,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
 
         @Override
+        public boolean hasAuthority() {
+            return false;
+        }
+
+        @Override
+        public Authority authority() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
         public Urin<SEGMENT, QUERY, FRAGMENT> resolve(final UrinReference<SEGMENT, QUERY, FRAGMENT> urinReference) {
             return urinReference.resolve(scheme, path);
         }
@@ -2183,6 +2323,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
 
         @Override
         public QUERY query() {
+            throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
+        public boolean hasAuthority() {
+            return false;
+        }
+
+        @Override
+        public Authority authority() {
             throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
         }
 
@@ -2263,6 +2413,16 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         @Override
         public QUERY query() {
             throw new UnsupportedOperationException("Attempt to get query from a UrinReference that does not have one.");
+        }
+
+        @Override
+        public boolean hasAuthority() {
+            return true;
+        }
+
+        @Override
+        public Authority authority() {
+            return authority;
         }
 
         @Override

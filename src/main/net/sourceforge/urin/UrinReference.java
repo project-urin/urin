@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Mark Slater
+ * Copyright 2016 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -99,6 +99,24 @@ public abstract class UrinReference<SEGMENT, QUERY extends Query, FRAGMENT exten
      * @throws UnsupportedOperationException if this is a {@code UrinReference} that does not have a {@code Query} component.
      */
     public abstract QUERY query();
+
+    /**
+     * Returns true if {@code authority()} can be called on this {@code UrinReference}.  This method
+     * returns false for {@code UrinReference}s that do not have an authority component.
+     *
+     * @return true if {@code authority()} can be called on this {@code UrinReference}.
+     */
+    public abstract boolean hasAuthority();
+
+    /**
+     * Gets the {@code Authority} component of this {@code UrinReference}, if it has one, or throws {@code UnsupportedOperationException} otherwise.
+     * <p/>
+     * The existence of an {@code Authority} component can be tested by calling {@code hasAuthority()}.
+     *
+     * @return the {@code Authority} component of this {@code UrinReference}.
+     * @throws UnsupportedOperationException if this is a {@code UrinReference} that does not have an {@code Authority} component.
+     */
+    public abstract Authority authority();
 
     abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path);
 
