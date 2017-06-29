@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 Mark Slater
+ * Copyright 2017 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -17,7 +17,7 @@ import java.net.URI;
 import static net.sourceforge.urin.Fragment.stringFragmentMaker;
 import static net.sourceforge.urin.scheme.http.HttpQuery.httpQueryMakingDecoder;
 
-abstract class HypertextScheme extends SchemeWithDefaultPort<String, HttpQuery, Fragment<String>> {
+public abstract class HypertextScheme extends SchemeWithDefaultPort<String, HttpQuery, Fragment<String>> {
     HypertextScheme(final String name, final Port defaultPort) {
         super(name, defaultPort, Segment.STRING_SEGMENT_MAKING_DECODER, httpQueryMakingDecoder(), stringFragmentMaker());
     }
