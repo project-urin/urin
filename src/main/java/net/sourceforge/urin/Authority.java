@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 /**
  * An authority component of a URI.
- * <p/>
+ *
  * An authority is made up of a host and optional user information and port.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2">RFC 3986 - Authority</a>

@@ -18,7 +18,7 @@ import static net.sourceforge.urin.Segment.dotDot;
 
 /**
  * A path that begins with a '/' - typically representing a path relative to root.
- * <p/>
+ *
  * To create instances, see {@link Path}.
  */
 public final class AbsolutePath<T> extends Path<T> {

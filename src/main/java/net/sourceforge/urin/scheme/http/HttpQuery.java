@@ -175,7 +175,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
         /**
          * Gets the value component of this {@code QueryParameter}, as a {@code String}, if it has one, or throws {@code UnsupportedOperationException} otherwise.
-         * <p/>
+         *
          * The existence of a value component can be tested by calling {@code hasValue()}.
          *
          * @return the value component of this {@code QueryParameter}.

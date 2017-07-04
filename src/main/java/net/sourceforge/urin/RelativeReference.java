@@ -12,7 +12,7 @@ package net.sourceforge.urin;
 
 /**
  * A relative reference.
- * <p/>
+ *
  * A relative reference has a mandatory relative part component, that is made up of an optional authority, and a
  * mandatory path, and optional query and fragment parts.  The mandatory path may implicitly be the empty path.
  *

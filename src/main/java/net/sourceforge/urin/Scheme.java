@@ -77,7 +77,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
     /**
      * Factory method for creating {@code Scheme}s that have a default port.  Schemes must be at least one character long, and are permitted
      * to contain any character in the Latin alphabet, any digit, and any of the characters '+', '-', and '.'.
-     * <p/>
+     *
      * An example of a name that defines a default port is http, which defaults to port 80, meaning {@code http://example.com} is equivalent to, and preferred to {@code http://example.com:80}.
      *
      * @param name        a {@code String} containing at least one character, made up of any characters in the Latin alphabet, the digits, and the characters '+', '-', and '.'.

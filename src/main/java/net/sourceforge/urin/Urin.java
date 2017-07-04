@@ -12,10 +12,10 @@ package net.sourceforge.urin;
 
 /**
  * A URI.
- * <p/>
+ *
  * RFC 3986 specifies that a URI is made up of mandatory scheme and hierarchical part components, and optional query
  * and fragment components.
- * <p/>
+ *
  * Immutable and threadsafe.
  *
  * @param <SEGMENT>  The type of {@code Segment} used by paths of this URI.

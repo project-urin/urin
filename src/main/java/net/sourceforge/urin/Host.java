@@ -25,13 +25,13 @@ import static net.sourceforge.urin.Octet.octet;
 
 /**
  * A host component of a URI.
- * <p/>
+ *
  * RFC 3986 specifies four forms of host - registered name, IP version 4 address, IP version 6 address, and a future IP version address.
  * Note that as pointed out in the RFC, there is an overlap between what is considered a valid IP version 4 address, and what is considered
  * a valid registered name - for example, {@code Host.registeredName("127.0.0.1")} renders identically in a URI to
  * {@code ipV4Address(octet(127), octet(0), octet(0), octet(1))}.  In keeping with the RFC, such a registered name is considered
  * to be an equivalent IP version 4 address.
- * <p/>
+ *
  * Immutable and threadsafe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2.2">RFC 3986 - Host</a>
@@ -139,7 +139,7 @@ public abstract class Host {
      * Factory method for creating IP version future type {@code Host}s.
      *
      * @param version a {@code String} consisting of at least one character, made up solely of hexadecimal digits, namely 0-9 and A-F.
-     * @param address a {@code String} consisting of at least one character, made up solely of characters from the Latin alphabet, the digits, and any of '-', '.', '_' , '~' , '!' , '$' , '&' , ''' , '(' , ')' , '*' , '+' , ',' , ';' , '=' , ':'.
+     * @param address a {@code String} consisting of at least one character, made up solely of characters from the Latin alphabet, the digits, and any of '-', '.', '_' , '~' , '!' , '$' , '&amp;' , ''' , '(' , ')' , '*' , '+' , ',' , ';' , '=' , ':'.
      * @return a {@code Host} representing the given {@code Hexadectet}s and {@code Octet}s as an IP version 6 address.
      * @throws IllegalArgumentException if the given version or address are empty of contain characters outside the valid set.
      */

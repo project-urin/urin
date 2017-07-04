@@ -16,11 +16,11 @@ import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.specif
 
 /**
  * A segment of a URI's path.
- * <p/>
+ *
  * Note that the special segments "." and ".." are obtained via the factory methods {@link #dot()} and {@link #dotDot()}
  * respectively.  Passing "." or ".." as an argument to the factory method {@link #segment(String)} is not equivalent,
  * as the argument to this method is a literal string, i.e. subject to encoding where necessary.
- * <p/>
+ *
  * Immutable and threadsafe.
  *
  * @param <ENCODES> The type of value represented by the segment - {@code String} in the general case.
@@ -279,7 +279,7 @@ public abstract class Segment<ENCODES> {
 
     /**
      * Gets the (non-encoded) value of this segment, if it is a type that has a value, or throws {@code UnsupportedOperationException} otherwise.
-     * <p/>
+     *
      * Dot segments (. and ..) and the empty segment do not have values, and will throw {@code UnsupportedOperationException}.
      * This can be tested by equality with the objects returned by {@link #dot()}, {@link #dotDot()}, and {@link #empty()} methods, or by calling {@code hasValue()}.
      *
