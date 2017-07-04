@@ -1,0 +1,315 @@
+/*
+ * Copyright 2017 Mark Slater
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+ *
+ * 	http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+ */
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3'
+    }
+}
+
+plugins {
+    id 'org.hidetake.ssh' version '2.1.0'
+    id 'org.tenne.rest' version '0.4.2'
+}
+
+apply plugin: 'io.codearte.nexus-staging'
+apply plugin: 'java'
+apply plugin: 'pmd'
+apply plugin: 'findbugs'
+apply plugin: 'signing'
+apply plugin: 'maven'
+
+
+repositories {
+    mavenCentral()
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.14.1'
+}
+
+sourceSets {
+    testInfrastructure
+    testAcceptance
+    testModule
+    testIntegration
+    documentation
+}
+
+configurations {
+    testCompile {
+        extendsFrom testInfrastructureCompile
+    }
+    testAcceptanceCompile {
+        extendsFrom testInfrastructureCompile
+    }
+    testModuleCompile {
+        extendsFrom testInfrastructureCompile
+    }
+    testIntegrationCompile {
+        extendsFrom testInfrastructureCompile
+    }
+    svg2ico
+    batik
+}
+
+dependencies {
+    testInfrastructureCompile sourceSets.main.output
+    testAcceptanceCompile sourceSets.main.output // implied by extension from testInfrastructureCompile?
+    testAcceptanceCompile sourceSets.testInfrastructure.output
+    testModuleCompile sourceSets.testInfrastructure.output
+    testInfrastructureCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
+    testInfrastructureCompile group: 'com.google.guava', name: 'guava', version: '22.0'
+    testInfrastructureCompile group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
+    testInfrastructureCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile sourceSets.testInfrastructure.output
+    testIntegrationCompile sourceSets.main.output
+    testIntegrationCompile sourceSets.testInfrastructure.output
+    documentationCompile sourceSets.main.output
+    documentationCompile group: 'net.sourceforge.writexml', name: 'writexml', version: '1.1'
+    documentationCompile group: 'net.sourceforge.xazzle', name: 'xazzle', version: '0.39'
+    documentationCompile group: 'net.sourceforge.svg2ico', name: 'svg2ico', version: '1.5'
+    svg2ico group: 'net.sourceforge.svg2ico', name: 'svg2ico', version: '1.5'
+    batik group: 'org.apache.xmlgraphics', name: 'batik-rasterizer', version: '1.8'
+    batik group: 'org.apache.xmlgraphics', name: 'xmlgraphics-commons', version: '2.0'
+    batik group: 'org.apache.xmlgraphics', name: 'batik-codec', version: '1.8'
+}
+
+group = 'net.sourceforge.urin'
+archivesBaseName = 'urin'
+version = "${majorVersion}.${minorVersion}"
+description = 'Urin is an open source URI generator and parser written in Java.'
+
+compileJava {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+task compileTinyJava(type: JavaCompile) {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+    source sourceSets.main.allSource
+    classpath = sourceSets.main.compileClasspath
+    destinationDir = file("${project.buildDir}/tiny-classes/main")
+    options.compilerArgs = ['-g:none']
+}
+
+task testAcceptanceTest(type: Test) {
+    testClassesDir = sourceSets.testAcceptance.output.classesDir
+    classpath = sourceSets.testAcceptance.runtimeClasspath
+}
+
+task testModuleTest(type: Test) {
+    testClassesDir = sourceSets.testModule.output.classesDir
+    classpath = sourceSets.testModule.runtimeClasspath
+}
+
+task testIntegrationTest(type: Test) {
+    testClassesDir = sourceSets.testIntegration.output.classesDir
+    classpath = sourceSets.testIntegration.runtimeClasspath
+}
+
+check.dependsOn testAcceptanceTest
+check.dependsOn testModuleTest
+check.dependsOn testIntegrationTest
+
+task myJavadoc(type: Javadoc) {
+    source = sourceSets.main.allJava
+    title = "Urin version ${version}"
+}
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from myJavadoc
+}
+
+task tinyJar(type: Jar, dependsOn: compileTinyJava) {
+    classifier = 'tiny'
+    from file("${project.buildDir}/tiny-classes/main")
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task combinedJar(type: Jar) {
+    classifier = 'combined'
+    from sourceSets.main.allSource
+    from sourceSets.main.output
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+task documentationDirectory << {
+    mkdir("${project.buildDir}/documentation")
+}
+
+task ico(dependsOn: documentationDirectory) << {
+    ant.taskdef(name: 'svg2ico',
+            classname: 'net.sourceforge.svg2ico.Svg2IcoTask',
+            classpath: configurations.svg2ico.asPath)
+    ant.svg2ico(src: 'resources/favicon.svg',
+            dest: "${project.buildDir}/documentation/favicon.ico",
+            width: '32',
+            height: '32'
+    )
+}
+
+task iconsDirectory << {
+    mkdir("${project.buildDir}/icons")
+}
+
+task png(type: JavaExec, dependsOn: iconsDirectory) {
+    main = 'org.apache.batik.apps.rasterizer.Main'
+    classpath = configurations.batik
+    args '-d', "${project.buildDir}/icons/", '-scriptSecurityOff', '-m', 'image/png', '-w', '48', '-h', '48', 'resources/favicon.svg'
+}
+
+
+task buildDocumentation(type:JavaExec, dependsOn: documentationDirectory) {
+    main = 'net.sourceforge.urin.documentation.DocumentationGenerator'
+    args("${project.buildDir}/documentation")
+    classpath = sourceSets.documentation.runtimeClasspath
+}
+
+task documentationJar(type: Tar, dependsOn: [ buildDocumentation, ico]) {
+    from "${project.buildDir}/documentation"
+    from 'docs'
+    baseName 'documentation'
+    compression = Compression.GZIP
+}
+
+remotes {
+    sourceforgeShell {
+        host = 'shell.sourceforge.net'
+        user = "$sourceforgeUser,urin"
+        password = "$sourceforgePassword"
+
+    }
+    sourceforgeWeb {
+        host = 'web.sourceforge.net'
+        user = "$sourceforgeUser,urin"
+        password = "$sourceforgePassword"
+
+    }
+}
+
+task copyToSourceforge(dependsOn: [jar, documentationJar, javadocJar, combinedJar, tinyJar]) << {
+    ssh.run {
+        session(remotes.sourceforgeShell) {
+            execute 'create'
+            execute "mkdir -p /home/frs/project/urin/${version}"
+        }
+        session(remotes.sourceforgeWeb) {
+            put from: "${project.buildDir}/distributions/documentation-${version}.tgz", into: '/home/project-web/urin/'
+            put from: "${project.buildDir}/libs/urin-${version}-javadoc.jar", into: '/home/project-web/urin/'
+            put from: "${project.buildDir}/libs/urin-${version}-combined.jar", into: "/home/frs/project/urin/${version}/urin-${version}.jar"
+            put from: "${project.buildDir}/libs/urin-${version}-tiny.jar", into: "/home/frs/project/urin/${version}/urin-small-${version}.jar"
+        }
+        session(remotes.sourceforgeShell) {
+            execute "mkdir -p /home/project-web/urin/${version}/javadoc && tar -xvf /home/project-web/urin/documentation-${version}.tgz -C /home/project-web/urin/${version} && unzip -d /home/project-web/urin/${version}/javadoc /home/project-web/urin/urin-${version}-javadoc.jar && rm /home/project-web/urin/documentation-${version}.tgz && rm /home/project-web/urin/urin-${version}-javadoc.jar && rm /home/project-web/urin/htdocs ; ln -s /home/project-web/urin/${version} /home/project-web/urin/htdocs"
+        }
+    }
+    // todo turn off debug information in tiny jar (existing bug)
+    // todo modify test task to run tests from all source sets
+}
+
+task updateSourceforgeDefaultDownload(type: org._10ne.gradle.rest.RestTask) {
+    httpMethod = 'put'
+    uri = "https://sourceforge.net/projects/urin/files/${version}//urin-${version}.jar"
+    requestContentType = groovyx.net.http.ContentType.URLENC
+    contentType = groovyx.net.http.ContentType.JSON
+    requestBody = "default=windows&default=mac&default=linux&default=bsd&default=solaris&default=others&download_label=${version}%20with%20source&api_key=$sourceforgeApiKey"
+}
+
+// Signature of artifacts
+signing {
+    sign configurations.archives
+}
+
+// OSSRH publication
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            // POM signature
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            // Target repository
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUser, password: ossrhPassword)
+            }
+            pom.scopeMappings.with {
+                mappings.clear()
+            }
+            pom.project {
+                name 'Urin'
+                description project.description
+                packaging 'jar'
+                url 'http://urin.sourceforge.net'
+
+                scm {
+                    url "git://git.code.sf.net/p/urin/code"
+                }
+
+                developers {
+                    developer {
+                        id = 'mos20'
+                        name = 'Mark Slater'
+                    }
+                }
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+nexusStaging {
+    username = ossrhUser
+    password = ossrhPassword
+}
+
+task aMomentOfReflection() << {
+    sleep(30 * 1000)
+}
+
+task performRelease(dependsOn: [clean, build, uploadArchives, copyToSourceforge, png, closeRepository, aMomentOfReflection, promoteRepository, updateSourceforgeDefaultDownload]) << {
+    println 'Release complete :)'
+}
+
+task buildAndDeployCleanVersion(dependsOn: [clean, performRelease]) << {
+}
+
+task incrementVersionNumber(dependsOn: buildAndDeployCleanVersion) << {
+    ant.propertyfile(file: file('gradle.properties')) {
+        entry(key: 'minorVersion', type: 'int', operation: '+', value: 1)
+    }
+}
+
+task deploy(dependsOn: incrementVersionNumber) << {}
+
+build.mustRunAfter clean
+uploadArchives.mustRunAfter build
+closeRepository.mustRunAfter uploadArchives
+aMomentOfReflection.mustRunAfter closeRepository
+promoteRepository.mustRunAfter aMomentOfReflection
+updateSourceforgeDefaultDownload.mustRunAfter copyToSourceforge
