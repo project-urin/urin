@@ -34,10 +34,6 @@ repositories {
     mavenCentral()
 }
 
-wrapper {
-    gradleVersion = '5.1.1'
-}
-
 sourceSets {
     testInfrastructure
     testAcceptance
