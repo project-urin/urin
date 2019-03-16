@@ -24,8 +24,8 @@ plugins {
 
 apply plugin: 'io.codearte.nexus-staging'
 apply plugin: 'java'
-apply plugin: 'pmd'
-apply plugin: 'findbugs'
+//apply plugin: 'pmd'
+//apply plugin: 'findbugs'
 apply plugin: 'signing'
 apply plugin: 'maven'
 
@@ -34,8 +34,8 @@ repositories {
     mavenCentral()
 }
 
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.14.1'
+wrapper {
+    gradleVersion = '5.1.1'
 }
 
 sourceSets {
@@ -105,17 +105,17 @@ task compileTinyJava(type: JavaCompile) {
 }
 
 task testAcceptanceTest(type: Test) {
-    testClassesDir = sourceSets.testAcceptance.output.classesDir
+    testClassesDirs = sourceSets.testAcceptance.output.classesDirs
     classpath = sourceSets.testAcceptance.runtimeClasspath
 }
 
 task testModuleTest(type: Test) {
-    testClassesDir = sourceSets.testModule.output.classesDir
+    testClassesDirs = sourceSets.testModule.output.classesDirs
     classpath = sourceSets.testModule.runtimeClasspath
 }
 
 task testIntegrationTest(type: Test) {
-    testClassesDir = sourceSets.testIntegration.output.classesDir
+    testClassesDirs = sourceSets.testIntegration.output.classesDirs
     classpath = sourceSets.testIntegration.runtimeClasspath
 }
 
@@ -153,23 +153,29 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-task documentationDirectory << {
-    mkdir("${project.buildDir}/documentation")
+task documentationDirectory {
+    doLast {
+        mkdir("${project.buildDir}/documentation")
+    }
 }
 
-task ico(dependsOn: documentationDirectory) << {
-    ant.taskdef(name: 'svg2ico',
-            classname: 'net.sourceforge.svg2ico.Svg2IcoTask',
-            classpath: configurations.svg2ico.asPath)
-    ant.svg2ico(src: 'resources/favicon.svg',
-            dest: "${project.buildDir}/documentation/favicon.ico",
-            width: '32',
-            height: '32'
-    )
+task ico(dependsOn: documentationDirectory) {
+    doLast {
+        ant.taskdef(name: 'svg2ico',
+                classname: 'net.sourceforge.svg2ico.Svg2IcoTask',
+                classpath: configurations.svg2ico.asPath)
+        ant.svg2ico(src: 'resources/favicon.svg',
+                dest: "${project.buildDir}/documentation/favicon.ico",
+                width: '32',
+                height: '32'
+        )
+    }
 }
 
-task iconsDirectory << {
-    mkdir("${project.buildDir}/icons")
+task iconsDirectory {
+    doLast {
+        mkdir("${project.buildDir}/icons")
+    }
 }
 
 task png(type: JavaExec, dependsOn: iconsDirectory) {
@@ -179,13 +185,13 @@ task png(type: JavaExec, dependsOn: iconsDirectory) {
 }
 
 
-task buildDocumentation(type:JavaExec, dependsOn: documentationDirectory) {
+task buildDocumentation(type: JavaExec, dependsOn: documentationDirectory) {
     main = 'net.sourceforge.urin.documentation.DocumentationGenerator'
     args("${project.buildDir}/documentation")
     classpath = sourceSets.documentation.runtimeClasspath
 }
 
-task documentationJar(type: Tar, dependsOn: [ buildDocumentation, ico]) {
+task documentationJar(type: Tar, dependsOn: [buildDocumentation, ico]) {
     from "${project.buildDir}/documentation"
     from 'docs'
     baseName 'documentation'
@@ -207,24 +213,24 @@ remotes {
     }
 }
 
-task copyToSourceforge(dependsOn: [jar, documentationJar, javadocJar, combinedJar, tinyJar]) << {
-    ssh.run {
-        session(remotes.sourceforgeShell) {
-            execute 'create'
-            execute "mkdir -p /home/frs/project/urin/${version}"
-        }
-        session(remotes.sourceforgeWeb) {
-            put from: "${project.buildDir}/distributions/documentation-${version}.tgz", into: '/home/project-web/urin/'
-            put from: "${project.buildDir}/libs/urin-${version}-javadoc.jar", into: '/home/project-web/urin/'
-            put from: "${project.buildDir}/libs/urin-${version}-combined.jar", into: "/home/frs/project/urin/${version}/urin-${version}.jar"
-            put from: "${project.buildDir}/libs/urin-${version}-tiny.jar", into: "/home/frs/project/urin/${version}/urin-small-${version}.jar"
-        }
-        session(remotes.sourceforgeShell) {
-            execute "mkdir -p /home/project-web/urin/${version}/javadoc && tar -xvf /home/project-web/urin/documentation-${version}.tgz -C /home/project-web/urin/${version} && unzip -d /home/project-web/urin/${version}/javadoc /home/project-web/urin/urin-${version}-javadoc.jar && rm /home/project-web/urin/documentation-${version}.tgz && rm /home/project-web/urin/urin-${version}-javadoc.jar && rm /home/project-web/urin/htdocs ; ln -s /home/project-web/urin/${version} /home/project-web/urin/htdocs"
+task copyToSourceforge(dependsOn: [jar, documentationJar, javadocJar, combinedJar, tinyJar]) {
+    doLast {
+        ssh.run {
+            session(remotes.sourceforgeShell) {
+                execute 'create'
+                execute "mkdir -p /home/frs/project/urin/${version}"
+            }
+            session(remotes.sourceforgeWeb) {
+                put from: "${project.buildDir}/distributions/documentation-${version}.tgz", into: '/home/project-web/urin/'
+                put from: "${project.buildDir}/libs/urin-${version}-javadoc.jar", into: '/home/project-web/urin/'
+                put from: "${project.buildDir}/libs/urin-${version}-combined.jar", into: "/home/frs/project/urin/${version}/urin-${version}.jar"
+                put from: "${project.buildDir}/libs/urin-${version}-tiny.jar", into: "/home/frs/project/urin/${version}/urin-small-${version}.jar"
+            }
+            session(remotes.sourceforgeShell) {
+                execute "mkdir -p /home/project-web/urin/${version}/javadoc && tar -xvf /home/project-web/urin/documentation-${version}.tgz -C /home/project-web/urin/${version} && unzip -d /home/project-web/urin/${version}/javadoc /home/project-web/urin/urin-${version}-javadoc.jar && rm /home/project-web/urin/documentation-${version}.tgz && rm /home/project-web/urin/urin-${version}-javadoc.jar && rm /home/project-web/urin/htdocs ; ln -s /home/project-web/urin/${version} /home/project-web/urin/htdocs"
+            }
         }
     }
-    // todo turn off debug information in tiny jar (existing bug)
-    // todo modify test task to run tests from all source sets
 }
 
 task updateSourceforgeDefaultDownload(type: org._10ne.gradle.rest.RestTask) {
@@ -288,24 +294,30 @@ nexusStaging {
     password = ossrhPassword
 }
 
-task aMomentOfReflection() << {
-    sleep(30 * 1000)
-}
-
-task performRelease(dependsOn: [clean, build, uploadArchives, copyToSourceforge, png, closeRepository, aMomentOfReflection, promoteRepository, updateSourceforgeDefaultDownload]) << {
-    println 'Release complete :)'
-}
-
-task buildAndDeployCleanVersion(dependsOn: [clean, performRelease]) << {
-}
-
-task incrementVersionNumber(dependsOn: buildAndDeployCleanVersion) << {
-    ant.propertyfile(file: file('gradle.properties')) {
-        entry(key: 'minorVersion', type: 'int', operation: '+', value: 1)
+task aMomentOfReflection() {
+    doLast {
+        sleep(30 * 1000)
     }
 }
 
-task deploy(dependsOn: incrementVersionNumber) << {}
+task performRelease(dependsOn: [clean, build, uploadArchives, copyToSourceforge, png, closeRepository, aMomentOfReflection, promoteRepository, updateSourceforgeDefaultDownload]) {
+    doLast {
+        println 'Release complete :)'
+    }
+}
+
+task buildAndDeployCleanVersion(dependsOn: [clean, performRelease]) {
+}
+
+task incrementVersionNumber(dependsOn: buildAndDeployCleanVersion) {
+    doLast {
+        ant.propertyfile(file: file('gradle.properties')) {
+            entry(key: 'minorVersion', type: 'int', operation: '+', value: 1)
+        }
+    }
+}
+
+task deploy(dependsOn: incrementVersionNumber) {}
 
 build.mustRunAfter clean
 uploadArchives.mustRunAfter build

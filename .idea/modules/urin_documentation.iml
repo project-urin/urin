@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="urin:documentation" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="net.sourceforge.urin" external.system.module.type="sourceSet" external.system.module.version="2.22" type="JAVA_MODULE" version="4">
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
-    <output url="file://$MODULE_DIR$/../../build/classes/documentation" />
+<module external.linked.project.id="urin:documentation" external.linked.project.path="$MODULE_DIR$/../.." external.root.project.path="$MODULE_DIR$/../.." external.system.id="GRADLE" external.system.module.group="net.sourceforge.urin" external.system.module.type="sourceSet" external.system.module.version="2.23" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_10">
+    <output url="file://$MODULE_DIR$/../../out/documentation/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../src/documentation">
       <sourceFolder url="file://$MODULE_DIR$/../../src/documentation/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../../src/documentation/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="urin_main" />
-    <orderEntry type="library" name="Gradle: net.sourceforge.writexml:writexml:1.1" level="project" />
     <orderEntry type="library" name="Gradle: net.sourceforge.xazzle:xazzle:0.39" level="project" />
+    <orderEntry type="library" name="Gradle: net.sourceforge.writexml:writexml:1.1" level="project" />
     <orderEntry type="library" name="Gradle: net.sourceforge.svg2ico:svg2ico:1.5" level="project" />
   </component>
 </module>
