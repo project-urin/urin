@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Mark Slater
+ * Copyright 2019 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -12,23 +12,18 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath 'io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.5.3'
-    }
 }
 
 plugins {
+    id 'java'
+    id 'signing'
+    id 'maven'
+    // pmd
+    // findbugs
     id 'org.hidetake.ssh' version '2.1.0'
     id 'org.tenne.rest' version '0.4.2'
+    id 'io.codearte.nexus-staging' version '0.20.0'
 }
-
-apply plugin: 'io.codearte.nexus-staging'
-apply plugin: 'java'
-//apply plugin: 'pmd'
-//apply plugin: 'findbugs'
-apply plugin: 'signing'
-apply plugin: 'maven'
-
 
 repositories {
     mavenCentral()
