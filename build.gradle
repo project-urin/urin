@@ -31,20 +31,19 @@ repositories {
 
 sourceSets {
     testInfrastructure
-    testAcceptance
-    testModule
     testIntegration
     documentation
 }
 
+sourceSets {
+    main.java.srcDirs = ['src/main/java/net.sourceforge.urin']
+    test.java.srcDirs = ['src/test/java/net.sourceforge.urin']
+    testInfrastructure.java.srcDirs = ['src/testInfrastructure/java/net.sourceforge.urin']
+    documentation.java.srcDirs = ['src/documentation/java/net.sourceforge.urin']
+}
+
 configurations {
     testCompile {
-        extendsFrom testInfrastructureCompile
-    }
-    testAcceptanceCompile {
-        extendsFrom testInfrastructureCompile
-    }
-    testModuleCompile {
         extendsFrom testInfrastructureCompile
     }
     testIntegrationCompile {
@@ -56,9 +55,6 @@ configurations {
 
 dependencies {
     testInfrastructureCompile sourceSets.main.output
-    testAcceptanceCompile sourceSets.main.output // implied by extension from testInfrastructureCompile?
-    testAcceptanceCompile sourceSets.testInfrastructure.output
-    testModuleCompile sourceSets.testInfrastructure.output
     testInfrastructureCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
     testInfrastructureCompile group: 'com.google.guava', name: 'guava', version: '22.0'
     testInfrastructureCompile group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
@@ -95,23 +91,11 @@ task compileTinyJava(type: JavaCompile) {
     options.compilerArgs = ['-g:none']
 }
 
-task testAcceptanceTest(type: Test) {
-    testClassesDirs = sourceSets.testAcceptance.output.classesDirs
-    classpath = sourceSets.testAcceptance.runtimeClasspath
-}
-
-task testModuleTest(type: Test) {
-    testClassesDirs = sourceSets.testModule.output.classesDirs
-    classpath = sourceSets.testModule.runtimeClasspath
-}
-
 task testIntegrationTest(type: Test) {
     testClassesDirs = sourceSets.testIntegration.output.classesDirs
     classpath = sourceSets.testIntegration.runtimeClasspath
 }
 
-check.dependsOn testAcceptanceTest
-check.dependsOn testModuleTest
 check.dependsOn testIntegrationTest
 
 task myJavadoc(type: Javadoc) {

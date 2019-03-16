@@ -4,7 +4,7 @@
     <output url="file://$MODULE_DIR$/../../out/documentation/classes" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../src/documentation">
-      <sourceFolder url="file://$MODULE_DIR$/../../src/documentation/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/documentation/java/net.sourceforge.urin" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
