@@ -82,13 +82,13 @@ version = "${majorVersion}.${minorVersion}"
 description = 'Urin is an open source URI generator and parser written in Java.'
 
 compileJava {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 9
+    targetCompatibility = 9
 }
 
 task compileTinyJava(type: JavaCompile) {
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 9
+    targetCompatibility = 9
     source sourceSets.main.allSource
     classpath = sourceSets.main.compileClasspath
     destinationDir = file("${project.buildDir}/tiny-classes/main")

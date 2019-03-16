@@ -3,7 +3,7 @@
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
       <module name="urin_documentation" target="1.10" />
-      <module name="urin_main" target="1.8" />
+      <module name="urin_main" target="9" />
       <module name="urin_test" target="1.10" />
       <module name="urin_testAcceptance" target="1.10" />
       <module name="urin_testApi" target="1.8" />
