@@ -105,22 +105,22 @@ task myJavadoc(type: Javadoc) {
 }
 
 task javadocJar(type: Jar) {
-    classifier = 'javadoc'
+    archiveClassifier.set 'javadoc'
     from myJavadoc
 }
 
 task tinyJar(type: Jar, dependsOn: compileTinyJava) {
-    classifier = 'tiny'
+    archiveClassifier.set 'tiny'
     from file("${project.buildDir}/tiny-classes/main")
 }
 
 task sourcesJar(type: Jar) {
-    classifier = 'sources'
+    archiveClassifier.set 'sources'
     from sourceSets.main.allSource
 }
 
 task combinedJar(type: Jar) {
-    classifier = 'combined'
+    archiveClassifier.set 'combined'
     from sourceSets.main.allSource
     from sourceSets.main.output
 }
