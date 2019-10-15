@@ -24,6 +24,7 @@ plugins {
     id 'org.hidetake.ssh' version '2.1.0'
     id 'org.tenne.rest' version '0.4.2'
     id 'io.codearte.nexus-staging' version '0.20.0'
+    id 'com.gitlab.svg2ico' version '0.8'
 }
 
 repositories {
@@ -50,7 +51,6 @@ configurations {
     testIntegrationCompile {
         extendsFrom testInfrastructureCompile
     }
-    svg2ico
     batik
 }
 
@@ -66,8 +66,6 @@ dependencies {
     documentationCompile sourceSets.main.output
     documentationCompile group: 'net.sourceforge.writexml', name: 'writexml', version: '1.1'
     documentationCompile group: 'net.sourceforge.xazzle', name: 'xazzle', version: '0.39'
-    documentationCompile group: 'net.sourceforge.svg2ico', name: 'svg2ico', version: '1.5'
-    svg2ico group: 'net.sourceforge.svg2ico', name: 'svg2ico', version: '1.5'
     batik group: 'org.apache.xmlgraphics', name: 'batik-rasterizer', version: '1.8'
     batik group: 'org.apache.xmlgraphics', name: 'xmlgraphics-commons', version: '2.0'
     batik group: 'org.apache.xmlgraphics', name: 'batik-codec', version: '1.8'
@@ -135,16 +133,12 @@ task documentationDirectory {
     }
 }
 
-task ico(dependsOn: documentationDirectory) {
-    doLast {
-        ant.taskdef(name: 'svg2ico',
-                classname: 'net.sourceforge.svg2ico.Svg2IcoTask',
-                classpath: configurations.svg2ico.asPath)
-        ant.svg2ico(src: 'resources/favicon.svg',
-                dest: "${project.buildDir}/documentation/favicon.ico",
-                width: '32',
-                height: '32'
-        )
+task ico(type: Svg2IcoTask, dependsOn: documentationDirectory) {
+    destination = file("${project.buildDir}/documentation/favicon.ico")
+    input {
+        source = file('resources/favicon.svg')
+        width = 32
+        height = 32
     }
 }
 
