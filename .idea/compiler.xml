@@ -2,13 +2,13 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="urin_documentation" target="1.10" />
+      <module name="urin_documentation" target="11" />
       <module name="urin_main" target="9" />
-      <module name="urin_test" target="1.10" />
+      <module name="urin_test" target="11" />
       <module name="urin_testAcceptance" target="1.10" />
       <module name="urin_testApi" target="1.8" />
-      <module name="urin_testInfrastructure" target="1.10" />
-      <module name="urin_testIntegration" target="1.10" />
+      <module name="urin_testInfrastructure" target="11" />
+      <module name="urin_testIntegration" target="11" />
       <module name="urin_testModule" target="1.10" />
     </bytecodeTargetLevel>
   </component>
