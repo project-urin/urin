@@ -57,7 +57,7 @@ configurations {
 dependencies {
     testInfrastructureCompile sourceSets.main.output
     testInfrastructureCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
-    testInfrastructureCompile group: 'com.google.guava', name: 'guava', version: '22.0'
+    testInfrastructureCompile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
     testInfrastructureCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
     testInfrastructureCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.5.2'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
