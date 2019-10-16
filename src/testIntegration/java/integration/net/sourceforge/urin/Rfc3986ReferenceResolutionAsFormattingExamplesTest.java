@@ -26,13 +26,13 @@ import static net.sourceforge.urin.Segment.segment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
+class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
 
     @Test
-    public void normalExamples() throws Exception {
+    void normalExamples() {
         assertThat(scheme("g").urin(Path.rootlessPath("h")).asString(), equalTo("g:h"));
         assertThat(aScheme().relativeReference(rootlessPath(segment("g"))).asString(), equalTo("g"));
-        assertThat(aScheme().relativeReference(Path.rootlessPath(Segment.<String>dot(), segment("g"))).asString(), equalTo("g"));
+        assertThat(aScheme().relativeReference(Path.rootlessPath(Segment.dot(), segment("g"))).asString(), equalTo("g"));
         assertThat(aScheme().relativeReference(Path.rootlessPath("g", "")).asString(), equalTo("g/"));
         assertThat(aScheme().relativeReference(path("g")).asString(), equalTo("/g"));
         assertThat(aScheme().relativeReference(authority(registeredName("g"))).asString(), equalTo("//g"));
@@ -45,32 +45,32 @@ public class Rfc3986ReferenceResolutionAsFormattingExamplesTest {
         assertThat(aScheme().relativeReference(Path.rootlessPath("g;x")).asString(), equalTo("g;x"));
         assertThat(aScheme().relativeReference(Path.rootlessPath("g;x"), query("y"), fragment("s")).asString(), equalTo("g;x?y#s"));
         assertThat(aScheme().relativeReference().asString(), equalTo(""));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dot())).asString(), equalTo("."));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dot(), segment(""))).asString(), equalTo("./"));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dotDot())).asString(), equalTo(".."));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dotDot(), segment(""))).asString(), equalTo("../"));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dotDot(), segment("g"))).asString(), equalTo("../g"));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot())).asString(), equalTo("../.."));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot(), segment(""))).asString(), equalTo("../../"));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot(), segment("g"))).asString(), equalTo("../../g"));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dot())).asString(), equalTo("."));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dot(), segment(""))).asString(), equalTo("./"));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dotDot())).asString(), equalTo(".."));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dotDot(), segment(""))).asString(), equalTo("../"));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dotDot(), segment("g"))).asString(), equalTo("../g"));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot())).asString(), equalTo("../.."));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot(), segment(""))).asString(), equalTo("../../"));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot(), segment("g"))).asString(), equalTo("../../g"));
     }
 
     @Test
-    public void abnormalExamples() throws Exception {
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot(), Segment.<String>dotDot(), segment("g"))).asString(), equalTo("../../../g"));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot(), Segment.<String>dotDot(), Segment.<String>dotDot(), segment("g"))).asString(), equalTo("../../../../g"));
-        assertThat(aScheme().relativeReference(Path.path(Segment.<String>dot(), segment("g"))).asString(), equalTo("/g"));
-        assertThat(aScheme().relativeReference(Path.path(Segment.<String>dotDot(), segment("g"))).asString(), equalTo("/g"));
+    void abnormalExamples() {
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot(), Segment.dotDot(), segment("g"))).asString(), equalTo("../../../g"));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot(), Segment.dotDot(), Segment.dotDot(), segment("g"))).asString(), equalTo("../../../../g"));
+        assertThat(aScheme().relativeReference(Path.path(Segment.dot(), segment("g"))).asString(), equalTo("/g"));
+        assertThat(aScheme().relativeReference(Path.path(Segment.dotDot(), segment("g"))).asString(), equalTo("/g"));
         assertThat(aScheme().relativeReference(Path.rootlessPath("g.")).asString(), equalTo("g."));
         assertThat(aScheme().relativeReference(Path.rootlessPath(".g")).asString(), equalTo(".g"));
         assertThat(aScheme().relativeReference(Path.rootlessPath("g..")).asString(), equalTo("g.."));
         assertThat(aScheme().relativeReference(Path.rootlessPath("..g")).asString(), equalTo("..g"));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dot(), Segment.<String>dotDot(), segment("g"))).asString(), equalTo("../g"));
-        assertThat(aScheme().relativeReference(rootlessPath(Segment.<String>dot(), segment("g"), Segment.<String>dot())).asString(), equalTo("g/"));
-        assertThat(aScheme().relativeReference(rootlessPath(segment("g"), Segment.<String>dot(), segment("h"))).asString(), equalTo("g/h"));
-        assertThat(aScheme().relativeReference(rootlessPath(segment("g"), Segment.<String>dotDot(), segment("h"))).asString(), equalTo("h"));
-        assertThat(aScheme().relativeReference(rootlessPath(segment("g;x=1"), Segment.<String>dot(), segment("y"))).asString(), equalTo("g;x=1/y"));
-        assertThat(aScheme().relativeReference(rootlessPath(segment("g;x=1"), Segment.<String>dotDot(), segment("y"))).asString(), equalTo("y"));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dot(), Segment.dotDot(), segment("g"))).asString(), equalTo("../g"));
+        assertThat(aScheme().relativeReference(rootlessPath(Segment.dot(), segment("g"), Segment.dot())).asString(), equalTo("g/"));
+        assertThat(aScheme().relativeReference(rootlessPath(segment("g"), Segment.dot(), segment("h"))).asString(), equalTo("g/h"));
+        assertThat(aScheme().relativeReference(rootlessPath(segment("g"), Segment.dotDot(), segment("h"))).asString(), equalTo("h"));
+        assertThat(aScheme().relativeReference(rootlessPath(segment("g;x=1"), Segment.dot(), segment("y"))).asString(), equalTo("g;x=1/y"));
+        assertThat(aScheme().relativeReference(rootlessPath(segment("g;x=1"), Segment.dotDot(), segment("y"))).asString(), equalTo("y"));
         assertThat(aScheme().relativeReference(Path.rootlessPath("g"), query("y/./x")).asString(), equalTo("g?y/./x"));
         assertThat(aScheme().relativeReference(Path.rootlessPath("g"), query("y/../x")).asString(), equalTo("g?y/../x"));
         assertThat(aScheme().relativeReference(Path.rootlessPath("g"), fragment("s/./x")).asString(), equalTo("g#s/./x"));

@@ -10,7 +10,6 @@
 
 package integration.net.sourceforge.urin;
 
-import com.google.common.base.Function;
 import net.sourceforge.urin.Fragment;
 import net.sourceforge.urin.Path;
 import net.sourceforge.urin.RelativeReference;
@@ -28,32 +27,28 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
-public class RelativeReferenceSamplesTest {
+class RelativeReferenceSamplesTest {
     @Test
-    public void canMakeARelativeReferenceWithColonInTheFirstSegment() throws Exception {
+    void canMakeARelativeReferenceWithColonInTheFirstSegment() {
         Segment<String> segment = segment(aStringIncluding(':'));
         assertThat(aScheme().relativeReference(rootlessPath(segment)).asString(), equalTo("./" + asString(segment)));
     }
 
     @Test
-    public void canParseARelativeReferenceWithColonInTheFirstSegment() throws Exception {
+    void canParseARelativeReferenceWithColonInTheFirstSegment() throws Exception {
         Segment<String> segment = segment(aStringIncluding(':'));
         assertThat(aScheme().parseRelativeReference("./" + asString(segment)), equalTo(aScheme().relativeReference(rootlessPath(segment))));
     }
 
     @Test
-    public void canParseARelativeReferenceAndRetrieveTheValuesOfTheSegments() throws Exception {
+    void canParseARelativeReferenceAndRetrieveTheValuesOfTheSegments() throws Exception {
         RelativeReference<String, ?, ?> relativeReference = aScheme().parseRelativeReference("a/b%2Fc");
         final Path<String> path = relativeReference.path();
-        assertThat(transform(path, new Function<Segment<String>, String>() {
-            public String apply(final Segment<String> segment) {
-                return segment.value();
-            }
-        }), contains("a", "b/c"));
+        assertThat(transform(path, Segment::value), contains("a", "b/c"));
     }
 
     @Test
-    public void canParseARelativeReferenceAndRetrieveTheValuesOfTheFragment() throws Exception {
+    void canParseARelativeReferenceAndRetrieveTheValuesOfTheFragment() throws Exception {
         RelativeReference<?, ?, Fragment<String>> relativeReference = aScheme().parseRelativeReference("a#foo:bar");
         assertThat(relativeReference.hasFragment(), equalTo(true));
         assertThat(relativeReference.fragment(), equalTo(fragment("foo:bar")));

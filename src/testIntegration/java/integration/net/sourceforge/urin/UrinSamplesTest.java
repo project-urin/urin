@@ -27,76 +27,76 @@ import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAndParse;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAsUriAndParse;
 
-public class UrinSamplesTest {
+class UrinSamplesTest {
     @Test
-    public void canMakeAUrinWithEmptyPath() throws Exception {
+    void canMakeAUrinWithEmptyPath() throws Exception {
         Scheme scheme = aScheme();
         Authority authority = anAuthority();
         assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority), scheme.urin(authority));
     }
 
     @Test
-    public void canMakeAUrinWithNoAuthorityAndTwoEmptySegments() throws Exception {
+    void canMakeAUrinWithNoAuthorityAndTwoEmptySegments() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         assertAsStringAndParse(aScheme(), asString(scheme) + ":/.//", scheme.urin(path("", "")));
     }
 
     @Test
-    public void canMakeAUrinWithAuthorityAndPathToRoot() throws Exception {
+    void canMakeAUrinWithAuthorityAndPathToRoot() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority) + "/", scheme.urin(authority, Path.<String>path()));
+        assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority) + "/", scheme.urin(authority, Path.path()));
     }
 
     @Test
-    public void canMakeAUrinWithAuthorityAndAbsolutePath() throws Exception {
+    void canMakeAUrinWithAuthorityAndAbsolutePath() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Segment<String> segment = aNonDotSegment();
-        assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority) + "/" + asString(segment), scheme.urin(authority, Path.<String>path(segment)));
+        assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority) + "/" + asString(segment), scheme.urin(authority, Path.path(segment)));
     }
 
     @Test
-    public void canMakeAUrinWithPathToRoot() throws Exception {
+    void canMakeAUrinWithPathToRoot() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/", scheme.urin(Path.<String>path()));
+        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/", scheme.urin(Path.path()));
     }
 
     @Test
-    public void emptyPathIsPreserved() throws Exception {
+    void emptyPathIsPreserved() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/?", scheme.urin(Path.<String>path(), query("")));
+        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/?", scheme.urin(Path.path(), query("")));
     }
 
     @Test
-    public void emptyFragmentIsPreserved() throws Exception {
+    void emptyFragmentIsPreserved() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/#", scheme.urin(Path.<String>path(), fragment("")));
+        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/#", scheme.urin(Path.path(), fragment("")));
     }
 
     @Test
-    public void canMakeAUrinWithSubencodedSegments() throws Exception {
+    void canMakeAUrinWithSubencodedSegments() throws Exception {
         final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = PercentEncodingPartial.percentEncodingDelimitedValue('!');
-        Scheme<Iterable<String>, Query<String>, Fragment<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String>(percentEncodingPartial) {
+        Scheme<Iterable<String>, Query<String>, Fragment<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<>(percentEncodingPartial) {
             @Override
             protected Segment<Iterable<String>> makeOne(Iterable<String> o) {
                 return anIterableOfStringsSegment(o, percentEncodingPartial);
             }
         }, Query.stringQueryMaker(), Fragment.stringFragmentMaker());
-        assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/a!%21!c", scheme.urin(Path.<Iterable<String>>path(anIterableOfStringsSegment(asList("a", "!", "c"), percentEncodingPartial))));
+        assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/a!%21!c", scheme.urin(Path.path(anIterableOfStringsSegment(asList("a", "!", "c"), percentEncodingPartial))));
     }
 
     @Test
-    public void canMakeAUrinWithSubencodedEmptySegments() throws Exception {
+    void canMakeAUrinWithSubencodedEmptySegments() throws Exception {
         final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = PercentEncodingPartial.percentEncodingDelimitedValue('!');
-        Scheme<Iterable<String>, Query<String>, Fragment<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String>(percentEncodingPartial) {
+        Scheme<Iterable<String>, Query<String>, Fragment<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<>(percentEncodingPartial) {
             @Override
             protected Segment<Iterable<String>> makeOne(Iterable<String> o) {
                 return anIterableOfStringsSegment(o, percentEncodingPartial);
             }
         }, Query.stringQueryMaker(), Fragment.stringFragmentMaker());
-        final Segment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.<String>emptyList(), percentEncodingPartial);
-        assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/.//", scheme.urin(Path.<Iterable<String>>path(emptySegment, emptySegment, Segment.<Iterable<String>>dotDot())));
+        final Segment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.emptyList(), percentEncodingPartial);
+        assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/.//", scheme.urin(Path.path(emptySegment, emptySegment, Segment.dotDot())));
     }
 
     private static Segment<Iterable<String>> anIterableOfStringsSegment(Iterable<String> o, PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
@@ -104,9 +104,9 @@ public class UrinSamplesTest {
     }
 
     @Test
-    public void canMakeAUrinWithSubencodedFragment() throws Exception {
+    void canMakeAUrinWithSubencodedFragment() throws Exception {
         final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = PercentEncodingPartial.percentEncodingDelimitedValue('!');
-        Scheme<String, Query<String>, MyFragment> scheme = new Scheme.GenericScheme<>("xyz", Segment.STRING_SEGMENT_MAKING_DECODER, Query.stringQueryMaker(), new MakingDecoder<MyFragment, Iterable<String>, String>(percentEncodingPartial) {
+        Scheme<String, Query<String>, MyFragment> scheme = new Scheme.GenericScheme<>("xyz", Segment.STRING_SEGMENT_MAKING_DECODER, Query.stringQueryMaker(), new MakingDecoder<>(percentEncodingPartial) {
             @Override
             protected MyFragment makeOne(Iterable<String> strings) {
                 return new MyFragment(strings, percentEncodingPartial);

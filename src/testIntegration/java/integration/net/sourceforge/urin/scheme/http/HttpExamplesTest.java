@@ -27,30 +27,31 @@ import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class HttpExamplesTest {
+class HttpExamplesTest {
     @Test
-    public void canGenerateAnHttpUriWithoutQueryParameters() throws Exception {
+    void canGenerateAnHttpUriWithoutQueryParameters() {
         assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc")).asString(), equalTo("http://urin.sourceforge.net/javadoc"));
     }
 
     @Test
-    public void canGenerateAnHttpUriWithQueryParameters() throws Exception {
+    void canGenerateAnHttpUriWithQueryParameters() {
         assertThat(Http.http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), HttpQuery.queryParameters(HttpQuery.queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
     }
 
     @Test
-    public void aUrinWithEmptyVarargsHttpParametersHasEmptyQueryPart() throws Exception {
+    void aUrinWithEmptyVarargsHttpParametersHasEmptyQueryPart() {
+        //noinspection RedundantArrayCreation
         final Urin<String, HttpQuery, Fragment<String>> uriWithEmptyParameters = http(
                 anAuthority(),
                 anAbsolutePath(),
                 queryParameters(new HttpQuery.QueryParameter[]{})
         );
         assertThat(uriWithEmptyParameters.hasQuery(), equalTo(true));
-        assertThat(uriWithEmptyParameters.query(), Matchers.<HttpQuery.QueryParameter>emptyIterable());
+        assertThat(uriWithEmptyParameters.query(), Matchers.emptyIterable());
     }
 
     @Test
-    public void canGenerateAnHttpUriWithAFragment() throws Exception {
+    void canGenerateAnHttpUriWithAFragment() {
         assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), fragment("the first bit")).asString(), equalTo("http://urin.sourceforge.net/javadoc#the%20first%20bit"));
     }
 }

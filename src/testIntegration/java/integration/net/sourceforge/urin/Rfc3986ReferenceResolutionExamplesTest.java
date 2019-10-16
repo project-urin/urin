@@ -30,17 +30,17 @@ import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class Rfc3986ReferenceResolutionExamplesTest {
+class Rfc3986ReferenceResolutionExamplesTest {
 
     private static final Urin<String, HttpQuery, Fragment<String>> BASE_URI = Http.http(registeredName("a"), Path.path(segment("b"), segment("c"), segment("d;p")), queryParameters(queryParameter("q")));
 
     @Test
-    public void normalExamples() throws Exception {
+    void normalExamples() {
         // "g:h"           =  "g:h"
         // is g:h a valid relative reference?
 //        assertThat(BASE_URI.resolve(urin(scheme("g"), hierarchicalPart(rootlessPath("h")))).asString(), equalTo("g:h"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g")))).asString(), equalTo("http://a/b/c/g"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath(Segment.<String>dot(), segment("g")))).asString(), equalTo("http://a/b/c/g"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath(Segment.dot(), segment("g")))).asString(), equalTo("http://a/b/c/g"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath("g", ""))).asString(), equalTo("http://a/b/c/g/"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(path("g"))).asString(), equalTo("http://a/g"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(authority(registeredName("g")))).asString(), equalTo("http://g"));
@@ -53,32 +53,32 @@ public class Rfc3986ReferenceResolutionExamplesTest {
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath("g;x"))).asString(), equalTo("http://a/b/c/g;x"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath("g;x"), queryParameters(queryParameter("y")), fragment("s"))).asString(), equalTo("http://a/b/c/g;x?y#s"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference()).asString(), equalTo("http://a/b/c/d;p?q"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dot()))).asString(), equalTo("http://a/b/c/"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dot(), segment("")))).asString(), equalTo("http://a/b/c/"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dotDot()))).asString(), equalTo("http://a/b/"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dotDot(), segment("")))).asString(), equalTo("http://a/b/"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dotDot(), segment("g")))).asString(), equalTo("http://a/b/g"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot()))).asString(), equalTo("http://a/"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot(), segment("")))).asString(), equalTo("http://a/"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot(), segment("g")))).asString(), equalTo("http://a/g"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dot()))).asString(), equalTo("http://a/b/c/"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dot(), segment("")))).asString(), equalTo("http://a/b/c/"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dotDot()))).asString(), equalTo("http://a/b/"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dotDot(), segment("")))).asString(), equalTo("http://a/b/"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dotDot(), segment("g")))).asString(), equalTo("http://a/b/g"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot()))).asString(), equalTo("http://a/"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot(), segment("")))).asString(), equalTo("http://a/"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot(), segment("g")))).asString(), equalTo("http://a/g"));
     }
 
     @Test
-    public void abnormalExamples() throws Exception {
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot(), Segment.<String>dotDot(), segment("g")))).asString(), equalTo("http://a/g"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dotDot(), Segment.<String>dotDot(), Segment.<String>dotDot(), Segment.<String>dotDot(), segment("g")))).asString(), equalTo("http://a/g"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.path(Segment.<String>dot(), segment("g")))).asString(), equalTo("http://a/g"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.path(Segment.<String>dotDot(), segment("g")))).asString(), equalTo("http://a/g"));
+    void abnormalExamples() {
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot(), Segment.dotDot(), segment("g")))).asString(), equalTo("http://a/g"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dotDot(), Segment.dotDot(), Segment.dotDot(), Segment.dotDot(), segment("g")))).asString(), equalTo("http://a/g"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.path(Segment.dot(), segment("g")))).asString(), equalTo("http://a/g"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.path(Segment.dotDot(), segment("g")))).asString(), equalTo("http://a/g"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath("g."))).asString(), equalTo("http://a/b/c/g."));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath(".g"))).asString(), equalTo("http://a/b/c/.g"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath("g.."))).asString(), equalTo("http://a/b/c/g.."));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath("..g"))).asString(), equalTo("http://a/b/c/..g"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dot(), Segment.<String>dotDot(), segment("g")))).asString(), equalTo("http://a/b/g"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.<String>dot(), segment("g"), Segment.<String>dot()))).asString(), equalTo("http://a/b/c/g/"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g"), Segment.<String>dot(), segment("h")))).asString(), equalTo("http://a/b/c/g/h"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g"), Segment.<String>dotDot(), segment("h")))).asString(), equalTo("http://a/b/c/h"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g;x=1"), Segment.<String>dot(), segment("y")))).asString(), equalTo("http://a/b/c/g;x=1/y"));
-        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g;x=1"), Segment.<String>dotDot(), segment("y")))).asString(), equalTo("http://a/b/c/y"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dot(), Segment.dotDot(), segment("g")))).asString(), equalTo("http://a/b/g"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dot(), segment("g"), Segment.dot()))).asString(), equalTo("http://a/b/c/g/"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g"), Segment.dot(), segment("h")))).asString(), equalTo("http://a/b/c/g/h"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g"), Segment.dotDot(), segment("h")))).asString(), equalTo("http://a/b/c/h"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g;x=1"), Segment.dot(), segment("y")))).asString(), equalTo("http://a/b/c/g;x=1/y"));
+        assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g;x=1"), Segment.dotDot(), segment("y")))).asString(), equalTo("http://a/b/c/y"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath("g"), queryParameters(queryParameter("y/./x")))).asString(), equalTo("http://a/b/c/g?y/./x"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath("g"), queryParameters(queryParameter("y/../x")))).asString(), equalTo("http://a/b/c/g?y/../x"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(Path.rootlessPath("g"), fragment("s/./x"))).asString(), equalTo("http://a/b/c/g#s/./x"));
