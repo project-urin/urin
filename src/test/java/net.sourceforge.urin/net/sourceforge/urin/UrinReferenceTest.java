@@ -14,12 +14,12 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.RelativeReferenceBuilder.anUnpollutedRelativeReference;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.UrinBuilder.anUnpollutedUrin;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UrinReferenceTest {
 
@@ -42,14 +42,14 @@ class UrinReferenceTest {
     }
 
     @Test
-    void anInvalidStringThrowsAParseException() throws Exception {
-        assertThrowsException("Invalid scheme should throw parse exception", ParseException.class, () -> aScheme().parseUrinReference("cache_object://"));
+    void anInvalidStringThrowsAParseException() {
+        assertThrows(ParseException.class, () -> aScheme().parseUrinReference("cache_object://"), "Invalid scheme should throw parse exception");
     }
 
     @Test
-    void parsingNullThrowsNullPointerException() throws Exception {
+    void parsingNullThrowsNullPointerException() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertThrowsException("Null value should throw NullPointerException in parser", NullPointerException.class, () -> scheme.parseUrinReference((String) null));
+        assertThrows(NullPointerException.class, () -> scheme.parseUrinReference((String) null), "Null value should throw NullPointerException in parser");
     }
 
     @Test

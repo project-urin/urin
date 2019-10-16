@@ -18,13 +18,13 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.MoreRandomStringUtils.*;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_EVERYTHING;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
 import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percentEncodingString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PercentEncodingTest {
 
@@ -38,8 +38,8 @@ class PercentEncodingTest {
     }
 
     @Test
-    void rejectsNullInFactoryForPercentEncodableString() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> PercentEncodingPartial.PercentEncoding.percentEncodingString(null));
+    void rejectsNullInFactoryForPercentEncodableString() {
+        assertThrows(NullPointerException.class, () -> PercentEncodingPartial.PercentEncoding.percentEncodingString(null), "Null value should throw NullPointerException in factory");
     }
 
     @Test
@@ -59,11 +59,11 @@ class PercentEncodingTest {
     }
 
     @Test
-    void rejectsNullInFactoryForPercentEncodableDelimitedValue() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> {
+    void rejectsNullInFactoryForPercentEncodableDelimitedValue() {
+        assertThrows(NullPointerException.class, () -> {
             final PercentEncodingPartial.PercentEncoding<Object> percentEncoding = null;
             PercentEncodingPartial.PercentEncoding.percentEncodingDelimitedValue(aChar(), percentEncoding);
-        });
+        }, "Null value should throw NullPointerException in factory");
     }
 
     @Test
@@ -80,9 +80,9 @@ class PercentEncodingTest {
     }
 
     @Test
-    void rejectsNullInFactoryForPercentEncodableSpecifiedValue() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(null, percentEncodingString(EVERYTHING_PERCENT_ENCODER)));
-        assertThrowsException("Null specified value should throw NullPointerException in factory", NullPointerException.class, () -> PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(aString(), null));
+    void rejectsNullInFactoryForPercentEncodableSpecifiedValue() {
+        assertThrows(NullPointerException.class, () -> PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(null, percentEncodingString(EVERYTHING_PERCENT_ENCODER)), "Null value should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(aString(), null), "Null specified value should throw NullPointerException in factory");
     }
 
 }

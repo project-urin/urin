@@ -13,12 +13,12 @@ package net.sourceforge.urin;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
 import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class EmptyPathTest {
     @Test
@@ -70,12 +70,12 @@ class EmptyPathTest {
     }
 
     @Test
-    void emptyPathSegmentsDoesNotExposeMutability() throws Exception {
+    void emptyPathSegmentsDoesNotExposeMutability() {
         EmptyPath<String> emptyPath = new EmptyPath<>();
-        assertThrowsException("Null value should throw NullPointerException in factory", UnsupportedOperationException.class, () -> {
+        assertThrows(UnsupportedOperationException.class, () -> {
             //noinspection ConstantConditions
             emptyPath.segments().add(aSegment());
             assertThat(emptyPath, Matchers.emptyIterable());
-        });
+        }, "Null value should throw NullPointerException in factory");
     }
 }

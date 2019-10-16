@@ -13,7 +13,6 @@ package net.sourceforge.urin;
 import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.CharacterSets.DIGIT;
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.Port.parse;
 import static net.sourceforge.urin.Port.port;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -37,8 +36,8 @@ class PortTest {
     }
 
     @Test
-    void cannotMakeAPortUsingANegativeInt() throws Exception {
-        assertThrowsException("Negative port should throw exception in factory", IllegalArgumentException.class, () -> port(-123));
+    void cannotMakeAPortUsingANegativeInt() {
+        assertThrows(IllegalArgumentException.class, () -> port(-123), "Negative port should throw exception in factory");
     }
 
     @Test
@@ -47,8 +46,8 @@ class PortTest {
     }
 
     @Test
-    void rejectsNullPort() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> port(null));
+    void rejectsNullPort() {
+        assertThrows(NullPointerException.class, () -> port(null), "Null value should throw NullPointerException in factory");
     }
 
     @Test

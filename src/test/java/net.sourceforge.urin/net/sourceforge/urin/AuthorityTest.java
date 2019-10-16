@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Authority.parse;
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
@@ -22,6 +21,7 @@ import static net.sourceforge.urin.UserInfoBuilder.aUserInfo;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AuthorityTest {
     @Test
@@ -31,8 +31,8 @@ class AuthorityTest {
     }
 
     @Test
-    void rejectsNullHostInFactory() throws Exception {
-        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, () -> authority(null));
+    void rejectsNullHostInFactory() {
+        assertThrows(NullPointerException.class, () -> authority(null), "Null host should throw NullPointerException in factory");
     }
 
     @Test
@@ -61,9 +61,9 @@ class AuthorityTest {
     }
 
     @Test
-    void rejectsNullInFactoryForAuthorityWithNoPort() throws Exception {
-        assertThrowsException("Null userInfo should throw NullPointerException in factory", NullPointerException.class, () -> authority(null, aHost()));
-        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, () -> authority(aUserInfo(), null));
+    void rejectsNullInFactoryForAuthorityWithNoPort() {
+        assertThrows(NullPointerException.class, () -> authority(null, aHost()), "Null userInfo should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> authority(aUserInfo(), null), "Null host should throw NullPointerException in factory");
     }
 
     @Test
@@ -94,9 +94,9 @@ class AuthorityTest {
     }
 
     @Test
-    void rejectsNullInFactoryForAuthorityWithNoUserInfo() throws Exception {
-        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, () -> authority(null, aPort()));
-        assertThrowsException("Null port should throw NullPointerException in factory", NullPointerException.class, () -> authority(aHost(), null));
+    void rejectsNullInFactoryForAuthorityWithNoUserInfo() {
+        assertThrows(NullPointerException.class, () -> authority(null, aPort()), "Null host should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> authority(aHost(), null), "Null port should throw NullPointerException in factory");
     }
 
     @Test
@@ -128,10 +128,10 @@ class AuthorityTest {
     }
 
     @Test
-    void rejectsNullInFactoryForAuthorityWithAllOptions() throws Exception {
-        assertThrowsException("Null userInfo should throw NullPointerException in factory", NullPointerException.class, () -> authority(null, aHost(), aPort()));
-        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, () -> authority(aUserInfo(), null, aPort()));
-        assertThrowsException("Null port should throw NullPointerException in factory", NullPointerException.class, () -> authority(aUserInfo(), aHost(), null));
+    void rejectsNullInFactoryForAuthorityWithAllOptions() {
+        assertThrows(NullPointerException.class, () -> authority(null, aHost(), aPort()), "Null userInfo should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> authority(aUserInfo(), null, aPort()), "Null host should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> authority(aUserInfo(), aHost(), null), "Null port should throw NullPointerException in factory");
     }
 
 
@@ -186,14 +186,14 @@ class AuthorityTest {
     }
 
     @Test
-    void parsingAnInvalidAuthorityStringThrowsParseException() throws Exception {
-        assertThrowsException("In invalid authority should throw a parse exception", ParseException.class, () -> Authority.parse("something invalid"));
+    void parsingAnInvalidAuthorityStringThrowsParseException() {
+        assertThrows(ParseException.class, () -> Authority.parse("something invalid"), "In invalid authority should throw a parse exception");
     }
 
 
     @Test
-    void parsingNullThrowsNullPointerException() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in parser", NullPointerException.class, () -> Authority.parse(null));
+    void parsingNullThrowsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> Authority.parse(null), "Null value should throw NullPointerException in parser");
     }
 
 

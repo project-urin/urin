@@ -17,7 +17,6 @@ import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.CharacterSets.ALPHA;
 import static net.sourceforge.urin.CharacterSets.DIGIT;
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
@@ -47,8 +46,8 @@ class SchemeTest {
     }
 
     @Test
-    void rejectsNullScheme() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> Scheme.scheme(null));
+    void rejectsNullScheme() {
+        assertThrows(NullPointerException.class, () -> Scheme.scheme(null), "Null value should throw NullPointerException in factory");
     }
 
     @Test
@@ -231,8 +230,8 @@ class SchemeTest {
     }
 
     @Test
-    void rejectsNullPort() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> scheme(aValidSchemeName(), null));
+    void rejectsNullPort() {
+        assertThrows(NullPointerException.class, () -> scheme(aValidSchemeName(), null), "Null value should throw NullPointerException in factory");
     }
 
     @Test

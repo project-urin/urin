@@ -16,7 +16,6 @@ import java.net.URI;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HostBuilder.aRegisteredName;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
@@ -32,6 +31,7 @@ import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class RelativeReferenceTest {
     @Test
@@ -41,10 +41,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithEmptyPathAuthorityIsCorrect() throws Exception {
+    void aRelativeReferenceWithEmptyPathAuthorityIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference();
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
 
     @Test
@@ -53,17 +53,17 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithEmptyPathQueryIsCorrect() throws Exception {
+    void aRelativeReferenceWithEmptyPathQueryIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference();
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
-    void aRelativeReferenceWithEmptyPathFragmentIsCorrect() throws Exception {
+    void aRelativeReferenceWithEmptyPathFragmentIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference();
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -91,10 +91,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithEmptyPathWithQueryAuthorityIsCorrect() throws Exception {
+    void aRelativeReferenceWithEmptyPathWithQueryAuthorityIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference(aQuery());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
 
     @Test
@@ -112,11 +112,11 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithEmptyPathWithQueryFragmentIsCorrect() throws Exception {
+    void aRelativeReferenceWithEmptyPathWithQueryFragmentIsCorrect() {
         Query<String> query = aQuery();
         final RelativeReference relativeReference = aScheme().relativeReference(query);
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -145,11 +145,11 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithQuery() throws Exception {
-        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, () -> {
+    void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithQuery() {
+        assertThrows(NullPointerException.class, () -> {
             Query<String> query = null;
             aScheme().relativeReference(query);
-        });
+        }, "Null query should throw NullPointerException in factory");
     }
 
     @Test
@@ -160,11 +160,11 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithEmptyPathWithFragmentAuthorityIsCorrect() throws Exception {
+    void aRelativeReferenceWithEmptyPathWithFragmentAuthorityIsCorrect() {
         Fragment<String> fragment = aFragment();
         final RelativeReference relativeReference = aScheme().relativeReference(fragment);
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
     }
 
@@ -175,11 +175,11 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithEmptyPathWithFragmentQueryIsCorrect() throws Exception {
+    void aRelativeReferenceWithEmptyPathWithFragmentQueryIsCorrect() {
         Fragment<String> fragment = aFragment();
         final RelativeReference relativeReference = aScheme().relativeReference(fragment);
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
@@ -216,11 +216,11 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithFragment() throws Exception {
-        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, () -> {
+    void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithFragment() {
+        assertThrows(NullPointerException.class, () -> {
             Fragment<String> fragment = null;
             aScheme().relativeReference(fragment);
-        });
+        }, "Null fragment should throw NullPointerException in factory");
     }
 
     @Test
@@ -232,12 +232,12 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithEmptyPathWithQueryAndFragmentAuthorityIsCorrect() throws Exception {
+    void aRelativeReferenceWithEmptyPathWithQueryAndFragmentAuthorityIsCorrect() {
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
         final RelativeReference relativeReference = aScheme().relativeReference(query, fragment);
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
     }
 
@@ -302,15 +302,15 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithQueryAndFragment() throws Exception {
-        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, () -> {
+    void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithQueryAndFragment() {
+        assertThrows(NullPointerException.class, () -> {
             Query<String> query = null;
             aScheme().relativeReference(query, aFragment());
-        });
-        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, () -> {
+        }, "Null query should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> {
             Fragment<String> fragment = null;
             aScheme().relativeReference(aQuery(), fragment);
-        });
+        }, "Null fragment should throw NullPointerException in factory");
     }
 
     @Test
@@ -321,11 +321,11 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithPathAuthorityIsCorrect() throws Exception {
+    void aRelativeReferenceWithPathAuthorityIsCorrect() {
         Path<String> path = aPath();
         final RelativeReference relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
     }
 
@@ -336,19 +336,19 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithPathQueryIsCorrect() throws Exception {
+    void aRelativeReferenceWithPathQueryIsCorrect() {
         Path<String> path = aPath();
         final RelativeReference relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
-    void aRelativeReferenceWithPathFragmentIsCorrect() throws Exception {
+    void aRelativeReferenceWithPathFragmentIsCorrect() {
         Path<String> path = aPath();
         final RelativeReference relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -377,8 +377,8 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForARelativeReferenceWithPath() throws Exception {
-        assertThrowsException("Null path should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference((Path<String>) null));
+    void rejectsNullInFactoryForARelativeReferenceWithPath() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference((Path<String>) null), "Null path should throw NullPointerException in factory");
     }
 
     @Test
@@ -426,10 +426,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithPathAndQueryAuthorityIsCorrect() throws Exception {
+    void aRelativeReferenceWithPathAndQueryAuthorityIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference(aPath(), aQuery());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
     }
 
@@ -450,12 +450,12 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithPathAndQueryFragmentIsCorrect() throws Exception {
+    void aRelativeReferenceWithPathAndQueryFragmentIsCorrect() {
         Path<String> path = aPath();
         Query<String> query = aQuery();
         final RelativeReference relativeReference = aScheme().relativeReference(path, query);
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -494,9 +494,9 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForARelativeReferenceWithPathAndQuery() throws Exception {
-        assertThrowsException("Null path should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference((Path<String>) null, aQuery()));
-        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(aPath(), (Query<String>) null));
+    void rejectsNullInFactoryForARelativeReferenceWithPathAndQuery() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference((Path<String>) null, aQuery()), "Null path should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(aPath(), (Query<String>) null), "Null query should throw NullPointerException in factory");
     }
 
     @Test
@@ -547,10 +547,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithPathAndFragmentAuthorityIsCorrect() throws Exception {
+    void aRelativeReferenceWithPathAndFragmentAuthorityIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference(aPath(), aFragment());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
 
     @Test
@@ -561,12 +561,12 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithPathAndFragmentQueryIsCorrect() throws Exception {
+    void aRelativeReferenceWithPathAndFragmentQueryIsCorrect() {
         Path<String> path = aPath();
         Fragment<String> fragment = aFragment();
         final RelativeReference relativeReference = aScheme().relativeReference(path, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
@@ -614,9 +614,9 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForARelativeReferenceWithPathAndFragment() throws Exception {
-        assertThrowsException("Null path should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference((Path<String>) null, aFragment()));
-        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(aPath(), (Fragment<String>) null));
+    void rejectsNullInFactoryForARelativeReferenceWithPathAndFragment() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference((Path<String>) null, aFragment()), "Null path should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(aPath(), (Fragment<String>) null), "Null fragment should throw NullPointerException in factory");
     }
 
     @Test
@@ -668,10 +668,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithPathAndQueryAndFragmentAuthorityIsCorrect() throws Exception {
+    void aRelativeReferenceWithPathAndQueryAndFragmentAuthorityIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference(aPath(), aQuery(), aFragment());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
     }
 
@@ -751,10 +751,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForARelativeReferenceWithPathAndQueryAndFragment() throws Exception {
-        assertThrowsException("Null path should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference((Path<String>) null, aQuery(), aFragment()));
-        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(aPath(), null, aFragment()));
-        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(aPath(), aQuery(), null));
+    void rejectsNullInFactoryForARelativeReferenceWithPathAndQueryAndFragment() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference((Path<String>) null, aQuery(), aFragment()), "Null path should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(aPath(), null, aFragment()), "Null query should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(aPath(), aQuery(), null), "Null fragment should throw NullPointerException in factory");
     }
 
     @Test
@@ -815,11 +815,11 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForASimplePath() throws Exception {
-        assertThrowsException("Null first segment should throw NullPointerException in factory", NullPointerException.class, () -> {
+    void rejectsNullInFactoryForASimplePath() {
+        assertThrows(NullPointerException.class, () -> {
             Path<String> path = null;
             aScheme().relativeReference(path);
-        });
+        }, "Null first segment should throw NullPointerException in factory");
     }
 
     @Test
@@ -835,10 +835,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aSimpleAbsolutePathAuthorityIsCorrect() throws Exception {
+    void aSimpleAbsolutePathAuthorityIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference(aPath());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
     }
 
@@ -849,19 +849,19 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aSimpleAbsolutePathQueryIsCorrect() throws Exception {
+    void aSimpleAbsolutePathQueryIsCorrect() {
         Path<String> path = aPath();
         final RelativeReference relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
-    void aSimpleAbsolutePathFragmentIsCorrect() throws Exception {
+    void aSimpleAbsolutePathFragmentIsCorrect() {
         Path<String> path = aPath();
         final RelativeReference relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -917,10 +917,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aSimpleRootlessPathAuthorityIsCorrect() throws Exception {
+    void aSimpleRootlessPathAuthorityIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference(aPath());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
-        assertThrowsException("Attempt to get authority from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::authority);
+        assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
 
     @Test
@@ -930,17 +930,17 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aSimpleRootlessPathQueryIsCorrect() throws Exception {
+    void aSimpleRootlessPathQueryIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference(aPath());
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
-    void aSimpleRootlessPathFragmentIsCorrect() throws Exception {
+    void aSimpleRootlessPathFragmentIsCorrect() {
         final RelativeReference relativeReference = aScheme().relativeReference(aPath());
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -999,8 +999,8 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndEmptyPath() throws Exception {
-        assertThrowsException("Null authority should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference((Authority) null));
+    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndEmptyPath() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference((Authority) null), "Null authority should throw NullPointerException in factory");
     }
 
     @Test
@@ -1030,19 +1030,19 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithAuthorityAndEmptyPathQueryIsCorrect() throws Exception {
+    void aRelativeReferenceWithAuthorityAndEmptyPathQueryIsCorrect() {
         Authority authority = anAuthority();
         final RelativeReference relativeReference = aScheme().relativeReference(authority);
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
-    void aRelativeReferenceWithAuthorityAndEmptyPathFragmentIsCorrect() throws Exception {
+    void aRelativeReferenceWithAuthorityAndEmptyPathFragmentIsCorrect() {
         Authority authority = anAuthority();
         final RelativeReference relativeReference = aScheme().relativeReference(authority);
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -1147,12 +1147,12 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithAuthorityAndQueryFragmentIsCorrect() throws Exception {
+    void aRelativeReferenceWithAuthorityAndQueryFragmentIsCorrect() {
         Authority authority = anAuthority();
         Query<String> query = aQuery();
         final RelativeReference relativeReference = aScheme().relativeReference(authority, query);
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -1171,9 +1171,9 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndQuery() throws Exception {
-        assertThrowsException("Null authority should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference((Authority) null, aQuery()));
-        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), (Query<String>) null));
+    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndQuery() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference((Authority) null, aQuery()), "Null authority should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), (Query<String>) null), "Null query should throw NullPointerException in factory");
     }
 
     @Test
@@ -1260,12 +1260,12 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithAuthorityAndFragmentQueryIsCorrect() throws Exception {
+    void aRelativeReferenceWithAuthorityAndFragmentQueryIsCorrect() {
         Authority authority = anAuthority();
         Fragment<String> fragment = aFragment();
         final RelativeReference relativeReference = aScheme().relativeReference(authority, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
@@ -1293,9 +1293,9 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndFragment() throws Exception {
-        assertThrowsException("Null authority should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference((Authority) null, aFragment()));
-        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), (Fragment<String>) null));
+    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndFragment() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference((Authority) null, aFragment()), "Null authority should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), (Fragment<String>) null), "Null fragment should throw NullPointerException in factory");
     }
 
     @Test
@@ -1431,13 +1431,13 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndQueryAndFragment() throws Exception {
-        assertThrowsException("Null authority should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference((Authority) null, aQuery(), aFragment()));
-        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, () -> {
+    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndQueryAndFragment() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference((Authority) null, aQuery(), aFragment()), "Null authority should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> {
             Query<String> query = null;
             aScheme().relativeReference(anAuthority(), query, aFragment());
-        });
-        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), aQuery(), null));
+        }, "Null query should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), aQuery(), null), "Null fragment should throw NullPointerException in factory");
     }
 
     @Test
@@ -1520,21 +1520,21 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithAuthorityAndPathQueryIsCorrect() throws Exception {
+    void aRelativeReferenceWithAuthorityAndPathQueryIsCorrect() {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
         final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath);
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
-    void aRelativeReferenceWithAuthorityAndPathFragmentIsCorrect() throws Exception {
+    void aRelativeReferenceWithAuthorityAndPathFragmentIsCorrect() {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
         final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath);
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -1553,15 +1553,15 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPath() throws Exception {
-        assertThrowsException("Null authority should throw NullPointerException in factory", NullPointerException.class, () -> {
+    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPath() {
+        assertThrows(NullPointerException.class, () -> {
             Authority authority = null;
             aScheme().relativeReference(authority, anAbsolutePath());
-        });
-        assertThrowsException("Null path should throw NullPointerException in factory", NullPointerException.class, () -> {
+        }, "Null authority should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> {
             AbsolutePath<String> absolutePath = null;
             aScheme().relativeReference(anAuthority(), absolutePath);
-        });
+        }, "Null path should throw NullPointerException in factory");
     }
 
     @Test
@@ -1615,13 +1615,13 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithAuthorityAndPathAndQueryFragmentIsCorrect() throws Exception {
+    void aRelativeReferenceWithAuthorityAndPathAndQueryFragmentIsCorrect() {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
         Query<String> query = aQuery();
         final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath, query);
         assertThat(relativeReference.hasFragment(), equalTo(false));
-        assertThrowsException("Attempt to get fragment from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::fragment);
+        assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
     @Test
@@ -1642,10 +1642,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPathAndQuery() throws Exception {
-        assertThrowsException("Null authority should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(null, anAbsolutePath(), aQuery()));
-        assertThrowsException("Null path should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), null, aQuery()));
-        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), anAbsolutePath(), (Query<String>) null));
+    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPathAndQuery() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(null, anAbsolutePath(), aQuery()), "Null authority should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), null, aQuery()), "Null path should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), anAbsolutePath(), (Query<String>) null), "Null query should throw NullPointerException in factory");
     }
 
     @Test
@@ -1689,13 +1689,13 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void aRelativeReferenceWithAuthorityAndPathAndFragmentQueryIsCorrect() throws Exception {
+    void aRelativeReferenceWithAuthorityAndPathAndFragmentQueryIsCorrect() {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
         Fragment<String> fragment = aFragment();
         final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(false));
-        assertThrowsException("Attempt to get query from a UrinReference that does not have one.", UnsupportedOperationException.class, relativeReference::query);
+        assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
@@ -1726,10 +1726,10 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPathAndFragment() throws Exception {
-        assertThrowsException("Null authority should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(null, anAbsolutePath(), aFragment()));
-        assertThrowsException("Null path should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), (AbsolutePath<String>) null, aFragment()));
-        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), anAbsolutePath(), (Fragment<String>) null));
+    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPathAndFragment() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(null, anAbsolutePath(), aFragment()), "Null authority should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), (AbsolutePath<String>) null, aFragment()), "Null path should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), anAbsolutePath(), (Fragment<String>) null), "Null fragment should throw NullPointerException in factory");
     }
 
     @Test
@@ -1818,11 +1818,11 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPathAndQueryAndFragment() throws Exception {
-        assertThrowsException("Null authority should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(null, anAbsolutePath(), aQuery(), aFragment()));
-        assertThrowsException("Null path should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), null, aQuery(), aFragment()));
-        assertThrowsException("Null query should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), anAbsolutePath(), null, aFragment()));
-        assertThrowsException("Null fragment should throw NullPointerException in factory", NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), anAbsolutePath(), aQuery(), null));
+    void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPathAndQueryAndFragment() {
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(null, anAbsolutePath(), aQuery(), aFragment()), "Null authority should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), null, aQuery(), aFragment()), "Null path should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), anAbsolutePath(), null, aFragment()), "Null query should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> aScheme().relativeReference(anAuthority(), anAbsolutePath(), aQuery(), null), "Null fragment should throw NullPointerException in factory");
     }
 
     @Test
@@ -1963,9 +1963,9 @@ class RelativeReferenceTest {
     }
 
     @Test
-    void parsingNullThrowsNullPointerException() throws Exception {
+    void parsingNullThrowsNullPointerException() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertThrowsException("Null value should throw NullPointerException in parser", NullPointerException.class, () -> scheme.parseRelativeReference((String) null));
+        assertThrows(NullPointerException.class, () -> scheme.parseRelativeReference((String) null), "Null value should throw NullPointerException in parser");
     }
 
 }

@@ -15,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Random;
 
 import static net.sourceforge.urin.CharacterSets.*;
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
@@ -71,8 +70,8 @@ class HostTest {
     }
 
     @Test
-    void rejectsNullInFactoryForARegisteredName() throws Exception {
-        assertThrowsException("Null registeredName should throw NullPointerException in factory", NullPointerException.class, () -> registeredName(null));
+    void rejectsNullInFactoryForARegisteredName() {
+        assertThrows(NullPointerException.class, () -> registeredName(null), "Null registeredName should throw NullPointerException in factory");
     }
 
     @Test
@@ -149,11 +148,11 @@ class HostTest {
     }
 
     @Test
-    void rejectsNullInFactoryForAnIpV4Address() throws Exception {
-        assertThrowsException("Null firstOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV4Address(null, anOctet(), anOctet(), anOctet()));
-        assertThrowsException("Null secondOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV4Address(anOctet(), null, anOctet(), anOctet()));
-        assertThrowsException("Null thirdOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV4Address(anOctet(), anOctet(), null, anOctet()));
-        assertThrowsException("Null fourthOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV4Address(anOctet(), anOctet(), anOctet(), null));
+    void rejectsNullInFactoryForAnIpV4Address() {
+        assertThrows(NullPointerException.class, () -> ipV4Address(null, anOctet(), anOctet(), anOctet()), "Null firstOctet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV4Address(anOctet(), null, anOctet(), anOctet()), "Null secondOctet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV4Address(anOctet(), anOctet(), null, anOctet()), "Null thirdOctet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV4Address(anOctet(), anOctet(), anOctet(), null), "Null fourthOctet should throw NullPointerException in factory");
     }
 
     @Test
@@ -288,15 +287,15 @@ class HostTest {
     }
 
     @Test
-    void rejectsNullInFactoryForAnIpV6Address() throws Exception {
-        assertThrowsException("Null firstHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()));
-        assertThrowsException("Null secondHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()));
-        assertThrowsException("Null thirdHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()));
-        assertThrowsException("Null fourthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()));
-        assertThrowsException("Null fifthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet()));
-        assertThrowsException("Null sixthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet()));
-        assertThrowsException("Null seventhHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet()));
-        assertThrowsException("Null eighthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null));
+    void rejectsNullInFactoryForAnIpV6Address() {
+        assertThrows(NullPointerException.class, () -> ipV6Address(null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()), "Null firstHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()), "Null secondHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()), "Null thirdHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()), "Null fourthHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet()), "Null fifthHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet()), "Null sixthHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet()), "Null seventhHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null), "Null eighthHexadectet should throw NullPointerException in factory");
     }
 
     @Test
@@ -439,17 +438,17 @@ class HostTest {
     }
 
     @Test
-    void rejectsNullInFactoryForAnIpV6AddressWithTrailingIpV4Address() throws Exception {
-        assertThrowsException("Null firstHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
-        assertThrowsException("Null secondHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
-        assertThrowsException("Null thirdHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
-        assertThrowsException("Null fourthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
-        assertThrowsException("Null fifthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
-        assertThrowsException("Null sixthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet(), anOctet()));
-        assertThrowsException("Null firstOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet()));
-        assertThrowsException("Null secondOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), null, anOctet(), anOctet()));
-        assertThrowsException("Null thirdOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), null, anOctet()));
-        assertThrowsException("Null fourthOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), null));
+    void rejectsNullInFactoryForAnIpV6AddressWithTrailingIpV4Address() {
+        assertThrows(NullPointerException.class, () -> ipV6Address(null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()), "Null firstHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()), "Null secondHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()), "Null thirdHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()), "Null fourthHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()), "Null fifthHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet(), anOctet()), "Null sixthHexadectet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet()), "Null firstOctet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), null, anOctet(), anOctet()), "Null secondOctet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), null, anOctet()), "Null thirdOctet should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), null), "Null fourthOctet should throw NullPointerException in factory");
     }
 
     @Test
@@ -467,8 +466,8 @@ class HostTest {
     }
 
     @Test
-    void ipVFutureRejectsNullVersion() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> ipVFutureAddress(null, aValidIpVFutureAddress()));
+    void ipVFutureRejectsNullVersion() {
+        assertThrows(NullPointerException.class, () -> ipVFutureAddress(null, aValidIpVFutureAddress()), "Null value should throw NullPointerException in factory");
     }
 
     @Test
@@ -549,8 +548,8 @@ class HostTest {
     }
 
     @Test
-    void ipVFutureRejectsNullAddress() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> ipVFutureAddress(aValidIpVFutureVersion(), null));
+    void ipVFutureRejectsNullAddress() {
+        assertThrows(NullPointerException.class, () -> ipVFutureAddress(aValidIpVFutureVersion(), null), "Null value should throw NullPointerException in factory");
     }
 
     @Test
@@ -588,9 +587,9 @@ class HostTest {
     }
 
     @Test
-    void rejectsNullInFactoryForAnIpVFutureAddress() throws Exception {
-        assertThrowsException("Null version should throw NullPointerException in factory", NullPointerException.class, () -> ipVFutureAddress(null, anIpVFutureAddressAddress()));
-        assertThrowsException("Null address should throw NullPointerException in factory", NullPointerException.class, () -> ipVFutureAddress(anIpVFutureAddressVersion(), null));
+    void rejectsNullInFactoryForAnIpVFutureAddress() {
+        assertThrows(NullPointerException.class, () -> ipVFutureAddress(null, anIpVFutureAddressAddress()), "Null version should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipVFutureAddress(anIpVFutureAddressVersion(), null), "Null address should throw NullPointerException in factory");
     }
 
     @Test

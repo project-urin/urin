@@ -14,7 +14,6 @@ import net.sourceforge.urin.Query;
 import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameter;
 import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
@@ -23,14 +22,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HttpQueryTest {
     @Test
-    void rejectsNullQueryParameter() throws Exception {
-        assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, () -> {
+    void rejectsNullQueryParameter() {
+        assertThrows(NullPointerException.class, () -> {
             HttpQuery.QueryParameter queryParameter = null;
             queryParameters(queryParameter);
-        });
+        }, "Null name should throw NullPointerException in factory");
     }
 
     @Test
@@ -65,8 +65,8 @@ class HttpQueryTest {
     }
 
     @Test
-    void rejectsNullNameOnlyQueryParameter() throws Exception {
-        assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, () -> queryParameter(null));
+    void rejectsNullNameOnlyQueryParameter() {
+        assertThrows(NullPointerException.class, () -> queryParameter(null), "Null name should throw NullPointerException in factory");
     }
 
     @Test
@@ -99,14 +99,14 @@ class HttpQueryTest {
     }
 
     @Test
-    void queryParameterWithNameOnlyValueThrowsException() throws Exception {
-        assertThrowsException("QueryParameter with name only should throw exception when value is queried", UnsupportedOperationException.class, () -> aNameOnlyQueryParameter().value());
+    void queryParameterWithNameOnlyValueThrowsException() {
+        assertThrows(UnsupportedOperationException.class, () -> aNameOnlyQueryParameter().value(), "QueryParameter with name only should throw exception when value is queried");
     }
 
     @Test
-    void rejectsNullsInNameAndValueQueryParameter() throws Exception {
-        assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, () -> queryParameter(null, aString()));
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> queryParameter(aString(), null));
+    void rejectsNullsInNameAndValueQueryParameter() {
+        assertThrows(NullPointerException.class, () -> queryParameter(null, aString()), "Null name should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> queryParameter(aString(), null), "Null value should throw NullPointerException in factory");
     }
 
     @Test

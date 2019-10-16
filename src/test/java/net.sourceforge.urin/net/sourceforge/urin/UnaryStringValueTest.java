@@ -12,13 +12,12 @@ package net.sourceforge.urin;
 
 import org.junit.jupiter.api.Test;
 
-import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class UnaryStringValueTest {
     @Test
-    void valueCannotBeNull() throws Exception {
-        //noinspection ConstantConditions
-        assertThrowsException("Null value should throw NullPointerException in constructor", NullPointerException.class, () -> new UnaryStringValue(null) {
-        });
+    void valueCannotBeNull() {
+        assertThrows(NullPointerException.class, () -> new UnaryStringValue(null) {
+        }, "Null value should throw NullPointerException in constructor");
     }
 }
