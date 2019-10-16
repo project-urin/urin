@@ -17,16 +17,16 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class OctetTest {
+class OctetTest {
 
     @Test
-    public void asStringReturnsTheArgumentWhenUsingAnInt() throws Exception {
+    void asStringReturnsTheArgumentWhenUsingAnInt() {
         assertThat(octet(0).asString(), equalTo("0"));
         assertThat(octet(255).asString(), equalTo("255"));
     }
 
     @Test
-    public void rejectsIntArgumentsOutsideRange() throws Exception {
+    void rejectsIntArgumentsOutsideRange() {
         try {
             octet(-1);
             fail("Should have thrown IllegalArgumentException");
@@ -42,34 +42,33 @@ public class OctetTest {
     }
 
     @Test
-    public void isValidAcceptsBoundaryCases() throws Exception {
+    void isValidAcceptsBoundaryCases() {
         assertThat(Octet.isValid("0"), equalTo(true));
         assertThat(Octet.isValid("255"), equalTo(true));
     }
 
     @Test
-    public void isValidRejectsOutsideBoundaryCases() throws Exception {
+    void isValidRejectsOutsideBoundaryCases() {
         assertThat(Octet.isValid("-1"), equalTo(false));
         assertThat(Octet.isValid("256"), equalTo(false));
     }
 
     @Test
-    public void isValidRejectsNonIntegerCases() throws Exception {
+    void isValidRejectsNonIntegerCases() {
         assertThat(Octet.isValid("1.0"), equalTo(false));
         assertThat(Octet.isValid("Hello"), equalTo(false));
         assertThat(Octet.isValid(""), equalTo(false));
-        //noinspection NullableProblems
         assertThat(Octet.isValid(null), equalTo(false));
     }
 
     @Test
-    public void parseAcceptsBoundaryCases() throws Exception {
+    void parseAcceptsBoundaryCases() throws Exception {
         assertThat(Octet.parse("0"), equalTo(octet(0)));
         assertThat(Octet.parse("255"), equalTo(octet(255)));
     }
 
     @Test
-    public void parseRejectsInvalidOctetStrings() throws Exception {
+    void parseRejectsInvalidOctetStrings() {
         try {
             Octet.parse("-1");
             fail("Should have thrown ParseException");
@@ -77,7 +76,6 @@ public class OctetTest {
             assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [-1]"));
         }
         try {
-            //noinspection NullableProblems
             Octet.parse(null);
             fail("Should have thrown ParseException");
         } catch (ParseException e) {

@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import net.sourceforge.urin.ExceptionAssert;
 import net.sourceforge.urin.Query;
 import org.junit.jupiter.api.Test;
 
@@ -25,31 +24,28 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 
-public class HttpQueryTest {
+class HttpQueryTest {
     @Test
-    public void rejectsNullQueryParameter() throws Exception {
-        assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                HttpQuery.QueryParameter queryParameter = null;
-                queryParameters(queryParameter);
-            }
+    void rejectsNullQueryParameter() throws Exception {
+        assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, () -> {
+            HttpQuery.QueryParameter queryParameter = null;
+            queryParameters(queryParameter);
         });
     }
 
     @Test
-    public void queryParametersUsingVarargsAreImmutable() throws Exception {
+    void queryParametersUsingVarargsAreImmutable() {
         HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
         HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         HttpQuery.QueryParameter[] queryParameters = {firstQueryParameter, secondQueryParameter};
         Query query = queryParameters(queryParameters);
         queryParameters[0] = aQueryParameter();
-        assertThat(query, equalTo((Query) queryParameters(firstQueryParameter, secondQueryParameter)));
+        assertThat(query, equalTo(queryParameters(firstQueryParameter, secondQueryParameter)));
 
     }
 
     @Test
-    public void queryParametersIsEqualToAnotherWithTheSameMembers() throws Exception {
+    void queryParametersIsEqualToAnotherWithTheSameMembers() {
         HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
         HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         assertThat(queryParameters(firstQueryParameter, secondQueryParameter), equalTo(queryParameters(firstQueryParameter, secondQueryParameter)));
@@ -57,83 +53,64 @@ public class HttpQueryTest {
     }
 
     @Test
-    public void queryParametersIsNotEqualToAnotherWithDifferentMembers() throws Exception {
+    void queryParametersIsNotEqualToAnotherWithDifferentMembers() {
         assertThat(queryParameters(aQueryParameter(), aQueryParameter()), not(equalTo(queryParameters(aQueryParameter(), aQueryParameter()))));
     }
 
     @Test
-    public void queryParametersToStringIsCorrect() throws Exception {
+    void queryParametersToStringIsCorrect() {
         HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
         HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         assertThat(queryParameters(firstQueryParameter, secondQueryParameter).toString(), equalTo("HttpQuery{value='" + asList(firstQueryParameter, secondQueryParameter) + "'}"));
     }
 
     @Test
-    public void rejectsNullNameOnlyQueryParameter() throws Exception {
-        assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                queryParameter(null);
-            }
-        });
+    void rejectsNullNameOnlyQueryParameter() throws Exception {
+        assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, () -> queryParameter(null));
     }
 
     @Test
-    public void queryParameterWithNameOnlyIsEqualToAnotherWithTheSameName() throws Exception {
+    void queryParameterWithNameOnlyIsEqualToAnotherWithTheSameName() {
         String name = aString();
         assertThat(queryParameter(name), equalTo(queryParameter(name)));
         assertThat(queryParameter(name).hashCode(), equalTo(queryParameter(name).hashCode()));
     }
 
     @Test
-    public void queryParameterWithNameOnlyIsNotEqualToAnotherWithDifferentName() throws Exception {
+    void queryParameterWithNameOnlyIsNotEqualToAnotherWithDifferentName() {
         assertThat(queryParameter(aString()), not(equalTo(queryParameter(aString()))));
     }
 
     @Test
-    public void queryParameterWithNameOnlyToStringIsCorrect() throws Exception {
+    void queryParameterWithNameOnlyToStringIsCorrect() {
         String name = aString();
         assertThat(queryParameter(name).toString(), equalTo("QueryParameter{name='" + name + "'}"));
     }
 
     @Test
-    public void queryParameterWithNameOnlyNameIsCorrect() throws Exception {
+    void queryParameterWithNameOnlyNameIsCorrect() {
         String name = aString();
         assertThat(queryParameter(name).name(), equalTo(name));
     }
 
     @Test
-    public void queryParameterWithNameOnlyHasValueIsCorrect() throws Exception {
+    void queryParameterWithNameOnlyHasValueIsCorrect() {
         assertThat(aNameOnlyQueryParameter().hasValue(), equalTo(false));
     }
 
     @Test
-    public void queryParameterWithNameOnlyValueThrowsException() throws Exception {
-        assertThrowsException("QueryParameter with name only should throw exception when value is queried", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws UnsupportedOperationException {
-                aNameOnlyQueryParameter().value();
-            }
-        });
+    void queryParameterWithNameOnlyValueThrowsException() throws Exception {
+        assertThrowsException("QueryParameter with name only should throw exception when value is queried", UnsupportedOperationException.class, () -> aNameOnlyQueryParameter().value());
     }
 
     @Test
-    public void rejectsNullsInNameAndValueQueryParameter() throws Exception {
-        assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                queryParameter(null, aString());
-            }
-        });
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                queryParameter(aString(), null);
-            }
-        });
+    void rejectsNullsInNameAndValueQueryParameter() throws Exception {
+        assertThrowsException("Null name should throw NullPointerException in factory", NullPointerException.class, () -> queryParameter(null, aString()));
+        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> queryParameter(aString(), null));
     }
 
     @Test
-    public void queryParameterWithNameAndValueIsEqualToAnotherWithTheSameNameAndValue() throws Exception {
+    void queryParameterWithNameAndValueIsEqualToAnotherWithTheSameNameAndValue() {
         String name = aString();
         String value = aString();
         assertThat(queryParameter(name, value), equalTo(queryParameter(name, value)));
@@ -141,43 +118,43 @@ public class HttpQueryTest {
     }
 
     @Test
-    public void queryParameterWithNameAndValueIsNotEqualToAnotherWithDifferentNameAndValue() throws Exception {
+    void queryParameterWithNameAndValueIsNotEqualToAnotherWithDifferentNameAndValue() {
         assertThat(queryParameter(aString(), aString()), not(equalTo(queryParameter(aString(), aString()))));
     }
 
     @Test
-    public void queryParameterWithNameAndValueToStringIsCorrect() throws Exception {
+    void queryParameterWithNameAndValueToStringIsCorrect() {
         String name = aString();
         String value = aString();
         assertThat(queryParameter(name, value).toString(), equalTo("QueryParameter{name='" + name + "', value='" + value + "'}"));
     }
 
     @Test
-    public void queryParameterWithNameAndValueNameIsCorrect() throws Exception {
+    void queryParameterWithNameAndValueNameIsCorrect() {
         String name = aString();
         assertThat(queryParameter(name, aString()).name(), equalTo(name));
     }
 
     @Test
-    public void queryParameterWithNameAndValueHasValueIsCorrect() throws Exception {
+    void queryParameterWithNameAndValueHasValueIsCorrect() {
         assertThat(aNameAndValueQueryParameter().hasValue(), equalTo(true));
     }
 
     @Test
-    public void queryParameterWithNameAndValueValueIsCorrect() throws Exception {
+    void queryParameterWithNameAndValueValueIsCorrect() {
         String value = aString();
         assertThat(queryParameter(aString(), value).value(), equalTo(value));
     }
 
     @Test
-    public void queryParametersAreIterable() throws Exception {
+    void queryParametersAreIterable() {
         HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
         HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         assertThat(queryParameters(firstQueryParameter, secondQueryParameter), contains(firstQueryParameter, secondQueryParameter));
     }
 
     @Test
-    public void queryParametersValueIsCorrect() throws Exception {
+    void queryParametersValueIsCorrect() {
         HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
         HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         assertThat(queryParameters(firstQueryParameter, secondQueryParameter).value(), contains(firstQueryParameter, secondQueryParameter));

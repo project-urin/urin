@@ -26,9 +26,9 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class AbsolutePathTest {
+class AbsolutePathTest {
     @Test
-    public void anAbsolutePathIsEqualToAnotherAbsolutePathWithTheSameMembers() throws Exception {
+    void anAbsolutePathIsEqualToAnotherAbsolutePathWithTheSameMembers() {
         Segment<String> firstSegment = aSegment();
         Segment<String> secondSegment = aSegment();
         assertThat(AbsolutePath.path(firstSegment, secondSegment), equalTo(AbsolutePath.path(firstSegment, secondSegment)));
@@ -36,7 +36,7 @@ public class AbsolutePathTest {
     }
 
     @Test
-    public void aPathUsingVarargsFactoryIsEqualToWithTheSameMembersMadeUsingIterableFactory() throws Exception {
+    void aPathUsingVarargsFactoryIsEqualToWithTheSameMembersMadeUsingIterableFactory() {
         Segment<String> firstSegment = aSegment();
         Segment<String> secondSegment = aSegment();
         assertThat(AbsolutePath.path(firstSegment, secondSegment), equalTo(AbsolutePath.path(asList(firstSegment, secondSegment))));
@@ -44,7 +44,7 @@ public class AbsolutePathTest {
     }
 
     @Test
-    public void aPathUsingSegmentVarargsFactoryIsEqualToWithTheSameMembersMadeUsingStringVarargsFactory() throws Exception {
+    void aPathUsingSegmentVarargsFactoryIsEqualToWithTheSameMembersMadeUsingStringVarargsFactory() {
         String firstSegmentValue = aString();
         Segment<String> firstSegment = segment(firstSegmentValue);
         String secondSegmentValue = aString();
@@ -54,7 +54,7 @@ public class AbsolutePathTest {
     }
 
     @Test
-    public void aPathUsingSegmentVarargsIsImmutable() throws Exception {
+    void aPathUsingSegmentVarargsIsImmutable() {
         Segment<String> firstSegment = aNonDotSegment();
         Segment<String> secondSegment = aNonDotSegment();
         Segment[] segments = {firstSegment, secondSegment};
@@ -64,72 +64,72 @@ public class AbsolutePathTest {
     }
 
     @Test
-    public void aPathIsNotEqualToAnotherPathWithDifferentMembers() throws Exception {
+    void aPathIsNotEqualToAnotherPathWithDifferentMembers() {
         assertThat(AbsolutePath.path(aSegment(), aNonDotSegment()), not(equalTo(AbsolutePath.path(aSegment(), aNonDotSegment()))));
     }
 
     @Test
-    public void aPathToStringIsCorrect() throws Exception {
+    void aPathToStringIsCorrect() {
         Segment<String> firstSegment = aNonDotSegment();
         Segment<String> secondSegment = aNonDotSegment();
         assertThat(AbsolutePath.path(firstSegment, secondSegment).toString(), equalTo("[" + firstSegment + ", " + secondSegment + "]"));
     }
 
     @Test
-    public void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() throws Exception {
-        assertThat(AbsolutePath.path(Segment.<String>empty(), aNonDotSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(true));
+    void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() {
+        assertThat(AbsolutePath.path(Segment.empty(), aNonDotSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(true));
     }
 
     @Test
-    public void correctlyIdentifiesFirstPartNotSupplied() throws Exception {
+    void correctlyIdentifiesFirstPartNotSupplied() {
         assertThat(AbsolutePath.path().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
-    public void correctlyIdentifiesFirstPartNonEmpty() throws Exception {
+    void correctlyIdentifiesFirstPartNonEmpty() {
         assertThat(AbsolutePath.path(aNonDotSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
-    public void removesDotPath() throws Exception {
-        final AbsolutePath<String> actual = AbsolutePath.path(segment("a"), segment("b"), segment("c"), Segment.<String>dot(), Segment.<String>dotDot(), Segment.<String>dotDot(), segment("g"));
+    void removesDotPath() {
+        final AbsolutePath<String> actual = AbsolutePath.path(segment("a"), segment("b"), segment("c"), Segment.dot(), Segment.dotDot(), Segment.dotDot(), segment("g"));
         assertThat(actual, equalTo(AbsolutePath.path(segment("a"), segment("g"))));
     }
 
     @Test
-    public void resolvesEmptyPath() throws Exception {
+    void resolvesEmptyPath() {
         AbsolutePath<String> path = anAbsolutePath();
-        assertThat(path.resolveRelativeTo(new EmptyPath<String>()), equalTo((Path) path));
+        assertThat(path.resolveRelativeTo(new EmptyPath<>()), equalTo((Path) path));
     }
 
     @Test
-    public void resolvesAbsolutePath() throws Exception {
+    void resolvesAbsolutePath() {
         AbsolutePath<String> path = anAbsolutePath();
         Path<String> basePath = anAbsolutePath();
         assertThat(path.resolveRelativeTo(basePath), equalTo((Path) path));
     }
 
     @Test
-    public void resolvesRootlessPath() throws Exception {
+    void resolvesRootlessPath() {
         AbsolutePath<String> path = anAbsolutePath();
         Path<String> basePath = aRootlessPath();
         assertThat(path.resolveRelativeTo(basePath), equalTo((Path) path));
     }
 
     @Test
-    public void absolutePathIsAbsolute() throws Exception {
+    void absolutePathIsAbsolute() {
         assertThat(anAbsolutePath().isAbsolute(), equalTo(true));
     }
 
     @Test
-    public void absolutePathIteratorContainsAllNonDotSegments() throws Exception {
+    void absolutePathIteratorContainsAllNonDotSegments() {
         Segment<String> segmentOne = aNonDotSegment();
         Segment<String> segmentTwo = aNonDotSegment();
         assertThat(path(segmentOne, segmentTwo), contains(segmentOne, segmentTwo));
     }
 
     @Test
-    public void absolutePathSegmentsContainsAllNonDotSegments() throws Exception {
+    void absolutePathSegmentsContainsAllNonDotSegments() {
         Segment<String> segmentOne = aNonDotSegment();
         Segment<String> segmentTwo = aNonDotSegment();
         final AbsolutePath<String> path = path(segmentOne, segmentTwo);
@@ -137,7 +137,7 @@ public class AbsolutePathTest {
     }
 
     @Test
-    public void absolutePathSegmentsDoesNotExposeMutability() throws Exception {
+    void absolutePathSegmentsDoesNotExposeMutability() {
         final Segment<String> segmentOne = aNonDotSegment();
         final Segment<String> segmentTwo = aNonDotSegment();
         Path<String> absolutePath = path(segmentOne, segmentTwo);

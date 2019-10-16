@@ -30,68 +30,64 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class HostTest {
+@SuppressWarnings("UnnecessaryLocalVariable")
+class HostTest {
 
     private static final String IP_V_FUTURE_ADDRESS_CHARACTERS = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
     private static final Random RANDOM = new Random();
 
     @Test
-    public void registeredNameAsStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
+    void registeredNameAsStringReturnsValueProvidedForUnreservedCharacters() {
         String nonPercentEncodedCharacters = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS;
         assertThat(registeredName(nonPercentEncodedCharacters).asString(), equalTo(LOWER_CASE_ALPHA + LOWER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS));
     }
 
     @Test
-    public void registeredNameLowerCasesUpperCaseNames() throws Exception {
+    void registeredNameLowerCasesUpperCaseNames() {
         assertThat(registeredName(UPPER_CASE_ALPHA).asString(), equalTo(LOWER_CASE_ALPHA));
     }
 
     @Test
-    public void registeredNameAsStringPercentEncodesNonUnreservedCharacters() throws Exception {
+    void registeredNameAsStringPercentEncodesNonUnreservedCharacters() {
         assertThat(registeredName(".:.@.#.[.]. .?.").asString(), equalTo(".%3A.%40.%23.%5B.%5D.%20.%3F."));
     }
 
     @Test
-    public void registeredNamesWithMatchingValuesAreEqual() throws Exception {
+    void registeredNamesWithMatchingValuesAreEqual() {
         String registeredName = aString();
         assertThat(registeredName(registeredName), equalTo(registeredName(registeredName)));
         assertThat(registeredName(registeredName).hashCode(), equalTo(registeredName(registeredName).hashCode()));
     }
 
     @Test
-    public void registeredNamesWithDifferingValuesAreNotEqual() throws Exception {
+    void registeredNamesWithDifferingValuesAreNotEqual() {
         assertThat(registeredName(aString()), not(equalTo(registeredName(aString()))));
     }
 
     @Test
-    public void registeredNameProducesCorrectToString() throws Exception {
+    void registeredNameProducesCorrectToString() {
         String registeredName = aString();
         assertThat(registeredName(registeredName).toString(), equalTo("Host{registeredName='" + registeredName.toLowerCase() + "'}"));
     }
 
     @Test
-    public void rejectsNullInFactoryForARegisteredName() throws Exception {
-        assertThrowsException("Null registeredName should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                registeredName(null);
-            }
-        });
+    void rejectsNullInFactoryForARegisteredName() throws Exception {
+        assertThrowsException("Null registeredName should throw NullPointerException in factory", NullPointerException.class, () -> registeredName(null));
     }
 
     @Test
-    public void parsesARegisteredName() throws Exception {
+    void parsesARegisteredName() throws Exception {
         Host host = aRegisteredName();
         assertThat(parse(host.asString()), equalTo(host));
     }
 
     @Test
-    public void parsingAnEmptyRegisteredName() throws Exception {
+    void parsingAnEmptyRegisteredName() throws Exception {
         assertThat(parse(""), equalTo(registeredName("")));
     }
 
     @Test
-    public void parsingARegisteredNameWithNonPercentEncodedDisallowedCharactersThrowsParseException() throws Exception {
+    void parsingARegisteredNameWithNonPercentEncodedDisallowedCharactersThrowsParseException() {
         try {
             parse("?");
             fail("Should have thrown ParseException");
@@ -101,7 +97,7 @@ public class HostTest {
     }
 
     @Test
-    public void parsingAnRegisteredNameWithInvalidPercentEncodingThrowsParseException() throws Exception {
+    void parsingAnRegisteredNameWithInvalidPercentEncodingThrowsParseException() {
         try {
             parse("%F5");
             fail("Should have thrown ParseException");
@@ -111,7 +107,7 @@ public class HostTest {
     }
 
     @Test
-    public void parsingAnRegisteredNameWithIncompletePercentEncodingThrowsParseException() throws Exception {
+    void parsingAnRegisteredNameWithIncompletePercentEncodingThrowsParseException() {
         try {
             parse("%2");
             fail("Should have thrown ParseException");
@@ -121,7 +117,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV4AddressAsStringIsCorrect() throws Exception {
+    void ipV4AddressAsStringIsCorrect() {
         Octet firstOctet = anOctet();
         Octet secondOctet = anOctet();
         Octet thirdOctet = anOctet();
@@ -132,7 +128,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV4AddressWithMatchingValuesAreEqual() throws Exception {
+    void ipV4AddressWithMatchingValuesAreEqual() {
         Octet firstOctet = anOctet();
         Octet secondOctet = anOctet();
         Octet thirdOctet = anOctet();
@@ -142,7 +138,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV4AddressCreatedWithIntegersIsEqualToOneCreatedWithEquivalentOctets() throws Exception {
+    void ipV4AddressCreatedWithIntegersIsEqualToOneCreatedWithEquivalentOctets() {
         int firstOctet = RANDOM.nextInt(256);
         int secondOctet = RANDOM.nextInt(256);
         int thirdOctet = RANDOM.nextInt(256);
@@ -151,12 +147,12 @@ public class HostTest {
     }
 
     @Test
-    public void ipV4AddressWithDifferingValuesAreNotEqual() throws Exception {
+    void ipV4AddressWithDifferingValuesAreNotEqual() {
         assertThat(ipV4Address(anOctet(), anOctet(), anOctet(), anOctet()), not(equalTo(ipV4Address(anOctet(), anOctet(), anOctet(), anOctet()))));
     }
 
     @Test
-    public void ipV4AddressProducesCorrectToString() throws Exception {
+    void ipV4AddressProducesCorrectToString() {
         Octet firstOctet = anOctet();
         Octet secondOctet = anOctet();
         Octet thirdOctet = anOctet();
@@ -165,41 +161,21 @@ public class HostTest {
     }
 
     @Test
-    public void rejectsNullInFactoryForAnIpV4Address() throws Exception {
-        assertThrowsException("Null firstOctet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV4Address(null, anOctet(), anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null secondOctet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV4Address(anOctet(), null, anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null thirdOctet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV4Address(anOctet(), anOctet(), null, anOctet());
-            }
-        });
-        assertThrowsException("Null fourthOctet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV4Address(anOctet(), anOctet(), anOctet(), null);
-            }
-        });
+    void rejectsNullInFactoryForAnIpV4Address() throws Exception {
+        assertThrowsException("Null firstOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV4Address(null, anOctet(), anOctet(), anOctet()));
+        assertThrowsException("Null secondOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV4Address(anOctet(), null, anOctet(), anOctet()));
+        assertThrowsException("Null thirdOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV4Address(anOctet(), anOctet(), null, anOctet()));
+        assertThrowsException("Null fourthOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV4Address(anOctet(), anOctet(), anOctet(), null));
     }
 
     @Test
-    public void parsesAnIpV4Address() throws Exception {
+    void parsesAnIpV4Address() throws Exception {
         Host host = anIpV4Address();
         assertThat(parse(host.asString()), equalTo(host));
     }
 
     @Test
-    public void ipV6AddressAsStringIsCorrect() throws Exception {
+    void ipV6AddressAsStringIsCorrect() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -214,7 +190,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressAsStringDoesNotElideASingleZero() throws Exception {
+    void ipV6AddressAsStringDoesNotElideASingleZero() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = ZERO;
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -229,7 +205,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressAsStringElidesLongestSequenceOfZeros() throws Exception {
+    void ipV6AddressAsStringElidesLongestSequenceOfZeros() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = ZERO;
         Hexadectet thirdHexadectet = ZERO;
@@ -244,7 +220,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressAsStringElidesFirstLongestSequenceOfZeros() throws Exception {
+    void ipV6AddressAsStringElidesFirstLongestSequenceOfZeros() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = ZERO;
         Hexadectet thirdHexadectet = ZERO;
@@ -259,7 +235,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressWithMatchingValuesAreEqual() throws Exception {
+    void ipV6AddressWithMatchingValuesAreEqual() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -273,12 +249,12 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressWithDifferingValuesAreNotEqual() throws Exception {
+    void ipV6AddressWithDifferingValuesAreNotEqual() {
         assertThat(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet()), not(equalTo(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet()))));
     }
 
     @Test
-    public void ipV6AddressProducesCorrectToString() throws Exception {
+    void ipV6AddressProducesCorrectToString() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -291,13 +267,13 @@ public class HostTest {
     }
 
     @Test
-    public void parsesAnIpV6Address() throws Exception {
+    void parsesAnIpV6Address() throws Exception {
         Host host = anIpV6Address();
         assertThat(parse(host.asString()), equalTo(host));
     }
 
     @Test
-    public void parsesAnIpV6AddressWithElidedParts() throws Exception {
+    void parsesAnIpV6AddressWithElidedParts() throws Exception {
         Host host = ipV6Address(
                 aHexadectet(),
                 ZERO,
@@ -312,7 +288,7 @@ public class HostTest {
     }
 
     @Test
-    public void parsingAnIpV6HostWithMultipleElidedPartsThrowsParseException() throws Exception {
+    void parsingAnIpV6HostWithMultipleElidedPartsThrowsParseException() {
         try {
             parse("[1::1::1]");
             fail("Should have thrown ParseException");
@@ -322,7 +298,7 @@ public class HostTest {
     }
 
     @Test
-    public void parsingAnIpV6HostWithTooFewPartsThrowsParseException() throws Exception {
+    void parsingAnIpV6HostWithTooFewPartsThrowsParseException() {
         try {
             parse("[1:1:1]");
             fail("Should have thrown ParseException");
@@ -332,59 +308,19 @@ public class HostTest {
     }
 
     @Test
-    public void rejectsNullInFactoryForAnIpV6Address() throws Exception {
-        assertThrowsException("Null firstHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet());
-            }
-        });
-        assertThrowsException("Null secondHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet());
-            }
-        });
-        assertThrowsException("Null thirdHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet());
-            }
-        });
-        assertThrowsException("Null fourthHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet());
-            }
-        });
-        assertThrowsException("Null fifthHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet());
-            }
-        });
-        assertThrowsException("Null sixthHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet());
-            }
-        });
-        assertThrowsException("Null seventhHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet());
-            }
-        });
-        assertThrowsException("Null eighthHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null);
-            }
-        });
+    void rejectsNullInFactoryForAnIpV6Address() throws Exception {
+        assertThrowsException("Null firstHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()));
+        assertThrowsException("Null secondHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()));
+        assertThrowsException("Null thirdHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()));
+        assertThrowsException("Null fourthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet()));
+        assertThrowsException("Null fifthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet()));
+        assertThrowsException("Null sixthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet()));
+        assertThrowsException("Null seventhHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet()));
+        assertThrowsException("Null eighthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null));
     }
 
     @Test
-    public void ipV6AddressWithTrailingIpV4AddressAsStringIsCorrect() throws Exception {
+    void ipV6AddressWithTrailingIpV4AddressAsStringIsCorrect() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -401,7 +337,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressWithTrailingIpV4AddressDoesNotElideASingleZero() throws Exception {
+    void ipV6AddressWithTrailingIpV4AddressDoesNotElideASingleZero() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = ZERO;
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -418,7 +354,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressWithTrailingIpV4AddressElidesLongestSequenceOfZeros() throws Exception {
+    void ipV6AddressWithTrailingIpV4AddressElidesLongestSequenceOfZeros() {
         Hexadectet firstHexadectet = ZERO;
         Hexadectet secondHexadectet = ZERO;
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -435,7 +371,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressWithTrailingIpV4AddressElidesFirstLongestSequenceOfZeros() throws Exception {
+    void ipV6AddressWithTrailingIpV4AddressElidesFirstLongestSequenceOfZeros() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = ZERO;
         Hexadectet thirdHexadectet = ZERO;
@@ -452,7 +388,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressWithTrailingIpV4AddressWithMatchingValuesAreEqual() throws Exception {
+    void ipV6AddressWithTrailingIpV4AddressWithMatchingValuesAreEqual() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -468,12 +404,12 @@ public class HostTest {
     }
 
     @Test
-    public void ipV6AddressWithTrailingIpV4AddressWithDifferingValuesAreNotEqual() throws Exception {
+    void ipV6AddressWithTrailingIpV4AddressWithDifferingValuesAreNotEqual() {
         assertThat(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()), not(equalTo(ipV6Address(aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), aNonZeroHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()))));
     }
 
     @Test
-    public void ipV6AddressWithTrailingIpV4AddressProducesCorrectToString() throws Exception {
+    void ipV6AddressWithTrailingIpV4AddressProducesCorrectToString() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = aNonZeroHexadectet();
         Hexadectet thirdHexadectet = aNonZeroHexadectet();
@@ -488,13 +424,13 @@ public class HostTest {
     }
 
     @Test
-    public void parsesAnIpV6AddressWithTrailingIpV4Address() throws Exception {
+    void parsesAnIpV6AddressWithTrailingIpV4Address() throws Exception {
         Host host = anIpV6AddressWithTrailingIpV4Address();
         assertThat(parse(host.asString()), equalTo(host));
     }
 
     @Test
-    public void parsesAnIpV6AddressWithTrailingIpV4AddressWithElidedParts() throws Exception {
+    void parsesAnIpV6AddressWithTrailingIpV4AddressWithElidedParts() throws Exception {
         Host host = ipV6Address(
                 aHexadectet(),
                 ZERO,
@@ -511,7 +447,7 @@ public class HostTest {
     }
 
     @Test
-    public void parsingAnIpV6AddressWithTrailingIpV4AddressWithMultipleElidedPartsThrowsParseException() throws Exception {
+    void parsingAnIpV6AddressWithTrailingIpV4AddressWithMultipleElidedPartsThrowsParseException() {
         try {
             parse("[1::1::1:1.1.1.1]");
             fail("Should have thrown ParseException");
@@ -521,7 +457,7 @@ public class HostTest {
     }
 
     @Test
-    public void parsingAnIpV6AddressWithTrailingIpV4AddressWithTooFewPartsThrowsParseException() throws Exception {
+    void parsingAnIpV6AddressWithTrailingIpV4AddressWithTooFewPartsThrowsParseException() {
         try {
             parse("[1:1:1.1.1]");
             fail("Should have thrown ParseException");
@@ -531,71 +467,21 @@ public class HostTest {
     }
 
     @Test
-    public void rejectsNullInFactoryForAnIpV6AddressWithTrailingIpV4Address() throws Exception {
-        assertThrowsException("Null firstHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null secondHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null thirdHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null fourthHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null fifthHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null sixthHexadectet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null firstOctet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null secondOctet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), null, anOctet(), anOctet());
-            }
-        });
-        assertThrowsException("Null thirdOctet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), null, anOctet());
-            }
-        });
-        assertThrowsException("Null fourthOctet should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), null);
-            }
-        });
+    void rejectsNullInFactoryForAnIpV6AddressWithTrailingIpV4Address() throws Exception {
+        assertThrowsException("Null firstHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
+        assertThrowsException("Null secondHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
+        assertThrowsException("Null thirdHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
+        assertThrowsException("Null fourthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
+        assertThrowsException("Null fifthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet()));
+        assertThrowsException("Null sixthHexadectet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet(), anOctet()));
+        assertThrowsException("Null firstOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), null, anOctet(), anOctet(), anOctet()));
+        assertThrowsException("Null secondOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), null, anOctet(), anOctet()));
+        assertThrowsException("Null thirdOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), null, anOctet()));
+        assertThrowsException("Null fourthOctet should throw NullPointerException in factory", NullPointerException.class, () -> ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), null));
     }
 
     @Test
-    public void ipVFutureAsStringIsCorrect() throws Exception {
+    void ipVFutureAsStringIsCorrect() {
         String address = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
         assertThat(
                 ipVFutureAddress(HEX_DIGIT, address).asString(),
@@ -603,7 +489,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipVFutureRejectsEmptyVersion() throws Exception {
+    void ipVFutureRejectsEmptyVersion() {
         try {
             ipVFutureAddress("", aValidIpVFutureAddress());
             fail("Expected an IllegalArgumentException to be thrown");
@@ -613,28 +499,23 @@ public class HostTest {
     }
 
     @Test
-    public void ipVFutureRejectsNullVersion() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipVFutureAddress(null, aValidIpVFutureAddress());
-            }
-        });
+    void ipVFutureRejectsNullVersion() throws Exception {
+        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> ipVFutureAddress(null, aValidIpVFutureAddress()));
     }
 
     @Test
-    public void parsesAnIpVFuture() throws Exception {
+    void parsesAnIpVFuture() throws Exception {
         Host host = anIpVFutureAddress();
         assertThat(parse(host.asString()), equalTo(host));
     }
 
     @Test
-    public void parsesAnIpVFutureWithDotInAddress() throws Exception {
+    void parsesAnIpVFutureWithDotInAddress() throws Exception {
         assertThat(parse("[vABCDE.ab.ab]"), equalTo(ipVFutureAddress("ABCDE", "ab.ab")));
     }
 
     @Test
-    public void parsingAnIpVFutureAddressWithNonHexVersionThrowsParseException() throws Exception {
+    void parsingAnIpVFutureAddressWithNonHexVersionThrowsParseException() {
         try {
             parse("[vi.abc]");
             fail("Should have thrown ParseException");
@@ -650,7 +531,7 @@ public class HostTest {
     }
 
     @Test
-    public void parsingAnIpVFutureAddressWithNoDotThrowsParseException() throws Exception {
+    void parsingAnIpVFutureAddressWithNoDotThrowsParseException() {
         try {
             parse("[viabc]");
             fail("Should have thrown ParseException");
@@ -660,7 +541,7 @@ public class HostTest {
     }
 
     @Test
-    public void parsingAnIpVFutureAddressWithLessThanOneAddressCharacterThrowsParseException() throws Exception {
+    void parsingAnIpVFutureAddressWithLessThanOneAddressCharacterThrowsParseException() {
         try {
             parse("[v1.]");
             fail("Should have thrown ParseException");
@@ -670,7 +551,7 @@ public class HostTest {
     }
 
     @Test
-    public void parsingAnIpVFutureAddressWithAnInvalidAddressCharacterThrowsParseException() throws Exception {
+    void parsingAnIpVFutureAddressWithAnInvalidAddressCharacterThrowsParseException() {
         try {
             parse("[v1.%]");
             fail("Should have thrown ParseException");
@@ -680,7 +561,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipVFutureRejectsInvalidCharactersInVersion() throws Exception {
+    void ipVFutureRejectsInvalidCharactersInVersion() {
         try {
             ipVFutureAddress("a", aValidIpVFutureAddress());
             fail("Expected an IllegalArgumentException to be thrown");
@@ -714,7 +595,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipVFutureRejectsEmptyAddress() throws Exception {
+    void ipVFutureRejectsEmptyAddress() {
         try {
             ipVFutureAddress(aValidIpVFutureVersion(), "");
             fail("Expected an IllegalArgumentException to be thrown");
@@ -724,17 +605,12 @@ public class HostTest {
     }
 
     @Test
-    public void ipVFutureRejectsNullAddress() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipVFutureAddress(aValidIpVFutureVersion(), null);
-            }
-        });
+    void ipVFutureRejectsNullAddress() throws Exception {
+        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> ipVFutureAddress(aValidIpVFutureVersion(), null));
     }
 
     @Test
-    public void ipVFutureRejectsInvalidCharactersInAddress() throws Exception {
+    void ipVFutureRejectsInvalidCharactersInAddress() {
         try {
             ipVFutureAddress(aValidIpVFutureVersion(), "/");
             fail("Expected an IllegalArgumentException to be thrown");
@@ -744,7 +620,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipVFutureAddressWithMatchingValuesAreEqual() throws Exception {
+    void ipVFutureAddressWithMatchingValuesAreEqual() {
         String versionNumber = anIpVFutureAddressVersion();
         String address = anIpVFutureAddressAddress();
         assertThat(ipVFutureAddress(versionNumber, address), equalTo(ipVFutureAddress(versionNumber, address)));
@@ -752,7 +628,7 @@ public class HostTest {
     }
 
     @Test
-    public void ipVFutureAddressWithDifferingValuesAreNotEqual() throws Exception {
+    void ipVFutureAddressWithDifferingValuesAreNotEqual() {
         assertThat(ipVFutureAddress(anIpVFutureAddressVersion(), anIpVFutureAddressAddress()), not(equalTo(ipVFutureAddress(anIpVFutureAddressVersion(), anIpVFutureAddressAddress()))));
     }
 
@@ -765,47 +641,37 @@ public class HostTest {
     }
 
     @Test
-    public void ipVFutureAddressProducesCorrectToString() throws Exception {
+    void ipVFutureAddressProducesCorrectToString() {
         String versionNumber = anIpVFutureAddressVersion();
         String address = anIpVFutureAddressAddress();
         assertThat(ipVFutureAddress(versionNumber, address).toString(), equalTo("Host{version='" + versionNumber + "', address='" + address.toLowerCase() + "'}"));
     }
 
     @Test
-    public void rejectsNullInFactoryForAnIpVFutureAddress() throws Exception {
-        assertThrowsException("Null version should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipVFutureAddress(null, anIpVFutureAddressAddress());
-            }
-        });
-        assertThrowsException("Null address should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                ipVFutureAddress(anIpVFutureAddressVersion(), null);
-            }
-        });
+    void rejectsNullInFactoryForAnIpVFutureAddress() throws Exception {
+        assertThrowsException("Null version should throw NullPointerException in factory", NullPointerException.class, () -> ipVFutureAddress(null, anIpVFutureAddressAddress()));
+        assertThrowsException("Null address should throw NullPointerException in factory", NullPointerException.class, () -> ipVFutureAddress(anIpVFutureAddressVersion(), null));
     }
 
     @Test
-    public void localHostIsExpectedString() throws Exception {
+    void localHostIsExpectedString() {
         assertThat(LOCAL_HOST.asString(), equalTo("localhost"));
     }
 
     @Test
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
-    public void loopbackIpV4AddressIsExpectedString() throws Exception {
+    void loopbackIpV4AddressIsExpectedString() {
         assertThat(LOOPBACK_ADDRESS_IP_V4.asString(), equalTo("127.0.0.1"));
     }
 
     @Test
-    public void loopbackIpV6AddressIsExpectedString() throws Exception {
+    void loopbackIpV6AddressIsExpectedString() {
         assertThat(LOOPBACK_ADDRESS_IP_V6.asString(), equalTo("[::1]"));
     }
 
     @Test
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
-    public void aRegisteredNameThatIsAValidIpV4AddressIsEqualToTheEquivalentIpV4Address() throws Exception {
+    void aRegisteredNameThatIsAValidIpV4AddressIsEqualToTheEquivalentIpV4Address() {
         assertThat(registeredName("127.0.0.1"), equalTo(ipV4Address(octet(127), octet(0), octet(0), octet(1))));
     }
 

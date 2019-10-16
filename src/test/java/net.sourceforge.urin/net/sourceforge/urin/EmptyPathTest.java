@@ -20,63 +20,62 @@ import static net.sourceforge.urin.SegmentBuilder.aSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class EmptyPathTest {
+class EmptyPathTest {
     @Test
-    public void anEmptyPathIsEqualToAnotherEmptyPath() throws Exception {
+    void anEmptyPathIsEqualToAnotherEmptyPath() {
         assertThat(new EmptyPath(), equalTo(new EmptyPath()));
         assertThat(new EmptyPath().hashCode(), equalTo(new EmptyPath().hashCode()));
     }
 
     @Test
-    public void aPathToStringIsCorrect() throws Exception {
+    void aPathToStringIsCorrect() {
         assertThat(new EmptyPath().toString(), equalTo("EmptyPath"));
     }
 
     @Test
-    public void correctlyIdentifiesFirstPartNotSupplied() throws Exception {
+    void correctlyIdentifiesFirstPartNotSupplied() {
         assertThat(new EmptyPath().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
-    public void resolvesEmptyPath() throws Exception {
-        assertThat(new EmptyPath<String>().resolveRelativeTo(new EmptyPath<String>()), equalTo((Path) new EmptyPath()));
+    void resolvesEmptyPath() {
+        assertThat(new EmptyPath<String>().resolveRelativeTo(new EmptyPath<>()), equalTo(new EmptyPath()));
     }
 
     @Test
-    public void resolvesAbsolutePath() throws Exception {
+    void resolvesAbsolutePath() {
         Path<String> basePath = anAbsolutePath();
         assertThat(new EmptyPath<String>().resolveRelativeTo(basePath), equalTo(basePath));
     }
 
     @Test
-    public void resolvesRootlessPath() throws Exception {
+    void resolvesRootlessPath() {
         Path<String> basePath = aRootlessPath();
         assertThat(new EmptyPath<String>().resolveRelativeTo(basePath), equalTo(basePath));
     }
 
     @Test
-    public void emptyPathIsNotAbsolute() throws Exception {
+    void emptyPathIsNotAbsolute() {
         assertThat(new EmptyPath().isAbsolute(), equalTo(false));
     }
 
     @Test
-    public void emptyPathIteratorIsEmpty() throws Exception {
-        assertThat(new EmptyPath<String>(), Matchers.<Segment<String>>emptyIterable());
+    void emptyPathIteratorIsEmpty() {
+        assertThat(new EmptyPath<>(), Matchers.emptyIterable());
     }
 
     @Test
-    public void emptyPathSegmentsIsEmpty() throws Exception {
-        assertThat(new EmptyPath<String>().segments(), Matchers.<Segment<String>>empty());
+    void emptyPathSegmentsIsEmpty() {
+        assertThat(new EmptyPath<String>().segments(), Matchers.empty());
     }
 
     @Test
-    public void emptyPathSegmentsDoesNotExposeMutability() throws Exception {
+    void emptyPathSegmentsDoesNotExposeMutability() throws Exception {
         EmptyPath<String> emptyPath = new EmptyPath<>();
-        assertThrowsException("Null value should throw NullPointerException in factory", UnsupportedOperationException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                emptyPath.segments().add(aSegment());
-                assertThat(emptyPath, Matchers.<Segment<String>>emptyIterable());
-            }
+        assertThrowsException("Null value should throw NullPointerException in factory", UnsupportedOperationException.class, () -> {
+            //noinspection ConstantConditions
+            emptyPath.segments().add(aSegment());
+            assertThat(emptyPath, Matchers.emptyIterable());
         });
     }
 }

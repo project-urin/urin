@@ -19,42 +19,42 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class PercentEncoderTest {
+class PercentEncoderTest {
 
     private static final PercentEncoder NON_UNRESERVED_PERCENT_ENCODER = new PercentEncoder(UNRESERVED);
 
     @Test
-    public void canEncodeRfc3986Examples() throws Exception {
+    void canEncodeRfc3986Examples() {
         assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("A"), equalTo("A"));
         assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("\u00C0"), equalTo("%C3%80"));
         assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("\u30A2"), equalTo("%E3%82%A2"));
     }
 
     @Test
-    public void handlesControlCharacters() throws Exception {
+    void handlesControlCharacters() {
         assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("\t"), equalTo("%09"));
     }
 
     @Test
-    public void canEncodeAdditionalCharacters() throws Exception {
+    void canEncodeAdditionalCharacters() {
         PercentEncoder aPercentEncoder = new PercentEncoder(or(singleMemberCharacterSet('B'), singleMemberCharacterSet('C')));
         assertThat(aPercentEncoder.encode("ABC"), equalTo("%41BC"));
         assertThat(aPercentEncoder.additionallyEncoding('B').encode("ABC"), equalTo("%41%42C"));
     }
 
     @Test
-    public void emptyStringIsDecodedToEmptyString() throws Exception {
+    void emptyStringIsDecodedToEmptyString() throws Exception {
         MatcherAssert.assertThat(new PercentEncoder(NO_CHARACTERS).decode(""), Matchers.equalTo(""));
     }
 
     @Test
-    public void unencodedStringIsDecodedToItself() throws Exception {
+    void unencodedStringIsDecodedToItself() throws Exception {
         String string = aString();
         MatcherAssert.assertThat(new PercentEncoder(ALL_CHARACTERS).decode(string), Matchers.equalTo(string));
     }
 
     @Test
-    public void singleByteEncodedStringIsDecodedCorrectly() throws Exception {
+    void singleByteEncodedStringIsDecodedCorrectly() throws Exception {
         MatcherAssert.assertThat(
                 new PercentEncoder(ALL_CHARACTERS).decode(
                         "%20"
@@ -62,7 +62,7 @@ public class PercentEncoderTest {
     }
 
     @Test
-    public void repeatedSingleByteEncodedStringIsDecodedCorrectly() throws Exception {
+    void repeatedSingleByteEncodedStringIsDecodedCorrectly() throws Exception {
         MatcherAssert.assertThat(
                 new PercentEncoder(ALL_CHARACTERS).decode(
                         "%20%20"
@@ -70,7 +70,7 @@ public class PercentEncoderTest {
     }
 
     @Test
-    public void encodedStringIsDecodedCorrectly() throws Exception {
+    void encodedStringIsDecodedCorrectly() throws Exception {
         String string = aString();
         MatcherAssert.assertThat(
                 new PercentEncoder(NO_CHARACTERS).decode(

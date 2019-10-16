@@ -21,47 +21,39 @@ import static net.sourceforge.urin.UrinBuilder.anUnpollutedUrin;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class UrinReferenceTest {
+class UrinReferenceTest {
 
     @Test
-    public void aUriAsStringParsesToAUrin() throws Exception {
+    void aUriAsStringParsesToAUrin() throws Exception {
         Urin<String, Query<String>, Fragment<String>> urin = anUnpollutedUrin();
-        assertThat(aScheme().parseUrinReference(urin.asString()), equalTo((UrinReference<String, Query<String>, Fragment<String>>) urin));
+        assertThat(aScheme().parseUrinReference(urin.asString()), equalTo(urin));
     }
 
     @Test
-    public void aUriRoundTripsAsUrinReference() throws Exception {
+    void aUriRoundTripsAsUrinReference() throws Exception {
         URI uriReference = URI.create("http://some.where/some/thing");
         assertThat(aScheme().parseUrinReference(uriReference).asUri(), equalTo(uriReference));
     }
 
     @Test
-    public void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
+    void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
         RelativeReference<String, Query<String>, Fragment<String>> relativeReference = anUnpollutedRelativeReference();
-        assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo((UrinReference<String, Query<String>, Fragment<String>>) relativeReference));
+        assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo(relativeReference));
     }
 
     @Test
-    public void anInvalidStringThrowsAParseException() throws Exception {
-        assertThrowsException("Invalid scheme should throw parse exception", ParseException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws ParseException {
-                aScheme().parseUrinReference("cache_object://");
-            }
-        });
+    void anInvalidStringThrowsAParseException() throws Exception {
+        assertThrowsException("Invalid scheme should throw parse exception", ParseException.class, () -> aScheme().parseUrinReference("cache_object://"));
     }
 
     @Test
-    public void parsingNullThrowsNullPointerException() throws Exception {
+    void parsingNullThrowsNullPointerException() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertThrowsException("Null value should throw NullPointerException in parser", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws Exception {
-                scheme.parseUrinReference((String) null);
-            }
-        });
+        assertThrowsException("Null value should throw NullPointerException in parser", NullPointerException.class, () -> scheme.parseUrinReference((String) null));
     }
 
     @Test
-    public void anEmptyStringParsesToARelativeReferenceOfEmptyPath() throws Exception {
+    void anEmptyStringParsesToARelativeReferenceOfEmptyPath() throws Exception {
         final UrinReference<String, Query<String>, Fragment<String>> urinReference = aScheme().parseUrinReference("");
         assertThat(urinReference.asString(), equalTo(""));
     }

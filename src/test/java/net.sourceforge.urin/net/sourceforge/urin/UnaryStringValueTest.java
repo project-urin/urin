@@ -14,14 +14,11 @@ import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 
-public class UnaryStringValueTest {
+class UnaryStringValueTest {
     @Test
-    public void valueCannotBeNull() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in constructor", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                new UnaryStringValue(null) {
-                };
-            }
+    void valueCannotBeNull() throws Exception {
+        //noinspection ConstantConditions
+        assertThrowsException("Null value should throw NullPointerException in constructor", NullPointerException.class, () -> new UnaryStringValue(null) {
         });
     }
 }

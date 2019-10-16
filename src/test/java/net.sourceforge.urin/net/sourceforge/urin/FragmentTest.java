@@ -19,26 +19,26 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class FragmentTest {
+class FragmentTest {
 
     @Test
-    public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
+    void asStringReturnsValueProvidedForUnreservedCharacters() {
         assertThat(fragment(QUERY_AND_FRAGMENT_CHARACTERS).asString(), equalTo(QUERY_AND_FRAGMENT_CHARACTERS));
     }
 
     @Test
-    public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
+    void asStringPercentEncodesNonUnreservedCharacters() {
         assertThat(fragment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
     }
 
     @Test
-    public void roundTripsAString() throws Exception {
+    void roundTripsAString() throws Exception {
         Fragment fragment = aFragment();
         assertThat(Fragment.parseFragment(fragment.asString(), Fragment.stringFragmentMaker()), equalTo(fragment));
     }
 
     @Test
-    public void valueGetsTheValueCorrectly() throws Exception {
+    void valueGetsTheValueCorrectly() {
         String value = aString();
         assertThat(fragment(value).value(), equalTo(value));
     }

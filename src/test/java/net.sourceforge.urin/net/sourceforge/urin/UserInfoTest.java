@@ -17,26 +17,26 @@ import static net.sourceforge.urin.CharacterSets.UNRESERVED;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class UserInfoTest {
+class UserInfoTest {
     @Test
-    public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
+    void asStringReturnsValueProvidedForUnreservedCharacters() {
         String nonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS + ":";
         assertThat(UserInfo.userInfo(nonPercentEncodedCharacters).asString(), equalTo(nonPercentEncodedCharacters));
     }
 
     @Test
-    public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
+    void asStringPercentEncodesNonUnreservedCharacters() {
         assertThat(UserInfo.userInfo(".@.#.[.]. .").asString(), equalTo(".%40.%23.%5B.%5D.%20."));
     }
 
     @Test
-    public void parsesUnreservedCharacters() throws Exception {
+    void parsesUnreservedCharacters() throws Exception {
         String nonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS + ":";
         assertThat(UserInfo.parse(nonPercentEncodedCharacters), equalTo(UserInfo.userInfo(nonPercentEncodedCharacters)));
     }
 
     @Test
-    public void parsesNonUnreservedCharacters() throws Exception {
+    void parsesNonUnreservedCharacters() throws Exception {
         assertThat(UserInfo.parse(".%40.%23.%5B.%5D.%20."), equalTo(UserInfo.userInfo(".@.#.[.]. .")));
     }
 

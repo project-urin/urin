@@ -17,10 +17,10 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
-public class MoreRandomStringUtilsTest {
+class MoreRandomStringUtilsTest {
 
     @Test
-    public void randomIncludingDoesInclude() throws Exception {
+    void randomIncludingDoesInclude() {
         char aChar = aChar();
         String actual = aStringIncluding(aChar);
         assertThat(actual, containsString(String.valueOf(aChar)));

@@ -19,15 +19,15 @@ import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percen
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
-public class PercentEncodingUnaryValueTest {
+class PercentEncodingUnaryValueTest {
 
     @Test
-    public void canChainApplicationsOfPercentEncodingDelimitedValue() throws Exception {
+    void canChainApplicationsOfPercentEncodingDelimitedValue() {
         assertThat(
-                PercentEncodingPartial.<Iterable<String>, String>percentEncodingDelimitedValue('a',
-                        PercentEncodingPartial.<String, String>percentEncodingDelimitedValue('b'))
+                PercentEncodingPartial.percentEncodingDelimitedValue('a',
+                        PercentEncodingPartial.percentEncodingDelimitedValue('b'))
                         .apply(percentEncodingString(PercentEncoder.ENCODE_EVERYTHING))
-                        .encode(new ArrayList<Iterable<String>>(2) {{
+                        .encode(new ArrayList<>(2) {{
                             add(asList("c", "d"));
                             add(asList("c", "d"));
                         }}),

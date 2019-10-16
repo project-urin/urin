@@ -20,48 +20,39 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class PortTest {
+class PortTest {
     @Test
-    public void allowsFullRangeOfValidCharacters() throws Exception {
+    void allowsFullRangeOfValidCharacters() {
         port(DIGIT);
     }
 
     @Test
-    public void asStringReturnsGivenPort() throws Exception {
+    void asStringReturnsGivenPort() {
         assertThat(port("123").asString(), equalTo("123"));
     }
 
     @Test
-    public void canMakeAPortUsingAPositiveInt() throws Exception {
+    void canMakeAPortUsingAPositiveInt() {
         assertThat(port(123).asString(), equalTo("123"));
     }
 
     @Test
-    public void cannotMakeAPortUsingANegativeInt() throws Exception {
-        assertThrowsException("Negative port should throw exception in factory", IllegalArgumentException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws IllegalArgumentException {
-                port(-123);
-            }
-        });
+    void cannotMakeAPortUsingANegativeInt() throws Exception {
+        assertThrowsException("Negative port should throw exception in factory", IllegalArgumentException.class, () -> port(-123));
     }
 
     @Test
-    public void normalisesLeadingZerosOnPort() throws Exception {
+    void normalisesLeadingZerosOnPort() {
         assertThat(port("01").asString(), equalTo("1"));
     }
 
     @Test
-    public void rejectsNullPort() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                port(null);
-            }
-        });
+    void rejectsNullPort() throws Exception {
+        assertThrowsException("Null value should throw NullPointerException in factory", NullPointerException.class, () -> port(null));
     }
 
     @Test
-    public void rejectsInvalidCharacters() throws Exception {
+    void rejectsInvalidCharacters() {
         try {
             port("a");
             fail("Expected an IllegalArgumentException to be thrown");
@@ -83,17 +74,17 @@ public class PortTest {
     }
 
     @Test
-    public void parsesFullRangeOfValidCharacters() throws Exception {
+    void parsesFullRangeOfValidCharacters() throws Exception {
         Port.parse(DIGIT);
     }
 
     @Test
-    public void parsedPortIsCorrect() throws Exception {
+    void parsedPortIsCorrect() throws Exception {
         assertThat(Port.parse("123"), equalTo(port("123")));
     }
 
     @Test
-    public void cannotParseAPortUsingANegativeInt() throws Exception {
+    void cannotParseAPortUsingANegativeInt() {
         try {
             Port.parse("-123");
             fail("Expected a ParseException to be thrown");
@@ -103,12 +94,12 @@ public class PortTest {
     }
 
     @Test
-    public void normalisesLeadingZerosOnParsedPort() throws Exception {
+    void normalisesLeadingZerosOnParsedPort() throws Exception {
         assertThat(Port.parse("01"), equalTo(port(1)));
     }
 
     @Test
-    public void parseRejectsInvalidCharacters() throws Exception {
+    void parseRejectsInvalidCharacters() {
         try {
             parse("a");
             fail("Expected an IllegalArgumentException to be thrown");

@@ -17,15 +17,15 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class HexadectetTest {
+class HexadectetTest {
     @Test
-    public void asStringReturnsGivenValue() throws Exception {
+    void asStringReturnsGivenValue() {
         assertThat(hexadectet(0x0).asString(), equalTo("0"));
         assertThat(hexadectet(0xFFFF).asString(), equalTo("ffff"));
     }
 
     @Test
-    public void rejectsIntsOutsideValidRange() throws Exception {
+    void rejectsIntsOutsideValidRange() {
         try {
             hexadectet(-0x1);
             fail("Should have thrown IllegalArgumentException");
@@ -41,39 +41,38 @@ public class HexadectetTest {
     }
 
     @Test
-    public void toStringIsCorrect() throws Exception {
+    void toStringIsCorrect() {
         assertThat(hexadectet(0xFA).toString(), equalTo("Hexadectet{value=0xFA}"));
     }
 
     @Test
-    public void boundaryHexadectetStringsAreValid() throws Exception {
+    void boundaryHexadectetStringsAreValid() {
         assertThat(Hexadectet.isValid(Integer.toString(0x0, 16)), equalTo(true));
         assertThat(Hexadectet.isValid(Integer.toString(0xFFFF, 16)), equalTo(true));
     }
 
     @Test
-    public void outsideBoundaryHexadectetStringsAreNotValid() throws Exception {
+    void outsideBoundaryHexadectetStringsAreNotValid() {
         assertThat(Hexadectet.isValid(Integer.toString(-0x1, 16)), equalTo(false));
         assertThat(Hexadectet.isValid(Integer.toString(0x10000, 16)), equalTo(false));
     }
 
     @Test
-    public void invalidHexadectetStringsAreNotValid() throws Exception {
+    void invalidHexadectetStringsAreNotValid() {
         assertThat(Hexadectet.isValid("0.1"), equalTo(false));
         assertThat(Hexadectet.isValid("hello"), equalTo(false));
         assertThat(Hexadectet.isValid(""), equalTo(false));
-        //noinspection NullableProblems
         assertThat(Hexadectet.isValid(null), equalTo(false));
     }
 
     @Test
-    public void parsesValidBoundaryHexadectetStrings() throws Exception {
+    void parsesValidBoundaryHexadectetStrings() throws Exception {
         assertThat(Hexadectet.parse(Integer.toString(0x0, 16)), equalTo(hexadectet(0x0)));
         assertThat(Hexadectet.parse(Integer.toString(0xFFFF, 16)), equalTo(hexadectet(0xFFFF)));
     }
 
     @Test
-    public void parsingOutsideBoundaryHexadectetStringsThrowsParseException() throws Exception {
+    void parsingOutsideBoundaryHexadectetStringsThrowsParseException() {
         final String minusOneHexAsString = Integer.toString(-0x1, 16);
         try {
             Hexadectet.parse(minusOneHexAsString);

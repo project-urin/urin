@@ -18,21 +18,21 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CharacterSetMembershipFunctionTest {
+class CharacterSetMembershipFunctionTest {
     @Test
-    public void areMembersAppliesToAllCharactersInAString() throws Exception {
+    void areMembersAppliesToAllCharactersInAString() {
         String aString = aString();
         assertTrue(testCharacterSetMembershipFunction(aString).areMembers(aString));
         assertFalse(testCharacterSetMembershipFunction("").areMembers(aString));
     }
 
     @Test
-    public void anEmptyStringIsAlwaysAMember() throws Exception {
+    void anEmptyStringIsAlwaysAMember() {
         assertTrue(testCharacterSetMembershipFunction("").areMembers(""));
     }
 
     private static CharacterSetMembershipFunction testCharacterSetMembershipFunction(final String members) {
-        final HashSet<Character> membersSet = new HashSet<Character>() {{
+        final HashSet<Character> membersSet = new HashSet<>() {{
             for (char character : members.toCharArray()) {
                 add(character);
             }

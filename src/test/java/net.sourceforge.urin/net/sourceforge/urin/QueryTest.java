@@ -16,25 +16,25 @@ import static net.sourceforge.urin.CharacterSets.QUERY_AND_FRAGMENT_CHARACTERS;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class QueryTest {
+class QueryTest {
 
     @Test
-    public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
+    void asStringReturnsValueProvidedForUnreservedCharacters() {
         assertThat(Query.query(QUERY_AND_FRAGMENT_CHARACTERS).asString(), equalTo(QUERY_AND_FRAGMENT_CHARACTERS));
     }
 
     @Test
-    public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
+    void asStringPercentEncodesNonUnreservedCharacters() {
         assertThat(Query.query(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
     }
 
     @Test
-    public void parsesUnreservedCharacters() throws Exception {
+    void parsesUnreservedCharacters() throws Exception {
         assertThat(Query.parseQuery(QUERY_AND_FRAGMENT_CHARACTERS, Query.stringQueryMaker()), equalTo(Query.query(QUERY_AND_FRAGMENT_CHARACTERS)));
     }
 
     @Test
-    public void parsesNonUnreservedCharacters() throws Exception {
+    void parsesNonUnreservedCharacters() throws Exception {
         assertThat(Query.parseQuery(".%23.%5B.%5D.%20.", Query.stringQueryMaker()), equalTo(Query.query(".#.[.]. .")));
     }
 

@@ -20,100 +20,100 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SegmentTest {
+class SegmentTest {
 
     @Test
-    public void asStringReturnsValueProvidedForUnreservedCharacters() throws Exception {
+    void asStringReturnsValueProvidedForUnreservedCharacters() {
         assertThat(Segment.segment(P_CHARS).asString(), equalTo(P_CHARS));
     }
 
     @Test
-    public void asStringPercentEncodesNonUnreservedCharacters() throws Exception {
+    void asStringPercentEncodesNonUnreservedCharacters() {
         assertThat(Segment.segment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
     }
 
     @Test
-    public void asStringPercentEncodesDotSegment() throws Exception {
+    void asStringPercentEncodesDotSegment() {
         assertThat(Segment.segment(".").asString(), equalTo("%2E"));
     }
 
     @Test
-    public void asStringPercentEncodesDotDotSegment() throws Exception {
+    void asStringPercentEncodesDotDotSegment() {
         assertThat(Segment.segment("..").asString(), equalTo("%2E%2E"));
     }
 
     @Test
-    public void explicitDotSegmentIsNotEncoded() throws Exception {
+    void explicitDotSegmentIsNotEncoded() {
         assertThat(dot().asString(), equalTo("."));
     }
 
     @Test
-    public void explicitDotDotSegmentIsNotEncoded() throws Exception {
+    void explicitDotDotSegmentIsNotEncoded() {
         assertThat(dotDot().asString(), equalTo(".."));
     }
 
     @Test
-    public void emptySegmentIsNotEncoded() throws Exception {
+    void emptySegmentIsNotEncoded() {
         assertThat(empty().asString(), equalTo(""));
     }
 
     @Test
-    public void parsesUnreservedCharacters() throws Exception {
+    void parsesUnreservedCharacters() throws Exception {
         assertThat(Segment.parse(P_CHARS, STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment(P_CHARS)));
     }
 
     @Test
-    public void parsePercentDecodesNonUnreservedCharacters() throws Exception {
+    void parsePercentDecodesNonUnreservedCharacters() throws Exception {
         assertThat(Segment.parse(".%23.%5B.%5D.%20.", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment(".#.[.]. .")));
     }
 
     @Test
-    public void parsesPercentEncodedDotSegment() throws Exception {
+    void parsesPercentEncodedDotSegment() throws Exception {
         assertThat(Segment.parse("%2E", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment(".")));
     }
 
     @Test
-    public void parsesPercentEncodedDotDotSegment() throws Exception {
+    void parsesPercentEncodedDotDotSegment() throws Exception {
         assertThat(Segment.parse("%2E%2E", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment("..")));
     }
 
     @Test
-    public void unencodedDotBecomesExplicitDotSegment() throws Exception {
+    void unencodedDotBecomesExplicitDotSegment() throws Exception {
         assertThat(Segment.parse(".", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>dot()));
     }
 
     @Test
-    public void unencodedDotDotBecomesExplicitDotDotSegment() throws Exception {
+    void unencodedDotDotBecomesExplicitDotDotSegment() throws Exception {
         assertThat(Segment.parse("..", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>dotDot()));
     }
 
     @Test
-    public void unencodedEmptyBecomesExplicitEmptySegment() throws Exception {
+    void unencodedEmptyBecomesExplicitEmptySegment() throws Exception {
         assertThat(Segment.parse("", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>empty()));
     }
 
     @Test
-    public void dotHasNoValue() throws Exception {
+    void dotHasNoValue() {
         assertThat(dot().hasValue(), equalTo(false));
     }
 
     @Test
-    public void dotDotHasNoValue() throws Exception {
+    void dotDotHasNoValue() {
         assertThat(dotDot().hasValue(), equalTo(false));
     }
 
     @Test
-    public void emptyHasNoValue() throws Exception {
+    void emptyHasNoValue() {
         assertThat(empty().hasValue(), equalTo(false));
     }
 
     @Test
-    public void nonDotSegmentHasValue() throws Exception {
+    void nonDotSegmentHasValue() {
         assertThat(aNonDotSegment().hasValue(), equalTo(true));
     }
 
     @Test
-    public void dotThrowsUnsupportedOperationOnValueRetrieval() throws Exception {
+    void dotThrowsUnsupportedOperationOnValueRetrieval() {
         try {
             dot().value();
             fail("Expected UnsupportedOperationException to be thrown");
@@ -123,7 +123,7 @@ public class SegmentTest {
     }
 
     @Test
-    public void dotDotThrowsUnsupportedOperationOnValueRetrieval() throws Exception {
+    void dotDotThrowsUnsupportedOperationOnValueRetrieval() {
         try {
             dotDot().value();
             fail("Expected UnsupportedOperationException to be thrown");
@@ -133,7 +133,7 @@ public class SegmentTest {
     }
 
     @Test
-    public void emptyThrowsUnsupportedOperationOnValueRetrieval() throws Exception {
+    void emptyThrowsUnsupportedOperationOnValueRetrieval() {
         try {
             empty().value();
             fail("Expected UnsupportedOperationException to be thrown");
@@ -143,7 +143,7 @@ public class SegmentTest {
     }
 
     @Test
-    public void nonDotSegmentReturnsValue() throws Exception {
+    void nonDotSegmentReturnsValue() {
         String value = aString();
         assertThat(segment(value).value(), equalTo(value));
     }

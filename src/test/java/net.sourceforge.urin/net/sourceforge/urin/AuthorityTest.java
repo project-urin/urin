@@ -23,66 +23,51 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class AuthorityTest {
+class AuthorityTest {
     @Test
-    public void makesAuthorityWithNoUserInfoOrPort() throws Exception {
+    void makesAuthorityWithNoUserInfoOrPort() {
         Host host = aHost();
         assertThat(authority(host).asString(), equalTo(host.asString()));
     }
 
     @Test
-    public void rejectsNullHostInFactory() throws Exception {
-        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                authority(null);
-            }
-        });
+    void rejectsNullHostInFactory() throws Exception {
+        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, () -> authority(null));
     }
 
     @Test
-    public void anAuthorityWithNoUserInfoOrPortIsEqualToAnotherWithTheSameHost() throws Exception {
+    void anAuthorityWithNoUserInfoOrPortIsEqualToAnotherWithTheSameHost() {
         Host host = aHost();
         assertThat(authority(host), equalTo(authority(host)));
         assertThat(authority(host).hashCode(), equalTo(authority(host).hashCode()));
     }
 
     @Test
-    public void anAuthorityWithNoUserInfoOrPortIsNotEqualToAnotherWithTheADifferentHost() throws Exception {
+    void anAuthorityWithNoUserInfoOrPortIsNotEqualToAnotherWithTheADifferentHost() {
         assertThat(authority(aHost()), not(equalTo(authority(aHost()))));
     }
 
     @Test
-    public void anAuthorityWithNoUserInfoOrPortToStringIsCorrect() throws Exception {
+    void anAuthorityWithNoUserInfoOrPortToStringIsCorrect() {
         Host host = aHost();
         assertThat(authority(host).toString(), equalTo("Authority{host=" + host + "}"));
     }
 
     @Test
-    public void makesAuthorityWithNoPort() throws Exception {
+    void makesAuthorityWithNoPort() {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         assertThat(authority(userInfo, host).asString(), equalTo(userInfo.asString() + "@" + host.asString()));
     }
 
     @Test
-    public void rejectsNullInFactoryForAuthorityWithNoPort() throws Exception {
-        assertThrowsException("Null userInfo should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                authority(null, aHost());
-            }
-        });
-        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                authority(aUserInfo(), null);
-            }
-        });
+    void rejectsNullInFactoryForAuthorityWithNoPort() throws Exception {
+        assertThrowsException("Null userInfo should throw NullPointerException in factory", NullPointerException.class, () -> authority(null, aHost()));
+        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, () -> authority(aUserInfo(), null));
     }
 
     @Test
-    public void anAuthorityWithNoPortIsEqualToAnotherWithTheSameHostAndUserInfo() throws Exception {
+    void anAuthorityWithNoPortIsEqualToAnotherWithTheSameHostAndUserInfo() {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         assertThat(authority(userInfo, host), equalTo(authority(userInfo, host)));
@@ -90,42 +75,32 @@ public class AuthorityTest {
     }
 
     @Test
-    public void anAuthorityWithNoPortIsNotEqualToAnotherWithTheADifferentHostAndUserInfo() throws Exception {
+    void anAuthorityWithNoPortIsNotEqualToAnotherWithTheADifferentHostAndUserInfo() {
         assertThat(authority(aUserInfo(), aHost()), not(equalTo(authority(aUserInfo(), aHost()))));
     }
 
     @Test
-    public void anAuthorityWithNoPortToStringIsCorrect() throws Exception {
+    void anAuthorityWithNoPortToStringIsCorrect() {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         assertThat(authority(userInfo, host).toString(), equalTo("Authority{userInfo=" + userInfo + ", host=" + host + "}"));
     }
 
     @Test
-    public void makesAuthorityWithNoUserInfo() throws Exception {
+    void makesAuthorityWithNoUserInfo() {
         Host host = aHost();
         Port port = aPort();
         assertThat(authority(host, port).asString(), equalTo(host.asString() + ":" + port.asString()));
     }
 
     @Test
-    public void rejectsNullInFactoryForAuthorityWithNoUserInfo() throws Exception {
-        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                authority(null, aPort());
-            }
-        });
-        assertThrowsException("Null port should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                authority(aHost(), null);
-            }
-        });
+    void rejectsNullInFactoryForAuthorityWithNoUserInfo() throws Exception {
+        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, () -> authority(null, aPort()));
+        assertThrowsException("Null port should throw NullPointerException in factory", NullPointerException.class, () -> authority(aHost(), null));
     }
 
     @Test
-    public void anAuthorityWithNoUserInfoIsEqualToAnotherWithTheSameHostAndPort() throws Exception {
+    void anAuthorityWithNoUserInfoIsEqualToAnotherWithTheSameHostAndPort() {
         Host host = aHost();
         Port port = aPort();
         assertThat(authority(host, port), equalTo(authority(host, port)));
@@ -133,19 +108,19 @@ public class AuthorityTest {
     }
 
     @Test
-    public void anAuthorityWithNoUserInfoIsNotEqualToAnotherWithTheADifferentHostAndPort() throws Exception {
+    void anAuthorityWithNoUserInfoIsNotEqualToAnotherWithTheADifferentHostAndPort() {
         assertThat(authority(aHost(), aPort()), not(equalTo(authority(aHost(), aPort()))));
     }
 
     @Test
-    public void anAuthorityWithNoUserInfoToStringIsCorrect() throws Exception {
+    void anAuthorityWithNoUserInfoToStringIsCorrect() {
         Host host = aHost();
         Port port = aPort();
         assertThat(authority(host, port).toString(), equalTo("Authority{host=" + host + ", port=" + port + "}"));
     }
 
     @Test
-    public void makesAuthorityWithAllOptionsSpecified() throws Exception {
+    void makesAuthorityWithAllOptionsSpecified() {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         Port port = aPort();
@@ -153,30 +128,15 @@ public class AuthorityTest {
     }
 
     @Test
-    public void rejectsNullInFactoryForAuthorityWithAllOptions() throws Exception {
-        assertThrowsException("Null userInfo should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                authority(null, aHost(), aPort());
-            }
-        });
-        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                authority(aUserInfo(), null, aPort());
-            }
-        });
-        assertThrowsException("Null port should throw NullPointerException in factory", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws NullPointerException {
-                //noinspection NullableProblems
-                authority(aUserInfo(), aHost(), null);
-            }
-        });
+    void rejectsNullInFactoryForAuthorityWithAllOptions() throws Exception {
+        assertThrowsException("Null userInfo should throw NullPointerException in factory", NullPointerException.class, () -> authority(null, aHost(), aPort()));
+        assertThrowsException("Null host should throw NullPointerException in factory", NullPointerException.class, () -> authority(aUserInfo(), null, aPort()));
+        assertThrowsException("Null port should throw NullPointerException in factory", NullPointerException.class, () -> authority(aUserInfo(), aHost(), null));
     }
 
 
     @Test
-    public void anAuthorityWithAllOptionsSpecifiedIsEqualToAnotherWithTheSameFields() throws Exception {
+    void anAuthorityWithAllOptionsSpecifiedIsEqualToAnotherWithTheSameFields() {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         Port port = aPort();
@@ -185,12 +145,12 @@ public class AuthorityTest {
     }
 
     @Test
-    public void anAuthorityWithAllOptionsSpecifiedIsNotEqualToAnotherWithTheADifferentHostUserInfoAndPort() throws Exception {
+    void anAuthorityWithAllOptionsSpecifiedIsNotEqualToAnotherWithTheADifferentHostUserInfoAndPort() {
         assertThat(authority(aUserInfo(), aHost(), aPort()), not(equalTo(authority(aUserInfo(), aHost(), aPort()))));
     }
 
     @Test
-    public void anAuthorityWithAllOptionsSpecifiedToStringIsCorrect() throws Exception {
+    void anAuthorityWithAllOptionsSpecifiedToStringIsCorrect() {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         Port port = aPort();
@@ -198,27 +158,27 @@ public class AuthorityTest {
     }
 
     @Test
-    public void parsesAuthorityWithNoUserInfoOrPort() throws Exception {
+    void parsesAuthorityWithNoUserInfoOrPort() throws Exception {
         Host host = aHost();
         assertThat(parse(host.asString()), equalTo(authority(host)));
     }
 
     @Test
-    public void parsesAuthorityWithNoPort() throws Exception {
+    void parsesAuthorityWithNoPort() throws Exception {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         assertThat(parse(userInfo.asString() + "@" + host.asString()), equalTo(authority(userInfo, host)));
     }
 
     @Test
-    public void parsesAuthorityWithNoUserInfo() throws Exception {
+    void parsesAuthorityWithNoUserInfo() throws Exception {
         Host host = aHost();
         Port port = aPort();
         assertThat(parse(host.asString() + ":" + port.asString()), equalTo(authority(host, port)));
     }
 
     @Test
-    public void parsesAuthorityWithAllOptionsSpecified() throws Exception {
+    void parsesAuthorityWithAllOptionsSpecified() throws Exception {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         Port port = aPort();
@@ -226,48 +186,38 @@ public class AuthorityTest {
     }
 
     @Test
-    public void parsingAnInvalidAuthorityStringThrowsParseException() throws Exception {
-        assertThrowsException("In invalid authority should throw a parse exception", ParseException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws ParseException {
-                //noinspection NullableProblems
-                Authority.parse("something invalid");
-            }
-        });
+    void parsingAnInvalidAuthorityStringThrowsParseException() throws Exception {
+        assertThrowsException("In invalid authority should throw a parse exception", ParseException.class, () -> Authority.parse("something invalid"));
     }
 
 
     @Test
-    public void parsingNullThrowsNullPointerException() throws Exception {
-        assertThrowsException("Null value should throw NullPointerException in parser", NullPointerException.class, new ExceptionAssert.ExceptionThrower() {
-            public void execute() throws Exception {
-                //noinspection NullableProblems
-                Authority.parse(null);
-            }
-        });
+    void parsingNullThrowsNullPointerException() throws Exception {
+        assertThrowsException("Null value should throw NullPointerException in parser", NullPointerException.class, () -> Authority.parse(null));
     }
 
 
     @Test
-    public void authorityWithNoUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() throws Exception {
+    void authorityWithNoUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() {
         Authority authority = authority(aHost());
         assertThat(authority.removePort(aPort()), equalTo(authority));
     }
 
     @Test
-    public void authorityWithUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() throws Exception {
+    void authorityWithUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() {
         Authority authority = authority(aUserInfo(), aHost());
         assertThat(authority.removePort(aPort()), equalTo(authority));
     }
 
     @Test
-    public void authorityWithPortIsReturnedUnmolestedFromRemovingDifferentPort() throws Exception {
+    void authorityWithPortIsReturnedUnmolestedFromRemovingDifferentPort() {
         Port port = aPort();
         Authority authority = authority(aHost(), port);
         assertThat(authority.removePort(aPortDifferentTo(port)), equalTo(authority));
     }
 
     @Test
-    public void authorityWithPortCorrectlyRemovesThatPort() throws Exception {
+    void authorityWithPortCorrectlyRemovesThatPort() {
         Port port = aPort();
         Host host = aHost();
         Authority authority = authority(host, port);
@@ -275,14 +225,14 @@ public class AuthorityTest {
     }
 
     @Test
-    public void authorityWithUserInfoAndPortIsReturnedUnmolestedFromRemovingDifferentPort() throws Exception {
+    void authorityWithUserInfoAndPortIsReturnedUnmolestedFromRemovingDifferentPort() {
         Port port = aPort();
         Authority authority = authority(aUserInfo(), aHost(), port);
         assertThat(authority.removePort(aPortDifferentTo(port)), equalTo(authority));
     }
 
     @Test
-    public void authorityWithUserInfoAndPortCorrectlyRemovesThatPort() throws Exception {
+    void authorityWithUserInfoAndPortCorrectlyRemovesThatPort() {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         Port port = aPort();
