@@ -26,7 +26,7 @@ import static net.sourceforge.urin.SchemeBuilder.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SchemeTest {
     @Test
@@ -53,64 +53,56 @@ class SchemeTest {
 
     @Test
     void rejectsZeroLengthStringScheme() {
-        try {
-            Scheme.scheme("");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Scheme must contain at least one character"));
-        }
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme(""));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Scheme must contain at least one character"));
     }
 
     @Test
-    void rejectsInvalidSchemeNameFirstChar() {
-        try {
-            Scheme.scheme("+");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [+]"));
-        }
-        try {
-            Scheme.scheme("-");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [-]"));
-        }
-        try {
-            Scheme.scheme(".");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [.]"));
-        }
-        try {
-            Scheme.scheme("4");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [4]"));
-        }
-        try {
-            Scheme.scheme("@");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [@]"));
-        }
-        try {
-            Scheme.scheme("[");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [[]"));
-        }
-        try {
-            Scheme.scheme("`");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [`]"));
-        }
-        try {
-            Scheme.scheme("{");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [{]"));
-        }
+    void rejectsInvalidSchemeNameFirstCharPlus() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("+"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [+]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameFirstCharMinus() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("-"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [-]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameFirstCharDot() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("."));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [.]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameFirstChar4() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("4"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [4]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameFirstCharAt() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("@"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [@]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameFirstCharOpenSquareBracket() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("["));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [[]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameFirstCharBackTick() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("`"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [`]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameFirstCharOpenBrace() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("{"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, or A-Z in scheme [{]"));
     }
 
     @Test
@@ -119,43 +111,39 @@ class SchemeTest {
     }
 
     @Test
-    void rejectsInvalidSchemeNameTailChar() {
-        try {
-            Scheme.scheme("a@");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a@]"));
-        }
-        try {
-            Scheme.scheme("a[");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a[]"));
-        }
-        try {
-            Scheme.scheme("a`");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a`]"));
-        }
-        try {
-            Scheme.scheme("a{");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a{]"));
-        }
-        try {
-            Scheme.scheme("a/");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a/]"));
-        }
-        try {
-            Scheme.scheme("a:");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a:]"));
-        }
+    void rejectsInvalidSchemeNameTailCharAt() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("a@"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a@]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameTailCharOpenSquareBracket() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("a["));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a[]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameTailCharBackTick() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("a`"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a`]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameTailCharOpenBrace() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("a{"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a{]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameTailCharForwardsSlash() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("a/"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a/]"));
+    }
+
+    @Test
+    void rejectsInvalidSchemeNameTailCharColon() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> scheme("a:"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 2 must be a-z, A-Z, 0-9, +, -, or . in scheme [a:]"));
     }
 
     @Test

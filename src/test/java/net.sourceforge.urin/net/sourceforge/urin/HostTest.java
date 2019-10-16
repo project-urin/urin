@@ -28,7 +28,7 @@ import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SuppressWarnings("UnnecessaryLocalVariable")
 class HostTest {
@@ -88,32 +88,20 @@ class HostTest {
 
     @Test
     void parsingARegisteredNameWithNonPercentEncodedDisallowedCharactersThrowsParseException() {
-        try {
-            parse("?");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :?"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("?"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :?"));
     }
 
     @Test
     void parsingAnRegisteredNameWithInvalidPercentEncodingThrowsParseException() {
-        try {
-            parse("%F5");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :%F5"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("%F5"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :%F5"));
     }
 
     @Test
     void parsingAnRegisteredNameWithIncompletePercentEncodingThrowsParseException() {
-        try {
-            parse("%2");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :%2"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("%2"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :%2"));
     }
 
     @Test
@@ -289,22 +277,14 @@ class HostTest {
 
     @Test
     void parsingAnIpV6HostWithMultipleElidedPartsThrowsParseException() {
-        try {
-            parse("[1::1::1]");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :[1::1::1]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1::1::1]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[1::1::1]"));
     }
 
     @Test
     void parsingAnIpV6HostWithTooFewPartsThrowsParseException() {
-        try {
-            parse("[1:1:1]");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :[1:1:1]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1:1:1]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[1:1:1]"));
     }
 
     @Test
@@ -448,22 +428,14 @@ class HostTest {
 
     @Test
     void parsingAnIpV6AddressWithTrailingIpV4AddressWithMultipleElidedPartsThrowsParseException() {
-        try {
-            parse("[1::1::1:1.1.1.1]");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :[1::1::1:1.1.1.1]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1::1::1:1.1.1.1]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[1::1::1:1.1.1.1]"));
     }
 
     @Test
     void parsingAnIpV6AddressWithTrailingIpV4AddressWithTooFewPartsThrowsParseException() {
-        try {
-            parse("[1:1:1.1.1]");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :[1:1:1.1.1]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1:1:1.1.1]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[1:1:1.1.1]"));
     }
 
     @Test
@@ -490,12 +462,8 @@ class HostTest {
 
     @Test
     void ipVFutureRejectsEmptyVersion() {
-        try {
-            ipVFutureAddress("", aValidIpVFutureAddress());
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Version must contain at least one character"));
-        }
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("", aValidIpVFutureAddress()));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Version must contain at least one character"));
     }
 
     @Test
@@ -516,92 +484,68 @@ class HostTest {
 
     @Test
     void parsingAnIpVFutureAddressWithNonHexVersionThrowsParseException() {
-        try {
-            parse("[vi.abc]");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :[vi.abc]"));
-        }
-        try {
-            parse("[v.abc]");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :[v.abc]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[vi.abc]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[vi.abc]"));
+    }
+
+    @Test
+    void parsingAnIpVFutureAddressWithMissingVersionThrowsParseException() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[v.abc]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[v.abc]"));
     }
 
     @Test
     void parsingAnIpVFutureAddressWithNoDotThrowsParseException() {
-        try {
-            parse("[viabc]");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :[viabc]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[v1abc]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[v1abc]"));
     }
 
     @Test
     void parsingAnIpVFutureAddressWithLessThanOneAddressCharacterThrowsParseException() {
-        try {
-            parse("[v1.]");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :[v1.]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[v1.]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[v1.]"));
     }
 
     @Test
     void parsingAnIpVFutureAddressWithAnInvalidAddressCharacterThrowsParseException() {
-        try {
-            parse("[v1.%]");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Not a valid host :[v1.%]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[v1.%]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[v1.%]"));
     }
 
     @Test
-    void ipVFutureRejectsInvalidCharactersInVersion() {
-        try {
-            ipVFutureAddress("a", aValidIpVFutureAddress());
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [a]"));
-        }
-        try {
-            ipVFutureAddress("/", aValidIpVFutureAddress());
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [/]"));
-        }
-        try {
-            ipVFutureAddress(":", aValidIpVFutureAddress());
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [:]"));
-        }
-        try {
-            ipVFutureAddress("@", aValidIpVFutureAddress());
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [@]"));
-        }
-        try {
-            ipVFutureAddress("G", aValidIpVFutureAddress());
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [G]"));
-        }
+    void ipVFutureRejectsInvalidCharacterAInVersion() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("a", aValidIpVFutureAddress()));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [a]"));
+    }
+
+    @Test
+    void ipVFutureRejectsInvalidCharacterForwardsSlashInVersion() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("/", aValidIpVFutureAddress()));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [/]"));
+    }
+
+    @Test
+    void ipVFutureRejectsInvalidCharacterColonInVersion() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(":", aValidIpVFutureAddress()));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [:]"));
+    }
+
+    @Test
+    void ipVFutureRejectsInvalidCharacterAtInVersion() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("@", aValidIpVFutureAddress()));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [@]"));
+    }
+
+    @Test
+    void ipVFutureRejectsInvalidCharacterGInVersion() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("G", aValidIpVFutureAddress()));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [G]"));
     }
 
     @Test
     void ipVFutureRejectsEmptyAddress() {
-        try {
-            ipVFutureAddress(aValidIpVFutureVersion(), "");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Address must contain at least one character"));
-        }
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(aValidIpVFutureVersion(), ""));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Address must contain at least one character"));
     }
 
     @Test
@@ -611,12 +555,8 @@ class HostTest {
 
     @Test
     void ipVFutureRejectsInvalidCharactersInAddress() {
-        try {
-            ipVFutureAddress(aValidIpVFutureVersion(), "/");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be a-z, A-Z, 0-9, -, ., _, ~, !, $, &, ', (, ), *, +, ,, ;, =, or : in address [/]"));
-        }
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(aValidIpVFutureVersion(), "/"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, A-Z, 0-9, -, ., _, ~, !, $, &, ', (, ), *, +, ,, ;, =, or : in address [/]"));
     }
 
     @Test

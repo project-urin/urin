@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import static net.sourceforge.urin.Octet.octet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OctetTest {
 
@@ -26,19 +26,15 @@ class OctetTest {
     }
 
     @Test
-    void rejectsIntArgumentsOutsideRange() {
-        try {
-            octet(-1);
-            fail("Should have thrown IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [-1]"));
-        }
-        try {
-            octet(256);
-            fail("Should have thrown IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [256]"));
-        }
+    void rejectsIntArgumentBelowRange() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> octet(-1));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Argument must be in the range 0-255 but was [-1]"));
+    }
+
+    @Test
+    void rejectsIntArgumentsAboveRange() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> octet(256));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Argument must be in the range 0-255 but was [256]"));
     }
 
     @Test
@@ -68,18 +64,14 @@ class OctetTest {
     }
 
     @Test
-    void parseRejectsInvalidOctetStrings() {
-        try {
-            Octet.parse("-1");
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0-255 but was [-1]"));
-        }
-        try {
-            Octet.parse(null);
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Invalid Octet String [null]"));
-        }
+    void parseRejectsOctetStringOutsideRange() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> Octet.parse("-1"));
+        assertThat(parseException.getMessage(), equalTo("Argument must be in the range 0-255 but was [-1]"));
+    }
+
+    @Test
+    void parseRejectsNullOctetString() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> Octet.parse(null));
+        assertThat(parseException.getMessage(), equalTo("Invalid Octet String [null]"));
     }
 }

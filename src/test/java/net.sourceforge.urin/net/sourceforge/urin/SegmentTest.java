@@ -18,7 +18,7 @@ import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SegmentTest {
 
@@ -114,32 +114,20 @@ class SegmentTest {
 
     @Test
     void dotThrowsUnsupportedOperationOnValueRetrieval() {
-        try {
-            dot().value();
-            fail("Expected UnsupportedOperationException to be thrown");
-        } catch (final UnsupportedOperationException e) {
-            assertThat(e.getMessage(), equalTo("Attempt to get value of . segment"));
-        }
+        final UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class, () -> dot().value());
+        assertThat(unsupportedOperationException.getMessage(), equalTo("Attempt to get value of . segment"));
     }
 
     @Test
     void dotDotThrowsUnsupportedOperationOnValueRetrieval() {
-        try {
-            dotDot().value();
-            fail("Expected UnsupportedOperationException to be thrown");
-        } catch (final UnsupportedOperationException e) {
-            assertThat(e.getMessage(), equalTo("Attempt to get value of .. segment"));
-        }
+        final UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class, () -> dotDot().value());
+        assertThat(unsupportedOperationException.getMessage(), equalTo("Attempt to get value of .. segment"));
     }
 
     @Test
     void emptyThrowsUnsupportedOperationOnValueRetrieval() {
-        try {
-            empty().value();
-            fail("Expected UnsupportedOperationException to be thrown");
-        } catch (final UnsupportedOperationException e) {
-            assertThat(e.getMessage(), equalTo("Attempt to get value of empty segment"));
-        }
+        final UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class, () -> empty().value());
+        assertThat(unsupportedOperationException.getMessage(), equalTo("Attempt to get value of empty segment"));
     }
 
     @Test

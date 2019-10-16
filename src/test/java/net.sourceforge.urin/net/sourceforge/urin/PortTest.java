@@ -18,7 +18,7 @@ import static net.sourceforge.urin.Port.parse;
 import static net.sourceforge.urin.Port.port;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PortTest {
     @Test
@@ -52,25 +52,21 @@ class PortTest {
     }
 
     @Test
-    void rejectsInvalidCharacters() {
-        try {
-            port("a");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [a]"));
-        }
-        try {
-            port("/");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [/]"));
-        }
-        try {
-            port(":");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [:]"));
-        }
+    void rejectsInvalidCharacterA() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> port("a"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9 in port [a]"));
+    }
+
+    @Test
+    void rejectsInvalidCharacterForwardsSlash() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> port("/"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9 in port [/]"));
+    }
+
+    @Test
+    void rejectsInvalidCharacterColon() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> port(":"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9 in port [:]"));
     }
 
     @Test
@@ -85,12 +81,8 @@ class PortTest {
 
     @Test
     void cannotParseAPortUsingANegativeInt() {
-        try {
-            Port.parse("-123");
-            fail("Expected a ParseException to be thrown");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [-123]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("-123"));
+        assertThat(parseException.getMessage(), equalTo("Character 1 must be 0-9 in port [-123]"));
     }
 
     @Test
@@ -99,25 +91,21 @@ class PortTest {
     }
 
     @Test
-    void parseRejectsInvalidCharacters() {
-        try {
-            parse("a");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [a]"));
-        }
-        try {
-            parse("/");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [/]"));
-        }
-        try {
-            parse(":");
-            fail("Expected an IllegalArgumentException to be thrown");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Character 1 must be 0-9 in port [:]"));
-        }
+    void parseRejectsInvalidCharacterA() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("a"));
+        assertThat(parseException.getMessage(), equalTo("Character 1 must be 0-9 in port [a]"));
+    }
+
+    @Test
+    void parseRejectsInvalidCharacterForwardsSlash() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("/"));
+        assertThat(parseException.getMessage(), equalTo("Character 1 must be 0-9 in port [/]"));
+    }
+
+    @Test
+    void parseRejectsInvalidCharacterColon() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse(":"));
+        assertThat(parseException.getMessage(), equalTo("Character 1 must be 0-9 in port [:]"));
     }
 
 }

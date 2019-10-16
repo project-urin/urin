@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HexadectetTest {
     @Test
@@ -25,19 +25,15 @@ class HexadectetTest {
     }
 
     @Test
-    void rejectsIntsOutsideValidRange() {
-        try {
-            hexadectet(-0x1);
-            fail("Should have thrown IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [-0x1]"));
-        }
-        try {
-            hexadectet(0x10000);
-            fail("Should have thrown IllegalArgumentException");
-        } catch (IllegalArgumentException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [0x10000]"));
-        }
+    void rejectsIntLessThanValidRange() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> hexadectet(-0x1));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [-0x1]"));
+    }
+
+    @Test
+    void rejectsIntGreaterThanValidRange() {
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> hexadectet(0x10000));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [0x10000]"));
     }
 
     @Test
@@ -72,20 +68,16 @@ class HexadectetTest {
     }
 
     @Test
-    void parsingOutsideBoundaryHexadectetStringsThrowsParseException() {
+    void parsingLessThanBoundaryHexadectetStringsThrowsParseException() {
         final String minusOneHexAsString = Integer.toString(-0x1, 16);
-        try {
-            Hexadectet.parse(minusOneHexAsString);
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [-0x1]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> Hexadectet.parse(minusOneHexAsString));
+        assertThat(parseException.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [-0x1]"));
+    }
+
+    @Test
+    void parsingGreaterThanBoundaryHexadectetStringsThrowsParseException() {
         String tenThousandHexAsString = Integer.toString(0x10000, 16);
-        try {
-            Hexadectet.parse(tenThousandHexAsString);
-            fail("Should have thrown ParseException");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [0x10000]"));
-        }
+        final ParseException parseException = assertThrows(ParseException.class, () -> Hexadectet.parse(tenThousandHexAsString));
+        assertThat(parseException.getMessage(), equalTo("Argument must be in the range 0x0-0xFFFF but was [0x10000]"));
     }
 }

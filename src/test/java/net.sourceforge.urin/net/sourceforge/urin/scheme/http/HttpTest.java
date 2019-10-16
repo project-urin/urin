@@ -32,7 +32,7 @@ import static net.sourceforge.urin.scheme.http.QueryMatcher.convertsToQueryStrin
 import static net.sourceforge.urin.scheme.http.QueryParameterBuilder.aQueryParameter;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HttpTest {
     @Test
@@ -659,13 +659,9 @@ class HttpTest {
     }
 
     @Test
-    void anInvalidQueryParameterThrowsAnException() {
-        try {
-            HTTP.parseUrin("http://somewhere?name=value=somethingbroken");
-            fail("Expected a ParseException to be thrown");
-        } catch (ParseException e) {
-            assertThat(e.getMessage(), equalTo("Invalid query parameter - expected maximum of two elements in [[name, value, somethingbroken]]"));
-        }
+    void anInvalidQueryParameterThrowsParseException() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> HTTP.parseUrin("http://somewhere?name=value=somethingbroken"));
+        assertThat(parseException.getMessage(), equalTo("Invalid query parameter - expected maximum of two elements in [[name, value, somethingbroken]]"));
     }
 
     @Test
