@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Mark Slater
+ * Copyright 2019 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -11,7 +11,7 @@
 package integration.net.sourceforge.urin;
 
 import net.sourceforge.urin.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 

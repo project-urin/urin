@@ -10,18 +10,8 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import net.sourceforge.urin.AbsolutePath;
-import net.sourceforge.urin.Fragment;
-import net.sourceforge.urin.Host;
-import net.sourceforge.urin.ParseException;
-import net.sourceforge.urin.Path;
-import net.sourceforge.urin.Port;
-import net.sourceforge.urin.Query;
-import net.sourceforge.urin.RelativeReference;
-import net.sourceforge.urin.Urin;
-import net.sourceforge.urin.UrinReference;
-import org.junit.Assert;
-import org.junit.Test;
+import net.sourceforge.urin.*;
+import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.AbsolutePathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.Authority.authority;
@@ -42,7 +32,7 @@ import static net.sourceforge.urin.scheme.http.QueryMatcher.convertsToQueryStrin
 import static net.sourceforge.urin.scheme.http.QueryParameterBuilder.aQueryParameter;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class HttpTest {
     @Test
@@ -674,7 +664,7 @@ public class HttpTest {
             HTTP.parseUrin("http://somewhere?name=value=somethingbroken");
             fail("Expected a ParseException to be thrown");
         } catch (ParseException e) {
-            Assert.assertThat(e.getMessage(), equalTo("Invalid query parameter - expected maximum of two elements in [[name, value, somethingbroken]]"));
+            assertThat(e.getMessage(), equalTo("Invalid query parameter - expected maximum of two elements in [[name, value, somethingbroken]]"));
         }
     }
 

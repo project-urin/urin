@@ -12,7 +12,7 @@ package net.sourceforge.urin.scheme.http;
 
 import net.sourceforge.urin.ExceptionAssert;
 import net.sourceforge.urin.Query;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
@@ -22,8 +22,8 @@ import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static net.sourceforge.urin.scheme.http.QueryParameterBuilder.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertThat;
 
 public class HttpQueryTest {
     @Test

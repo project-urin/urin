@@ -10,15 +10,15 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.CharacterSets.DIGIT;
 import static net.sourceforge.urin.ExceptionAssert.assertThrowsException;
 import static net.sourceforge.urin.Port.parse;
 import static net.sourceforge.urin.Port.port;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class PortTest {
     @Test

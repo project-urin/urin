@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
@@ -28,7 +28,7 @@ import static net.sourceforge.urin.SchemeBuilder.aValidSchemeName;
 import static net.sourceforge.urin.UrinBuilder.aUrin;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class UrinTest {
 

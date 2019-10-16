@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public final class ExceptionAssert {
     public static <T extends Exception> void assertThrowsException(final String message, final Class<T> exceptionClass, final ExceptionThrower exceptionThrower) throws Exception {

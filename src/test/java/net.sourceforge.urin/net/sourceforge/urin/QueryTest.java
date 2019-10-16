@@ -10,11 +10,11 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.CharacterSets.QUERY_AND_FRAGMENT_CHARACTERS;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class QueryTest {
 

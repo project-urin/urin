@@ -58,8 +58,9 @@ dependencies {
     testInfrastructureCompile sourceSets.main.output
     testInfrastructureCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.4'
     testInfrastructureCompile group: 'com.google.guava', name: 'guava', version: '22.0'
-    testInfrastructureCompile group: 'org.hamcrest', name: 'java-hamcrest', version: '2.0.0.0'
-    testInfrastructureCompile group: 'junit', name: 'junit', version: '4.12'
+    testInfrastructureCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
+    testInfrastructureCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.5.2'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.4.2'
     testCompile sourceSets.testInfrastructure.output
     testIntegrationCompile sourceSets.main.output
     testIntegrationCompile sourceSets.testInfrastructure.output
@@ -79,6 +80,10 @@ description = 'Urin is an open source URI generator and parser written in Java.'
 compileJava {
     sourceCompatibility = 9
     targetCompatibility = 9
+}
+
+test {
+    useJUnitPlatform()
 }
 
 task compileTinyJava(type: JavaCompile) {

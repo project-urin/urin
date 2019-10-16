@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Mark Slater
+ * Copyright 2019 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -15,7 +15,7 @@ import net.sourceforge.urin.Fragment;
 import net.sourceforge.urin.Path;
 import net.sourceforge.urin.RelativeReference;
 import net.sourceforge.urin.Segment;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.google.common.collect.Iterables.transform;
 import static net.sourceforge.urin.AccessBackDoors.asString;
@@ -25,8 +25,8 @@ import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.segment;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
-import static org.junit.Assert.assertThat;
 
 public class RelativeReferenceSamplesTest {
     @Test

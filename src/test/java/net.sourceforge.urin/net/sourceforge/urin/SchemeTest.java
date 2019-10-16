@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static java.util.Locale.ENGLISH;
 import static net.sourceforge.urin.Authority.authority;
@@ -25,8 +25,8 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static net.sourceforge.urin.SchemeBuilder.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class SchemeTest {
     @Test

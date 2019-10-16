@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
@@ -23,7 +23,7 @@ import static net.sourceforge.urin.PercentEncoder.ENCODE_EVERYTHING;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
 import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percentEncodingString;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class PercentEncodingTest {
 
