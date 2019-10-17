@@ -10,11 +10,7 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import net.sourceforge.urin.MakingDecoder;
-import net.sourceforge.urin.ParseException;
-import net.sourceforge.urin.PercentEncodingPartial;
-import net.sourceforge.urin.Query;
-import net.sourceforge.urin.Transformer;
+import net.sourceforge.urin.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +18,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import static java.util.Arrays.asList;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A query component of a URI with HTTP/HTTPS specific sub-encoding.
@@ -49,10 +46,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
     private HttpQuery(final Iterable<QueryParameter> queryParameters) {
         super(Collections.unmodifiableList(new ArrayList<QueryParameter>() {{
             for (QueryParameter queryParameter : queryParameters) {
-                if (queryParameter == null) {
-                    throw new NullPointerException("Cannot instantiate QueryParameters with null queryParameter");
-                }
-                add(queryParameter);
+                add(requireNonNull(queryParameter, "Cannot instantiate QueryParameters with null queryParameter"));
             }
         }}), HTTP_QUERY_PERCENT_ENCODING_PARTIAL);
     }
@@ -193,14 +187,8 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         private final String value;
 
         NameAndValueQueryParameter(final String name, final String value) {
-            if (name == null) {
-                throw new NullPointerException("Cannot instantiate QueryParameter with null name");
-            }
-            this.name = name;
-            if (value == null) {
-                throw new NullPointerException("Cannot instantiate QueryParameter with null value");
-            }
-            this.value = value;
+            this.name = requireNonNull(name, "Cannot instantiate QueryParameter with null name");
+            this.value = requireNonNull(value, "Cannot instantiate QueryParameter with null value");
         }
 
         @Override
@@ -250,10 +238,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         private final String name;
 
         NameOnlyQueryParameter(final String name) {
-            if (name == null) {
-                throw new NullPointerException("Cannot instantiate QueryParameter with null name");
-            }
-            this.name = name;
+            this.name = requireNonNull(name, "Cannot instantiate QueryParameter with null name");
         }
 
         @Override

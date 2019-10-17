@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 import static java.util.Locale.ENGLISH;
+import static java.util.Objects.requireNonNull;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
@@ -273,22 +274,10 @@ public abstract class Host {
         private final Octet fourthOctet;
 
         IpV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
-            if (firstOctet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null firstOctet");
-            }
-            this.firstOctet = firstOctet;
-            if (secondOctet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null secondOctet");
-            }
-            this.secondOctet = secondOctet;
-            if (thirdOctet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null thirdOctet");
-            }
-            this.thirdOctet = thirdOctet;
-            if (fourthOctet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null fourthOctet");
-            }
-            this.fourthOctet = fourthOctet;
+            this.firstOctet = requireNonNull(firstOctet, "Cannot instantiate Host with null firstOctet");
+            this.secondOctet = requireNonNull(secondOctet, "Cannot instantiate Host with null secondOctet");
+            this.thirdOctet = requireNonNull(thirdOctet, "Cannot instantiate Host with null thirdOctet");
+            this.fourthOctet = requireNonNull(fourthOctet, "Cannot instantiate Host with null fourthOctet");
         }
 
         @Override
@@ -356,38 +345,14 @@ public abstract class Host {
         private final Hexadectet eighthHexadectet;
 
         IpV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
-            if (firstHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null firstHexadectet");
-            }
-            this.firstHexadectet = firstHexadectet;
-            if (secondHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null secondHexadectet");
-            }
-            this.secondHexadectet = secondHexadectet;
-            if (thirdHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null thirdHexadectet");
-            }
-            this.thirdHexadectet = thirdHexadectet;
-            if (fourthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null fourthHexadectet");
-            }
-            this.fourthHexadectet = fourthHexadectet;
-            if (fifthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null fifthHexadectet");
-            }
-            this.fifthHexadectet = fifthHexadectet;
-            if (sixthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null sixthHexadectet");
-            }
-            this.sixthHexadectet = sixthHexadectet;
-            if (seventhHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null seventhHexadectet");
-            }
-            this.seventhHexadectet = seventhHexadectet;
-            if (eighthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null eighthHexadectet");
-            }
-            this.eighthHexadectet = eighthHexadectet;
+            this.firstHexadectet = requireNonNull(firstHexadectet, "Cannot instantiate Host with null firstHexadectet");
+            this.secondHexadectet = requireNonNull(secondHexadectet, "Cannot instantiate Host with null secondHexadectet");
+            this.thirdHexadectet = requireNonNull(thirdHexadectet, "Cannot instantiate Host with null thirdHexadectet");
+            this.fourthHexadectet = requireNonNull(fourthHexadectet, "Cannot instantiate Host with null fourthHexadectet");
+            this.fifthHexadectet = requireNonNull(fifthHexadectet, "Cannot instantiate Host with null fifthHexadectet");
+            this.sixthHexadectet = requireNonNull(sixthHexadectet, "Cannot instantiate Host with null sixthHexadectet");
+            this.seventhHexadectet = requireNonNull(seventhHexadectet, "Cannot instantiate Host with null seventhHexadectet");
+            this.eighthHexadectet = requireNonNull(eighthHexadectet, "Cannot instantiate Host with null eighthHexadectet");
         }
 
         @Override
@@ -523,46 +488,16 @@ public abstract class Host {
         private final Octet fourthOctet;
 
         public IpV6AddressWithTrailingIpV4Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
-            if (firstHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null firstHexadectet");
-            }
-            this.firstHexadectet = firstHexadectet;
-            if (secondHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null secondHexadectet");
-            }
-            this.secondHexadectet = secondHexadectet;
-            if (thirdHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null thirdHexadectet");
-            }
-            this.thirdHexadectet = thirdHexadectet;
-            if (fourthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null fourthHexadectet");
-            }
-            this.fourthHexadectet = fourthHexadectet;
-            if (fifthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null fifthHexadectet");
-            }
-            this.fifthHexadectet = fifthHexadectet;
-            if (sixthHexadectet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null sixthHexadectet");
-            }
-            this.sixthHexadectet = sixthHexadectet;
-            if (firstOctet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null firstOctet");
-            }
-            this.firstOctet = firstOctet;
-            if (secondOctet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null secondOctet");
-            }
-            this.secondOctet = secondOctet;
-            if (thirdOctet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null thirdOctet");
-            }
-            this.thirdOctet = thirdOctet;
-            if (fourthOctet == null) {
-                throw new NullPointerException("Cannot instantiate Host with null fourthOctet");
-            }
-            this.fourthOctet = fourthOctet;
+            this.firstHexadectet = requireNonNull(firstHexadectet, "Cannot instantiate Host with null firstHexadectet");
+            this.secondHexadectet = requireNonNull(secondHexadectet, "Cannot instantiate Host with null secondHexadectet");
+            this.thirdHexadectet = requireNonNull(thirdHexadectet, "Cannot instantiate Host with null thirdHexadectet");
+            this.fourthHexadectet = requireNonNull(fourthHexadectet, "Cannot instantiate Host with null fourthHexadectet");
+            this.fifthHexadectet = requireNonNull(fifthHexadectet, "Cannot instantiate Host with null fifthHexadectet");
+            this.sixthHexadectet = requireNonNull(sixthHexadectet, "Cannot instantiate Host with null sixthHexadectet");
+            this.firstOctet = requireNonNull(firstOctet, "Cannot instantiate Host with null firstOctet");
+            this.secondOctet = requireNonNull(secondOctet, "Cannot instantiate Host with null secondOctet");
+            this.thirdOctet = requireNonNull(thirdOctet, "Cannot instantiate Host with null thirdOctet");
+            this.fourthOctet = requireNonNull(fourthOctet, "Cannot instantiate Host with null fourthOctet");
         }
 
         static boolean isValid(final String hostString) {

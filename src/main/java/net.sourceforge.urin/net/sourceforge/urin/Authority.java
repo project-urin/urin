@@ -13,6 +13,8 @@ package net.sourceforge.urin;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * An authority component of a URI.
  *
@@ -111,10 +113,7 @@ public abstract class Authority {
         private final Host host;
 
         public AuthorityWithHost(final Host host) {
-            if (host == null) {
-                throw new NullPointerException("Cannot instantiate Authority with null host");
-            }
-            this.host = host;
+            this.host = requireNonNull(host, "Cannot instantiate Authority with null host");
         }
 
         @Override
@@ -154,14 +153,8 @@ public abstract class Authority {
         private final Host host;
 
         AuthorityWithUserInfoAndHost(final UserInfo userInfo, final Host host) {
-            if (userInfo == null) {
-                throw new NullPointerException("Cannot instantiate Authority with null userInfo");
-            }
-            this.userInfo = userInfo;
-            if (host == null) {
-                throw new NullPointerException("Cannot instantiate Authority with null host");
-            }
-            this.host = host;
+            this.userInfo = requireNonNull(userInfo, "Cannot instantiate Authority with null userInfo");
+            this.host = requireNonNull(host, "Cannot instantiate Authority with null host");
         }
 
         @Override
@@ -207,14 +200,8 @@ public abstract class Authority {
         private final Port port;
 
         AuthorityWithHostAndPort(final Host host, final Port port) {
-            if (host == null) {
-                throw new NullPointerException("Cannot instantiate Authority with null host");
-            }
-            this.host = host;
-            if (port == null) {
-                throw new NullPointerException("Cannot instantiate Authority with null port");
-            }
-            this.port = port;
+            this.host = requireNonNull(host, "Cannot instantiate Authority with null host");
+            this.port = requireNonNull(port, "Cannot instantiate Authority with null port");
         }
 
         @Override
@@ -259,18 +246,9 @@ public abstract class Authority {
         private final Port port;
 
         public AuthorityWithUserInfoAndHostAndPort(final UserInfo userInfo, final Host host, final Port port) {
-            if (userInfo == null) {
-                throw new NullPointerException("Cannot instantiate Authority with null userInfo");
-            }
-            this.userInfo = userInfo;
-            if (host == null) {
-                throw new NullPointerException("Cannot instantiate Authority with null host");
-            }
-            this.host = host;
-            if (port == null) {
-                throw new NullPointerException("Cannot instantiate Authority with null port");
-            }
-            this.port = port;
+            this.userInfo = requireNonNull(userInfo, "Cannot instantiate Authority with null userInfo");
+            this.host = requireNonNull(host, "Cannot instantiate Authority with null host");
+            this.port = requireNonNull(port, "Cannot instantiate Authority with null port");
         }
 
         @Override

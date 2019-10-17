@@ -15,6 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static java.util.Locale.ENGLISH;
+import static java.util.Objects.requireNonNull;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
@@ -781,10 +782,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final Path<SEGMENT> path;
 
         private RelativeReferenceNoAuthority(final Path<SEGMENT> path) {
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
+            this.path = requireNonNull(path, "Cannot instantiate RelativeReference with null path");
         }
 
         @Override
@@ -898,14 +896,8 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final Path<SEGMENT> path;
 
         private RelativeReferenceWithAuthority(final Authority authority, final Path<SEGMENT> path) {
-            if (authority == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
+            this.authority = requireNonNull(authority, "Cannot instantiate RelativeReference with null authority");
+            this.path = requireNonNull(path, "Cannot instantiate RelativeReference with null path");
         }
 
         @Override
@@ -1006,14 +998,8 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final QUERY query;
 
         RelativeReferenceNoAuthorityWithQuery(final Path<SEGMENT> path, final QUERY query) {
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
-            }
-            this.query = query;
+            this.path = requireNonNull(path, "Cannot instantiate RelativeReference with null path");
+            this.query = requireNonNull(query, "Cannot instantiate RelativeReference with null query");
         }
 
         @Override
@@ -1123,14 +1109,8 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final FRAGMENT fragment;
 
         RelativeReferenceNoAuthorityWithFragment(final Path<SEGMENT> path, final FRAGMENT fragment) {
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
-            }
-            this.fragment = fragment;
+            this.path = requireNonNull(path, "Cannot instantiate RelativeReference with null path");
+            this.fragment = requireNonNull(fragment, "Cannot instantiate RelativeReference with null fragment");
         }
 
         @Override
@@ -1249,18 +1229,9 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final QUERY query;
 
         RelativeReferenceNoAuthorityWithQueryAndFragment(final Path<SEGMENT> path, final QUERY query, final FRAGMENT fragment) {
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
-            }
-            this.query = query;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
-            }
-            this.fragment = fragment;
+            this.path = requireNonNull(path, "Cannot instantiate RelativeReference with null path");
+            this.query = requireNonNull(query, "Cannot instantiate RelativeReference with null query");
+            this.fragment = requireNonNull(fragment, "Cannot instantiate RelativeReference with null fragment");
         }
 
         @Override
@@ -1363,18 +1334,9 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final QUERY query;
 
         RelativeReferenceWithAuthorityAndQuery(final Authority authority, final Path<SEGMENT> path, final QUERY query) {
-            if (authority == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
-            }
-            this.query = query;
+            this.authority = requireNonNull(authority, "Cannot instantiate RelativeReference with null authority");
+            this.path = requireNonNull(path, "Cannot instantiate RelativeReference with null path");
+            this.query = requireNonNull(query, "Cannot instantiate RelativeReference with null query");
         }
 
         @Override
@@ -1477,18 +1439,9 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final FRAGMENT fragment;
 
         RelativeReferenceWithAuthorityAndFragment(final Authority authority, final Path<SEGMENT> path, final FRAGMENT fragment) {
-            if (authority == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
-            }
-            this.fragment = fragment;
+            this.authority = requireNonNull(authority, "Cannot instantiate RelativeReference with null authority");
+            this.path = requireNonNull(path, "Cannot instantiate RelativeReference with null path");
+            this.fragment = requireNonNull(fragment, "Cannot instantiate RelativeReference with null fragment");
         }
 
         @Override
@@ -1592,22 +1545,10 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final FRAGMENT fragment;
 
         RelativeReferenceWithAuthorityAndQueryAndFragment(final Authority authority, final Path<SEGMENT> path, final QUERY query, final FRAGMENT fragment) {
-            if (authority == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null query");
-            }
-            this.query = query;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate RelativeReference with null fragment");
-            }
-            this.fragment = fragment;
+            this.authority = requireNonNull(authority, "Cannot instantiate RelativeReference with null authority");
+            this.path = requireNonNull(path, "Cannot instantiate RelativeReference with null path");
+            this.query = requireNonNull(query, "Cannot instantiate RelativeReference with null query");
+            this.fragment = requireNonNull(fragment, "Cannot instantiate RelativeReference with null fragment");
         }
 
         @Override
@@ -1712,22 +1653,10 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final FRAGMENT fragment;
 
         UrinWithPathAndQueryAndFragment(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path, final QUERY query, final FRAGMENT fragment) {
-            if (scheme == null) {
-                throw new NullPointerException("Cannot instantiate Urin with null scheme");
-            }
-            this.scheme = scheme;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate Urin with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate Urin with null query");
-            }
-            this.query = query;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate Urin with null fragment");
-            }
-            this.fragment = fragment;
+            this.scheme = requireNonNull(scheme, "Cannot instantiate Urin with null scheme");
+            this.path = requireNonNull(path, "Cannot instantiate Urin with null path");
+            this.query = requireNonNull(query, "Cannot instantiate Urin with null query");
+            this.fragment = requireNonNull(fragment, "Cannot instantiate Urin with null fragment");
         }
 
         @Override
@@ -1810,26 +1739,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final FRAGMENT fragment;
 
         UrinWithAuthorityAndPathAndQueryAndFragment(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Authority authority, final Path<SEGMENT> path, final QUERY query, final FRAGMENT fragment) {
-            if (scheme == null) {
-                throw new NullPointerException("Cannot instantiate Urin with null scheme");
-            }
-            this.scheme = scheme;
-            if (authority == null) {
-                throw new NullPointerException("Cannot instantiate Urin with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("Cannot instantiate Urin with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("Cannot instantiate Urin with null query");
-            }
-            this.query = query;
-            if (fragment == null) {
-                throw new NullPointerException("Cannot instantiate Urin with null fragment");
-            }
-            this.fragment = fragment;
+            this.scheme = requireNonNull(scheme, "Cannot instantiate Urin with null scheme");
+            this.authority = requireNonNull(authority, "Cannot instantiate Urin with null authority");
+            this.path = requireNonNull(path, "Cannot instantiate Urin with null path");
+            this.query = requireNonNull(query, "Cannot instantiate Urin with null query");
+            this.fragment = requireNonNull(fragment, "Cannot instantiate Urin with null fragment");
         }
 
         @Override
@@ -1910,18 +1824,9 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final QUERY query;
 
         UrinWithPathAndQuery(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path, final QUERY query) {
-            if (scheme == null) {
-                throw new NullPointerException("cannot instantiate Urin with null scheme");
-            }
-            this.scheme = scheme;
-            if (path == null) {
-                throw new NullPointerException("cannot instantiate Urin with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("cannot instantiate Urin with null query");
-            }
-            this.query = query;
+            this.scheme = requireNonNull(scheme, "cannot instantiate Urin with null scheme");
+            this.path = requireNonNull(path, "cannot instantiate Urin with null path");
+            this.query = requireNonNull(query, "cannot instantiate Urin with null query");
         }
 
         @Override
@@ -2001,22 +1906,10 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final QUERY query;
 
         UrinWithAuthorityAndPathAndQuery(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Authority authority, final Path<SEGMENT> path, final QUERY query) {
-            if (scheme == null) {
-                throw new NullPointerException("cannot instantiate Urin with null scheme");
-            }
-            this.scheme = scheme;
-            if (authority == null) {
-                throw new NullPointerException("cannot instantiate Urin with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("cannot instantiate Urin with null path");
-            }
-            this.path = path;
-            if (query == null) {
-                throw new NullPointerException("cannot instantiate Urin with null query");
-            }
-            this.query = query;
+            this.scheme = requireNonNull(scheme, "cannot instantiate Urin with null scheme");
+            this.authority = requireNonNull(authority, "cannot instantiate Urin with null authority");
+            this.path = requireNonNull(path, "cannot instantiate Urin with null path");
+            this.query = requireNonNull(query, "cannot instantiate Urin with null query");
         }
 
         @Override
@@ -2097,22 +1990,10 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final FRAGMENT fragment;
 
         UrinWithAuthorityAndPathAndFragment(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Authority authority, final Path<SEGMENT> path, final FRAGMENT fragment) {
-            if (scheme == null) {
-                throw new NullPointerException("cannot instantiate Urin with null scheme");
-            }
-            this.scheme = scheme;
-            if (authority == null) {
-                throw new NullPointerException("cannot instantiate Urin with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("cannot instantiate Urin with null path");
-            }
-            this.path = path;
-            if (fragment == null) {
-                throw new NullPointerException("cannot instantiate Urin with null fragment");
-            }
-            this.fragment = fragment;
+            this.scheme = requireNonNull(scheme, "cannot instantiate Urin with null scheme");
+            this.authority = requireNonNull(authority, "cannot instantiate Urin with null authority");
+            this.path = requireNonNull(path, "cannot instantiate Urin with null path");
+            this.fragment = requireNonNull(fragment, "cannot instantiate Urin with null fragment");
         }
 
         @Override
@@ -2192,18 +2073,9 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final FRAGMENT fragment;
 
         UrinWithPathAndFragment(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path, final FRAGMENT fragment) {
-            if (scheme == null) {
-                throw new NullPointerException("cannot instantiate Urin with null scheme");
-            }
-            this.scheme = scheme;
-            if (path == null) {
-                throw new NullPointerException("cannot instantiate Urin with null path");
-            }
-            this.path = path;
-            if (fragment == null) {
-                throw new NullPointerException("cannot instantiate Urin with null fragment");
-            }
-            this.fragment = fragment;
+            this.scheme = requireNonNull(scheme, "cannot instantiate Urin with null scheme");
+            this.path = requireNonNull(path, "cannot instantiate Urin with null path");
+            this.fragment = requireNonNull(fragment, "cannot instantiate Urin with null fragment");
         }
 
         @Override
@@ -2281,14 +2153,8 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final Path<SEGMENT> path;
 
         UrinWithPath(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path) {
-            if (scheme == null) {
-                throw new NullPointerException("cannot instantiate Urin with null scheme");
-            }
-            this.scheme = scheme;
-            if (path == null) {
-                throw new NullPointerException("cannot instantiate Urin with null path");
-            }
-            this.path = path;
+            this.scheme = requireNonNull(scheme, "cannot instantiate Urin with null scheme");
+            this.path = requireNonNull(path, "cannot instantiate Urin with null path");
         }
 
         @Override
@@ -2366,18 +2232,9 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         private final Path<SEGMENT> path;
 
         UrinWithAuthorityAndPath(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Authority authority, final Path<SEGMENT> path) {
-            if (scheme == null) {
-                throw new NullPointerException("cannot instantiate Urin with null scheme");
-            }
-            this.scheme = scheme;
-            if (authority == null) {
-                throw new NullPointerException("cannot instantiate Urin with null authority");
-            }
-            this.authority = authority;
-            if (path == null) {
-                throw new NullPointerException("cannot instantiate Urin with null path");
-            }
-            this.path = path;
+            this.scheme = requireNonNull(scheme, "cannot instantiate Urin with null scheme");
+            this.authority = requireNonNull(authority, "cannot instantiate Urin with null authority");
+            this.path = requireNonNull(path, "cannot instantiate Urin with null path");
         }
 
         @Override

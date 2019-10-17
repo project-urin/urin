@@ -10,12 +10,9 @@
 
 package net.sourceforge.urin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
+import static java.util.Objects.requireNonNull;
 import static net.sourceforge.urin.PathHelper.appendSegmentsTo;
 import static net.sourceforge.urin.Segment.dot;
 import static net.sourceforge.urin.Segment.dotDot;
@@ -33,25 +30,21 @@ public final class AbsolutePath<T> extends Path<T> {
         LinkedList<Segment<T>> newSegments = new LinkedList<>();
         Iterator<Segment<T>> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
-            Segment<T> segment = segmentIterator.next();
-            if (segment == null) {
-                throw new NullPointerException("Segment cannot be null");
-            } else {
-                if (!dot().equals(segment)) {
-                    if (dotDot().equals(segment)) {
-                        if (!newSegments.isEmpty()) {
-                            newSegments.removeLast();
-                            if (!segmentIterator.hasNext()) {
-                                newSegments.add(Segment.<T>empty());
-                            }
+            Segment<T> segment = requireNonNull(segmentIterator.next(), "Segment cannot be null");
+            if (!dot().equals(segment)) {
+                if (dotDot().equals(segment)) {
+                    if (!newSegments.isEmpty()) {
+                        newSegments.removeLast();
+                        if (!segmentIterator.hasNext()) {
+                            newSegments.add(Segment.<T>empty());
                         }
-                    } else {
-                        newSegments.add(segment.isEmpty() ? Segment.<T>empty() : segment);
                     }
                 } else {
-                    if (!segmentIterator.hasNext()) {
-                        newSegments.add(Segment.<T>empty());
-                    }
+                    newSegments.add(segment.isEmpty() ? Segment.<T>empty() : segment);
+                }
+            } else {
+                if (!segmentIterator.hasNext()) {
+                    newSegments.add(Segment.<T>empty());
                 }
             }
         }

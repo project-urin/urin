@@ -10,14 +10,13 @@
 
 package net.sourceforge.urin;
 
+import static java.util.Objects.requireNonNull;
+
 abstract class UnaryValue<T> {
     final T value;
 
     UnaryValue(final T value) {
-        if (value == null) {
-            throw new NullPointerException("value cannot be null");
-        }
-        this.value = value;
+        this.value = requireNonNull(value, "value cannot be null");
     }
 
     @Override

@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
+import static java.util.Objects.requireNonNull;
 import static java.util.regex.Pattern.quote;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
 
@@ -114,10 +115,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
             private final PercentEncoder percentEncoder;
 
             PercentEncodingString(final PercentEncoder percentEncoder) {
-                if (percentEncoder == null) {
-                    throw new NullPointerException("Cannot instantiate PercentEncodingString with null PercentEncoder");
-                }
-                this.percentEncoder = percentEncoder;
+                this.percentEncoder = requireNonNull(percentEncoder, "Cannot instantiate PercentEncodingString with null PercentEncoder");
             }
 
             @Override
@@ -226,14 +224,8 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
             private final PercentEncoding<String> percentEncoding;
 
             SpecifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
-                if (encodedValue == null) {
-                    throw new NullPointerException("Cannot instantiate SpecifiedValueEncoding with null encoded value");
-                }
-                this.encodedValue = encodedValue;
-                if (percentEncoding == null) {
-                    throw new NullPointerException("Cannot instantiate SpecifiedValueEncoding with null PercentEncoding");
-                }
-                this.percentEncoding = percentEncoding;
+                this.encodedValue = requireNonNull(encodedValue, "Cannot instantiate SpecifiedValueEncoding with null encoded value");
+                this.percentEncoding = requireNonNull(percentEncoding, "Cannot instantiate SpecifiedValueEncoding with null PercentEncoding");
             }
 
             @Override

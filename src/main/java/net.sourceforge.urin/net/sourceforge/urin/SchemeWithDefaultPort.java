@@ -11,6 +11,7 @@
 package net.sourceforge.urin;
 
 import static java.util.Locale.ENGLISH;
+import static java.util.Objects.requireNonNull;
 
 /**
  * A name component of a URI that refers to a scheme that is associated with a default port.
@@ -33,19 +34,13 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query, FRAGMENT extend
     protected SchemeWithDefaultPort(final String name, final Port defaultPort, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
         super(segmentMakingDecoder, queryMakingDecoder, fragmentMakingDecoder);
         this.name = name;
-        if (defaultPort == null) {
-            throw new NullPointerException("Cannot instantiate Scheme with null default port");
-        }
-        this.defaultPort = defaultPort;
+        this.defaultPort = requireNonNull(defaultPort, "Cannot instantiate Scheme with null default port");
     }
 
     private SchemeWithDefaultPort(final String name, final Port defaultPort, final Scheme<SEGMENT, QUERY, FRAGMENT> prototype) {
         super(prototype);
         this.name = name;
-        if (defaultPort == null) {
-            throw new NullPointerException("Cannot instantiate Scheme with null default port");
-        }
-        this.defaultPort = defaultPort;
+        this.defaultPort = requireNonNull(defaultPort, "Cannot instantiate Scheme with null default port");
     }
 
     @Override
