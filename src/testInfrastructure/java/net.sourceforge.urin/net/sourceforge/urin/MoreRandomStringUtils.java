@@ -23,17 +23,6 @@ public class MoreRandomStringUtils {
         return random.equals(aString) ? random + random(1) : random;
     }
 
-    public static String aStringExcluding(final char excluded) {
-        int maximumAttempts = 5;
-        for (int i = 0; i < maximumAttempts; i++) {
-            String random = aString();
-            if (random.indexOf(excluded) == -1) {
-                return random;
-            }
-        }
-        throw new RuntimeException("Couldn't make a random String excluding [" + excluded + "] in " + maximumAttempts + " attempts");
-    }
-
     public static String aStringIncluding(final char included) {
         StringBuilder result = new StringBuilder();
         int includeAt = RANDOM.nextInt(5);

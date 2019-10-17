@@ -10,8 +10,6 @@
 
 package net.sourceforge.urin;
 
-import java.util.function.Supplier;
-
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.PathBuilder.*;
@@ -21,169 +19,41 @@ import static net.sourceforge.urin.SchemeBuilder.aScheme;
 public class UrinBuilder {
 
     private static final RandomSupplierSwitcher<Urin<String, Query<String>, Fragment<String>>> RANDOM_UNPOLLUTED_URIN_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin();
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anUnpollutedPath());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), anUnpollutedAbsolutePath());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anUnpollutedPath(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), anUnpollutedAbsolutePath(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aQuery());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anUnpollutedPath(), aQuery());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), aQuery());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), anUnpollutedAbsolutePath(), aQuery());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aQuery(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anUnpollutedPath(), aQuery(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), aQuery(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), anUnpollutedAbsolutePath(), aQuery(), aFragment());
-                }
-            }
+            () -> aScheme().urin(),
+            () -> aScheme().urin(anUnpollutedPath()),
+            () -> aScheme().urin(anAuthority()),
+            () -> aScheme().urin(anAuthority(), anUnpollutedAbsolutePath()),
+            () -> aScheme().urin(aFragment()),
+            () -> aScheme().urin(anUnpollutedPath(), aFragment()),
+            () -> aScheme().urin(anAuthority(), aFragment()),
+            () -> aScheme().urin(anAuthority(), anUnpollutedAbsolutePath(), aFragment()),
+            () -> aScheme().urin(aQuery()),
+            () -> aScheme().urin(anUnpollutedPath(), aQuery()),
+            () -> aScheme().urin(anAuthority(), aQuery()),
+            () -> aScheme().urin(anAuthority(), anUnpollutedAbsolutePath(), aQuery()),
+            () -> aScheme().urin(aQuery(), aFragment()),
+            () -> aScheme().urin(anUnpollutedPath(), aQuery(), aFragment()),
+            () -> aScheme().urin(anAuthority(), aQuery(), aFragment()),
+            () -> aScheme().urin(anAuthority(), anUnpollutedAbsolutePath(), aQuery(), aFragment())
     );
 
     private static final RandomSupplierSwitcher<Urin<String, Query<String>, Fragment<String>>> RANDOM_POLLUTED_URIN_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin();
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aPath());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), anAbsolutePath());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aPath(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), anAbsolutePath(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aQuery());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aPath(), aQuery());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), aQuery());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), anAbsolutePath(), aQuery());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aQuery(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(aPath(), aQuery(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), aQuery(), aFragment());
-                }
-            },
-            new Supplier<Urin<String, Query<String>, Fragment<String>>>() {
-                public Urin<String, Query<String>, Fragment<String>> get() {
-                    return aScheme().urin(anAuthority(), anAbsolutePath(), aQuery(), aFragment());
-                }
-            }
+            () -> aScheme().urin(),
+            () -> aScheme().urin(aPath()),
+            () -> aScheme().urin(anAuthority()),
+            () -> aScheme().urin(anAuthority(), anAbsolutePath()),
+            () -> aScheme().urin(aFragment()),
+            () -> aScheme().urin(aPath(), aFragment()),
+            () -> aScheme().urin(anAuthority(), aFragment()),
+            () -> aScheme().urin(anAuthority(), anAbsolutePath(), aFragment()),
+            () -> aScheme().urin(aQuery()),
+            () -> aScheme().urin(aPath(), aQuery()),
+            () -> aScheme().urin(anAuthority(), aQuery()),
+            () -> aScheme().urin(anAuthority(), anAbsolutePath(), aQuery()),
+            () -> aScheme().urin(aQuery(), aFragment()),
+            () -> aScheme().urin(aPath(), aQuery(), aFragment()),
+            () -> aScheme().urin(anAuthority(), aQuery(), aFragment()),
+            () -> aScheme().urin(anAuthority(), anAbsolutePath(), aQuery(), aFragment())
     );
 
     public static Urin<String, Query<String>, Fragment<String>> aUrin() {

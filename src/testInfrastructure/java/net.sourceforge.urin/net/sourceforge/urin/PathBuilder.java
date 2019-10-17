@@ -12,7 +12,6 @@ package net.sourceforge.urin;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.function.Supplier;
 
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.SegmentBuilder.aNonTypedSegment;
@@ -20,41 +19,26 @@ import static net.sourceforge.urin.SegmentBuilder.aNonTypedSegment;
 public class PathBuilder {
 
     private static final RandomSupplierSwitcher<Path<String>> RANDOM_POLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<Path<String>>() {
-                public Path<String> get() {
-                    return anAbsolutePath();
-                }
-            },
-            new Supplier<Path<String>>() {
-                public Path<String> get() {
-                    return aRootlessPath();
-                }
-            }
+            PathBuilder::anAbsolutePath,
+            PathBuilder::aRootlessPath
     );
 
     private static final RandomSupplierSwitcher<Path<String>> RANDOM_UNPOLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<Path<String>>() {
-                public Path<String> get() {
-                    return anUnpollutedAbsolutePath();
-                }
-            },
-            new Supplier<Path<String>>() {
-                public Path<String> get() {
-                    return anUnpollutedRootlessPath();
-                }
-            }
+            PathBuilder::anUnpollutedAbsolutePath,
+            PathBuilder::anUnpollutedRootlessPath
     );
     private static final Random RANDOM = new Random();
 
     public static AbsolutePath<String> anUnpollutedAbsolutePath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
-        return path(new ArrayList<Segment<String>>(numberOfSegments) {{
+        return path(new ArrayList<>(numberOfSegments) {{
             for (int i = 0; i < numberOfSegments; i++) {
                 add(SegmentBuilder.aNonDotSegment());
             }
         }});
     }
 
+    @SuppressWarnings("unchecked")
     public static AbsolutePath<String> anAbsolutePath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
         final AbsolutePath<String> result;
@@ -80,13 +64,14 @@ public class PathBuilder {
     public static Path<String> anUnpollutedRootlessPath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
 
-        return RootlessPath.rootlessPath(new ArrayList<Segment<String>>(numberOfSegments) {{
+        return RootlessPath.rootlessPath(new ArrayList<>(numberOfSegments) {{
             for (int i = 0; i < numberOfSegments; i++) {
                 add(SegmentBuilder.aNonDotSegment());
             }
         }});
     }
 
+    @SuppressWarnings("unchecked")
     public static Path<String> aRootlessPath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
         final Path<String> result;

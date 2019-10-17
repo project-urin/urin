@@ -12,45 +12,24 @@ package net.sourceforge.urin;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.function.Supplier;
 
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.PercentEncodingPartial.percentEncodingDelimitedValue;
-import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.Segment.segment;
 
 public class SegmentBuilder {
 
     private static final Random RANDOM = new Random();
 
     private static final RandomSupplierSwitcher<Segment<String>> RANDOM_STRING_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<Segment<String>>() {
-                public Segment<String> get() {
-                    return aNonDotSegment();
-                }
-            },
-            new Supplier<Segment<String>>() {
-                public Segment<String> get() {
-                    return dot();
-                }
-            },
-            new Supplier<Segment<String>>() {
-                public Segment<String> get() {
-                    return dotDot();
-                }
-            }
+            SegmentBuilder::aNonDotSegment,
+            Segment::dot,
+            Segment::dotDot
     );
 
     private static final RandomSupplierSwitcher<Segment> RANDOM_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<Segment>() {
-                public Segment get() {
-                    return aNonDotSegment();
-                }
-            },
-            new Supplier<Segment>() {
-                public Segment get() {
-                    return aNonStringSegment();
-                }
-            }
+            SegmentBuilder::aNonDotSegment,
+            SegmentBuilder::aNonStringSegment
     );
 
     public static Segment<String> aNonDotSegment() {
@@ -63,7 +42,7 @@ public class SegmentBuilder {
 
     public static Segment<Iterable<String>> aNonStringSegment() {
         final int numberOfElements = RANDOM.nextInt(4) + 1;
-        return segment(new ArrayList<String>(numberOfElements) {{
+        return segment(new ArrayList<>(numberOfElements) {{
             for (int i = 0; i < numberOfElements; i++) {
                 add(aString());
             }

@@ -10,8 +10,6 @@
 
 package net.sourceforge.urin;
 
-import java.util.function.Supplier;
-
 import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.Host.*;
@@ -22,31 +20,11 @@ import static org.apache.commons.lang3.RandomStringUtils.random;
 public class HostBuilder {
 
     private static final RandomSupplierSwitcher<Host> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<Host>() {
-                public Host get() {
-                    return aRegisteredName();
-                }
-            },
-            new Supplier<Host>() {
-                public Host get() {
-                    return anIpV4Address();
-                }
-            },
-            new Supplier<Host>() {
-                public Host get() {
-                    return anIpV6Address();
-                }
-            },
-            new Supplier<Host>() {
-                public Host get() {
-                    return anIpV6AddressWithTrailingIpV4Address();
-                }
-            },
-            new Supplier<Host>() {
-                public Host get() {
-                    return anIpVFutureAddress();
-                }
-            }
+            HostBuilder::aRegisteredName,
+            HostBuilder::anIpV4Address,
+            HostBuilder::anIpV6Address,
+            HostBuilder::anIpV6AddressWithTrailingIpV4Address,
+            HostBuilder::anIpVFutureAddress
     );
 
     public static Host aHost() {

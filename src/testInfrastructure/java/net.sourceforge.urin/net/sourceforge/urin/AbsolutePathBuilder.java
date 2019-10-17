@@ -21,7 +21,7 @@ public class AbsolutePathBuilder {
 
     public static AbsolutePath<String> anAbsolutePath() {
         final int segmentCount = RANDOM.nextInt(5);
-        return Path.path(new ArrayList<Segment<String>>(segmentCount) {{
+        return Path.path(new ArrayList<>(segmentCount) {{
             add(aSegment());
         }});
     }

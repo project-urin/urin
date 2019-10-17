@@ -10,8 +10,6 @@
 
 package net.sourceforge.urin;
 
-import java.util.function.Supplier;
-
 import static net.sourceforge.urin.CharacterSets.ALPHA;
 import static net.sourceforge.urin.CharacterSets.DIGIT;
 import static net.sourceforge.urin.PortBuilder.aPort;
@@ -22,16 +20,8 @@ import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 public class SchemeBuilder {
 
     private static final RandomSupplierSwitcher<Scheme<String, Query<String>, Fragment<String>>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<Scheme<String, Query<String>, Fragment<String>>>() {
-                public Scheme<String, Query<String>, Fragment<String>> get() {
-                    return aSchemeWithNoDefaultPort();
-                }
-            },
-            new Supplier<Scheme<String, Query<String>, Fragment<String>>>() {
-                public Scheme<String, Query<String>, Fragment<String>> get() {
-                    return aSchemeWithDefaultPort();
-                }
-            }
+            SchemeBuilder::aSchemeWithNoDefaultPort,
+            SchemeBuilder::aSchemeWithDefaultPort
     );
 
 

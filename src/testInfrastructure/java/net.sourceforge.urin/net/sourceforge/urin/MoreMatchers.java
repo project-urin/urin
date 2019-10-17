@@ -22,7 +22,7 @@ public class MoreMatchers {
 
     @SafeVarargs
     public static <T> Matcher<Iterable<? extends T>> contains(final T... contents) {
-        return Matchers.contains(new ArrayList<Matcher<? super T>>() {{
+        return Matchers.contains(new ArrayList<>() {{
             for (T content : contents) {
                 add(Matchers.equalTo(content));
             }

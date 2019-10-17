@@ -12,23 +12,13 @@ package net.sourceforge.urin.scheme.http;
 
 import net.sourceforge.urin.RandomSupplierSwitcher;
 
-import java.util.function.Supplier;
-
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 
 public class QueryParameterBuilder {
 
     private static final RandomSupplierSwitcher<HttpQuery.QueryParameter> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            new Supplier<HttpQuery.QueryParameter>() {
-                public HttpQuery.QueryParameter get() {
-                    return aNameOnlyQueryParameter();
-                }
-            },
-            new Supplier<HttpQuery.QueryParameter>() {
-                public HttpQuery.QueryParameter get() {
-                    return aNameAndValueQueryParameter();
-                }
-            }
+            QueryParameterBuilder::aNameOnlyQueryParameter,
+            QueryParameterBuilder::aNameAndValueQueryParameter
     );
 
     public static HttpQuery.QueryParameter aNameAndValueQueryParameter() {
