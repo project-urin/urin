@@ -10,8 +10,9 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import com.google.common.base.Supplier;
 import net.sourceforge.urin.RandomSupplierSwitcher;
+
+import java.util.function.Supplier;
 
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 

@@ -10,12 +10,13 @@
 
 package net.sourceforge.urin;
 
-import com.google.common.base.Supplier;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Supplier;
 
-import static com.google.common.collect.Lists.asList;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
 public final class RandomSupplierSwitcher<T> implements Supplier<T> {
 
@@ -25,7 +26,10 @@ public final class RandomSupplierSwitcher<T> implements Supplier<T> {
 
     @SafeVarargs
     public RandomSupplierSwitcher(final Supplier<T> supplier, final Supplier<T>... suppliers) {
-        this.suppliers = asList(supplier, suppliers);
+        final List<Supplier<T>> supplierList = new ArrayList<>(suppliers.length + 1);
+        supplierList.add(supplier);
+        supplierList.addAll(asList(suppliers));
+        this.suppliers = unmodifiableList(supplierList);
     }
 
     public T get() {

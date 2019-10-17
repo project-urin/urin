@@ -16,7 +16,8 @@ import net.sourceforge.urin.RelativeReference;
 import net.sourceforge.urin.Segment;
 import org.junit.jupiter.api.Test;
 
-import static com.google.common.collect.Iterables.transform;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 import static net.sourceforge.urin.AccessBackDoors.asString;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
@@ -44,7 +45,7 @@ class RelativeReferenceSamplesTest {
     void canParseARelativeReferenceAndRetrieveTheValuesOfTheSegments() throws Exception {
         RelativeReference<String, ?, ?> relativeReference = aScheme().parseRelativeReference("a/b%2Fc");
         final Path<String> path = relativeReference.path();
-        assertThat(transform(path, Segment::value), contains("a", "b/c"));
+        assertThat(stream(path.spliterator(), false).map(Segment::value).collect(toList()), contains("a", "b/c"));
     }
 
     @Test

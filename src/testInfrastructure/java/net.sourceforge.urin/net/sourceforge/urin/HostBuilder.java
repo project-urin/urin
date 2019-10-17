@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-import com.google.common.base.Supplier;
+import java.util.function.Supplier;
 
 import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;

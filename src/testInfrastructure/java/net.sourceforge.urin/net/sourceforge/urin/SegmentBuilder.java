@@ -10,10 +10,9 @@
 
 package net.sourceforge.urin;
 
-import com.google.common.base.Supplier;
-
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Supplier;
 
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.PercentEncodingPartial.percentEncodingDelimitedValue;
