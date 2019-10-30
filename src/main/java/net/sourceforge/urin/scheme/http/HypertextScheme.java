@@ -10,14 +10,7 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import net.sourceforge.urin.Fragment;
-import net.sourceforge.urin.ParseException;
-import net.sourceforge.urin.Port;
-import net.sourceforge.urin.RelativeReference;
-import net.sourceforge.urin.SchemeWithDefaultPort;
-import net.sourceforge.urin.Segment;
-import net.sourceforge.urin.Urin;
-import net.sourceforge.urin.UrinReference;
+import net.sourceforge.urin.*;
 
 import java.net.URI;
 

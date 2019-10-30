@@ -25,32 +25,29 @@ plugins {
     id 'org.tenne.rest' version '0.4.2'
     id 'io.codearte.nexus-staging' version '0.20.0'
     id 'com.gitlab.svg2ico' version '0.8'
+    id 'org.unbroken-dome.test-sets' version '2.2.1'
 }
 
 repositories {
     mavenCentral()
 }
 
-sourceSets {
-    testInfrastructure
-    testIntegration
-    documentation
+testSets {
+    libraries { testInfrastructure }
+    unitTest {
+        imports libraries.testInfrastructure
+    }
+    testIntegration {
+        imports libraries.testInfrastructure
+    }
 }
 
 sourceSets {
-    main.java.srcDirs = ['src/main/java/net.sourceforge.urin']
-    test.java.srcDirs = ['src/test/java/net.sourceforge.urin']
-    testInfrastructure.java.srcDirs = ['src/testInfrastructure/java/net.sourceforge.urin']
+    documentation
     documentation.java.srcDirs = ['src/documentation/java/net.sourceforge.urin']
 }
 
 configurations {
-    testCompile {
-        extendsFrom testInfrastructureCompile
-    }
-    testIntegrationCompile {
-        extendsFrom testInfrastructureCompile
-    }
     batik
 }
 
@@ -59,10 +56,9 @@ dependencies {
     testInfrastructureCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     testInfrastructureCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
     testInfrastructureCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.5.2'
+    testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.5.2'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
-    testCompile sourceSets.testInfrastructure.output
-    testIntegrationCompile sourceSets.main.output
-    testIntegrationCompile sourceSets.testInfrastructure.output
     documentationCompile sourceSets.main.output
     documentationCompile group: 'net.sourceforge.writexml', name: 'writexml', version: '1.1'
     documentationCompile group: 'net.sourceforge.xazzle', name: 'xazzle', version: '0.39'

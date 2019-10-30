@@ -10,13 +10,7 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import net.sourceforge.urin.AbsolutePath;
-import net.sourceforge.urin.Authority;
-import net.sourceforge.urin.Fragment;
-import net.sourceforge.urin.Host;
-import net.sourceforge.urin.Port;
-import net.sourceforge.urin.Scheme;
-import net.sourceforge.urin.Urin;
+import net.sourceforge.urin.*;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.Port.port;
