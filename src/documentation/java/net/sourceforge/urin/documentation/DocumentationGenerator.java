@@ -14,13 +14,7 @@ import net.sourceforge.writexml.CompactXmlFormatter;
 import net.sourceforge.writexml.XmlWriteException;
 import net.sourceforge.xazzle.xhtml.HtmlTag;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+import java.io.*;
 import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;

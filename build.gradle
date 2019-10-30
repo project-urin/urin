@@ -34,7 +34,6 @@ repositories {
 
 sourceSets {
     documentation
-    documentation.java.srcDirs = ['src/documentation/java/net.sourceforge.urin']
 }
 
 testSets {

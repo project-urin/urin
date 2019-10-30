@@ -10,12 +10,7 @@
 
 package net.sourceforge.urin.documentation;
 
-import net.sourceforge.urin.ParseException;
-import net.sourceforge.urin.Query;
-import net.sourceforge.urin.RelativeReference;
-import net.sourceforge.urin.Scheme;
-import net.sourceforge.urin.Segment;
-import net.sourceforge.urin.Urin;
+import net.sourceforge.urin.*;
 import net.sourceforge.urin.scheme.http.Http;
 import net.sourceforge.urin.scheme.http.HttpQuery;
 import net.sourceforge.urin.scheme.http.Https;
