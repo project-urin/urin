@@ -55,16 +55,20 @@ configurations {
 }
 
 dependencies {
-    testInfrastructureCompile sourceSets.main.output
     testInfrastructureCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     testInfrastructureCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
+
     testUnitCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+
     testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.5.2'
+
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
+
     documentationCompile sourceSets.main.output
     documentationCompile group: 'net.sourceforge.writexml', name: 'writexml', version: '1.1'
     documentationCompile group: 'net.sourceforge.xazzle', name: 'xazzle', version: '0.39'
+
     batik group: 'org.apache.xmlgraphics', name: 'batik-rasterizer', version: '1.8'
     batik group: 'org.apache.xmlgraphics', name: 'xmlgraphics-commons', version: '2.0'
     batik group: 'org.apache.xmlgraphics', name: 'batik-codec', version: '1.8'
