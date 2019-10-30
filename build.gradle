@@ -78,18 +78,13 @@ archivesBaseName = 'urin'
 version = "${majorVersion}.${minorVersion}"
 description = 'Urin is an open source URI generator and parser written in Java.'
 
-compileJava {
-    sourceCompatibility = 9
-    targetCompatibility = 9
-}
+modularity.mixedJavaRelease 8
 
 tasks.withType(Test) {
     useJUnitPlatform()
 }
 
 task compileTinyJava(type: JavaCompile) {
-    sourceCompatibility = 9
-    targetCompatibility = 9
     source sourceSets.main.allSource
     classpath = sourceSets.main.compileClasspath
     destinationDir = file("${project.buildDir}/tiny-classes/main")
