@@ -32,9 +32,14 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    documentation
+    documentation.java.srcDirs = ['src/documentation/java/net.sourceforge.urin']
+}
+
 testSets {
     libraries { testInfrastructure }
-    unitTest {
+    testUnit {
         imports libraries.testInfrastructure
     }
     testIntegration {
@@ -42,10 +47,8 @@ testSets {
     }
 }
 
-sourceSets {
-    documentation
-    documentation.java.srcDirs = ['src/documentation/java/net.sourceforge.urin']
-}
+check.dependsOn testUnit
+check.dependsOn testIntegration
 
 configurations {
     batik
@@ -55,7 +58,7 @@ dependencies {
     testInfrastructureCompile sourceSets.main.output
     testInfrastructureCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     testInfrastructureCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
-    testInfrastructureCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.5.2'
+    testUnitCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
     testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.1'
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.5.2'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
@@ -77,7 +80,7 @@ compileJava {
     targetCompatibility = 9
 }
 
-test {
+tasks.withType(Test) {
     useJUnitPlatform()
 }
 
@@ -89,13 +92,6 @@ task compileTinyJava(type: JavaCompile) {
     destinationDir = file("${project.buildDir}/tiny-classes/main")
     options.compilerArgs = ['-g:none']
 }
-
-task testIntegrationTest(type: Test) {
-    testClassesDirs = sourceSets.testIntegration.output.classesDirs
-    classpath = sourceSets.testIntegration.runtimeClasspath
-}
-
-check.dependsOn testIntegrationTest
 
 task myJavadoc(type: Javadoc) {
     source = sourceSets.main.allJava

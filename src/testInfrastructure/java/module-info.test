@@ -1,9 +1,5 @@
 --add-modules
-  org.junit.jupiter.api
---add-modules
   org.hamcrest
 
 --add-reads
   net.sourceforge.urin=org.junit.jupiter.api
---add-reads
-  net.sourceforge.urin=org.hamcrest

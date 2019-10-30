@@ -10,6 +10,7 @@
       <module name="urin_testInfrastructure" target="11" />
       <module name="urin_testIntegration" target="11" />
       <module name="urin_testModule" target="1.10" />
+      <module name="urin_testUnit" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
