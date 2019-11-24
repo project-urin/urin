@@ -17,13 +17,14 @@ buildscript {
 plugins {
     id 'java'
     id 'signing'
-    id 'maven'
+    id 'maven-publish'
     id 'org.javamodularity.moduleplugin' version '1.6.0'
     // pmd
     id 'com.github.spotbugs' version '2.0.0'
-    id 'org.hidetake.ssh' version '2.1.0'
+    id 'org.hidetake.ssh' version '2.10.1'
     id 'org.tenne.rest' version '0.4.2'
-    id 'io.codearte.nexus-staging' version '0.20.0'
+    id 'io.codearte.nexus-staging' version '0.21.1'
+    id 'de.marcphilipp.nexus-publish' version '0.4.0'
     id 'com.gitlab.svg2ico' version '0.8'
     id 'org.unbroken-dome.test-sets' version '2.2.1'
 }
@@ -179,7 +180,7 @@ remotes {
 
 task copyToSourceforge(dependsOn: [jar, documentationJar, javadocJar, combinedJar, tinyJar]) {
     doLast {
-        ssh.run {
+        ssh.runInOrder {
             session(remotes.sourceforgeShell) {
                 execute 'create'
                 execute "mkdir -p /home/frs/project/urin/${version}"
@@ -205,51 +206,44 @@ task updateSourceforgeDefaultDownload(type: org._10ne.gradle.rest.RestTask) {
     requestBody = "default=windows&default=mac&default=linux&default=bsd&default=solaris&default=others&download_label=${version}%20with%20source&api_key=$sourceforgeApiKey"
 }
 
-// Signature of artifacts
-signing {
-    sign configurations.archives
-}
-
-// OSSRH publication
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            // POM signature
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-            // Target repository
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: ossrhUser, password: ossrhPassword)
-            }
-            pom.scopeMappings.with {
-                mappings.clear()
-            }
-            pom.project {
-                name 'Urin'
-                description project.description
-                packaging 'jar'
-                url 'http://urin.sourceforge.net'
-
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact(sourcesJar)
+            artifact(javadocJar)
+            from components.java
+            pom {
+                name = 'Urin'
+                description = project.description
+                url = 'http://urin.sourceforge.net'
                 scm {
-                    url "git://git.code.sf.net/p/urin/code"
+                    url = 'git://git.code.sf.net/p/urin/code'
                 }
-
                 developers {
                     developer {
                         id = 'mos20'
                         name = 'Mark Slater'
                     }
                 }
-
                 licenses {
                     license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution = 'repo'
                     }
                 }
-
             }
         }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
+
+nexusPublishing {
+    repositories {
+        sonatype()
     }
 }
 
@@ -258,13 +252,7 @@ nexusStaging {
     password = ossrhPassword
 }
 
-task aMomentOfReflection() {
-    doLast {
-        sleep(30 * 1000)
-    }
-}
-
-task performRelease(dependsOn: [clean, build, uploadArchives, copyToSourceforge, png, closeRepository, aMomentOfReflection, promoteRepository, updateSourceforgeDefaultDownload]) {
+task performRelease(dependsOn: [clean, build, publishToSonatype, copyToSourceforge, png, closeRepository, releaseRepository, updateSourceforgeDefaultDownload]) {
     doLast {
         println 'Release complete :)'
     }
@@ -284,8 +272,7 @@ task incrementVersionNumber(dependsOn: buildAndDeployCleanVersion) {
 task deploy(dependsOn: incrementVersionNumber) {}
 
 build.mustRunAfter clean
-uploadArchives.mustRunAfter build
-closeRepository.mustRunAfter uploadArchives
-aMomentOfReflection.mustRunAfter closeRepository
-promoteRepository.mustRunAfter aMomentOfReflection
+publishToSonatype.mustRunAfter build
+closeRepository.mustRunAfter publishToSonatype
+releaseRepository.mustRunAfter closeRepository
 updateSourceforgeDefaultDownload.mustRunAfter copyToSourceforge
