@@ -39,12 +39,8 @@ sourceSets {
 
 testSets {
     libraries { testInfrastructure }
-    testUnit {
-        imports libraries.testInfrastructure
-    }
-    testIntegration {
-        imports libraries.testInfrastructure
-    }
+    testUnit {imports libraries.testInfrastructure }
+    testIntegration {imports libraries.testInfrastructure }
 }
 
 check.dependsOn testUnit
