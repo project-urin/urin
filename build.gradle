@@ -47,19 +47,19 @@ check.dependsOn testUnit
 check.dependsOn testIntegration
 
 dependencies {
-    testInfrastructureCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
-    testInfrastructureCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
+    testInfrastructureImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    testInfrastructureImplementation group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
 
-    testUnitCompile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    testUnitImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
-    testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.5.2'
+    testImplementation group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.5.2'
 
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
 
-    documentationCompile sourceSets.main.output
-    documentationCompile group: 'net.sourceforge.writexml', name: 'writexml', version: '1.1'
-    documentationCompile group: 'net.sourceforge.xazzle', name: 'xazzle', version: '0.39'
+    documentationImplementation sourceSets.main.output
+    documentationImplementation group: 'net.sourceforge.writexml', name: 'writexml', version: '1.1'
+    documentationImplementation group: 'net.sourceforge.xazzle', name: 'xazzle', version: '0.39'
 }
 
 group = 'net.sourceforge.urin'
