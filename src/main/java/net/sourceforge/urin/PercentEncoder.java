@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,9 +10,9 @@
 
 package net.sourceforge.urin;
 
-import java.nio.charset.Charset;
 import java.util.Locale;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.ALL_CHARACTERS;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
 
@@ -33,7 +33,7 @@ final class PercentEncoder {
 
     String encode(final String notEncoded) {
         StringBuilder result = new StringBuilder();
-        for (byte character : notEncoded.getBytes(Charset.forName("UTF-8"))) {
+        for (byte character : notEncoded.getBytes(UTF_8)) {
             if (nonPercentEncodedCharacterSet.isMember((char) character)) {
                 result.append((char) character);
             } else {
@@ -84,7 +84,7 @@ final class PercentEncoder {
                     buffer[j] = getByte(candidateChars, i + (3 * j));
                 }
                 i = i + (3 * byteCount) - 1;
-                result.append(new String(buffer, 0, byteCount, Charset.forName("UTF-8")));
+                result.append(new String(buffer, 0, byteCount, UTF_8));
             } else {
                 if (nonPercentEncodedCharacterSet.isMember(candidateChar)) {
                     result.append(candidateChar);
