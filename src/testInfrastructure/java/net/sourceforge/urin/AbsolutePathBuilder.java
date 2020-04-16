@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,10 +10,10 @@
 
 package net.sourceforge.urin;
 
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.Stream;
 
-import static net.sourceforge.urin.SegmentBuilder.aSegment;
+import static java.util.stream.Collectors.toList;
 
 public class AbsolutePathBuilder {
 
@@ -21,8 +21,6 @@ public class AbsolutePathBuilder {
 
     public static AbsolutePath<String> anAbsolutePath() {
         final int segmentCount = RANDOM.nextInt(5);
-        return Path.path(new ArrayList<>(segmentCount) {{
-            add(aSegment());
-        }});
+        return Path.path(Stream.generate(SegmentBuilder::aSegment).limit(segmentCount).collect(toList()));
     }
 }
