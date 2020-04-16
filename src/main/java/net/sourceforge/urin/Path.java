@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -20,8 +20,8 @@ import static net.sourceforge.urin.Segment.segment;
 /**
  * An iterable of {@code Segment}s.
  * {@code Path}s can either be absolute (starting with '/'), or rootless (not starting with '/').
- *
- * Immutable and threadsafe.
+ * <p>
+ * Immutable and thread safe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
  */
@@ -49,7 +49,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @return an empty {@code Path}.
      */
     public static <T> Path<T> rootlessPath() {
-        return rootlessPath(Collections.<Segment<T>>emptyList());
+        return rootlessPath(Collections.emptyList());
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @return an empty {@code AbsolutePath}.
      */
     public static <T> AbsolutePath<T> path() {
-        return path(Collections.<Segment<T>>emptyList());
+        return path(Collections.emptyList());
     }
 
     /**
@@ -124,7 +124,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     }
 
     static <SEGMENT> Path<SEGMENT> parseRootlessPath(final String rawPath, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
-        return rootlessPath(rawPath == null || "".equals(rawPath) ? new ArrayList<Segment<SEGMENT>>() : new ArrayList<Segment<SEGMENT>>() {{
+        return rootlessPath(rawPath == null || "".equals(rawPath) ? new ArrayList<>() : new ArrayList<Segment<SEGMENT>>() {{
             for (String segmentString : rawPath.split("/")) {
                 add(Segment.parse(segmentString, segmentMakingDecoder));
             }
@@ -132,7 +132,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     }
 
     static <SEGMENT> AbsolutePath<SEGMENT> parsePath(final String rawPath, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
-        return path("/".equals(rawPath) ? new ArrayList<Segment<SEGMENT>>() : new ArrayList<Segment<SEGMENT>>() {{
+        return path("/".equals(rawPath) ? new ArrayList<>() : new ArrayList<Segment<SEGMENT>>() {{
             boolean isFirst = true;
             for (String segmentString : rawPath.split("/", -1)) {
                 if (!isFirst) {
@@ -173,32 +173,32 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      */
     public abstract List<Segment<T>> segments();
 
-    static enum PrefixWithDotSegmentCriteria {
+    enum PrefixWithDotSegmentCriteria {
         NEVER_PREFIX_WITH_DOT_SEGMENT {
             @Override
-            boolean matches(final Path path) {
+            boolean matches(final Path<?> path) {
                 return false;
             }
         },
         PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON {
             @Override
-            boolean matches(final Path path) {
+            boolean matches(final Path<?> path) {
                 return path.firstPartIsSuppliedButContainsColon();
             }
         },
         PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY {
             @Override
-            boolean matches(final Path path) {
+            boolean matches(final Path<?> path) {
                 return path.firstPartIsSuppliedButIsEmpty();
             }
         },
         PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON {
             @Override
-            boolean matches(final Path path) {
+            boolean matches(final Path<?> path) {
                 return path.firstPartIsSuppliedButIsEmpty() || path.firstPartIsSuppliedButContainsColon();
             }
         };
 
-        abstract boolean matches(final Path path);
+        abstract boolean matches(final Path<?> path);
     }
 }
