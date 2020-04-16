@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -18,7 +18,7 @@ import static java.util.Objects.requireNonNull;
  *
  * @param <QUERY> The type of {@code Query} used by this scheme.
  */
-public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Scheme<SEGMENT, QUERY, FRAGMENT> {
+public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Scheme<SEGMENT, QUERY, FRAGMENT> {
     private final String name;
     private final Port defaultPort;
 
@@ -68,7 +68,7 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query, FRAGMENT extend
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        SchemeWithDefaultPort that = (SchemeWithDefaultPort) o;
+        SchemeWithDefaultPort<?, ?, ?> that = (SchemeWithDefaultPort<?, ?, ?>) o;
 
         return defaultPort.equals(that.defaultPort)
                 && name.equals(that.name);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -21,7 +21,7 @@ package net.sourceforge.urin;
  * @param <FRAGMENT> The type of {@code Fragment} used by this relative reference.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-4.2">RFC 3986 - Relative Reference</a>
  */
-public abstract class RelativeReference<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends UrinReference<SEGMENT, QUERY, FRAGMENT> {
+public abstract class RelativeReference<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends UrinReference<SEGMENT, QUERY, FRAGMENT> {
 
     RelativeReference() {
     }

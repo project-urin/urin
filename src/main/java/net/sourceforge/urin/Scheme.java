@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -32,7 +32,7 @@ import static net.sourceforge.urin.Query.stringQueryMaker;
  * @param <FRAGMENT> The type of {@code Fragment} used by this scheme.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.1">RFC 3986 - Scheme</a>
  */
-public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> {
+public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> {
 
     private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
 
@@ -118,7 +118,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code RelativeReference} with an empty path.
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> relativeReference() {
-        return new RelativeReferenceNoAuthority<>(new EmptyPath<SEGMENT>());
+        return new RelativeReferenceNoAuthority<>(new EmptyPath<>());
     }
 
     /**
@@ -128,7 +128,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code RelativeReference} with the given {@code Authority} and an empty path.
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> relativeReference(final Authority authority) {
-        return new RelativeReferenceWithAuthority<>(authority, new EmptyPath<SEGMENT>());
+        return new RelativeReferenceWithAuthority<>(authority, new EmptyPath<>());
     }
 
     /**
@@ -159,7 +159,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code RelativeReference} with the given {@code Query} and an empty path.
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> relativeReference(final QUERY query) {
-        return new RelativeReferenceNoAuthorityWithQuery<>(new EmptyPath<SEGMENT>(), query);
+        return new RelativeReferenceNoAuthorityWithQuery<>(new EmptyPath<>(), query);
     }
 
     /**
@@ -170,7 +170,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Query}, and an empty path.
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> relativeReference(final Authority authority, final QUERY query) {
-        return new RelativeReferenceWithAuthorityAndQuery<>(authority, new EmptyPath<SEGMENT>(), query);
+        return new RelativeReferenceWithAuthorityAndQuery<>(authority, new EmptyPath<>(), query);
     }
 
     /**
@@ -203,7 +203,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code RelativeReference} with the given {@code Fragment} and an empty path.
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> relativeReference(final FRAGMENT fragment) {
-        return new RelativeReferenceNoAuthorityWithFragment<>(new EmptyPath<SEGMENT>(), fragment);
+        return new RelativeReferenceNoAuthorityWithFragment<>(new EmptyPath<>(), fragment);
     }
 
     /**
@@ -214,7 +214,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code RelativeReference} with the given {@code Authority} and {@code Fragment}, and an empty path.
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> relativeReference(final Authority authority, final FRAGMENT fragment) {
-        return new RelativeReferenceWithAuthorityAndFragment<>(authority, new EmptyPath<SEGMENT>(), fragment);
+        return new RelativeReferenceWithAuthorityAndFragment<>(authority, new EmptyPath<>(), fragment);
     }
 
     /**
@@ -248,7 +248,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code RelativeReference} with the given {@code Query} and {@code Fragment}, and an empty path.
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> relativeReference(final QUERY query, final FRAGMENT fragment) {
-        return new RelativeReferenceNoAuthorityWithQueryAndFragment<>(new EmptyPath<SEGMENT>(), query, fragment);
+        return new RelativeReferenceNoAuthorityWithQueryAndFragment<>(new EmptyPath<>(), query, fragment);
     }
 
     /**
@@ -260,7 +260,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code RelativeReference} with the given {@code Authority}, {@code Query} and {@code Fragment}, and an empty path.
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> relativeReference(final Authority authority, final QUERY query, final FRAGMENT fragment) {
-        return new RelativeReferenceWithAuthorityAndQueryAndFragment<>(authority, new EmptyPath<SEGMENT>(), query, fragment);
+        return new RelativeReferenceWithAuthorityAndQueryAndFragment<>(authority, new EmptyPath<>(), query, fragment);
     }
 
     /**
@@ -397,7 +397,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code Urin} with the given {@code Scheme} and an empty path.
      */
     public final Urin<SEGMENT, QUERY, FRAGMENT> urin() {
-        return new UrinWithPath<>(removeDefaultPort(), new EmptyPath<SEGMENT>());
+        return new UrinWithPath<>(removeDefaultPort(), new EmptyPath<>());
     }
 
     /**
@@ -417,7 +417,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code Urin} with the given {@code Scheme} and {@code Authority}, and an empty path.
      */
     public final Urin<SEGMENT, QUERY, FRAGMENT> urin(final Authority authority) {
-        return new UrinWithAuthorityAndPath<>(removeDefaultPort(), normalise(authority), new EmptyPath<SEGMENT>());
+        return new UrinWithAuthorityAndPath<>(removeDefaultPort(), normalise(authority), new EmptyPath<>());
     }
 
     /**
@@ -438,7 +438,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code Urin} with the given {@code Scheme}, the given {@code Fragment}, and an empty path.
      */
     public final Urin<SEGMENT, QUERY, FRAGMENT> urin(final FRAGMENT fragment) {
-        return new UrinWithPathAndFragment<>(removeDefaultPort(), new EmptyPath<SEGMENT>(), fragment);
+        return new UrinWithPathAndFragment<>(removeDefaultPort(), new EmptyPath<>(), fragment);
     }
 
     /**
@@ -460,7 +460,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, and {@code Fragment}, and an empty path.
      */
     public final Urin<SEGMENT, QUERY, FRAGMENT> urin(final Authority authority, final FRAGMENT fragment) {
-        return new UrinWithAuthorityAndPathAndFragment<>(removeDefaultPort(), normalise(authority), new EmptyPath<SEGMENT>(), fragment);
+        return new UrinWithAuthorityAndPathAndFragment<>(removeDefaultPort(), normalise(authority), new EmptyPath<>(), fragment);
     }
 
     /**
@@ -482,7 +482,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code Urin} with the given {@code Scheme}, the given {@code Query}, and an empty path.
      */
     public final Urin<SEGMENT, QUERY, FRAGMENT> urin(final QUERY query) {
-        return new UrinWithPathAndQuery<>(removeDefaultPort(), new EmptyPath<SEGMENT>(), query);
+        return new UrinWithPathAndQuery<>(removeDefaultPort(), new EmptyPath<>(), query);
     }
 
     /**
@@ -504,7 +504,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, and {@code Query}, and an empty path.
      */
     public final Urin<SEGMENT, QUERY, FRAGMENT> urin(final Authority authority, final QUERY query) {
-        return new UrinWithAuthorityAndPathAndQuery<>(removeDefaultPort(), normalise(authority), new EmptyPath<SEGMENT>(), query);
+        return new UrinWithAuthorityAndPathAndQuery<>(removeDefaultPort(), normalise(authority), new EmptyPath<>(), query);
     }
 
     /**
@@ -527,7 +527,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code Urin} with the given {@code Scheme}, {@code Query}, and {@code Fragment}, and an empty path.
      */
     public final Urin<SEGMENT, QUERY, FRAGMENT> urin(final QUERY query, final FRAGMENT fragment) {
-        return new UrinWithPathAndQueryAndFragment<>(removeDefaultPort(), new EmptyPath<SEGMENT>(), query, fragment);
+        return new UrinWithPathAndQueryAndFragment<>(removeDefaultPort(), new EmptyPath<>(), query, fragment);
     }
 
     /**
@@ -551,7 +551,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
      * @return a {@code Urin} with the given {@code Scheme}, {@code Authority}, {@code Query}, and {@code Fragment}, and an empty path.
      */
     public final Urin<SEGMENT, QUERY, FRAGMENT> urin(final Authority authority, final QUERY query, final FRAGMENT fragment) {
-        return new UrinWithAuthorityAndPathAndQueryAndFragment<>(removeDefaultPort(), normalise(authority), new EmptyPath<SEGMENT>(), query, fragment);
+        return new UrinWithAuthorityAndPathAndQueryAndFragment<>(removeDefaultPort(), normalise(authority), new EmptyPath<>(), query, fragment);
     }
 
     /**
@@ -721,7 +721,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         return parseUrinReference(uriReference.toASCIIString());
     }
 
-    public static final class GenericScheme<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Scheme<SEGMENT, QUERY, FRAGMENT> {
+    public static final class GenericScheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Scheme<SEGMENT, QUERY, FRAGMENT> {
         private final String name;
 
         public GenericScheme(String name, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, MakingDecoder<QUERY, ?, String> queryMakingDecoder, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
@@ -759,10 +759,9 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            GenericScheme that = (GenericScheme) o;
+            GenericScheme<?, ?, ?> that = (GenericScheme<?, ?, ?>) o;
 
             return name.equals(that.name);
-
         }
 
         @Override
@@ -778,7 +777,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class RelativeReferenceNoAuthority<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
+    private static final class RelativeReferenceNoAuthority<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
         private final Path<SEGMENT> path;
 
         private RelativeReferenceNoAuthority(final Path<SEGMENT> path) {
@@ -881,7 +880,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RelativeReferenceNoAuthority that = (RelativeReferenceNoAuthority) o;
+            RelativeReferenceNoAuthority<?, ?, ?> that = (RelativeReferenceNoAuthority<?, ?, ?>) o;
             return path.equals(that.path);
         }
 
@@ -891,7 +890,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class RelativeReferenceWithAuthority<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
+    private static final class RelativeReferenceWithAuthority<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
         private final Authority authority;
         private final Path<SEGMENT> path;
 
@@ -980,7 +979,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RelativeReferenceWithAuthority that = (RelativeReferenceWithAuthority) o;
+            RelativeReferenceWithAuthority<?, ?, ?> that = (RelativeReferenceWithAuthority<?, ?, ?>) o;
             return authority.equals(that.authority)
                     && path.equals(that.path);
         }
@@ -993,7 +992,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class RelativeReferenceNoAuthorityWithQuery<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
+    private static final class RelativeReferenceNoAuthorityWithQuery<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
         private final Path<SEGMENT> path;
         private final QUERY query;
 
@@ -1090,7 +1089,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RelativeReferenceNoAuthorityWithQuery that = (RelativeReferenceNoAuthorityWithQuery) o;
+            RelativeReferenceNoAuthorityWithQuery<?, ?, ?> that = (RelativeReferenceNoAuthorityWithQuery<?, ?, ?>) o;
 
             return query.equals(that.query) && path.equals(that.path);
 
@@ -1104,7 +1103,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class RelativeReferenceNoAuthorityWithFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
+    private static final class RelativeReferenceNoAuthorityWithFragment<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
         private final Path<SEGMENT> path;
         private final FRAGMENT fragment;
 
@@ -1209,7 +1208,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RelativeReferenceNoAuthorityWithFragment that = (RelativeReferenceNoAuthorityWithFragment) o;
+            RelativeReferenceNoAuthorityWithFragment<?, ?, ?> that = (RelativeReferenceNoAuthorityWithFragment<?, ?, ?>) o;
 
             return fragment.equals(that.fragment) && path.equals(that.path);
 
@@ -1223,7 +1222,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class RelativeReferenceNoAuthorityWithQueryAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
+    private static final class RelativeReferenceNoAuthorityWithQueryAndFragment<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
         private final Path<SEGMENT> path;
         private final FRAGMENT fragment;
         private final QUERY query;
@@ -1284,7 +1283,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RelativeReferenceNoAuthorityWithQueryAndFragment that = (RelativeReferenceNoAuthorityWithQueryAndFragment) o;
+            RelativeReferenceNoAuthorityWithQueryAndFragment<?, ?, ?> that = (RelativeReferenceNoAuthorityWithQueryAndFragment<?, ?, ?>) o;
 
             return fragment.equals(that.fragment) && query.equals(that.query) && path.equals(that.path);
         }
@@ -1328,7 +1327,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class RelativeReferenceWithAuthorityAndQuery<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
+    private static final class RelativeReferenceWithAuthorityAndQuery<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
         private final Authority authority;
         private final Path<SEGMENT> path;
         private final QUERY query;
@@ -1419,7 +1418,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RelativeReferenceWithAuthorityAndQuery that = (RelativeReferenceWithAuthorityAndQuery) o;
+            RelativeReferenceWithAuthorityAndQuery<?, ?, ?> that = (RelativeReferenceWithAuthorityAndQuery<?, ?, ?>) o;
 
             return authority.equals(that.authority) && query.equals(that.query) && path.equals(that.path);
         }
@@ -1433,7 +1432,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class RelativeReferenceWithAuthorityAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
+    private static final class RelativeReferenceWithAuthorityAndFragment<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
         private final Authority authority;
         private final Path<SEGMENT> path;
         private final FRAGMENT fragment;
@@ -1524,7 +1523,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RelativeReferenceWithAuthorityAndFragment that = (RelativeReferenceWithAuthorityAndFragment) o;
+            RelativeReferenceWithAuthorityAndFragment<?, ?, ?> that = (RelativeReferenceWithAuthorityAndFragment<?, ?, ?>) o;
 
             return authority.equals(that.authority) && fragment.equals(that.fragment) && path.equals(that.path);
         }
@@ -1538,7 +1537,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class RelativeReferenceWithAuthorityAndQueryAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
+    private static final class RelativeReferenceWithAuthorityAndQueryAndFragment<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends RelativeReference<SEGMENT, QUERY, FRAGMENT> {
         private final Authority authority;
         private final Path<SEGMENT> path;
         private final QUERY query;
@@ -1631,7 +1630,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            RelativeReferenceWithAuthorityAndQueryAndFragment that = (RelativeReferenceWithAuthorityAndQueryAndFragment) o;
+            RelativeReferenceWithAuthorityAndQueryAndFragment<?, ?, ?> that = (RelativeReferenceWithAuthorityAndQueryAndFragment<?, ?, ?>) o;
 
             return authority.equals(that.authority) && fragment.equals(that.fragment) && query.equals(that.query) && path.equals(that.path);
         }
@@ -1646,7 +1645,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class UrinWithPathAndQueryAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
+    private static final class UrinWithPathAndQueryAndFragment<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Urin<SEGMENT, QUERY, FRAGMENT> {
         private final Scheme<SEGMENT, QUERY, FRAGMENT> scheme;
         private final Path<SEGMENT> path;
         private final QUERY query;
@@ -1714,7 +1713,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            UrinWithPathAndQueryAndFragment that = (UrinWithPathAndQueryAndFragment) o;
+            UrinWithPathAndQueryAndFragment<?, ?, ?> that = (UrinWithPathAndQueryAndFragment<?, ?, ?>) o;
             return fragment.equals(that.fragment)
                     && path.equals(that.path)
                     && query.equals(that.query)
@@ -1731,7 +1730,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class UrinWithAuthorityAndPathAndQueryAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
+    private static final class UrinWithAuthorityAndPathAndQueryAndFragment<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Urin<SEGMENT, QUERY, FRAGMENT> {
         private final Scheme<SEGMENT, QUERY, FRAGMENT> scheme;
         private final Authority authority;
         private final Path<SEGMENT> path;
@@ -1801,7 +1800,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            UrinWithAuthorityAndPathAndQueryAndFragment that = (UrinWithAuthorityAndPathAndQueryAndFragment) o;
+            UrinWithAuthorityAndPathAndQueryAndFragment<?, ?, ?> that = (UrinWithAuthorityAndPathAndQueryAndFragment<?, ?, ?>) o;
 
             return authority.equals(that.authority) && fragment.equals(that.fragment) && path.equals(that.path) && query.equals(that.query) && scheme.equals(that.scheme);
 
@@ -1818,7 +1817,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class UrinWithPathAndQuery<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
+    private static final class UrinWithPathAndQuery<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Urin<SEGMENT, QUERY, FRAGMENT> {
         private final Scheme<SEGMENT, QUERY, FRAGMENT> scheme;
         private final Path<SEGMENT> path;
         private final QUERY query;
@@ -1884,7 +1883,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            UrinWithPathAndQuery that = (UrinWithPathAndQuery) o;
+            UrinWithPathAndQuery<?, ?, ?> that = (UrinWithPathAndQuery<?, ?, ?>) o;
             return path.equals(that.path)
                     && query.equals(that.query)
                     && scheme.equals(that.scheme);
@@ -1899,7 +1898,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class UrinWithAuthorityAndPathAndQuery<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
+    private static final class UrinWithAuthorityAndPathAndQuery<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Urin<SEGMENT, QUERY, FRAGMENT> {
         private final Scheme<SEGMENT, QUERY, FRAGMENT> scheme;
         private final Authority authority;
         private final Path<SEGMENT> path;
@@ -1967,7 +1966,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            UrinWithAuthorityAndPathAndQuery that = (UrinWithAuthorityAndPathAndQuery) o;
+            UrinWithAuthorityAndPathAndQuery<?, ?, ?> that = (UrinWithAuthorityAndPathAndQuery<?, ?, ?>) o;
 
             return authority.equals(that.authority) && path.equals(that.path) && query.equals(that.query) && scheme.equals(that.scheme);
 
@@ -1983,7 +1982,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class UrinWithAuthorityAndPathAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
+    private static final class UrinWithAuthorityAndPathAndFragment<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Urin<SEGMENT, QUERY, FRAGMENT> {
         private final Scheme<SEGMENT, QUERY, FRAGMENT> scheme;
         private final Authority authority;
         private final Path<SEGMENT> path;
@@ -2051,7 +2050,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            UrinWithAuthorityAndPathAndFragment that = (UrinWithAuthorityAndPathAndFragment) o;
+            UrinWithAuthorityAndPathAndFragment<?, ?, ?> that = (UrinWithAuthorityAndPathAndFragment<?, ?, ?>) o;
 
             return authority.equals(that.authority) && fragment.equals(that.fragment) && path.equals(that.path) && scheme.equals(that.scheme);
 
@@ -2067,7 +2066,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static final class UrinWithPathAndFragment<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
+    private static final class UrinWithPathAndFragment<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Urin<SEGMENT, QUERY, FRAGMENT> {
         private final Scheme<SEGMENT, QUERY, FRAGMENT> scheme;
         private final Path<SEGMENT> path;
         private final FRAGMENT fragment;
@@ -2133,7 +2132,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            UrinWithPathAndFragment that = (UrinWithPathAndFragment) o;
+            UrinWithPathAndFragment<?, ?, ?> that = (UrinWithPathAndFragment<?, ?, ?>) o;
 
             return fragment.equals(that.fragment) && path.equals(that.path) && scheme.equals(that.scheme);
 
@@ -2148,7 +2147,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static class UrinWithPath<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
+    private static class UrinWithPath<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Urin<SEGMENT, QUERY, FRAGMENT> {
         private final Scheme<SEGMENT, QUERY, FRAGMENT> scheme;
         private final Path<SEGMENT> path;
 
@@ -2212,7 +2211,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            UrinWithPath that = (UrinWithPath) o;
+            UrinWithPath<?, ?, ?> that = (UrinWithPath<?, ?, ?>) o;
 
             return path.equals(that.path) && scheme.equals(that.scheme);
 
@@ -2226,7 +2225,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
         }
     }
 
-    private static class UrinWithAuthorityAndPath<SEGMENT, QUERY extends Query, FRAGMENT extends Fragment> extends Urin<SEGMENT, QUERY, FRAGMENT> {
+    private static class UrinWithAuthorityAndPath<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Urin<SEGMENT, QUERY, FRAGMENT> {
         private final Scheme<SEGMENT, QUERY, FRAGMENT> scheme;
         private final Authority authority;
         private final Path<SEGMENT> path;
@@ -2292,7 +2291,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query, FRAGMENT extends Frag
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            UrinWithAuthorityAndPath that = (UrinWithAuthorityAndPath) o;
+            UrinWithAuthorityAndPath<?, ?, ?> that = (UrinWithAuthorityAndPath<?, ?, ?>) o;
 
             return authority.equals(that.authority) && path.equals(that.path) && scheme.equals(that.scheme);
 
