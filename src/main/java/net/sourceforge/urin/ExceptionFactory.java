@@ -11,16 +11,8 @@
 package net.sourceforge.urin;
 
 interface ExceptionFactory<T extends Exception> {
-    ExceptionFactory<IllegalArgumentException> ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<IllegalArgumentException>() {
-        public IllegalArgumentException makeException(final String message) {
-            return new IllegalArgumentException(message);
-        }
-    };
-    ExceptionFactory<ParseException> PARSE_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<ParseException>() {
-        public ParseException makeException(final String message) {
-            return new ParseException(message);
-        }
-    };
+    ExceptionFactory<IllegalArgumentException> ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY = IllegalArgumentException::new;
+    ExceptionFactory<ParseException> PARSE_EXCEPTION_EXCEPTION_FACTORY = ParseException::new;
 
     T makeException(String message);
 }

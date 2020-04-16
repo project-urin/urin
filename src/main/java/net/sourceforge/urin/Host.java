@@ -648,7 +648,7 @@ public abstract class Host {
     }
 
     private static final class IpVFutureAddress extends Host {
-        private static final Pattern IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN = Pattern.compile("^\\[v([\\dABCDEF]+)\\.([^/?#]+)\\]");
+        private static final Pattern IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN = Pattern.compile("^\\[v([\\dABCDEF]+)\\.([^/?#]+)]");
 
         private final String version;
         private final String address;
