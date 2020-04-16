@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -28,33 +28,33 @@ final class RootlessPath<T> extends Path<T> {
             Segment<T> segment = requireNonNull(segmentIterator.next(), "Segment cannot be null");
             if (!dot().equals(segment)) {
                 if (dotDot().equals(segment) && !newSegments.isEmpty() && !dotDot().equals(newSegments.getLast())) {
-                    Segment removedSegment = newSegments.removeLast();
+                    Segment<T> removedSegment = newSegments.removeLast();
                     if (dot().equals(removedSegment)) {
                         if (!newSegments.isEmpty() && !dotDot().equals(newSegments.getLast())) {
                             newSegments.removeLast();
                             if (!segmentIterator.hasNext()) {
-                                newSegments.add(Segment.<T>empty());
+                                newSegments.add(Segment.empty());
                             }
                         } else {
-                            newSegments.add(Segment.<T>dotDot());
+                            newSegments.add(Segment.dotDot());
                         }
                     } else {
                         if (!segmentIterator.hasNext()) {
-                            newSegments.add(Segment.<T>empty());
+                            newSegments.add(Segment.empty());
                         }
                     }
                 } else {
                     if (!newSegments.isEmpty() && dot().equals(newSegments.getLast())) {
                         newSegments.removeLast();
                     }
-                    newSegments.add(segment.isEmpty() ? Segment.<T>empty() : segment);
+                    newSegments.add(segment.isEmpty() ? Segment.empty() : segment);
                 }
             } else {
                 if (newSegments.isEmpty()) {
-                    newSegments.add(Segment.<T>dot());
+                    newSegments.add(Segment.dot());
                 } else {
                     if (!segmentIterator.hasNext()) {
-                        newSegments.add(Segment.<T>empty());
+                        newSegments.add(Segment.empty());
                     }
                 }
             }
@@ -111,7 +111,7 @@ final class RootlessPath<T> extends Path<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RootlessPath rootlessPath = (RootlessPath) o;
+        RootlessPath<?> rootlessPath = (RootlessPath<?>) o;
         return segments.equals(rootlessPath.segments);
     }
 
