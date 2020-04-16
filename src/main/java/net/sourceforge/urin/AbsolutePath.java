@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -36,19 +36,19 @@ public final class AbsolutePath<T> extends Path<T> {
                     if (!newSegments.isEmpty()) {
                         newSegments.removeLast();
                         if (!segmentIterator.hasNext()) {
-                            newSegments.add(Segment.<T>empty());
+                            newSegments.add(Segment.empty());
                         }
                     }
                 } else {
-                    newSegments.add(segment.isEmpty() ? Segment.<T>empty() : segment);
+                    newSegments.add(segment.isEmpty() ? Segment.empty() : segment);
                 }
             } else {
                 if (!segmentIterator.hasNext()) {
-                    newSegments.add(Segment.<T>empty());
+                    newSegments.add(Segment.empty());
                 }
             }
         }
-        this.segments = newSegments.size() == 1 && newSegments.getFirst().isEmpty() ? new LinkedList<Segment<T>>() : newSegments;
+        this.segments = newSegments.size() == 1 && newSegments.getFirst().isEmpty() ? new LinkedList<>() : newSegments;
     }
 
 
@@ -101,7 +101,7 @@ public final class AbsolutePath<T> extends Path<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbsolutePath path = (AbsolutePath) o;
+        AbsolutePath<?> path = (AbsolutePath<?>) o;
         return segments.equals(path.segments);
     }
 
