@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -18,6 +18,7 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -26,11 +27,11 @@ import static java.util.Objects.requireNonNull;
 public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> implements Iterable<HttpQuery.QueryParameter> {
 
     private static final PercentEncodingPartial<Iterable<QueryParameter>, String> HTTP_QUERY_PERCENT_ENCODING_PARTIAL = encodeQueryParameters(
-            PercentEncodingPartial.<Iterable<QueryParameter>, String>percentEncodingDelimitedValue(
+            PercentEncodingPartial.percentEncodingDelimitedValue(
                     '&',
-                    PercentEncodingPartial.<QueryParameter, String>percentEncodingDelimitedValue(
+                    PercentEncodingPartial.percentEncodingDelimitedValue(
                             ';',
-                            percentEncodedQueryParameter(PercentEncodingPartial.<String, String>percentEncodingDelimitedValue(
+                            percentEncodedQueryParameter(PercentEncodingPartial.percentEncodingDelimitedValue(
                                     '=',
                                     PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+'))))));
 
@@ -56,7 +57,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
             public Iterable<Iterable<QueryParameter>> encode(final Iterable<QueryParameter> queryParameters) {
                 return new ArrayList<Iterable<QueryParameter>>() {{
                     for (QueryParameter queryParameter : queryParameters) {
-                        add(Arrays.asList(queryParameter));
+                        add(singletonList(queryParameter));
                     }
                 }};
             }
@@ -243,7 +244,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
         @Override
         Iterable<String> encoded() {
-            return Arrays.asList(name);
+            return singletonList(name);
         }
 
         @Override
