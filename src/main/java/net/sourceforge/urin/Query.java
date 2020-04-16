@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -15,7 +15,7 @@ import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percen
 
 /**
  * A query component of a URI.
- * Immutable and threadsafe.
+ * Immutable and thread safe.
  *
  * @param <ENCODES> The type of value represented by the query - {@code String} in the general case.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.4">RFC 3986 - Query</a>
@@ -49,7 +49,7 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
     }
 
     public static MakingDecoder<Query<String>, String, String> stringQueryMaker() {
-        return new MakingDecoder<Query<String>, String, String>(PercentEncodingPartial.<String>noOp()) {
+        return new MakingDecoder<Query<String>, String, String>(PercentEncodingPartial.noOp()) {
             @Override
             protected Query<String> makeOne(String value) {
                 return query(value);
@@ -57,7 +57,7 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         };
     }
 
-    static <QUERY extends Query> QUERY parseQuery(String queryString, MakingDecoder<QUERY, ?, String> queryMakingDecoder) throws ParseException {
+    static <QUERY extends Query<?>> QUERY parseQuery(String queryString, MakingDecoder<QUERY, ?, String> queryMakingDecoder) throws ParseException {
         return queryMakingDecoder.toMaker(PERCENT_ENCODING).make(queryString);
     }
 

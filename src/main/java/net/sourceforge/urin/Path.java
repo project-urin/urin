@@ -20,7 +20,7 @@ import static net.sourceforge.urin.Segment.segment;
 /**
  * An iterable of {@code Segment}s.
  * {@code Path}s can either be absolute (starting with '/'), or rootless (not starting with '/').
- * <p>
+ *
  * Immutable and thread safe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
