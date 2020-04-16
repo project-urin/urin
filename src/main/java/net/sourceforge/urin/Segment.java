@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -16,12 +16,12 @@ import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.specif
 
 /**
  * A segment of a URI's path.
- *
+ * <p>
  * Note that the special segments "." and ".." are obtained via the factory methods {@link #dot()} and {@link #dotDot()}
  * respectively.  Passing "." or ".." as an argument to the factory method {@link #segment(String)} is not equivalent,
  * as the argument to this method is a literal string, i.e. subject to encoding where necessary.
- *
- * Immutable and threadsafe.
+ * <p>
+ * Immutable and thread safe.
  *
  * @param <ENCODES> The type of value represented by the segment - {@code String} in the general case.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
@@ -35,7 +35,7 @@ public abstract class Segment<ENCODES> {
     /**
      * The {@code MakingDecoder} used by standard segments.
      */
-    public static final MakingDecoder<Segment<String>, String, String> STRING_SEGMENT_MAKING_DECODER = new MakingDecoder<Segment<String>, String, String>(PercentEncodingPartial.<String>noOp()) {
+    public static final MakingDecoder<Segment<String>, String, String> STRING_SEGMENT_MAKING_DECODER = new MakingDecoder<Segment<String>, String, String>(PercentEncodingPartial.noOp()) {
         @Override
         protected Segment<String> makeOne(String value) {
             return segment(value);
@@ -200,7 +200,7 @@ public abstract class Segment<ENCODES> {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
 
-            ValueSegment that = (ValueSegment) o;
+            ValueSegment<?> that = (ValueSegment<?>) o;
             return delegate.equals(that.delegate);
         }
 
@@ -232,7 +232,7 @@ public abstract class Segment<ENCODES> {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment<String> segment(final String segment) {
-        return segment(segment, PercentEncodingPartial.<String>noOp());
+        return segment(segment, PercentEncodingPartial.noOp());
     }
 
     /**
@@ -245,7 +245,7 @@ public abstract class Segment<ENCODES> {
      */
     public static <T> Segment<T> segment(final T segment, PercentEncodingPartial<T, String> percentEncodingPartial) {
         final ValueSegment<T> result = new ValueSegment<>(segment, percentEncodingPartial);
-        return result.isEmpty() ? Segment.<T>empty() : result;
+        return result.isEmpty() ? Segment.empty() : result;
     }
 
     final boolean containsColon() {
