@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -11,12 +11,12 @@
 package net.sourceforge.urin;
 
 interface ExceptionFactory<T extends Exception> {
-    static final ExceptionFactory<IllegalArgumentException> ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<IllegalArgumentException>() {
+    ExceptionFactory<IllegalArgumentException> ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<IllegalArgumentException>() {
         public IllegalArgumentException makeException(final String message) {
             return new IllegalArgumentException(message);
         }
     };
-    static final ExceptionFactory<ParseException> PARSE_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<ParseException>() {
+    ExceptionFactory<ParseException> PARSE_EXCEPTION_EXCEPTION_FACTORY = new ExceptionFactory<ParseException>() {
         public ParseException makeException(final String message) {
             return new ParseException(message);
         }
