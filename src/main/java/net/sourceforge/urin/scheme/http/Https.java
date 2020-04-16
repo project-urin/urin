@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -30,15 +30,15 @@ public final class Https extends HypertextScheme {
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host) {
-        return HTTPS.urin(authority(host), AbsolutePath.<String>path());
+        return HTTPS.urin(authority(host), AbsolutePath.path());
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host, final Port port) {
-        return HTTPS.urin(authority(host, port), AbsolutePath.<String>path());
+        return HTTPS.urin(authority(host, port), AbsolutePath.path());
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Authority authority) {
-        return HTTPS.urin(authority, AbsolutePath.<String>path());
+        return HTTPS.urin(authority, AbsolutePath.path());
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host, final AbsolutePath<String> path) {
@@ -66,27 +66,27 @@ public final class Https extends HypertextScheme {
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host, final HttpQuery query) {
-        return HTTPS.urin(authority(host), AbsolutePath.<String>path(), query);
+        return HTTPS.urin(authority(host), AbsolutePath.path(), query);
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host, final Port port, final HttpQuery query) {
-        return HTTPS.urin(authority(host, port), AbsolutePath.<String>path(), query);
+        return HTTPS.urin(authority(host, port), AbsolutePath.path(), query);
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Authority authority, final HttpQuery query) {
-        return HTTPS.urin(authority, AbsolutePath.<String>path(), query);
+        return HTTPS.urin(authority, AbsolutePath.path(), query);
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host, final Fragment<String> fragment) {
-        return HTTPS.urin(authority(host), AbsolutePath.<String>path(), fragment);
+        return HTTPS.urin(authority(host), AbsolutePath.path(), fragment);
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host, final Port port, final Fragment<String> fragment) {
-        return HTTPS.urin(authority(host, port), AbsolutePath.<String>path(), fragment);
+        return HTTPS.urin(authority(host, port), AbsolutePath.path(), fragment);
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Authority authority, final Fragment<String> fragment) {
-        return HTTPS.urin(authority, AbsolutePath.<String>path(), fragment);
+        return HTTPS.urin(authority, AbsolutePath.path(), fragment);
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host, final AbsolutePath<String> path, final Fragment<String> fragment) {
@@ -114,14 +114,14 @@ public final class Https extends HypertextScheme {
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host, final HttpQuery query, final Fragment<String> fragment) {
-        return HTTPS.urin(authority(host), AbsolutePath.<String>path(), query, fragment);
+        return HTTPS.urin(authority(host), AbsolutePath.path(), query, fragment);
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Host host, final Port port, final HttpQuery query, final Fragment<String> fragment) {
-        return HTTPS.urin(authority(host, port), AbsolutePath.<String>path(), query, fragment);
+        return HTTPS.urin(authority(host, port), AbsolutePath.path(), query, fragment);
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> https(final Authority authority, final HttpQuery query, final Fragment<String> fragment) {
-        return HTTPS.urin(authority, AbsolutePath.<String>path(), query, fragment);
+        return HTTPS.urin(authority, AbsolutePath.path(), query, fragment);
     }
 }
