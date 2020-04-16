@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -14,7 +14,7 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
 /**
  * A user information component of a URI.
- * Immutable and threadsafe.
+ * Immutable and thread safe.
  *
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.2.1">RFC 3986 - User Information</a>
  */

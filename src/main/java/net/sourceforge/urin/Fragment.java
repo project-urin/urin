@@ -15,7 +15,7 @@ import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percen
 
 /**
  * A fragment component of a URI.
- * Immutable and threadsafe.
+ * Immutable and thread safe.
  *
  * @param <ENCODES> The type of value represented by the fragment - {@code String} in the general case.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.5">RFC 3986 - Fragment</a>

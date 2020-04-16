@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -15,7 +15,7 @@ import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FA
 
 /**
  * An integer in the range 0 to 255.
- * Immutable and threadsafe.
+ * Immutable and thread safe.
  */
 public final class Octet extends UnaryStringValue {
 

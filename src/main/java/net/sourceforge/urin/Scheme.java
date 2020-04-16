@@ -25,7 +25,7 @@ import static net.sourceforge.urin.Query.stringQueryMaker;
 
 /**
  * A name component of a URI.
- * Immutable and threadsafe.
+ * Immutable and thread safe.
  *
  * @param <SEGMENT>  The type of {@code Segment} used by paths of this scheme.
  * @param <QUERY>    The type of {@code Query} used by this scheme.
