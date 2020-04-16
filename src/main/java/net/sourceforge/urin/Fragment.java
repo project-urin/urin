@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -49,7 +49,7 @@ public class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
     }
 
     public static MakingDecoder<Fragment<String>, String, String> stringFragmentMaker() {
-        return new MakingDecoder<Fragment<String>, String, String>(PercentEncodingPartial.<String>noOp()) {
+        return new MakingDecoder<Fragment<String>, String, String>(PercentEncodingPartial.noOp()) {
             @Override
             protected Fragment<String> makeOne(String value) {
                 return fragment(value);
@@ -57,7 +57,7 @@ public class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         };
     }
 
-    static <FRAGMENT extends Fragment> FRAGMENT parseFragment(final String fragmentString, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) throws ParseException {
+    static <FRAGMENT extends Fragment<?>> FRAGMENT parseFragment(final String fragmentString, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) throws ParseException {
         return fragmentMakingDecoder.toMaker(PERCENT_ENCODING).make(fragmentString);
     }
 
