@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -12,7 +12,6 @@ package net.sourceforge.urin;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.regex.Pattern;
 
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
@@ -188,7 +187,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
             @Override
             public String encode(final String notEncoded) {
                 StringBuilder result = new StringBuilder();
-                Iterator<String> valuePartsIterator = asList(notEncoded.split(Pattern.quote(Character.toString(originalCharacter)), -1)).iterator();
+                Iterator<String> valuePartsIterator = asList(notEncoded.split(quote(Character.toString(originalCharacter)), -1)).iterator();
                 while (valuePartsIterator.hasNext()) {
                     result.append(percentEncoding.encode(valuePartsIterator.next()));
                     if (valuePartsIterator.hasNext()) {
@@ -201,7 +200,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
             @Override
             public String decode(final String encoded) throws ParseException {
                 final StringBuilder result = new StringBuilder();
-                String[] split = encoded.split(Pattern.quote(Character.toString(replacementCharacter)));
+                String[] split = encoded.split(quote(Character.toString(replacementCharacter)));
                 for (int i = 0; i < split.length; i++) {
                     if (i > 0) {
                         result.append(originalCharacter);

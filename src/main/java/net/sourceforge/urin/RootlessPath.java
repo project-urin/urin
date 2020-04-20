@@ -36,7 +36,7 @@ final class RootlessPath<T> extends Path<T> {
                                 newSegments.add(Segment.empty());
                             }
                         } else {
-                            newSegments.add(Segment.dotDot());
+                            newSegments.add(dotDot());
                         }
                     } else {
                         if (!segmentIterator.hasNext()) {
@@ -51,7 +51,7 @@ final class RootlessPath<T> extends Path<T> {
                 }
             } else {
                 if (newSegments.isEmpty()) {
-                    newSegments.add(Segment.dot());
+                    newSegments.add(dot());
                 } else {
                     if (!segmentIterator.hasNext()) {
                         newSegments.add(Segment.empty());

@@ -13,7 +13,6 @@ package net.sourceforge.urin.scheme.http;
 import net.sourceforge.urin.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
@@ -194,7 +193,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
         @Override
         Iterable<String> encoded() {
-            return Arrays.asList(name, value);
+            return asList(name, value);
         }
 
         @Override
