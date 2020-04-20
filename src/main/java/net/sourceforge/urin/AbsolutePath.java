@@ -101,8 +101,8 @@ public final class AbsolutePath<T> extends Path<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        AbsolutePath<?> path = (AbsolutePath<?>) o;
-        return segments.equals(path.segments);
+        AbsolutePath<?> that = (AbsolutePath<?>) o;
+        return segments.equals(that.segments);
     }
 
     @Override
