@@ -31,7 +31,7 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query<?>, FRAGMENT ext
      * @param queryMakingDecoder    the parser to use for parsing queries of this scheme.
      * @param fragmentMakingDecoder the parser to use for parsing fragments of this scheme.
      */
-    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
+    protected SchemeWithDefaultPort(final String name, final Port defaultPort, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder, final MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
         super(segmentMakingDecoder, queryMakingDecoder, fragmentMakingDecoder);
         this.name = name;
         this.defaultPort = requireNonNull(defaultPort, "Cannot instantiate Scheme with null default port");

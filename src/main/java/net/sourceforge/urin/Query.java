@@ -51,13 +51,13 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
     public static MakingDecoder<Query<String>, String, String> stringQueryMaker() {
         return new MakingDecoder<Query<String>, String, String>(PercentEncodingPartial.noOp()) {
             @Override
-            protected Query<String> makeOne(String value) {
+            protected Query<String> makeOne(final String value) {
                 return query(value);
             }
         };
     }
 
-    static <QUERY extends Query<?>> QUERY parseQuery(String queryString, MakingDecoder<QUERY, ?, String> queryMakingDecoder) throws ParseException {
+    static <QUERY extends Query<?>> QUERY parseQuery(final String queryString, final MakingDecoder<QUERY, ?, String> queryMakingDecoder) throws ParseException {
         return queryMakingDecoder.toMaker(PERCENT_ENCODING).make(queryString);
     }
 

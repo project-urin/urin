@@ -196,7 +196,7 @@ abstract class CharacterSetMembershipFunction {
 
     abstract boolean isMember(char character);
 
-    boolean areMembers(String string) {
+    boolean areMembers(final String string) {
         boolean result = true;
         for (char character : string.toCharArray()) {
             result = result && isMember(character);

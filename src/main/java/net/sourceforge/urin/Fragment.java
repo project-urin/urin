@@ -51,13 +51,13 @@ public class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
     public static MakingDecoder<Fragment<String>, String, String> stringFragmentMaker() {
         return new MakingDecoder<Fragment<String>, String, String>(PercentEncodingPartial.noOp()) {
             @Override
-            protected Fragment<String> makeOne(String value) {
+            protected Fragment<String> makeOne(final String value) {
                 return fragment(value);
             }
         };
     }
 
-    static <FRAGMENT extends Fragment<?>> FRAGMENT parseFragment(final String fragmentString, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) throws ParseException {
+    static <FRAGMENT extends Fragment<?>> FRAGMENT parseFragment(final String fragmentString, final MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) throws ParseException {
         return fragmentMakingDecoder.toMaker(PERCENT_ENCODING).make(fragmentString);
     }
 

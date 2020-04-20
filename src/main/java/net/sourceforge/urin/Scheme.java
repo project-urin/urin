@@ -50,7 +50,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
     private final MakingDecoder<QUERY, ?, String> queryMakingDecoder;
     private final MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder;
 
-    Scheme(final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
+    Scheme(final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder, final MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
         this.segmentMakingDecoder = segmentMakingDecoder;
         this.queryMakingDecoder = queryMakingDecoder;
         this.fragmentMakingDecoder = fragmentMakingDecoder;
@@ -383,7 +383,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
      * @return a {@code RelativeReference} representing the RFC 3986 relative reference represented by the given {@code URI}.
      * @throws ParseException if the given {@code URI} is not a valid RFC 3986 relative reference.
      */
-    public final RelativeReference<SEGMENT, QUERY, FRAGMENT> parseRelativeReference(URI uri) throws ParseException {
+    public final RelativeReference<SEGMENT, QUERY, FRAGMENT> parseRelativeReference(final URI uri) throws ParseException {
         return parseRelativeReference(uri.toASCIIString());
     }
 
@@ -724,12 +724,12 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
     public static final class GenericScheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> extends Scheme<SEGMENT, QUERY, FRAGMENT> {
         private final String name;
 
-        public GenericScheme(String name, MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, MakingDecoder<QUERY, ?, String> queryMakingDecoder, MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
+        public GenericScheme(final String name, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder, final MakingDecoder<QUERY, ?, String> queryMakingDecoder, final MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) {
             super(segmentMakingDecoder, queryMakingDecoder, fragmentMakingDecoder);
             this.name = name;
         }
 
-        GenericScheme(String name, Scheme<SEGMENT, QUERY, FRAGMENT> prototype) {
+        GenericScheme(final String name, final Scheme<SEGMENT, QUERY, FRAGMENT> prototype) {
             super(prototype);
             this.name = name;
         }

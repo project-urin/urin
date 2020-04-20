@@ -52,7 +52,7 @@ final class PercentEncoder {
     private static final byte BINARY_1110_0000 = -32;
     private static final byte BINARY_1111_0000 = -16;
 
-    private static byte getByte(char[] source, int startIndex) throws IllegalArgumentException, ParseException {
+    private static byte getByte(final char[] source, final int startIndex) throws IllegalArgumentException, ParseException {
         if (source.length <= startIndex + 2 || !('%' == source[startIndex])) {
             throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]");
         } else {
@@ -60,7 +60,7 @@ final class PercentEncoder {
         }
     }
 
-    String decode(String encoded) throws IllegalArgumentException, ParseException {
+    String decode(final String encoded) throws IllegalArgumentException, ParseException {
         StringBuilder result = new StringBuilder();
         byte[] buffer = new byte[4];
         char[] candidateChars = encoded.toCharArray();

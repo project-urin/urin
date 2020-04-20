@@ -21,7 +21,7 @@ public abstract class MakingDecoder<NON_ENCODED, FACTORY_INPUT, ENCODED> {
 
     private final PercentEncodingPartial<FACTORY_INPUT, ENCODED> percentEncodingPartial;
 
-    protected MakingDecoder(PercentEncodingPartial<FACTORY_INPUT, ENCODED> percentEncodingPartial) {
+    protected MakingDecoder(final PercentEncodingPartial<FACTORY_INPUT, ENCODED> percentEncodingPartial) {
         this.percentEncodingPartial = percentEncodingPartial;
     }
 

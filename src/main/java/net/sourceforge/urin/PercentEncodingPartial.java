@@ -25,15 +25,15 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
     public static <T> PercentEncodingPartial<T, T> noOp() {
         return new PercentEncodingPartial<T, T>() {
             @Override
-            public PercentEncoding<T> apply(PercentEncoding<T> childPercentEncoding) {
+            public PercentEncoding<T> apply(final PercentEncoding<T> childPercentEncoding) {
                 return childPercentEncoding;
             }
         };
     }
 
-    public static <T, V> PercentEncodingPartial<Iterable<T>, V> percentEncodingDelimitedValue(final char delimiter, PercentEncodingPartial<T, V> childPercentEncodingPartial) {
+    public static <T, V> PercentEncodingPartial<Iterable<T>, V> percentEncodingDelimitedValue(final char delimiter, final PercentEncodingPartial<T, V> childPercentEncodingPartial) {
         return childPercentEncodingPartial.chain(new PercentEncodingPartial<Iterable<T>, T>() {
-            public PercentEncoding<Iterable<T>> apply(PercentEncoding<T> childPercentEncoding) {
+            public PercentEncoding<Iterable<T>> apply(final PercentEncoding<T> childPercentEncoding) {
                 return new PercentEncoding.PercentEncodingDelimitedValue<>(delimiter, childPercentEncoding);
             }
         });
@@ -41,7 +41,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
 
     public static PercentEncodingPartial<Iterable<String>, String> percentEncodingDelimitedValue(final char delimiter) {
         return new PercentEncodingPartial<Iterable<String>, String>() {
-            public PercentEncoding<Iterable<String>> apply(PercentEncoding<String> childPercentEncoding) {
+            public PercentEncoding<Iterable<String>> apply(final PercentEncoding<String> childPercentEncoding) {
                 return new PercentEncoding.PercentEncodingDelimitedValue<>(delimiter, childPercentEncoding);
             }
         };
@@ -50,29 +50,29 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
     public static PercentEncodingPartial<String, String> percentEncodingSubstitutedValue(final char originalCharacter, final char replacementCharacter) {
         return new PercentEncodingPartial<String, String>() {
             @Override
-            public PercentEncoding<String> apply(PercentEncoding<String> childPercentEncoding) {
+            public PercentEncoding<String> apply(final PercentEncoding<String> childPercentEncoding) {
                 return new PercentEncoding.PercentEncodingSubstitutedValue(originalCharacter, replacementCharacter, childPercentEncoding);
             }
         };
     }
 
-    public static <T, U, V> PercentEncodingPartial<T, V> transformingPercentEncodingPartial(PercentEncodingPartial<U, V> childPercentEncodingPartial, final Transformer<T, U> transformer) {
+    public static <T, U, V> PercentEncodingPartial<T, V> transformingPercentEncodingPartial(final PercentEncodingPartial<U, V> childPercentEncodingPartial, final Transformer<T, U> transformer) {
         return childPercentEncodingPartial.chain(new PercentEncodingPartial<T, U>() {
             @Override
             public PercentEncoding<T> apply(final PercentEncoding<U> childPercentEncoding) {
                 return new PercentEncoding<T>() {
                     @Override
-                    public String encode(T notEncoded) {
+                    public String encode(final T notEncoded) {
                         return childPercentEncoding.encode(transformer.encode(notEncoded));
                     }
 
                     @Override
-                    public T decode(String encoded) throws ParseException {
+                    public T decode(final String encoded) throws ParseException {
                         return transformer.decode(childPercentEncoding.decode(encoded));
                     }
 
                     @Override
-                    public PercentEncoding<T> additionallyEncoding(char additionallyEncodedCharacter) {
+                    public PercentEncoding<T> additionallyEncoding(final char additionallyEncodedCharacter) {
                         return apply(childPercentEncoding.additionallyEncoding(additionallyEncodedCharacter));
                     }
                 };
@@ -85,7 +85,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
     final <SUPER_ENCODES> PercentEncodingPartial<SUPER_ENCODES, CHILD_ENCODES> chain(final PercentEncodingPartial<SUPER_ENCODES, ENCODES> superEncoder) {
         return new PercentEncodingPartial<SUPER_ENCODES, CHILD_ENCODES>() {
             @Override
-            public PercentEncoding<SUPER_ENCODES> apply(PercentEncoding<CHILD_ENCODES> childPercentEncoding) {
+            public PercentEncoding<SUPER_ENCODES> apply(final PercentEncoding<CHILD_ENCODES> childPercentEncoding) {
                 return superEncoder.apply(PercentEncodingPartial.this.apply(childPercentEncoding));
             }
         };
@@ -100,7 +100,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
             return new PercentEncodingDelimitedValue<>(delimiter, elementPercentEncoding);
         }
 
-        static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
+        static PercentEncoding<String> specifiedValueEncoding(final String encodedValue, final PercentEncoding<String> percentEncoding) {
             return new SpecifiedValueEncoding(encodedValue, percentEncoding);
         }
 
@@ -222,7 +222,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
             private final String encodedValue;
             private final PercentEncoding<String> percentEncoding;
 
-            SpecifiedValueEncoding(final String encodedValue, PercentEncoding<String> percentEncoding) {
+            SpecifiedValueEncoding(final String encodedValue, final PercentEncoding<String> percentEncoding) {
                 this.encodedValue = requireNonNull(encodedValue, "Cannot instantiate SpecifiedValueEncoding with null encoded value");
                 this.percentEncoding = requireNonNull(percentEncoding, "Cannot instantiate SpecifiedValueEncoding with null PercentEncoding");
             }

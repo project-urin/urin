@@ -37,7 +37,7 @@ public abstract class Segment<ENCODES> {
      */
     public static final MakingDecoder<Segment<String>, String, String> STRING_SEGMENT_MAKING_DECODER = new MakingDecoder<Segment<String>, String, String>(PercentEncodingPartial.noOp()) {
         @Override
-        protected Segment<String> makeOne(String value) {
+        protected Segment<String> makeOne(final String value) {
             return segment(value);
         }
     };
@@ -171,7 +171,7 @@ public abstract class Segment<ENCODES> {
     private static final class ValueSegment<ENCODES> extends Segment<ENCODES> {
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
-        private ValueSegment(ENCODES value, PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
+        private ValueSegment(final ENCODES value, final PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
             final PercentEncodingPartial.PercentEncoding<ENCODES> apply = percentEncodingPartial.apply(PERCENT_ENCODING);
             this.delegate = new SegmentEncodingUnaryValue<>(value, apply);
         }
@@ -243,7 +243,7 @@ public abstract class Segment<ENCODES> {
      * @param percentEncodingPartial an encoding from {@code T} to {@code String}.
      * @return a {@code Segment} representing the given {@code Object}.
      */
-    public static <T> Segment<T> segment(final T segment, PercentEncodingPartial<T, String> percentEncodingPartial) {
+    public static <T> Segment<T> segment(final T segment, final PercentEncodingPartial<T, String> percentEncodingPartial) {
         final ValueSegment<T> result = new ValueSegment<>(segment, percentEncodingPartial);
         return result.isEmpty() ? Segment.empty() : result;
     }

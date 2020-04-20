@@ -37,7 +37,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
     public static MakingDecoder<HttpQuery, Iterable<QueryParameter>, String> httpQueryMakingDecoder() {
         return new MakingDecoder<HttpQuery, Iterable<QueryParameter>, String>(HTTP_QUERY_PERCENT_ENCODING_PARTIAL) {
             @Override
-            protected HttpQuery makeOne(Iterable<QueryParameter> queryParameters) {
+            protected HttpQuery makeOne(final Iterable<QueryParameter> queryParameters) {
                 return new HttpQuery(queryParameters);
             }
         };
@@ -75,11 +75,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
     private static <T> PercentEncodingPartial<QueryParameter, T> percentEncodedQueryParameter(final PercentEncodingPartial<Iterable<String>, T> childPercentEncodingPartial) {
         return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<QueryParameter, Iterable<String>>() {
-            public Iterable<String> encode(QueryParameter queryParameter) {
+            public Iterable<String> encode(final QueryParameter queryParameter) {
                 return queryParameter.encoded();
             }
 
-            public QueryParameter decode(Iterable<String> strings) throws ParseException {
+            public QueryParameter decode(final Iterable<String> strings) throws ParseException {
                 final QueryParameter result;
                 Iterator<String> iterator = strings.iterator();
                 if (!iterator.hasNext()) {

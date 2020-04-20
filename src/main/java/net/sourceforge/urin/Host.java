@@ -162,7 +162,7 @@ public abstract class Host {
         };
     }
 
-    private static String ipV6String(ElidableAsStringable... elidableAsStringables) {
+    private static String ipV6String(final ElidableAsStringable... elidableAsStringables) {
         int[] streakLength = new int[elidableAsStringables.length];
         for (int i = 0; i < elidableAsStringables.length; i++) {
             streakLength[i] = elidableAsStringables[i].isElidable()
