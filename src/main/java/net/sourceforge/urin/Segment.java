@@ -67,8 +67,8 @@ public abstract class Segment<ENCODES> {
             }
 
             @Override
-            public final boolean equals(final Object o) {
-                return this == o || !(o == null || getClass() != o.getClass());
+            public final boolean equals(final Object object) {
+                return this == object || !(object == null || getClass() != object.getClass());
             }
 
             @Override
@@ -109,8 +109,8 @@ public abstract class Segment<ENCODES> {
             }
 
             @Override
-            public final boolean equals(final Object o) {
-                return this == o || !(o == null || getClass() != o.getClass());
+            public final boolean equals(final Object object) {
+                return this == object || !(object == null || getClass() != object.getClass());
             }
 
             @Override
@@ -151,8 +151,8 @@ public abstract class Segment<ENCODES> {
             }
 
             @Override
-            public final boolean equals(final Object o) {
-                return this == o || !(o == null || getClass() != o.getClass());
+            public final boolean equals(final Object object) {
+                return this == object || !(object == null || getClass() != object.getClass());
             }
 
             @Override
@@ -196,11 +196,11 @@ public abstract class Segment<ENCODES> {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            ValueSegment<?> that = (ValueSegment<?>) o;
+            ValueSegment<?> that = (ValueSegment<?>) object;
             return delegate.equals(that.delegate);
         }
 

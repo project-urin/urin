@@ -237,11 +237,11 @@ public abstract class Host {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            RegisteredName that = (RegisteredName) o;
+            RegisteredName that = (RegisteredName) object;
             return registeredName.equals(that.registeredName);
         }
 
@@ -289,11 +289,11 @@ public abstract class Host {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            IpV4Address that = (IpV4Address) o;
+            IpV4Address that = (IpV4Address) object;
             return firstOctet.equals(that.firstOctet)
                     && thirdOctet.equals(that.thirdOctet)
                     && secondOctet.equals(that.secondOctet)
@@ -370,11 +370,11 @@ public abstract class Host {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            IpV6Address that = (IpV6Address) o;
+            IpV6Address that = (IpV6Address) object;
             return firstHexadectet.equals(that.firstHexadectet)
                     && secondHexadectet.equals(that.secondHexadectet)
                     && thirdHexadectet.equals(that.thirdHexadectet)
@@ -598,11 +598,11 @@ public abstract class Host {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            IpV6AddressWithTrailingIpV4Address that = (IpV6AddressWithTrailingIpV4Address) o;
+            IpV6AddressWithTrailingIpV4Address that = (IpV6AddressWithTrailingIpV4Address) object;
             return firstHexadectet.equals(that.firstHexadectet)
                     && secondHexadectet.equals(that.secondHexadectet)
                     && thirdHexadectet.equals(that.thirdHexadectet)
@@ -691,11 +691,11 @@ public abstract class Host {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            IpVFutureAddress that = (IpVFutureAddress) o;
+            IpVFutureAddress that = (IpVFutureAddress) object;
 
             return address.equals(that.address)
                     && version.equals(that.version);

@@ -218,11 +218,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            NameAndValueQueryParameter that = (NameAndValueQueryParameter) o;
+            NameAndValueQueryParameter that = (NameAndValueQueryParameter) object;
 
             return name.equals(that.name) && value.equals(that.value);
         }
@@ -268,11 +268,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            NameOnlyQueryParameter that = (NameOnlyQueryParameter) o;
+            NameOnlyQueryParameter that = (NameOnlyQueryParameter) object;
 
             return name.equals(that.name);
 

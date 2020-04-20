@@ -97,11 +97,11 @@ public final class AbsolutePath<T> extends Path<T> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
 
-        AbsolutePath<?> that = (AbsolutePath<?>) o;
+        AbsolutePath<?> that = (AbsolutePath<?>) object;
         return segments.equals(that.segments);
     }
 

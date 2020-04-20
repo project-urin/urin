@@ -59,8 +59,8 @@ final class EmptyPath<T> extends Path<T> {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        return this == o || !(o == null || getClass() != o.getClass());
+    public boolean equals(final Object object) {
+        return this == object || !(object == null || getClass() != object.getClass());
     }
 
     @Override

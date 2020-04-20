@@ -127,11 +127,11 @@ public abstract class Authority {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            AuthorityWithHost that = (AuthorityWithHost) o;
+            AuthorityWithHost that = (AuthorityWithHost) object;
             return host.equals(that.host);
         }
 
@@ -168,11 +168,11 @@ public abstract class Authority {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            AuthorityWithUserInfoAndHost that = (AuthorityWithUserInfoAndHost) o;
+            AuthorityWithUserInfoAndHost that = (AuthorityWithUserInfoAndHost) object;
 
             return host.equals(that.host)
                     && userInfo.equals(that.userInfo);
@@ -215,11 +215,11 @@ public abstract class Authority {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            AuthorityWithHostAndPort that = (AuthorityWithHostAndPort) o;
+            AuthorityWithHostAndPort that = (AuthorityWithHostAndPort) object;
             return host.equals(that.host)
                     && port.equals(that.port);
         }
@@ -262,11 +262,11 @@ public abstract class Authority {
         }
 
         @Override
-        public boolean equals(final Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+        public boolean equals(final Object object) {
+            if (this == object) return true;
+            if (object == null || getClass() != object.getClass()) return false;
 
-            AuthorityWithUserInfoAndHostAndPort that = (AuthorityWithUserInfoAndHostAndPort) o;
+            AuthorityWithUserInfoAndHostAndPort that = (AuthorityWithUserInfoAndHostAndPort) object;
             return host.equals(that.host)
                     && port.equals(that.port)
                     && userInfo.equals(that.userInfo);
