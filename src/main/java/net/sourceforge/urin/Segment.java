@@ -48,36 +48,36 @@ public abstract class Segment<ENCODES> {
     public static <ENCODES> Segment<ENCODES> dot() {
         return new Segment<ENCODES>() {
             @Override
-            public final boolean hasValue() {
+            public boolean hasValue() {
                 return false;
             }
 
             @Override
-            public final ENCODES value() {
+            public ENCODES value() {
                 throw new UnsupportedOperationException("Attempt to get value of . segment");
             }
 
-            final String asString() {
+            String asString() {
                 return ".";
             }
 
             @Override
-            final boolean isEmpty() {
+            boolean isEmpty() {
                 return false;
             }
 
             @Override
-            public final boolean equals(final Object object) {
+            public boolean equals(final Object object) {
                 return this == object || !(object == null || getClass() != object.getClass());
             }
 
             @Override
-            public final int hashCode() {
+            public int hashCode() {
                 return 37;
             }
 
             @Override
-            public final String toString() {
+            public String toString() {
                 return "Segment{.}";
             }
 
@@ -90,36 +90,36 @@ public abstract class Segment<ENCODES> {
     public static <ENCODES> Segment<ENCODES> dotDot() {
         return new Segment<ENCODES>() {
             @Override
-            public final boolean hasValue() {
+            public boolean hasValue() {
                 return false;
             }
 
             @Override
-            public final ENCODES value() {
+            public ENCODES value() {
                 throw new UnsupportedOperationException("Attempt to get value of .. segment");
             }
 
-            final String asString() {
+            String asString() {
                 return "..";
             }
 
             @Override
-            final boolean isEmpty() {
+            boolean isEmpty() {
                 return false;
             }
 
             @Override
-            public final boolean equals(final Object object) {
+            public boolean equals(final Object object) {
                 return this == object || !(object == null || getClass() != object.getClass());
             }
 
             @Override
-            public final int hashCode() {
+            public int hashCode() {
                 return 17;
             }
 
             @Override
-            public final String toString() {
+            public String toString() {
                 return "Segment{..}";
             }
 
@@ -132,36 +132,36 @@ public abstract class Segment<ENCODES> {
     public static <ENCODES> Segment<ENCODES> empty() {
         return new Segment<ENCODES>() {
             @Override
-            public final boolean hasValue() {
+            public boolean hasValue() {
                 return false;
             }
 
             @Override
-            public final ENCODES value() {
+            public ENCODES value() {
                 throw new UnsupportedOperationException("Attempt to get value of empty segment");
             }
 
-            final String asString() {
+            String asString() {
                 return "";
             }
 
             @Override
-            final boolean isEmpty() {
+            boolean isEmpty() {
                 return true;
             }
 
             @Override
-            public final boolean equals(final Object object) {
+            public boolean equals(final Object object) {
                 return this == object || !(object == null || getClass() != object.getClass());
             }
 
             @Override
-            public final int hashCode() {
+            public int hashCode() {
                 return 19;
             }
 
             @Override
-            public final String toString() {
+            public String toString() {
                 return "Segment{empty}";
             }
 
