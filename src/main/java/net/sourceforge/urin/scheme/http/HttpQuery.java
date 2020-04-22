@@ -80,11 +80,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
             }
 
             public QueryParameter decode(final Iterable<String> strings) throws ParseException {
-                final QueryParameter result;
                 Iterator<String> iterator = strings.iterator();
                 if (!iterator.hasNext()) {
                     throw new ParseException("Invalid query parameter String [" + strings + "]");
                 }
+                final QueryParameter result;
                 final String name = iterator.next();
                 if (!iterator.hasNext()) {
                     result = queryParameter(name);
