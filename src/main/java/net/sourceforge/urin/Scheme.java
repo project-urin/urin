@@ -16,11 +16,18 @@ import java.util.regex.Pattern;
 
 import static java.util.Locale.ENGLISH;
 import static java.util.Objects.requireNonNull;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.ALPHA;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.ALPHA_LOWERCASE;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.ALPHA_UPPERCASE;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.DIGIT;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.or;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.singleMemberCharacterSet;
 import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Fragment.stringFragmentMaker;
-import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 import static net.sourceforge.urin.Query.stringQueryMaker;
 
 /**
