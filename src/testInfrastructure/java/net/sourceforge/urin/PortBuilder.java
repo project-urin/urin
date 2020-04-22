@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -18,7 +18,7 @@ public class PortBuilder {
         return port(randomNumeric(5));
     }
 
-    public static Port aPortDifferentTo(Port port) {
+    public static Port aPortDifferentTo(final Port port) {
         String potentialPort = randomNumeric(5);
         return port(potentialPort).equals(port) ? port(potentialPort + randomNumeric(1)) : port(potentialPort);
     }
