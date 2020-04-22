@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -214,6 +214,7 @@ final class DocumentationPage {
                 ).asString();
     }
 
+    @SuppressWarnings("PMD.UnnecessaryFullyQualifiedName")
     private static String httpExample() {
         return
                 http(

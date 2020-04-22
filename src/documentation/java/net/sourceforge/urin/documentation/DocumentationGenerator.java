@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -27,7 +27,7 @@ public class DocumentationGenerator {
 
     public static final CompactXmlFormatter XML_FORMATTER = new CompactXmlFormatter();
 
-    public static void main(String[] args) throws Exception {
+    public static void main(final String... args) throws Exception {
         final File destination = new File(args[0]);
         final String version = versionString();
 
@@ -39,7 +39,7 @@ public class DocumentationGenerator {
 
     private static String versionString() throws IOException {
         Properties properties = new Properties();
-        try (final InputStreamReader reader = new InputStreamReader(new FileInputStream("gradle.properties"), UTF_8)) {
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream("gradle.properties"), UTF_8)) {
             properties.load(reader);
         }
         return properties.getProperty("majorVersion") + "." + properties.getProperty("minorVersion");
@@ -47,7 +47,7 @@ public class DocumentationGenerator {
 
     private static void writePage(final HtmlTag urinPage, final File destination, final String fileName) throws IOException, XmlWriteException {
         final File file = new File(destination, fileName);
-        try (final Writer fileWriter = new OutputStreamWriter(new FileOutputStream(file), UTF_8)) {
+        try (Writer fileWriter = new OutputStreamWriter(new FileOutputStream(file), UTF_8)) {
             XML_FORMATTER.write(urinPage.asDocument(), fileWriter);
         }
     }

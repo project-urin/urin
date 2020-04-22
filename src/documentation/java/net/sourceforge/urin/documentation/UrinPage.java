@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -16,12 +16,7 @@ import net.sourceforge.urin.Urin;
 import net.sourceforge.urin.UrinReference;
 import net.sourceforge.urin.scheme.http.HttpQuery;
 import net.sourceforge.urin.scheme.http.Https;
-import net.sourceforge.xazzle.xhtml.AnchorTag;
-import net.sourceforge.xazzle.xhtml.BlockElement;
-import net.sourceforge.xazzle.xhtml.DoesNotContainFormTag;
-import net.sourceforge.xazzle.xhtml.Href;
-import net.sourceforge.xazzle.xhtml.HtmlTag;
-import net.sourceforge.xazzle.xhtml.InlineTag;
+import net.sourceforge.xazzle.xhtml.*;
 
 import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.Path.path;
@@ -141,11 +136,11 @@ final class UrinPage {
         );
     }
 
-    static InlineTag codeSnippet(String snippet) {
+    static InlineTag codeSnippet(final String snippet) {
         return codeTag(xhtmlText(snippet));
     }
 
-    static BlockElement<DoesNotContainFormTag> codeBlock(String someCode) {
+    static BlockElement<DoesNotContainFormTag> codeBlock(final String someCode) {
         return divTag(
                 xhtmlText(someCode)
         ).withClass(className("code"));
