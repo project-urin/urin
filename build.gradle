@@ -19,7 +19,7 @@ plugins {
     id 'signing'
     id 'maven-publish'
     id 'org.javamodularity.moduleplugin' version '1.6.0'
-    // pmd
+    id 'pmd'
     id 'com.github.spotbugs' version '2.0.0'
     id 'org.hidetake.ssh' version '2.10.1'
     id 'org.tenne.rest' version '0.4.2'
@@ -104,6 +104,16 @@ task combinedJar(type: Jar) {
     archiveClassifier.set 'combined'
     from sourceSets.main.allSource
     from sourceSets.main.output
+}
+
+pmd {
+    ruleSetFiles = files('tools/pmd-ruleset.xml')
+    ruleSets = []
+}
+
+pmdMain {
+    ruleSetFiles = files('tools/pmd-ruleset.xml', 'tools/pmd-main-extra-ruleset.xml')
+    ruleSets = []
 }
 
 artifacts {
