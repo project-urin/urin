@@ -21,6 +21,11 @@ final class PercentEncoder {
     static final PercentEncoder ENCODE_EVERYTHING = new PercentEncoder(NO_CHARACTERS);
 
     private static final Locale NO_LOCALISATION = null;
+    private static final byte BINARY_1000_0000 = -128;
+    private static final byte BINARY_1100_0000 = -64;
+    private static final byte BINARY_1110_0000 = -32;
+    private static final byte BINARY_1111_0000 = -16;
+
     private final CharacterSetMembershipFunction nonPercentEncodedCharacterSet;
 
     PercentEncoder(final CharacterSetMembershipFunction nonPercentEncodedCharacterSet) {
@@ -46,11 +51,6 @@ final class PercentEncoder {
     private static String percentEncode(final byte character) {
         return String.format(NO_LOCALISATION, "%%%02X", character);
     }
-
-    private static final byte BINARY_1000_0000 = -128;
-    private static final byte BINARY_1100_0000 = -64;
-    private static final byte BINARY_1110_0000 = -32;
-    private static final byte BINARY_1111_0000 = -16;
 
     private static byte getByte(final char[] source, final int startIndex) throws IllegalArgumentException, ParseException {
         if (source.length <= startIndex + 2 || !('%' == source[startIndex])) {
