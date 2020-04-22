@@ -45,7 +45,7 @@ class UrinSamplesTest {
     void canMakeAUrinWithAuthorityAndPathToRoot() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority) + "/", scheme.urin(authority, Path.path()));
+        assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority) + "/", scheme.urin(authority, path()));
     }
 
     @Test
@@ -53,25 +53,25 @@ class UrinSamplesTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Segment<String> segment = aNonDotSegment();
-        assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority) + "/" + asString(segment), scheme.urin(authority, Path.path(segment)));
+        assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority) + "/" + asString(segment), scheme.urin(authority, path(segment)));
     }
 
     @Test
     void canMakeAUrinWithPathToRoot() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/", scheme.urin(Path.path()));
+        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/", scheme.urin(path()));
     }
 
     @Test
     void emptyPathIsPreserved() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/?", scheme.urin(Path.path(), query("")));
+        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/?", scheme.urin(path(), query("")));
     }
 
     @Test
     void emptyFragmentIsPreserved() throws Exception {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/#", scheme.urin(Path.path(), fragment("")));
+        assertAsStringAsUriAndParse(aScheme(), asString(scheme) + ":/#", scheme.urin(path(), fragment("")));
     }
 
     @Test
@@ -79,11 +79,11 @@ class UrinSamplesTest {
         final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = PercentEncodingPartial.percentEncodingDelimitedValue('!');
         Scheme<Iterable<String>, Query<String>, Fragment<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String>(percentEncodingPartial) {
             @Override
-            protected Segment<Iterable<String>> makeOne(Iterable<String> o) {
-                return anIterableOfStringsSegment(o, percentEncodingPartial);
+            protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
+                return anIterableOfStringsSegment(strings, percentEncodingPartial);
             }
         }, Query.stringQueryMaker(), Fragment.stringFragmentMaker());
-        assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/a!%21!c", scheme.urin(Path.path(anIterableOfStringsSegment(asList("a", "!", "c"), percentEncodingPartial))));
+        assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/a!%21!c", scheme.urin(path(anIterableOfStringsSegment(asList("a", "!", "c"), percentEncodingPartial))));
     }
 
     @Test
@@ -91,16 +91,16 @@ class UrinSamplesTest {
         final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = PercentEncodingPartial.percentEncodingDelimitedValue('!');
         Scheme<Iterable<String>, Query<String>, Fragment<String>> scheme = new Scheme.GenericScheme<>("xyz", new MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String>(percentEncodingPartial) {
             @Override
-            protected Segment<Iterable<String>> makeOne(Iterable<String> o) {
-                return anIterableOfStringsSegment(o, percentEncodingPartial);
+            protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
+                return anIterableOfStringsSegment(strings, percentEncodingPartial);
             }
         }, Query.stringQueryMaker(), Fragment.stringFragmentMaker());
         final Segment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.emptyList(), percentEncodingPartial);
-        assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/.//", scheme.urin(Path.path(emptySegment, emptySegment, Segment.dotDot())));
+        assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/.//", scheme.urin(path(emptySegment, emptySegment, Segment.dotDot())));
     }
 
-    private static Segment<Iterable<String>> anIterableOfStringsSegment(Iterable<String> o, PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
-        return segment(o, percentEncodingPartial);
+    private static Segment<Iterable<String>> anIterableOfStringsSegment(final Iterable<String> strings, final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
+        return segment(strings, percentEncodingPartial);
     }
 
     @Test
@@ -108,7 +108,7 @@ class UrinSamplesTest {
         final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = PercentEncodingPartial.percentEncodingDelimitedValue('!');
         Scheme<String, Query<String>, MyFragment> scheme = new Scheme.GenericScheme<>("xyz", Segment.STRING_SEGMENT_MAKING_DECODER, Query.stringQueryMaker(), new MakingDecoder<MyFragment, Iterable<String>, String>(percentEncodingPartial) {
             @Override
-            protected MyFragment makeOne(Iterable<String> strings) {
+            protected MyFragment makeOne(final Iterable<String> strings) {
                 return new MyFragment(strings, percentEncodingPartial);
             }
         });
@@ -116,7 +116,7 @@ class UrinSamplesTest {
     }
 
     private static final class MyFragment extends Fragment<Iterable<String>> {
-        private MyFragment(Iterable<String> value, PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
+        private MyFragment(final Iterable<String> value, final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
             super(value, percentEncodingPartial);
         }
     }

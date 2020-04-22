@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -13,7 +13,6 @@ package integration.net.sourceforge.urin.scheme.http;
 import net.sourceforge.urin.AbsolutePath;
 import net.sourceforge.urin.Fragment;
 import net.sourceforge.urin.Urin;
-import net.sourceforge.urin.scheme.http.Http;
 import net.sourceforge.urin.scheme.http.HttpQuery;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
@@ -35,7 +34,7 @@ class HttpExamplesTest {
 
     @Test
     void canGenerateAnHttpUriWithQueryParameters() {
-        assertThat(Http.http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), HttpQuery.queryParameters(HttpQuery.queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
+        assertThat(http(registeredName("urin.sourceforge.net"), AbsolutePath.path("javadoc"), queryParameters(HttpQuery.queryParameter("Bobby", "Dazzler"))).asString(), equalTo("http://urin.sourceforge.net/javadoc?Bobby=Dazzler"));
     }
 
     @Test
