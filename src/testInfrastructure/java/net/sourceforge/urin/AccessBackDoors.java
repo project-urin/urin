@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -15,15 +15,15 @@ public class AccessBackDoors {
     private AccessBackDoors() {
     }
 
-    public static String asString(Scheme scheme) {
+    public static String asString(final Scheme<?, ?, ?> scheme) {
         return scheme.asString();
     }
 
-    public static String asString(Authority authority) {
+    public static String asString(final Authority authority) {
         return authority.asString();
     }
 
-    public static String asString(Segment segment) {
+    public static String asString(final Segment<?> segment) {
         return segment.asString();
     }
 }
