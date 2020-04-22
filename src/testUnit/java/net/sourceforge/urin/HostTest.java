@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -14,12 +14,21 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static net.sourceforge.urin.CharacterSets.*;
+import static java.util.Locale.US;
+import static net.sourceforge.urin.CharacterSets.DIGIT;
+import static net.sourceforge.urin.CharacterSets.HEX_DIGIT;
+import static net.sourceforge.urin.CharacterSets.LOWER_CASE_ALPHA;
+import static net.sourceforge.urin.CharacterSets.SUB_DELIMS;
+import static net.sourceforge.urin.CharacterSets.UPPER_CASE_ALPHA;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
 import static net.sourceforge.urin.Host.*;
-import static net.sourceforge.urin.HostBuilder.*;
+import static net.sourceforge.urin.HostBuilder.aRegisteredName;
+import static net.sourceforge.urin.HostBuilder.anIpV4Address;
+import static net.sourceforge.urin.HostBuilder.anIpV6Address;
+import static net.sourceforge.urin.HostBuilder.anIpV6AddressWithTrailingIpV4Address;
+import static net.sourceforge.urin.HostBuilder.anIpVFutureAddress;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
@@ -66,7 +75,7 @@ class HostTest {
     @Test
     void registeredNameProducesCorrectToString() {
         String registeredName = aString();
-        assertThat(registeredName(registeredName).toString(), equalTo("Host{registeredName='" + registeredName.toLowerCase() + "'}"));
+        assertThat(registeredName(registeredName).toString(), equalTo("Host{registeredName='" + registeredName.toLowerCase(US) + "'}"));
     }
 
     @Test
@@ -583,7 +592,7 @@ class HostTest {
     void ipVFutureAddressProducesCorrectToString() {
         String versionNumber = anIpVFutureAddressVersion();
         String address = anIpVFutureAddressAddress();
-        assertThat(ipVFutureAddress(versionNumber, address).toString(), equalTo("Host{version='" + versionNumber + "', address='" + address.toLowerCase() + "'}"));
+        assertThat(ipVFutureAddress(versionNumber, address).toString(), equalTo("Host{version='" + versionNumber + "', address='" + address.toLowerCase(US) + "'}"));
     }
 
     @Test

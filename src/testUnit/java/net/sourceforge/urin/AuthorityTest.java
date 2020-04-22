@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -13,7 +13,6 @@ package net.sourceforge.urin;
 import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.Authority.authority;
-import static net.sourceforge.urin.Authority.parse;
 import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
@@ -160,21 +159,21 @@ class AuthorityTest {
     @Test
     void parsesAuthorityWithNoUserInfoOrPort() throws Exception {
         Host host = aHost();
-        assertThat(parse(host.asString()), equalTo(authority(host)));
+        assertThat(Authority.parse(host.asString()), equalTo(authority(host)));
     }
 
     @Test
     void parsesAuthorityWithNoPort() throws Exception {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
-        assertThat(parse(userInfo.asString() + "@" + host.asString()), equalTo(authority(userInfo, host)));
+        assertThat(Authority.parse(userInfo.asString() + "@" + host.asString()), equalTo(authority(userInfo, host)));
     }
 
     @Test
     void parsesAuthorityWithNoUserInfo() throws Exception {
         Host host = aHost();
         Port port = aPort();
-        assertThat(parse(host.asString() + ":" + port.asString()), equalTo(authority(host, port)));
+        assertThat(Authority.parse(host.asString() + ":" + port.asString()), equalTo(authority(host, port)));
     }
 
     @Test
@@ -182,7 +181,7 @@ class AuthorityTest {
         UserInfo userInfo = aUserInfo();
         Host host = aHost();
         Port port = aPort();
-        assertThat(parse(userInfo.asString() + "@" + host.asString() + ":" + port.asString()), equalTo(authority(userInfo, host, port)));
+        assertThat(Authority.parse(userInfo.asString() + "@" + host.asString() + ":" + port.asString()), equalTo(authority(userInfo, host, port)));
     }
 
     @Test

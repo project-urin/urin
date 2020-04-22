@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -14,7 +14,10 @@ import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.CharacterSets.P_CHARS;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
-import static net.sourceforge.urin.Segment.*;
+import static net.sourceforge.urin.Segment.STRING_SEGMENT_MAKING_DECODER;
+import static net.sourceforge.urin.Segment.dot;
+import static net.sourceforge.urin.Segment.dotDot;
+import static net.sourceforge.urin.Segment.empty;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -133,6 +136,6 @@ class SegmentTest {
     @Test
     void nonDotSegmentReturnsValue() {
         String value = aString();
-        assertThat(segment(value).value(), equalTo(value));
+        assertThat(Segment.segment(value).value(), equalTo(value));
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -18,7 +18,9 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
-import static net.sourceforge.urin.MoreRandomStringUtils.*;
+import static net.sourceforge.urin.MoreRandomStringUtils.aChar;
+import static net.sourceforge.urin.MoreRandomStringUtils.aString;
+import static net.sourceforge.urin.MoreRandomStringUtils.aStringDifferentTo;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_EVERYTHING;
 import static net.sourceforge.urin.PercentEncoder.ENCODE_NOTHING;
 import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percentEncodingString;
@@ -39,7 +41,7 @@ class PercentEncodingTest {
 
     @Test
     void rejectsNullInFactoryForPercentEncodableString() {
-        assertThrows(NullPointerException.class, () -> PercentEncodingPartial.PercentEncoding.percentEncodingString(null), "Null value should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> percentEncodingString(null), "Null value should throw NullPointerException in factory");
     }
 
     @Test

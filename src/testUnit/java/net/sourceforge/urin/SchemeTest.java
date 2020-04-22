@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -21,7 +21,9 @@ import static net.sourceforge.urin.HostBuilder.aHost;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.PortBuilder.aPortDifferentTo;
 import static net.sourceforge.urin.Scheme.scheme;
-import static net.sourceforge.urin.SchemeBuilder.*;
+import static net.sourceforge.urin.SchemeBuilder.aSchemeWithDefaultPort;
+import static net.sourceforge.urin.SchemeBuilder.aSchemeWithNoDefaultPort;
+import static net.sourceforge.urin.SchemeBuilder.aValidSchemeName;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -30,24 +32,24 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class SchemeTest {
     @Test
     void lowerCaseSchemesAreUnmolested() {
-        assertThat(Scheme.scheme("a").asString(), equalTo("a"));
+        assertThat(scheme("a").asString(), equalTo("a"));
     }
 
     @Test
     void schemesAreLowerCased() {
-        assertThat(Scheme.scheme("A").asString(), equalTo("a"));
+        assertThat(scheme("A").asString(), equalTo("a"));
     }
 
     @Test
     void acceptsTheFullRangeOfValidFirstCharacters() {
         for (char character : ALPHA.toCharArray()) {
-            Scheme.scheme(Character.toString(character));
+            scheme(Character.toString(character));
         }
     }
 
     @Test
     void rejectsNullScheme() {
-        assertThrows(NullPointerException.class, () -> Scheme.scheme(null), "Null value should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> scheme(null), "Null value should throw NullPointerException in factory");
     }
 
     @Test
@@ -106,7 +108,7 @@ class SchemeTest {
 
     @Test
     void acceptsFullRangeOfTailCharacters() {
-        Scheme.scheme("a" + DIGIT + ALPHA + "+-.");
+        scheme("a" + DIGIT + ALPHA + "+-.");
     }
 
     @Test
@@ -236,7 +238,7 @@ class SchemeTest {
 
     @Test
     void schemeWithNoPortReturnsItselfWhenDefaultPortRemoved() {
-        Scheme scheme = aSchemeWithNoDefaultPort();
+        Scheme<?, ?, ?> scheme = aSchemeWithNoDefaultPort();
         assertThat(scheme.removeDefaultPort(), equalTo(scheme));
     }
 
