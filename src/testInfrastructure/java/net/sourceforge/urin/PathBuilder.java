@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -31,7 +31,7 @@ public class PathBuilder {
 
     public static AbsolutePath<String> anUnpollutedAbsolutePath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
-        return path(new ArrayList<>(numberOfSegments) {{
+        return path(new ArrayList<Segment<String>>(numberOfSegments) {{
             for (int i = 0; i < numberOfSegments; i++) {
                 add(SegmentBuilder.aNonDotSegment());
             }
@@ -57,6 +57,7 @@ public class PathBuilder {
                 break;
             default:
                 result = Path.<String>path(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
+                break;
         }
         return result;
     }
@@ -64,7 +65,7 @@ public class PathBuilder {
     public static Path<String> anUnpollutedRootlessPath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
 
-        return RootlessPath.rootlessPath(new ArrayList<>(numberOfSegments) {{
+        return RootlessPath.rootlessPath(new ArrayList<Segment<String>>(numberOfSegments) {{
             for (int i = 0; i < numberOfSegments; i++) {
                 add(SegmentBuilder.aNonDotSegment());
             }
@@ -90,6 +91,7 @@ public class PathBuilder {
                 break;
             default:
                 result = Path.<String>rootlessPath(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
+                break;
         }
         return result;
     }
