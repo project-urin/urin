@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -37,7 +37,7 @@ public class SchemeBuilder {
         return scheme(aValidSchemeName(), aPort());
     }
 
-    static Scheme<String, Query<String>, Fragment<String>> aSchemeWithDefaultPort(Port defaultPort) {
+    static Scheme<String, Query<String>, Fragment<String>> aSchemeWithDefaultPort(final Port defaultPort) {
         return scheme(aValidSchemeName(), defaultPort);
     }
 
