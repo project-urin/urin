@@ -171,9 +171,6 @@ abstract class CharacterSetMembershipFunction {
         };
     }
 
-    CharacterSetMembershipFunction() {
-    }
-
     static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName) {
         verify(characterSetMembershipFunction, value, parameterName, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
     }
