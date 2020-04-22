@@ -39,6 +39,21 @@ import static net.sourceforge.urin.Octet.octet;
  */
 public abstract class Host {
 
+    /**
+     * The registered name "localhost".
+     */
+    public static final Host LOCAL_HOST = registeredName("localhost");
+
+    /**
+     * The loopback address in IP v4 format, in other words 127.0.0.1
+     */
+    public static final Host LOOPBACK_ADDRESS_IP_V4 = ipV4Address(octet(127), octet(0), octet(0), octet(1));
+
+    /**
+     * The loopback address in IP v6 format, in other words ::1
+     */
+    public static final Host LOOPBACK_ADDRESS_IP_V6 = ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(1));
+
     private static final CharacterSetMembershipFunction ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,
             ALPHA_UPPERCASE,
@@ -65,21 +80,6 @@ public abstract class Host {
     }
 
     abstract String asString();
-
-    /**
-     * The registered name "localhost".
-     */
-    public static final Host LOCAL_HOST = registeredName("localhost");
-
-    /**
-     * The loopback address in IP v4 format, in other words 127.0.0.1
-     */
-    public static final Host LOOPBACK_ADDRESS_IP_V4 = ipV4Address(octet(127), octet(0), octet(0), octet(1));
-
-    /**
-     * The loopback address in IP v6 format, in other words ::1
-     */
-    public static final Host LOOPBACK_ADDRESS_IP_V6 = ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(1));
 
     /**
      * Factory method for creating registered name type {@code Host}s.
