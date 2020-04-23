@@ -12,6 +12,7 @@ package net.sourceforge.urin;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
@@ -161,7 +162,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
             @Override
             public Iterable<T> decode(final String encoded) throws ParseException {
                 final String[] components = encoded.split(quote(Character.toString(delimiter)));
-                final ArrayList<T> result = new ArrayList<>(components.length);
+                final List<T> result = new ArrayList<>(components.length);
                 for (String component : components) {
                     result.add(percentEncoding.decode(component));
                 }
