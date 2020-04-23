@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -11,8 +11,6 @@
 package net.sourceforge.urin;
 
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percentEncodingString;
@@ -27,10 +25,12 @@ class PercentEncodingUnaryValueTest {
                 PercentEncodingPartial.percentEncodingDelimitedValue('a',
                         PercentEncodingPartial.percentEncodingDelimitedValue('b'))
                         .apply(percentEncodingString(PercentEncoder.ENCODE_EVERYTHING))
-                        .encode(new ArrayList<>(2) {{
-                            add(asList("c", "d"));
-                            add(asList("c", "d"));
-                        }}),
+                        .encode(
+                                asList(
+                                        asList("c", "d"),
+                                        asList("c", "d")
+                                )
+                        ),
                 equalTo("%63b%64a%63b%64"));
     }
 }
