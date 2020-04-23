@@ -19,6 +19,19 @@
         My custom rules
     </description>
 
+    <rule ref="category/java/bestpractices.xml">
+        <exclude name="AbstractClassWithoutAbstractMethod"/>
+        <exclude name="AvoidReassigningLoopVariables"/> <!-- configured later -->
+        <exclude name="JUnitAssertionsShouldIncludeMessage"/>
+        <exclude name="JUnitTestContainsTooManyAsserts"/>
+        <exclude name="JUnitTestsShouldIncludeAssert"/>
+    </rule>
+    <rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables">
+        <properties>
+            <property name="forReassign" value="allow"/>
+        </properties>
+    </rule>
+
     <rule ref="category/java/codestyle.xml">
         <exclude name="AtLeastOneConstructor"/>
         <exclude name="CallSuperInConstructor"/>
