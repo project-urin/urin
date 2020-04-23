@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -21,7 +21,7 @@ import static net.sourceforge.urin.scheme.http.Http.HTTP;
 
 public class QueryMatcher {
     public static Matcher<HttpQuery> convertsToQueryString(final Matcher<String> expected) {
-        return new TypeSafeDiagnosingMatcher<>() {
+        return new TypeSafeDiagnosingMatcher<HttpQuery>() {
             @Override
             protected boolean matchesSafely(final HttpQuery query, final Description description) {
                 String rawQuery = HTTP.urin(authority(anIpV4Address()), AbsolutePath.path(), query).asUri().getRawQuery();
@@ -32,6 +32,7 @@ public class QueryMatcher {
                 return matches;
             }
 
+            @Override
             public void describeTo(final Description description) {
                 description.appendText("a Query that as a uri String is ").appendDescriptionOf(expected);
             }
