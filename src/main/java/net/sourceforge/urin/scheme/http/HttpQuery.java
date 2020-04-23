@@ -13,11 +13,12 @@ package net.sourceforge.urin.scheme.http;
 import net.sourceforge.urin.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.Collections.unmodifiableList;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -44,33 +45,37 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
     }
 
     private HttpQuery(final Iterable<QueryParameter> queryParameters) {
-        super(Collections.unmodifiableList(new ArrayList<QueryParameter>() {{
-            for (QueryParameter queryParameter : queryParameters) {
-                add(requireNonNull(queryParameter, "Cannot instantiate QueryParameters with null queryParameter"));
-            }
-        }}), HTTP_QUERY_PERCENT_ENCODING_PARTIAL);
+        super(unmodifiableList(requireNonNullElements(queryParameters)), HTTP_QUERY_PERCENT_ENCODING_PARTIAL);
+    }
+
+    private static List<QueryParameter> requireNonNullElements(final Iterable<QueryParameter> queryParameters) {
+        final List<QueryParameter> result = new ArrayList<>();
+        for (QueryParameter queryParameter : queryParameters) {
+            result.add(requireNonNull(queryParameter, "Cannot instantiate QueryParameters with null queryParameter"));
+        }
+        return result;
     }
 
     private static <T> PercentEncodingPartial<Iterable<QueryParameter>, T> encodeQueryParameters(final PercentEncodingPartial<Iterable<Iterable<QueryParameter>>, T> childPercentEncodingPartial) {
         return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<Iterable<QueryParameter>, Iterable<Iterable<QueryParameter>>>() {
             @Override
             public Iterable<Iterable<QueryParameter>> encode(final Iterable<QueryParameter> queryParameters) {
-                return new ArrayList<Iterable<QueryParameter>>() {{
-                    for (QueryParameter queryParameter : queryParameters) {
-                        add(singletonList(queryParameter));
-                    }
-                }};
+                final List<Iterable<QueryParameter>> result = new ArrayList<>();
+                for (QueryParameter queryParameter : queryParameters) {
+                    result.add(singletonList(queryParameter));
+                }
+                return result;
             }
 
             @Override
             public Iterable<QueryParameter> decode(final Iterable<Iterable<QueryParameter>> iterables) {
-                return new ArrayList<QueryParameter>() {{
-                    for (Iterable<QueryParameter> queryParameters : iterables) {
-                        for (QueryParameter queryParameter : queryParameters) {
-                            add(queryParameter);
-                        }
+                final List<QueryParameter> result = new ArrayList<>();
+                for (Iterable<QueryParameter> queryParameters : iterables) {
+                    for (QueryParameter queryParameter : queryParameters) {
+                        result.add(queryParameter);
                     }
-                }};
+                }
+                return result;
             }
         });
     }

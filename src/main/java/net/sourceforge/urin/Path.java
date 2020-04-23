@@ -11,10 +11,10 @@
 package net.sourceforge.urin;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
 import static net.sourceforge.urin.Segment.segment;
 
 /**
@@ -49,7 +49,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @return an empty {@code Path}.
      */
     public static <T> Path<T> rootlessPath() {
-        return rootlessPath(Collections.emptyList());
+        return rootlessPath(emptyList());
     }
 
     /**
@@ -99,7 +99,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * @return an empty {@code AbsolutePath}.
      */
     public static <T> AbsolutePath<T> path() {
-        return path(Collections.emptyList());
+        return path(emptyList());
     }
 
     /**
@@ -124,23 +124,33 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     }
 
     static <SEGMENT> Path<SEGMENT> parseRootlessPath(final String rawPath, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
-        return rootlessPath(rawPath == null || "".equals(rawPath) ? new ArrayList<>() : new ArrayList<Segment<SEGMENT>>() {{
-            for (String segmentString : rawPath.split("/")) {
-                add(Segment.parse(segmentString, segmentMakingDecoder));
+        if (rawPath == null || "".equals(rawPath)) {
+            return rootlessPath(emptyList());
+        } else {
+            final String[] segmentStrings = rawPath.split("/");
+            final List<Segment<SEGMENT>> result = new ArrayList<>(segmentStrings.length);
+            for (String segmentString : segmentStrings) {
+                result.add(Segment.parse(segmentString, segmentMakingDecoder));
             }
-        }});
+            return rootlessPath(result);
+        }
     }
 
     static <SEGMENT> AbsolutePath<SEGMENT> parsePath(final String rawPath, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
-        return path("/".equals(rawPath) ? new ArrayList<>() : new ArrayList<Segment<SEGMENT>>() {{
+        if ("/".equals(rawPath)) {
+            return path(emptyList());
+        } else {
+            final String[] segmentStrings = rawPath.split("/", -1);
+            final List<Segment<SEGMENT>> result = new ArrayList<>(segmentStrings.length - 1);
             boolean isFirst = true;
-            for (String segmentString : rawPath.split("/", -1)) {
+            for (String segmentString : segmentStrings) {
                 if (!isFirst) {
-                    add(Segment.parse(segmentString, segmentMakingDecoder));
+                    result.add(Segment.parse(segmentString, segmentMakingDecoder));
                 }
                 isFirst = false;
             }
-        }});
+            return path(result);
+        }
     }
 
     Path() {

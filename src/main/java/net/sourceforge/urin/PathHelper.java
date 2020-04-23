@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -13,6 +13,7 @@ package net.sourceforge.urin;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 final class PathHelper {
 
@@ -21,17 +22,17 @@ final class PathHelper {
     }
 
     static <T> Iterable<Segment<T>> appendSegmentsTo(final Collection<Segment<T>> baseSegments, final Iterable<Segment<T>> appendedSegments) {
-        return new ArrayList<Segment<T>>() {{
-            Iterator<Segment<T>> baseSegmentsIterator = baseSegments.iterator();
-            while (baseSegmentsIterator.hasNext()) {
-                Segment<T> baseSegment = baseSegmentsIterator.next();
-                if (baseSegmentsIterator.hasNext()) {
-                    add(baseSegment);
-                }
+        List<Segment<T>> result = new ArrayList<>();
+        Iterator<Segment<T>> baseSegmentsIterator = baseSegments.iterator();
+        while (baseSegmentsIterator.hasNext()) {
+            Segment<T> baseSegment = baseSegmentsIterator.next();
+            if (baseSegmentsIterator.hasNext()) {
+                result.add(baseSegment);
             }
-            for (Segment<T> segment : appendedSegments) {
-                add(segment);
-            }
-        }};
+        }
+        for (Segment<T> segment : appendedSegments) {
+            result.add(segment);
+        }
+        return result;
     }
 }
