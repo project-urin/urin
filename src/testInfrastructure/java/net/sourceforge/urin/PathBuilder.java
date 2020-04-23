@@ -10,10 +10,12 @@
 
 package net.sourceforge.urin;
 
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static net.sourceforge.urin.Path.path;
+import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.SegmentBuilder.aNonTypedSegment;
 
 public class PathBuilder {
@@ -31,11 +33,7 @@ public class PathBuilder {
 
     public static AbsolutePath<String> anUnpollutedAbsolutePath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
-        return path(new ArrayList<Segment<String>>(numberOfSegments) {{
-            for (int i = 0; i < numberOfSegments; i++) {
-                add(SegmentBuilder.aNonDotSegment());
-            }
-        }});
+        return path(Stream.generate(SegmentBuilder::aNonDotSegment).limit(numberOfSegments).collect(toList()));
     }
 
     @SuppressWarnings("unchecked")
@@ -64,12 +62,7 @@ public class PathBuilder {
 
     public static Path<String> anUnpollutedRootlessPath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;
-
-        return RootlessPath.rootlessPath(new ArrayList<Segment<String>>(numberOfSegments) {{
-            for (int i = 0; i < numberOfSegments; i++) {
-                add(SegmentBuilder.aNonDotSegment());
-            }
-        }});
+        return rootlessPath(Stream.generate(SegmentBuilder::aNonDotSegment).limit(numberOfSegments).collect(toList()));
     }
 
     @SuppressWarnings("unchecked")

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -13,7 +13,8 @@ package net.sourceforge.urin;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
-import java.util.ArrayList;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
 
 public class MoreMatchers {
     private MoreMatchers() {
@@ -22,10 +23,6 @@ public class MoreMatchers {
 
     @SafeVarargs
     public static <T> Matcher<Iterable<? extends T>> contains(final T... contents) {
-        return Matchers.contains(new ArrayList<>() {{
-            for (T content : contents) {
-                add(Matchers.equalTo(content));
-            }
-        }});
+        return Matchers.contains(stream(contents).map(Matchers::equalTo).collect(toList()));
     }
 }

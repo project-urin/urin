@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,9 +10,10 @@
 
 package net.sourceforge.urin;
 
-import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.Stream;
 
+import static java.util.stream.Collectors.toList;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.PercentEncodingPartial.percentEncodingDelimitedValue;
 import static net.sourceforge.urin.Segment.segment;
@@ -27,7 +28,7 @@ public class SegmentBuilder {
             Segment::dotDot
     );
 
-    private static final RandomSupplierSwitcher<Segment> RANDOM_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+    private static final RandomSupplierSwitcher<Segment<?>> RANDOM_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             SegmentBuilder::aNonDotSegment,
             SegmentBuilder::aNonStringSegment
     );
@@ -42,11 +43,7 @@ public class SegmentBuilder {
 
     public static Segment<Iterable<String>> aNonStringSegment() {
         final int numberOfElements = RANDOM.nextInt(4) + 1;
-        return segment(new ArrayList<>(numberOfElements) {{
-            for (int i = 0; i < numberOfElements; i++) {
-                add(aString());
-            }
-        }}, percentEncodingDelimitedValue('!'));
+        return segment(Stream.generate(MoreRandomStringUtils::aString).limit(numberOfElements).collect(toList()), percentEncodingDelimitedValue('!'));
     }
 
     public static Segment aNonTypedSegment() {
