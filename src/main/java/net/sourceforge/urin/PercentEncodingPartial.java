@@ -161,11 +161,11 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
             @Override
             public Iterable<T> decode(final String encoded) throws ParseException {
                 final String[] components = encoded.split(quote(Character.toString(delimiter)));
-                return new ArrayList<T>(components.length) {{
-                    for (String component : components) {
-                        add(percentEncoding.decode(component));
-                    }
-                }};
+                final ArrayList<T> result = new ArrayList<>(components.length);
+                for (String component : components) {
+                    result.add(percentEncoding.decode(component));
+                }
+                return result;
             }
 
             @Override
