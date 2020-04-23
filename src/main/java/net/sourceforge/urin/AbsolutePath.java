@@ -52,6 +52,7 @@ public final class AbsolutePath<T> extends Path<T> {
     }
 
 
+    @Override
     boolean firstPartIsSuppliedButIsEmpty() {
         return !segments.isEmpty() && segments.iterator().next().isEmpty();
     }
@@ -81,6 +82,7 @@ public final class AbsolutePath<T> extends Path<T> {
         return new ArrayList<>(segments);
     }
 
+    @Override
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         StringBuilder result = new StringBuilder("/");
         if (prefixWithDotSegmentCriteria.matches(this)) {
@@ -110,6 +112,7 @@ public final class AbsolutePath<T> extends Path<T> {
         return segments.hashCode();
     }
 
+    @Override
     boolean isEmpty() {
         return segments.isEmpty();
     }
@@ -119,6 +122,7 @@ public final class AbsolutePath<T> extends Path<T> {
         return segments.toString();
     }
 
+    @Override
     public Iterator<Segment<T>> iterator() {
         return segments.iterator();
     }

@@ -21,10 +21,12 @@ final class EmptyPath<T> extends Path<T> {
     EmptyPath() {
     }
 
+    @Override
     boolean firstPartIsSuppliedButIsEmpty() {
         return false;
     }
 
+    @Override
     boolean isEmpty() {
         return true;
     }
@@ -54,6 +56,7 @@ final class EmptyPath<T> extends Path<T> {
         return emptyList();
     }
 
+    @Override
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         return "";
     }
@@ -73,6 +76,7 @@ final class EmptyPath<T> extends Path<T> {
         return "EmptyPath";
     }
 
+    @Override
     public Iterator<Segment<T>> iterator() {
         return Collections.emptyIterator();
     }

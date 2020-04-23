@@ -62,6 +62,7 @@ final class RootlessPath<T> extends Path<T> {
         this.segments = newSegments;
     }
 
+    @Override
     boolean firstPartIsSuppliedButIsEmpty() {
         return !segments.isEmpty() && segments.iterator().next().isEmpty();
     }
@@ -91,6 +92,7 @@ final class RootlessPath<T> extends Path<T> {
         return new ArrayList<>(segments);
     }
 
+    @Override
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
         StringBuilder result = new StringBuilder();
         if (prefixWithDotSegmentCriteria.matches(this)) {
@@ -120,6 +122,7 @@ final class RootlessPath<T> extends Path<T> {
         return segments.hashCode();
     }
 
+    @Override
     boolean isEmpty() {
         return segments.isEmpty();
     }
@@ -129,6 +132,7 @@ final class RootlessPath<T> extends Path<T> {
         return segments.toString();
     }
 
+    @Override
     public Iterator<Segment<T>> iterator() {
         return segments.iterator();
     }

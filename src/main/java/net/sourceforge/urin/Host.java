@@ -151,11 +151,13 @@ public abstract class Host {
     private static ElidableAsStringable asElidableAsStringable(final Hexadectet hexadectet) {
         return new ElidableAsStringable() {
 
+            @Override
             public String asString() {
                 return hexadectet.asString();
 
             }
 
+            @Override
             public boolean isElidable() {
                 return hexadectet.isElidable();
             }
@@ -586,10 +588,12 @@ public abstract class Host {
                     asElidableAsStringable(fifthHexadectet),
                     asElidableAsStringable(sixthHexadectet),
                     new ElidableAsStringable() {
+                        @Override
                         public String asString() {
                             return ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString();
                         }
 
+                        @Override
                         public boolean isElidable() {
                             return false;
                         }

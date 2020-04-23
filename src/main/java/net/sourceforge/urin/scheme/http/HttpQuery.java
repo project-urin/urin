@@ -53,6 +53,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
     private static <T> PercentEncodingPartial<Iterable<QueryParameter>, T> encodeQueryParameters(final PercentEncodingPartial<Iterable<Iterable<QueryParameter>>, T> childPercentEncodingPartial) {
         return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<Iterable<QueryParameter>, Iterable<Iterable<QueryParameter>>>() {
+            @Override
             public Iterable<Iterable<QueryParameter>> encode(final Iterable<QueryParameter> queryParameters) {
                 return new ArrayList<Iterable<QueryParameter>>() {{
                     for (QueryParameter queryParameter : queryParameters) {
@@ -61,6 +62,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                 }};
             }
 
+            @Override
             public Iterable<QueryParameter> decode(final Iterable<Iterable<QueryParameter>> iterables) {
                 return new ArrayList<QueryParameter>() {{
                     for (Iterable<QueryParameter> queryParameters : iterables) {
@@ -75,10 +77,12 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
     private static <T> PercentEncodingPartial<QueryParameter, T> percentEncodedQueryParameter(final PercentEncodingPartial<Iterable<String>, T> childPercentEncodingPartial) {
         return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<QueryParameter, Iterable<String>>() {
+            @Override
             public Iterable<String> encode(final QueryParameter queryParameter) {
                 return queryParameter.encoded();
             }
 
+            @Override
             public QueryParameter decode(final Iterable<String> strings) throws ParseException {
                 Iterator<String> iterator = strings.iterator();
                 if (!iterator.hasNext()) {
@@ -140,6 +144,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
         return new HttpQuery(queryParameters);
     }
 
+    @Override
     public Iterator<HttpQuery.QueryParameter> iterator() {
         return value().iterator();
     }

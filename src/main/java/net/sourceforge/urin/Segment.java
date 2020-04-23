@@ -57,6 +57,7 @@ public abstract class Segment<ENCODES> {
                 throw new UnsupportedOperationException("Attempt to get value of . segment");
             }
 
+            @Override
             String asString() {
                 return ".";
             }
@@ -99,6 +100,7 @@ public abstract class Segment<ENCODES> {
                 throw new UnsupportedOperationException("Attempt to get value of .. segment");
             }
 
+            @Override
             String asString() {
                 return "..";
             }
@@ -141,6 +143,7 @@ public abstract class Segment<ENCODES> {
                 throw new UnsupportedOperationException("Attempt to get value of empty segment");
             }
 
+            @Override
             String asString() {
                 return "";
             }
@@ -186,6 +189,7 @@ public abstract class Segment<ENCODES> {
             return delegate.value;
         }
 
+        @Override
         String asString() {
             return delegate.asString();
         }

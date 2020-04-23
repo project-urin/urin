@@ -33,6 +33,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
 
     public static <T, V> PercentEncodingPartial<Iterable<T>, V> percentEncodingDelimitedValue(final char delimiter, final PercentEncodingPartial<T, V> childPercentEncodingPartial) {
         return childPercentEncodingPartial.chain(new PercentEncodingPartial<Iterable<T>, T>() {
+            @Override
             public PercentEncoding<Iterable<T>> apply(final PercentEncoding<T> childPercentEncoding) {
                 return new PercentEncoding.PercentEncodingDelimitedValue<>(delimiter, childPercentEncoding);
             }
@@ -41,6 +42,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
 
     public static PercentEncodingPartial<Iterable<String>, String> percentEncodingDelimitedValue(final char delimiter) {
         return new PercentEncodingPartial<Iterable<String>, String>() {
+            @Override
             public PercentEncoding<Iterable<String>> apply(final PercentEncoding<String> childPercentEncoding) {
                 return new PercentEncoding.PercentEncodingDelimitedValue<>(delimiter, childPercentEncoding);
             }
