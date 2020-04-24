@@ -52,15 +52,19 @@ final class PercentEncoder {
         return String.format(NO_LOCALISATION, "%%%02X", character);
     }
 
-    private static byte getByte(final char[] source, final int startIndex) throws IllegalArgumentException, ParseException {
+    private static byte getByte(final char[] source, final int startIndex) throws ParseException {
         if (source.length <= startIndex + 2 || !('%' == source[startIndex])) {
             throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]");
         } else {
-            return (byte) Integer.parseInt(new String(source, startIndex + 1, 2), 16);
+            try {
+                return (byte) Integer.parseInt(new String(source, startIndex + 1, 2), 16);
+            } catch (NumberFormatException e) {
+                throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]", e);
+            }
         }
     }
 
-    String decode(final String encoded) throws IllegalArgumentException, ParseException {
+    String decode(final String encoded) throws ParseException {
         StringBuilder result = new StringBuilder();
         byte[] buffer = new byte[4];
         char[] candidateChars = encoded.toCharArray();

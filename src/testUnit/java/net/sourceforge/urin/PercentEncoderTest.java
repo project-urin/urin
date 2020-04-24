@@ -21,6 +21,7 @@ import static net.sourceforge.urin.CharacterSetMembershipFunction.singleMemberCh
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class PercentEncoderTest {
 
@@ -70,6 +71,21 @@ class PercentEncoderTest {
                 new PercentEncoder(ALL_CHARACTERS).decode(
                         "%20%20"
                 ), Matchers.equalTo("  "));
+    }
+
+    @Test
+    void trailingPercentCharacterThrowsParseExceptionOnDecode() {
+        assertThrows(ParseException.class, () -> new PercentEncoder(ALL_CHARACTERS).decode("%"));
+    }
+
+    @Test
+    void truncatedPercentEncodedByteThrowsParseExceptionOnDecode() {
+        assertThrows(ParseException.class, () -> new PercentEncoder(ALL_CHARACTERS).decode("%2"));
+    }
+
+    @Test
+    void nonHexPercentEncodedStringThrowsParseException() {
+        assertThrows(ParseException.class, () -> new PercentEncoder(ALL_CHARACTERS).decode("%OH"));
     }
 
     @Test
