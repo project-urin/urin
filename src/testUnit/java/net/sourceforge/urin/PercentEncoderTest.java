@@ -66,6 +66,22 @@ class PercentEncoderTest {
     }
 
     @Test
+    void singleByteEncodedStringWithUpperCaseHexDigitsIsDecodedCorrectly() throws Exception {
+        assertThat(
+                new PercentEncoder(ALL_CHARACTERS).decode(
+                        "%2F"
+                ), Matchers.equalTo("/"));
+    }
+
+    @Test
+    void singleByteEncodedStringWithLowerCaseHexDigitsIsDecodedCorrectly() throws Exception {
+        assertThat(
+                new PercentEncoder(ALL_CHARACTERS).decode(
+                        "%2f"
+                ), Matchers.equalTo("/"));
+    }
+
+    @Test
     void repeatedSingleByteEncodedStringIsDecodedCorrectly() throws Exception {
         assertThat(
                 new PercentEncoder(ALL_CHARACTERS).decode(
