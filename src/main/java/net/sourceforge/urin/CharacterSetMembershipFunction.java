@@ -65,6 +65,17 @@ abstract class CharacterSetMembershipFunction {
                 String describe() {
                     return "A-F";
                 }
+            },
+            new CharacterSetMembershipFunction() {
+                @Override
+                boolean isMember(final char character) {
+                    return character >= 'a' && character <= 'f';
+                }
+
+                @Override
+                String describe() {
+                    return "a-f";
+                }
             }
     );
 

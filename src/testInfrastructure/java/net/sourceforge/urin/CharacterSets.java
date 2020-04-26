@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -19,5 +19,5 @@ public final class CharacterSets {
     public static final String SUB_DELIMS = "!$&'()*+,;=";
     public static final String P_CHARS = UNRESERVED + SUB_DELIMS + ":" + "@";
     public static final String QUERY_AND_FRAGMENT_CHARACTERS = P_CHARS + "/" + "?";
-    public static final String HEX_DIGIT = "0123456789ABCDEF";
+    public static final String HEX_DIGIT = "0123456789ABCDEFabcdef";
 }

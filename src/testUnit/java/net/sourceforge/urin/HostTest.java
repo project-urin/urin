@@ -491,6 +491,11 @@ class HostTest {
     }
 
     @Test
+    void parsesAnIpVFutureWithLowerCaseHexVersion() throws Exception {
+        assertThat(parse("[vabcde.ab.ab]"), equalTo(ipVFutureAddress("abcde", "ab.ab")));
+    }
+
+    @Test
     void parsingAnIpVFutureAddressWithNonHexVersionThrowsParseException() {
         final ParseException parseException = assertThrows(ParseException.class, () -> parse("[vi.abc]"));
         assertThat(parseException.getMessage(), equalTo("Not a valid host :[vi.abc]"));
@@ -522,32 +527,32 @@ class HostTest {
 
     @Test
     void ipVFutureRejectsInvalidCharacterAInVersion() {
-        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("a", aValidIpVFutureAddress()));
-        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [a]"));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("g", aValidIpVFutureAddress()));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [g]"));
     }
 
     @Test
     void ipVFutureRejectsInvalidCharacterForwardsSlashInVersion() {
         final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("/", aValidIpVFutureAddress()));
-        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [/]"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [/]"));
     }
 
     @Test
     void ipVFutureRejectsInvalidCharacterColonInVersion() {
         final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(":", aValidIpVFutureAddress()));
-        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [:]"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [:]"));
     }
 
     @Test
     void ipVFutureRejectsInvalidCharacterAtInVersion() {
         final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("@", aValidIpVFutureAddress()));
-        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [@]"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [@]"));
     }
 
     @Test
     void ipVFutureRejectsInvalidCharacterGInVersion() {
         final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("G", aValidIpVFutureAddress()));
-        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, or A-F in version [G]"));
+        assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [G]"));
     }
 
     @Test
