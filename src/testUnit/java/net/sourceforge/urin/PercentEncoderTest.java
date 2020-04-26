@@ -105,6 +105,16 @@ class PercentEncoderTest {
     }
 
     @Test
+    void negativeHexPercentEncodedStringThrowsParseException() {
+        assertThrows(ParseException.class, () -> new PercentEncoder(ALL_CHARACTERS).decode("%-1%23%45%67"));
+    }
+
+    @Test
+    void positiveHexPercentEncodedStringThrowsParseException() {
+        assertThrows(ParseException.class, () -> new PercentEncoder(ALL_CHARACTERS).decode("%+1%23%45%67"));
+    }
+
+    @Test
     void encodedStringIsDecodedCorrectly() throws Exception {
         String string = aString();
         assertThat(

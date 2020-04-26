@@ -14,6 +14,7 @@ import java.util.Locale;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.ALL_CHARACTERS;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.HEX_DIGIT;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
 
 final class PercentEncoder {
@@ -53,11 +54,15 @@ final class PercentEncoder {
     }
 
     private static byte getByte(final char[] source, final int startIndex) throws ParseException {
-        if (source.length <= startIndex + 2 || !('%' == source[startIndex])) {
+        if (source.length <= startIndex + 2 || '%' != source[startIndex]) {
             throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]");
         } else {
+            final String hexByte = new String(source, startIndex + 1, 2);
+            if (!HEX_DIGIT.areMembers(hexByte)) {
+                throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]: [" + hexByte + "] is not a valid hex byte String");
+            }
             try {
-                return (byte) Integer.parseInt(new String(source, startIndex + 1, 2), 16);
+                return (byte) Integer.parseInt(hexByte, 16);
             } catch (NumberFormatException e) {
                 throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]", e);
             }
