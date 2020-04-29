@@ -42,7 +42,6 @@ import static net.sourceforge.urin.Query.stringQueryMaker;
 public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> {
 
     private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
-
     private static final Pattern URI_PATTERN = Pattern.compile("^(([^:/?#]+):)((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
     private static final CharacterSetMembershipFunction TRAILING_CHARACTER_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,
@@ -85,7 +84,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
     /**
      * Factory method for creating {@code Scheme}s that have a default port.  Schemes must be at least one character long, and are permitted
      * to contain any character in the Latin alphabet, any digit, and any of the characters '+', '-', and '.'.
-     *
+     * <p>
      * An example of a name that defines a default port is http, which defaults to port 80, meaning {@code http://example.com} is equivalent to, and preferred to {@code http://example.com:80}.
      *
      * @param name        a {@code String} containing at least one character, made up of any characters in the Latin alphabet, the digits, and the characters '+', '-', and '.'.
@@ -307,80 +306,30 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
         if (!matcher.matches()) {
             throw new ParseException("[" + relativeReferenceString + "] is not a valid relative reference");
         }
-        final String queryString = matcher.group(6);
-        final String fragment = matcher.group(8);
-        final RelativeReference<SEGMENT, QUERY, FRAGMENT> result;
-        final String authorityString = matcher.group(3);
-        final String pathString = matcher.group(4);
-        if (authorityString == null) {
-            if (pathString == null || "".equals(pathString)) {
-                if (queryString == null) {
-                    if (fragment == null) {
-                        result = relativeReference();
-                    } else {
-                        result = relativeReference(Fragment.parseFragment(fragment, fragmentMakingDecoder));
-                    }
-                } else {
-                    final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
-                    if (fragment == null) {
-                        result = relativeReference(query);
-                    } else {
-                        result = relativeReference(query, Fragment.parseFragment(fragment, fragmentMakingDecoder));
-                    }
-                }
-            } else {
-                final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder) : Path.parsePath(pathString, segmentMakingDecoder);
-                if (queryString == null) {
-                    if (fragment == null) {
-                        result = relativeReference(path);
-                    } else {
-                        result = relativeReference(path, Fragment.parseFragment(fragment, fragmentMakingDecoder));
-                    }
-                } else {
-                    final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
-                    if (fragment == null) {
-                        result = relativeReference(path, query);
-                    } else {
-                        result = relativeReference(path, query, Fragment.parseFragment(fragment, fragmentMakingDecoder));
-                    }
-                }
-            }
-        } else {
-            final Authority authority = Authority.parse(authorityString);
-            if (pathString == null || "".equals(pathString)) {
-                if (queryString == null) {
-                    if (fragment == null) {
-                        result = relativeReference(authority);
-                    } else {
-                        result = relativeReference(authority, Fragment.parseFragment(fragment, fragmentMakingDecoder));
-                    }
-                } else {
-                    final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
-                    if (fragment == null) {
-                        result = relativeReference(authority, query);
-                    } else {
-                        result = relativeReference(authority, query, Fragment.parseFragment(fragment, fragmentMakingDecoder));
-                    }
-                }
-            } else {
-                final AbsolutePath<SEGMENT> path = Path.parsePath(pathString, segmentMakingDecoder);
-                if (queryString == null) {
-                    if (fragment == null) {
-                        result = relativeReference(authority, path);
-                    } else {
-                        result = relativeReference(authority, path, Fragment.parseFragment(fragment, fragmentMakingDecoder));
-                    }
-                } else {
-                    final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
-                    if (fragment == null) {
-                        result = relativeReference(authority, path, query);
-                    } else {
-                        result = relativeReference(authority, path, query, Fragment.parseFragment(fragment, fragmentMakingDecoder));
-                    }
-                }
-            }
-        }
-        return result;
+
+        final ThrowingOptional<Authority> authority = ThrowingOptional.ofNullable(matcher.group(3)).map(Authority::parse);
+        final ThrowingOptional<String> pathString = ThrowingOptional.ofNullable(matcher.group(4)).filter(""::equals);
+        final ThrowingOptional<QUERY> query = ThrowingOptional.ofNullable(matcher.group(6)).map(qs -> Query.parseQuery(qs, queryMakingDecoder));
+        final ThrowingOptional<FRAGMENT> fragment = ThrowingOptional.ofNullable(matcher.group(8)).map(fs -> Fragment.parseFragment(fs, fragmentMakingDecoder));
+
+        return authority
+                .map(a ->
+                        pathString.map(ps -> Path.parsePath(ps, segmentMakingDecoder))
+                                .map(p -> query
+                                        .map(q -> fragment.map(f -> relativeReference(a, p, q, f)).orElseGet(() -> relativeReference(a, p, q)))
+                                        .orElseGet(() -> fragment.map(f -> relativeReference(a, p, f)).orElseGet(() -> relativeReference(a, p))))
+                                .orElseGet(() -> query
+                                        .map(q -> fragment.map(f -> relativeReference(a, q, f)).orElseGet(() -> relativeReference(a, q)))
+                                        .orElseGet(() -> fragment.map(f -> relativeReference(a, f)).orElseGet(() -> relativeReference(a)))))
+                .orElseGet(() ->
+                        pathString.map(ps -> !ps.startsWith("/") ? Path.parseRootlessPath(ps, segmentMakingDecoder) : Path.parsePath(ps, segmentMakingDecoder))
+                                .map(p -> query
+                                        .map(q -> fragment.map(f -> relativeReference(p, q, f)).orElseGet(() -> relativeReference(p, q)))
+                                        .orElseGet(() -> fragment.map(f -> relativeReference(p, f)).orElseGet(() -> relativeReference(p))))
+                                .orElseGet(() -> query
+                                        .map(q -> fragment.map(f -> relativeReference(q, f)).orElseGet(() -> relativeReference(q)))
+                                        .orElseGet(() -> fragment.map(this::relativeReference).orElseGet(this::relativeReference)))
+                );
     }
 
     /**
@@ -586,104 +535,48 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
         if (!matcher.matches()) {
             throw new ParseException("[" + uriString + "] is not a valid URI");
         }
+
         final Scheme<SEGMENT, QUERY, FRAGMENT> scheme = parse(matcher.group(2));
-        final String authorityString = matcher.group(5);
+        final ThrowingOptional<Authority> authority = ThrowingOptional.ofNullable(matcher.group(5)).map(Authority::parse);
         final String pathString = matcher.group(6);
-        final String queryString = matcher.group(8);
-        final String fragmentString = matcher.group(10);
-        final Urin<SEGMENT, QUERY, FRAGMENT> result;
-        if (authorityString == null) {
-            final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder) : Path.parsePath(pathString, segmentMakingDecoder);
-            if (queryString == null) {
-                if (fragmentString == null) {
-                    result = scheme.urin(
-                            path
-                    );
-                } else {
-                    result = scheme.urin(
-                            path,
-                            Fragment.parseFragment(fragmentString, fragmentMakingDecoder)
-                    );
-                }
-            } else {
-                final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
-                if (fragmentString == null) {
-                    result = scheme.urin(
-                            path,
-                            query
-                    );
-                } else {
-                    result = scheme.urin(
-                            path,
-                            query,
-                            Fragment.parseFragment(fragmentString, fragmentMakingDecoder)
-                    );
-                }
-            }
-        } else {
-            final Authority authority = Authority.parse(authorityString);
-            if (queryString == null) {
-                if (fragmentString == null) {
-                    if (pathString == null || "".equals(pathString)) {
-                        result = scheme.urin(
-                                authority
-                        );
-                    } else {
-                        result = scheme.urin(
-                                authority,
-                                Path.parsePath(pathString, segmentMakingDecoder)
-                        );
-                    }
-                } else {
-                    final FRAGMENT fragment = Fragment.parseFragment(fragmentString, fragmentMakingDecoder);
-                    if (pathString == null || "".equals(pathString)) {
-                        result = scheme.urin(
-                                authority,
-                                fragment
-                        );
-                    } else {
-                        result = scheme.urin(
-                                authority,
-                                Path.parsePath(pathString, segmentMakingDecoder),
-                                fragment
-                        );
-                    }
-                }
-            } else {
-                final QUERY query = Query.parseQuery(queryString, queryMakingDecoder);
-                if (fragmentString == null) {
-                    if (pathString == null || "".equals(pathString)) {
-                        result = scheme.urin(
-                                authority,
-                                query
-                        );
-                    } else {
-                        result = scheme.urin(
-                                authority,
-                                Path.parsePath(pathString, segmentMakingDecoder),
-                                query
-                        );
-                    }
-                } else {
-                    final FRAGMENT fragment = Fragment.parseFragment(fragmentString, fragmentMakingDecoder);
-                    if (pathString == null || "".equals(pathString)) {
-                        result = scheme.urin(
-                                authority,
-                                query,
-                                fragment
-                        );
-                    } else {
-                        result = scheme.urin(
-                                authority,
-                                Path.parsePath(pathString, segmentMakingDecoder),
-                                query,
-                                fragment
-                        );
-                    }
-                }
-            }
-        }
-        return result;
+        final ThrowingOptional<QUERY> query = ThrowingOptional.ofNullable(matcher.group(8)).map(qs -> Query.parseQuery(qs, queryMakingDecoder));
+        final ThrowingOptional<FRAGMENT> fragment = ThrowingOptional.ofNullable(matcher.group(10)).map(fs -> Fragment.parseFragment(fs, fragmentMakingDecoder));
+
+        return authority
+                .map(a ->
+                        ThrowingOptional.ofNullable(pathString).filter(""::equals).map(ps -> Path.parsePath(ps, segmentMakingDecoder))
+                                .map(p -> query
+                                        .map(q -> fragment
+                                                .map(f -> scheme.urin(a, p, q, f))
+                                                .orElseGet(() -> scheme.urin(a, p, q))
+                                        )
+                                        .orElseGet(() -> fragment
+                                                .map(f -> scheme.urin(a, p, f))
+                                                .orElseGet(() -> scheme.urin(a, p))
+                                        )
+                                )
+                                .orElseGet(() -> query
+                                        .map(q -> fragment
+                                                .map(f -> scheme.urin(a, q, f))
+                                                .orElseGet(() -> scheme.urin(a, q))
+                                        )
+                                        .orElseGet(() -> fragment
+                                                .map(f -> scheme.urin(a, f))
+                                                .orElseGet(() -> scheme.urin(a))
+                                        )
+                                ))
+                .orElseGet(() -> {
+                    final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder) : Path.parsePath(pathString, segmentMakingDecoder);
+                    return query
+                            .map(q -> fragment
+                                    .map(f -> scheme.urin(path, q, f))
+                                    .orElseGet(() -> scheme.urin(path, q))
+                            )
+                            .orElseGet(() -> fragment
+                                    .map(f -> scheme.urin(path, f))
+                                    .orElseGet(() -> scheme.urin(path))
+                            );
+                });
     }
 
     /**
