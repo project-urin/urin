@@ -77,18 +77,7 @@ final class PercentEncoder {
             char candidateChar = candidateChars[i];
             if ('%' == candidateChar) {
                 buffer[0] = getByte(candidateChars, i);
-                final int byteCount;
-                if ((buffer[0] & BINARY_1000_0000) == 0) {
-                    byteCount = 1;
-                } else if ((buffer[0] & BINARY_1111_0000) == BINARY_1111_0000) {
-                    byteCount = 4;
-                } else if ((buffer[0] & BINARY_1110_0000) == BINARY_1110_0000) {
-                    byteCount = 3;
-                } else if ((buffer[0] & BINARY_1100_0000) == BINARY_1100_0000) {
-                    byteCount = 2;
-                } else {
-                    throw new ParseException("First byte of a percent encoded character must begin 0, 11, 111, or 1111, but was " + buffer[0]);
-                }
+                final int byteCount = getByteCount(buffer[0]);
                 for (int j = 1; j < byteCount; j++) {
                     buffer[j] = getByte(candidateChars, i + (3 * j));
                 }
@@ -103,6 +92,22 @@ final class PercentEncoder {
             }
         }
         return result.toString();
+    }
+
+    private static int getByteCount(final byte firstByte) throws ParseException {
+        final int byteCount;
+        if ((firstByte & BINARY_1000_0000) == 0) {
+            byteCount = 1;
+        } else if ((firstByte & BINARY_1111_0000) == BINARY_1111_0000) {
+            byteCount = 4;
+        } else if ((firstByte & BINARY_1110_0000) == BINARY_1110_0000) {
+            byteCount = 3;
+        } else if ((firstByte & BINARY_1100_0000) == BINARY_1100_0000) {
+            byteCount = 2;
+        } else {
+            throw new ParseException("First byte of a percent encoded character must begin 0, 11, 111, or 1111, but was " + firstByte);
+        }
+        return byteCount;
     }
 
     public boolean isMember(final String string) {
