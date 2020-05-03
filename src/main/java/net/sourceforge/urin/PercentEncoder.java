@@ -110,7 +110,7 @@ final class PercentEncoder {
         return byteCount;
     }
 
-    public boolean isMember(final String string) {
+    boolean isMember(final String string) { // TODO delete this
         try {
             decode(string);
             return true;
