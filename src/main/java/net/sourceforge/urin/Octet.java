@@ -10,9 +10,6 @@
 
 package net.sourceforge.urin;
 
-import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
-import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
-
 /**
  * An integer in the range 0 to 255.
  * Immutable and thread safe.
@@ -31,33 +28,22 @@ public final class Octet extends UnaryStringValue {
      * @throws IllegalArgumentException if the given {@code int} is outside the range 0 to 255.
      */
     public static Octet octet(final int octet) {
-        return octet(octet, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+        return makeOctet(octet).orElseThrow(IllegalArgumentException::new);
     }
 
-    private static <T extends Exception> Octet octet(final int octet, final ExceptionFactory<T> exceptionFactory) throws T {
-        if (octet < 0 || octet > 255) {
-            throw exceptionFactory.makeException("Argument must be in the range 0-255 but was [" + octet + "]");
-        }
-        return new Octet(Integer.toString(octet));
+    private static AugmentedOptional<Octet> makeOctet(final int octet) {
+        return octet < 0 || octet > 255
+                ? AugmentedOptional.empty("Argument must be in the range 0-255 but was [" + octet + "]")
+                : AugmentedOptional.of(new Octet(Integer.toString(octet)));
     }
 
-    static boolean isValid(final String octetString) {
+    static AugmentedOptional<Octet> parses(final String octetString) {
         final int octetInt;
         try {
             octetInt = Integer.parseInt(octetString);
         } catch (NumberFormatException e) {
-            return false;
+            return AugmentedOptional.empty("Invalid Octet String [" + octetString + "]");
         }
-        return !(octetInt < 0 || octetInt > 255);
-    }
-
-    static Octet parse(final String octetString) throws ParseException {
-        final int octetInt;
-        try {
-            octetInt = Integer.parseInt(octetString);
-        } catch (NumberFormatException e) {
-            throw new ParseException("Invalid Octet String [" + octetString + "]", e);
-        }
-        return octet(octetInt, PARSE_EXCEPTION_EXCEPTION_FACTORY);
+        return makeOctet(octetInt);
     }
 }

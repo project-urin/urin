@@ -185,14 +185,6 @@ abstract class CharacterSetMembershipFunction {
     CharacterSetMembershipFunction() {
     }
 
-    static void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName) {
-        verify(characterSetMembershipFunction, value, parameterName, ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-    }
-
-    static <T extends Exception> void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final ExceptionFactory<T> exceptionFactory) throws T {
-        verify(characterSetMembershipFunction, value, parameterName, 0, exceptionFactory);
-    }
-
     static <T extends Exception> void verify(final CharacterSetMembershipFunction characterSetMembershipFunction, final String value, final String parameterName, final int startIndex, final ExceptionFactory<T> exceptionFactory) throws T {
         verify(characterSetMembershipFunction, value, parameterName, startIndex, value.length(), exceptionFactory);
     }

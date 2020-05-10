@@ -12,9 +12,6 @@ package net.sourceforge.urin;
 
 import java.util.Locale;
 
-import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
-import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
-
 /**
  * An integer in the range 0 to FFFF (0 to 65535 in decimal).
  * Immutable and thread safe.
@@ -27,8 +24,6 @@ public final class Hexadectet extends UnaryValue<Integer> {
     public static final Hexadectet ZERO = hexadectet(0x0);
     private static final Locale NO_LOCALISATION = null;
 
-    private final boolean isElidable;
-
     /**
      * Factory method for creating {@code Hexadectets}.
      *
@@ -37,44 +32,33 @@ public final class Hexadectet extends UnaryValue<Integer> {
      * @throws IllegalArgumentException if the given {@code int} is outside the range 0 to FFFF.
      */
     public static Hexadectet hexadectet(final int hexadectet) {
-        return hexadectet(hexadectet, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+        return makeHexadectet(hexadectet).orElseThrow(IllegalArgumentException::new);
     }
 
-    private static <T extends Exception> Hexadectet hexadectet(final int hexadectet, final ExceptionFactory<T> exceptionFactory) throws T {
+    private static AugmentedOptional<Hexadectet> makeHexadectet(final int hexadectet) {
         if (hexadectet < 0x0 || hexadectet > 0xFFFF) {
             String absoluteHexValue = Integer.toHexString(Math.abs(hexadectet));
-            throw exceptionFactory.makeException("Argument must be in the range 0x0-0xFFFF but was [" + (hexadectet >= 0 ? "" : "-") + "0x" + absoluteHexValue + "]");
+            return AugmentedOptional.empty("Argument must be in the range 0x0-0xFFFF but was [" + (hexadectet >= 0 ? "" : "-") + "0x" + absoluteHexValue + "]");
         }
-        return new Hexadectet(hexadectet, hexadectet == 0);
+        return AugmentedOptional.of(new Hexadectet(hexadectet));
     }
 
-    static Hexadectet parse(final String hexadectetString) throws ParseException {
+    static AugmentedOptional<Hexadectet> parses(final String hexadectetString) {
         final int hexadectetInt;
         try {
             hexadectetInt = Integer.parseInt(hexadectetString, 16);
         } catch (NumberFormatException e) {
-            throw new ParseException("Invalid Hexadectet String [" + hexadectetString + "]", e);
+            return AugmentedOptional.empty("Invalid Hexadectet String [" + hexadectetString + "]");
         }
-        return hexadectet(hexadectetInt, PARSE_EXCEPTION_EXCEPTION_FACTORY);
+        return makeHexadectet(hexadectetInt);
     }
 
-    static boolean isValid(final String octetString) {
-        final int hexadectetInt;
-        try {
-            hexadectetInt = Integer.parseInt(octetString, 16);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        return !(hexadectetInt < 0x0 || hexadectetInt > 0xFFFF);
-    }
-
-    private Hexadectet(final int hexadecimalHexadectet, final boolean isElidable) {
+    private Hexadectet(final int hexadecimalHexadectet) {
         super(hexadecimalHexadectet);
-        this.isElidable = isElidable;
     }
 
     boolean isElidable() {
-        return isElidable;
+        return value == 0;
     }
 
     String asString() {

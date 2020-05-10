@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -284,15 +285,34 @@ class HostTest {
     }
 
     @Test
-    void parsingAnIpV6HostWithMultipleElidedPartsThrowsParseException() {
+    void parsingAnIpV6AddressWithMultipleElidedPartsThrowsParseException() {
         final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1::1::1]"));
         assertThat(parseException.getMessage(), equalTo("Not a valid host :[1::1::1]"));
     }
 
     @Test
-    void parsingAnIpV6HostWithTooFewPartsThrowsParseException() {
+    void parsingAnIpV6AddressWithTooFewPartsThrowsParseException() {
         final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1:1:1]"));
         assertThat(parseException.getMessage(), equalTo("Not a valid host :[1:1:1]"));
+    }
+
+    @Test
+    void parsingAnIpV6AddressWithTooManyPartsThrowsParseException() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1:2:3:4:5:6:7:8:9:10]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[1:2:3:4:5:6:7:8:9:10]"));
+    }
+
+    @Test
+    void parsingAnIpV6AddressWithTooManyPartsIncludingElidedPartsThrowsParseException() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1::2:3:4:5:6:7:8:9:10]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[1::2:3:4:5:6:7:8:9:10]"));
+    }
+
+    @Test
+    @Disabled
+    void parsingAnIpV6AddressWithPlusCharacterParseException() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1::+1:1]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[1::+1:1]"));
     }
 
     @Test
@@ -626,6 +646,12 @@ class HostTest {
     @SuppressWarnings("PMD.AvoidUsingHardCodedIP")
     void aRegisteredNameThatIsAValidIpV4AddressIsEqualToTheEquivalentIpV4Address() {
         assertThat(registeredName("127.0.0.1"), equalTo(ipV4Address(octet(127), octet(0), octet(0), octet(1))));
+    }
+
+    @Test
+    @Disabled()
+    void parsingARegisteredNameThatIsAlmostAnIpV4AddressExceptForAPlusCharacterDoesNotMakeAnIpV4Address() {
+        assertThat(registeredName("+2.0.0.1"), not(equalTo(ipV4Address(octet(2), octet(0), octet(0), octet(1)))));
     }
 
     private static String aValidIpVFutureAddress() {

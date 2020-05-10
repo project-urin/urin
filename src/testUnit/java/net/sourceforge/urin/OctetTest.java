@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,8 +10,11 @@
 
 package net.sourceforge.urin;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static net.sourceforge.urin.AugmentedOptionalMatcher.populated;
+import static net.sourceforge.urin.AugmentedOptionalMatcher.unpopulated;
 import static net.sourceforge.urin.Octet.octet;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,40 +41,29 @@ class OctetTest {
     }
 
     @Test
-    void isValidAcceptsBoundaryCases() {
-        assertThat(Octet.isValid("0"), equalTo(true));
-        assertThat(Octet.isValid("255"), equalTo(true));
+    void parsesAcceptsBoundaryCases() {
+        assertThat(Octet.parses("0"), populated(equalTo(octet(0))));
+        assertThat(Octet.parses("255"), populated(equalTo(octet(255))));
     }
 
     @Test
-    void isValidRejectsOutsideBoundaryCases() {
-        assertThat(Octet.isValid("-1"), equalTo(false));
-        assertThat(Octet.isValid("256"), equalTo(false));
+    void parsesRejectsOctetStringsOutsideBoundary() {
+        assertThat(Octet.parses("-1"), unpopulated(equalTo("Argument must be in the range 0-255 but was [-1]")));
+        assertThat(Octet.parses("256"), unpopulated(equalTo("Argument must be in the range 0-255 but was [256]")));
     }
 
     @Test
-    void isValidRejectsNonIntegerCases() {
-        assertThat(Octet.isValid("1.0"), equalTo(false));
-        assertThat(Octet.isValid("Hello"), equalTo(false));
-        assertThat(Octet.isValid(""), equalTo(false));
-        assertThat(Octet.isValid(null), equalTo(false));
+    @Disabled
+    void parsesRejectsNonDigitOctetStrings() {
+        assertThat(Octet.parses("+1"), unpopulated(equalTo("Argument may only contain characters [0-9] but got [+]")));
     }
 
     @Test
-    void parseAcceptsBoundaryCases() throws Exception {
-        assertThat(Octet.parse("0"), equalTo(octet(0)));
-        assertThat(Octet.parse("255"), equalTo(octet(255)));
+    void parsesRejectsNonIntegerCases() {
+        assertThat(Octet.parses("1.0"), unpopulated(equalTo("Invalid Octet String [1.0]")));
+        assertThat(Octet.parses("Hello"), unpopulated(equalTo("Invalid Octet String [Hello]")));
+        assertThat(Octet.parses(""), unpopulated(equalTo("Invalid Octet String []")));
+        assertThat(Octet.parses(null), unpopulated(equalTo("Invalid Octet String [null]")));
     }
 
-    @Test
-    void parseRejectsOctetStringOutsideRange() {
-        final ParseException parseException = assertThrows(ParseException.class, () -> Octet.parse("-1"));
-        assertThat(parseException.getMessage(), equalTo("Argument must be in the range 0-255 but was [-1]"));
-    }
-
-    @Test
-    void parseRejectsNullOctetString() {
-        final ParseException parseException = assertThrows(ParseException.class, () -> Octet.parse(null));
-        assertThat(parseException.getMessage(), equalTo("Invalid Octet String [null]"));
-    }
 }

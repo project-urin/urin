@@ -10,7 +10,10 @@
 
 package net.sourceforge.urin;
 
-import java.util.Iterator;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,8 +21,6 @@ import static java.util.Arrays.asList;
 import static java.util.Locale.ENGLISH;
 import static java.util.Objects.requireNonNull;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
-import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
-import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
 import static net.sourceforge.urin.Octet.octet;
@@ -88,14 +89,8 @@ public abstract class Host {
      * @return a {@code Host} representing the given {@code String} as a registered name.
      */
     public static Host registeredName(final String registeredName) {
-        if (IpV4Address.isValid(registeredName)) {
-            try {
-                return IpV4Address.parse(registeredName);
-            } catch (ParseException e) {
-                throw new IllegalArgumentException("Unexpectedly unable to convert registered name [" + registeredName + "] to an equivalent ipV4Address", e);
-            }
-        }
-        return new RegisteredName(registeredName);
+        return IpV4Address.parses(registeredName).flatMap(AugmentedOptional::<Host>of) // TODO Wha?!
+                .orElseGet(() -> new RegisteredName(registeredName));
     }
 
     /**
@@ -145,7 +140,7 @@ public abstract class Host {
      * @throws IllegalArgumentException if the given version or address are empty of contain characters outside the valid set.
      */
     public static Host ipVFutureAddress(final String version, final String address) {
-        return IpVFutureAddress.makeIpVFutureAddress(version, address, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
+        return IpVFutureAddress.makeIpVFutureAddress(version, address).orElseThrow(IllegalArgumentException::new);
     }
 
     private static ElidableAsStringable asElidableAsStringable(final Hexadectet hexadectet) {
@@ -163,6 +158,39 @@ public abstract class Host {
             }
         };
     }
+
+//    private static String ipV6String(final ElidableAsStringable... elidableAsStringables) { // TODO confirm this is a valid replacement
+//        int maximumStreakLength = 0;
+//        int maximumStreakEnd = 0;
+//        for (int i = 0, streakLengthToHere = 0; i < elidableAsStringables.length; i++) {
+//            ElidableAsStringable elidableAsStringable = elidableAsStringables[i];
+//            final int streakLengthHere = elidableAsStringable.isElidable() ? streakLengthToHere + 1 : 0;
+//            streakLengthToHere = streakLengthHere;
+//            if (streakLengthHere > maximumStreakLength) {
+//                maximumStreakLength = streakLengthHere;
+//                maximumStreakEnd = i;
+//            }
+//        }
+//        int maximumStreakStartIndex = (maximumStreakEnd - maximumStreakLength) + 1;
+//
+//        StringBuilder result = new StringBuilder("[");
+//        for (int i = 0; i < elidableAsStringables.length; i++) {
+//            if (maximumStreakLength < 2 || !(i >= maximumStreakStartIndex && i < (maximumStreakStartIndex + maximumStreakLength))) {
+//                if (i > 0) {
+//                    result.append(':');
+//                }
+//                result.append(elidableAsStringables[i].asString());
+//            } else {
+//                if (i == maximumStreakStartIndex) {
+//                    result.append(':');
+//                }
+//            }
+//        }
+//        return result
+//                .append(']')
+//                .toString();
+//    }
+// TODO just get the hexadectets in and return a collection of Strings... the caller can join them etc.
 
     private static String ipV6String(final ElidableAsStringable... elidableAsStringables) {
         int[] streakLength = new int[elidableAsStringables.length];
@@ -200,19 +228,13 @@ public abstract class Host {
     }
 
     static Host parse(final String hostString) throws ParseException {
-        if (IpV4Address.isValid(hostString)) {
-            return IpV4Address.parse(hostString);
-        } else if (IpV6Address.isValid(hostString)) {
-            return IpV6Address.parse(hostString);
-        } else if (IpV6AddressWithTrailingIpV4Address.isValid(hostString)) {
-            return IpV6AddressWithTrailingIpV4Address.parse(hostString);
-        } else if (IpVFutureAddress.isValid(hostString)) {
-            return IpVFutureAddress.parse(hostString);
-        } else if (RegisteredName.isValid(hostString)) {
-            return RegisteredName.parse(hostString);
-        } else {
-            throw new ParseException("Not a valid host :" + hostString);
-        }
+        return AugmentedOptional.<Host>empty("Not a valid host :" + hostString)
+                .or(() -> IpV4Address.parses(hostString))
+                .or(() -> IpV6Address.parses(hostString))
+                .or(() -> IpV6AddressWithTrailingIpV4Address.parses(hostString))
+                .or(() -> IpVFutureAddress.parses(hostString))
+                .or(() -> RegisteredName.parses(hostString))
+                .orElseThrow(ParseException::new);
     }
 
     private interface ElidableAsStringable {
@@ -260,11 +282,20 @@ public abstract class Host {
 
         }
 
-        static RegisteredName parse(final String hostString) throws ParseException {
-            return new RegisteredName(PERCENT_ENCODER.decode(hostString));
+        static AugmentedOptional<RegisteredName> parses(final String hostString) {
+            final String decode;
+            try {
+                decode = PERCENT_ENCODER.decode(hostString);
+            } catch (ParseException e) {
+                return AugmentedOptional.empty("Not a valid registered name; invalid percent encoding in:" + hostString + " - " + e.getMessage());
+            }
+            return AugmentedOptional.of(new RegisteredName(decode));
         }
 
-        public static boolean isValid(final String hostString) {
+        /**
+         * @deprecated this was inadvertently public
+         */
+        public static boolean isValid(final String hostString) { // TODO delete this
             return PERCENT_ENCODER.isMember(hostString);
         }
     }
@@ -321,18 +352,17 @@ public abstract class Host {
                     '}';
         }
 
-        static boolean isValid(final String hostString) {
+        static AugmentedOptional<IpV4Address> parses(final String hostString) {
             String[] split = hostString.split("\\.");
-            return split.length == 4 && Octet.isValid(split[0]) && Octet.isValid(split[1]) && Octet.isValid(split[2]) && Octet.isValid(split[3]);
-        }
-
-        static IpV4Address parse(final String hostString) throws ParseException {
-            if (!isValid(hostString)) {
-                throw new ParseException("Invalid Host String [" + hostString + "]");
-            } else {
-                String[] split = hostString.split("\\.");
-                return new IpV4Address(Octet.parse(split[0]), Octet.parse(split[1]), Octet.parse(split[2]), Octet.parse(split[3]));
+            if (split.length != 4) {
+                return AugmentedOptional.empty("Invalid Host String [" + hostString + "]");
             }
+            return Octet.parses(split[0]).flatMap(
+                    firstOctet -> Octet.parses(split[1]).flatMap(
+                            secondOctet -> Octet.parses(split[2]).flatMap(
+                                    thirdOctet -> Octet.parses(split[3]).flatMap(
+                                            fourthOctet -> AugmentedOptional.of(new IpV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet))
+                                    ))));
         }
     }
 
@@ -414,66 +444,21 @@ public abstract class Host {
                     '}';
         }
 
-        static boolean isValid(final String hostString) {
+        static AugmentedOptional<IpV6Address> parses(final String hostString) {
             if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
-                return false;
-            } else {
-                String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":");
-                int elidedSectionCount = 0;
-                for (String elidableHexadectetString : elidableHexadectetStrings) {
-                    if (elidableHexadectetString.isEmpty()) {
-                        elidedSectionCount++;
-                    }
-                }
-                if (elidedSectionCount > 1) {
-                    return false;
-                }
-                if (elidedSectionCount == 0 && elidableHexadectetStrings.length != 8) {
-                    return false;
-                }
-                if (elidedSectionCount == 1 && elidableHexadectetStrings.length > 8) {
-                    return false;
-                }
-                for (String elidableHexadectetString : elidableHexadectetStrings) {
-                    if (!elidableHexadectetString.isEmpty() && !Hexadectet.isValid(elidableHexadectetString)) {
-                        return false;
-                    }
-                }
-                return true;
+                return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
             }
-        }
-
-        static IpV6Address parse(final String hostString) throws ParseException {
             String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":");
-            Hexadectet[] hexadectets = new Hexadectet[8];
-            int i = 0;
-            boolean gotElidedPart = false;
-            for (String hexadectetString : elidableHexadectetStrings) {
-                if (hexadectetString.isEmpty()) {
-                    if (gotElidedPart) {
-                        throw new ParseException("Invalid IP v6 String [" + hostString + "]: more than one elided part");
-                    }
-                    gotElidedPart = true;
-                    final int elidedTotal = 8 - elidableHexadectetStrings.length;
-                    for (int elided = 0; elided <= elidedTotal; elided++) {
-                        hexadectets[i] = ZERO;
-                        i++;
-                    }
-                } else {
-                    hexadectets[i] = Hexadectet.parse(hexadectetString);
-                    i++;
-                }
-            }
-            return new IpV6Address(
-                    hexadectets[0],
-                    hexadectets[1],
-                    hexadectets[2],
-                    hexadectets[3],
-                    hexadectets[4],
-                    hexadectets[5],
-                    hexadectets[6],
-                    hexadectets[7]
-            );
+            return parseElidableHexadectets(hostString, asList(elidableHexadectetStrings), 8).flatMap(hexadectets ->
+                    hexadectets.get(0).flatMap(first ->
+                            hexadectets.get(1).flatMap(second ->
+                                    hexadectets.get(2).flatMap(third ->
+                                            hexadectets.get(3).flatMap(fourth ->
+                                                    hexadectets.get(4).flatMap(fifth ->
+                                                            hexadectets.get(5).flatMap(sixth ->
+                                                                    hexadectets.get(6).flatMap(seventh ->
+                                                                            hexadectets.get(7).flatMap(eighth ->
+                                                                                    AugmentedOptional.of(new IpV6Address(first, second, third, fourth, fifth, sixth, seventh, eighth)))))))))));
         }
     }
 
@@ -502,80 +487,24 @@ public abstract class Host {
             this.fourthOctet = requireNonNull(fourthOctet, "Cannot instantiate Host with null fourthOctet");
         }
 
-        static boolean isValid(final String hostString) {
+        static AugmentedOptional<IpV6AddressWithTrailingIpV4Address> parses(final String hostString) {
             if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
-                return false;
-            } else {
-                String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":");
-                int elidedSectionCount = 0;
-                for (String elidableHexadectetString : elidableHexadectetStrings) {
-                    if (elidableHexadectetString.isEmpty()) {
-                        elidedSectionCount++;
-                    }
-                }
-                if (elidedSectionCount > 1) {
-                    return false;
-                }
-                if (elidedSectionCount == 0 && elidableHexadectetStrings.length != 7) {
-                    return false;
-                }
-                if (elidedSectionCount == 1 && elidableHexadectetStrings.length > 7) {
-                    return false;
-                }
-                Iterator<String> elidableHexadectetStringsIterator = asList(elidableHexadectetStrings).iterator();
-                while (elidableHexadectetStringsIterator.hasNext()) {
-                    String elidableHexadectetString = elidableHexadectetStringsIterator.next();
-                    if (!elidableHexadectetStringsIterator.hasNext()) {
-                        return IpV4Address.isValid(elidableHexadectetString);
-                    } else if (!elidableHexadectetString.isEmpty() && !Hexadectet.isValid(elidableHexadectetString)) {
-                        return false;
-                    }
-                }
-                return true;
+                return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
             }
-        }
-
-        static IpV6AddressWithTrailingIpV4Address parse(final String hostString) throws ParseException {
-            String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":");
-            Hexadectet[] hexadectets = new Hexadectet[6];
-            int i = 0;
-            boolean gotElidedPart = false;
-            IpV4Address ipV4AddressPart = null;
-            Iterator<String> elidableHexadectetStringsIterator = asList(elidableHexadectetStrings).iterator();
-            while (elidableHexadectetStringsIterator.hasNext()) {
-                String hexadectetString = elidableHexadectetStringsIterator.next();
-                if (!elidableHexadectetStringsIterator.hasNext()) {
-                    ipV4AddressPart = IpV4Address.parse(hexadectetString);
-                } else if (hexadectetString.isEmpty()) {
-                    if (gotElidedPart) {
-                        throw new ParseException("Invalid IP v6 String [" + hostString + "]: more than one elided part");
-                    }
-                    gotElidedPart = true;
-                    final int elidedTotal = 7 - elidableHexadectetStrings.length;
-                    for (int elided = 0; elided <= elidedTotal; elided++) {
-                        hexadectets[i] = ZERO;
-                        i++;
-                    }
-                } else {
-                    hexadectets[i] = Hexadectet.parse(hexadectetString);
-                    i++;
-                }
-            }
-            if (ipV4AddressPart == null) {
-                throw new ParseException("Invalid IP v6 String [" + hostString + "]: no trailing IP v4 address.");
-            }
-            return new IpV6AddressWithTrailingIpV4Address(
-                    hexadectets[0],
-                    hexadectets[1],
-                    hexadectets[2],
-                    hexadectets[3],
-                    hexadectets[4],
-                    hexadectets[5],
-                    ipV4AddressPart.firstOctet,
-                    ipV4AddressPart.secondOctet,
-                    ipV4AddressPart.thirdOctet,
-                    ipV4AddressPart.fourthOctet
-            );
+            ArrayDeque<String> elidableHexadectetStrings = new ArrayDeque<>(asList(hostString.substring(1, hostString.length() - 1).split(":")));
+            AugmentedOptional<IpV4Address> ipV4AddressPart = elidableHexadectetStrings.isEmpty()
+                    ? AugmentedOptional.empty("Invalid IP v6 String [" + hostString + "]: no trailing IP v4 address.")
+                    : IpV4Address.parses(elidableHexadectetStrings.removeLast());
+            return parseElidableHexadectets(hostString, elidableHexadectetStrings, 6).flatMap(hexadectets ->
+                    ipV4AddressPart.flatMap(ipV4Address ->
+                            hexadectets.get(0).flatMap(first ->
+                                    hexadectets.get(1).flatMap(second ->
+                                            hexadectets.get(2).flatMap(third ->
+                                                    hexadectets.get(3).flatMap(fourth ->
+                                                            hexadectets.get(4).flatMap(fifth ->
+                                                                    hexadectets.get(5).flatMap(sixth ->
+                                                                            AugmentedOptional.of(new IpV6AddressWithTrailingIpV4Address(first, second, third, fourth, fifth, sixth, ipV4Address.firstOctet, ipV4Address.secondOctet, ipV4Address.thirdOctet, ipV4Address.fourthOctet))
+                                                                    ))))))));
         }
 
         @Override
@@ -651,8 +580,31 @@ public abstract class Host {
         }
     }
 
+    private static AugmentedOptional<List<AugmentedOptional<Hexadectet>>> parseElidableHexadectets(final String hostString, final Collection<String> elidableHexadectetStrings, final int requiredLength) {
+        List<AugmentedOptional<Hexadectet>> hexadectets = new ArrayList<>(requiredLength);
+        boolean gotElidedPart = false;
+        for (String hexadectetString : elidableHexadectetStrings) {
+            if (hexadectetString.isEmpty()) {
+                if (gotElidedPart) {
+                    return AugmentedOptional.empty("Invalid IP v6 String [" + hostString + "]: more than one elided part");
+                }
+                gotElidedPart = true;
+                final int elidedTotal = requiredLength - elidableHexadectetStrings.size();
+                for (int elided = 0; elided <= elidedTotal; elided++) {
+                    hexadectets.add(AugmentedOptional.of(ZERO));
+                }
+            } else {
+                hexadectets.add(Hexadectet.parses(hexadectetString));
+            }
+        }
+        if (hexadectets.size() != requiredLength) {
+            return AugmentedOptional.empty("Invalid host string [" + hostString + "]");
+        }
+        return AugmentedOptional.of(hexadectets);
+    }
+
     private static final class IpVFutureAddress extends Host {
-        private static final Pattern IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN = Pattern.compile("^\\[v([\\dABCDEFabcdef]+)\\.([^/?#]+)]");
+        private static final Pattern IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN = Pattern.compile("^\\[v([\\dABCDEFabcdef]+)\\.([^/?#]+)]"); // TODO does this permit trailing kruft?
 
         private final String version;
         private final String address;
@@ -662,31 +614,35 @@ public abstract class Host {
             this.address = address.toLowerCase(ENGLISH);
         }
 
-        private static <T extends Exception> IpVFutureAddress makeIpVFutureAddress(final String version, final String address, final ExceptionFactory<T> exceptionFactory) throws T {
+        private static AugmentedOptional<IpVFutureAddress> makeIpVFutureAddress(final String version, final String address) {
             if (version.isEmpty()) {
-                throw exceptionFactory.makeException("Version must contain at least one character");
+                return AugmentedOptional.empty("Version must contain at least one character");
             }
-            verify(HEX_DIGIT, version, "version");
+            for (int i = 0; i < version.length(); i++) {
+                if (!HEX_DIGIT.isMember(version.charAt(i))) {
+                    return AugmentedOptional.empty("Character " + (i + 1) + " must be " + HEX_DIGIT.describe() + " in version [" + version + "]");
+                }
+            }
             if (address.isEmpty()) {
-                throw exceptionFactory.makeException("Address must contain at least one character");
+                return AugmentedOptional.empty("Address must contain at least one character");
             }
-            verify(ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION, address, "address", exceptionFactory);
-            return new IpVFutureAddress(version, address);
+            for (int i = 0; i < address.length(); i++) {
+                if (!ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION.isMember(address.charAt(i))) {
+                    return AugmentedOptional.empty("Character " + (i + 1) + " must be " + ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION.describe() + " in address [" + address + "]");
+                }
+            }
+            return AugmentedOptional.of(new IpVFutureAddress(version, address));
         }
 
-        static boolean isValid(final String hostString) {
+        static AugmentedOptional<IpVFutureAddress> parses(final String hostString) {
             Matcher matcher = IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN.matcher(hostString);
-            return matcher.matches()
+            if (matcher.matches()
                     && CharacterSetMembershipFunction.HEX_DIGIT.areMembers(matcher.group(1))
-                    && ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION.areMembers(matcher.group(2));
-        }
-
-        static IpVFutureAddress parse(final String hostString) throws ParseException {
-            Matcher matcher = IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN.matcher(hostString);
-            if (!matcher.matches()) {
-                throw new ParseException("Not a valid host :" + hostString);
+                    && ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION.areMembers(matcher.group(2))) {
+                return makeIpVFutureAddress(matcher.group(1), matcher.group(2));
+            } else {
+                return AugmentedOptional.empty("Not a valid IP vFuture address :" + hostString);
             }
-            return makeIpVFutureAddress(matcher.group(1), matcher.group(2), PARSE_EXCEPTION_EXCEPTION_FACTORY);
         }
 
         @Override
