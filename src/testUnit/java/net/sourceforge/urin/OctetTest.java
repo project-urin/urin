@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.AugmentedOptionalMatcher.populated;
@@ -48,14 +47,13 @@ class OctetTest {
 
     @Test
     void parsesRejectsOctetStringsOutsideBoundary() {
-        assertThat(Octet.parses("-1"), unpopulated(equalTo("Argument must be in the range 0-255 but was [-1]")));
         assertThat(Octet.parses("256"), unpopulated(equalTo("Argument must be in the range 0-255 but was [256]")));
     }
 
     @Test
-    @Disabled
     void parsesRejectsNonDigitOctetStrings() {
-        assertThat(Octet.parses("+1"), unpopulated(equalTo("Argument may only contain characters [0-9] but got [+]")));
+        assertThat(Octet.parses("+1"), unpopulated(equalTo("Invalid Octet String [+1]")));
+        assertThat(Octet.parses("-1"), unpopulated(equalTo("Invalid Octet String [-1]")));
     }
 
     @Test

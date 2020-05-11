@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.AugmentedOptionalMatcher.populated;
@@ -51,15 +50,20 @@ class HexadectetTest {
     }
 
     @Test
+    void parsesLowerCaseAndUpperCaseHexadectetStrings() {
+        assertThat(Hexadectet.parses("ffff"), populated(equalTo(hexadectet(0xFFFF))));
+        assertThat(Hexadectet.parses("FFFF"), populated(equalTo(hexadectet(0xFFFF))));
+    }
+
+    @Test
     void parsesRejectsHexadectetStringsOutsideBoundary() {
-        assertThat(Hexadectet.parses(Integer.toString(-0x1, 16)), unpopulated(equalTo("Argument must be in the range 0x0-0xFFFF but was [-0x1]")));
         assertThat(Hexadectet.parses(Integer.toString(0x10000, 16)), unpopulated(equalTo("Argument must be in the range 0x0-0xFFFF but was [0x10000]")));
     }
 
     @Test
-    @Disabled
     void parsesRejectsNonHexDigitStrings() {
-        assertThat(Hexadectet.parses("+1"), unpopulated(equalTo("Argument may only contain characters [0-9a-fA-F] but got [+]")));
+        assertThat(Hexadectet.parses("+1"), unpopulated(equalTo("Invalid Hexadectet String [+1]")));
+        assertThat(Hexadectet.parses(Integer.toString(-0x1, 16)), unpopulated(equalTo("Invalid Hexadectet String [-1]")));
     }
 
     @Test

@@ -12,6 +12,8 @@ package net.sourceforge.urin;
 
 import java.util.Locale;
 
+import static net.sourceforge.urin.CharacterSetMembershipFunction.HEX_DIGIT;
+
 /**
  * An integer in the range 0 to FFFF (0 to 65535 in decimal).
  * Immutable and thread safe.
@@ -44,6 +46,9 @@ public final class Hexadectet extends UnaryValue<Integer> {
     }
 
     static AugmentedOptional<Hexadectet> parses(final String hexadectetString) {
+        if (hexadectetString == null || !HEX_DIGIT.areMembers(hexadectetString)) {
+            return AugmentedOptional.empty("Invalid Hexadectet String [" + hexadectetString + "]");
+        }
         final int hexadectetInt;
         try {
             hexadectetInt = Integer.parseInt(hexadectetString, 16);

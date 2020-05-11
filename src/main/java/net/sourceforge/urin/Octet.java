@@ -10,6 +10,8 @@
 
 package net.sourceforge.urin;
 
+import static net.sourceforge.urin.CharacterSetMembershipFunction.DIGIT;
+
 /**
  * An integer in the range 0 to 255.
  * Immutable and thread safe.
@@ -38,6 +40,9 @@ public final class Octet extends UnaryStringValue {
     }
 
     static AugmentedOptional<Octet> parses(final String octetString) {
+        if (octetString == null || !DIGIT.areMembers(octetString)) {
+            return AugmentedOptional.empty("Invalid Octet String [" + octetString + "]");
+        }
         final int octetInt;
         try {
             octetInt = Integer.parseInt(octetString);

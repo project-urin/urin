@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -309,7 +308,6 @@ class HostTest {
     }
 
     @Test
-    @Disabled
     void parsingAnIpV6AddressWithPlusCharacterParseException() {
         final ParseException parseException = assertThrows(ParseException.class, () -> parse("[1::+1:1]"));
         assertThat(parseException.getMessage(), equalTo("Not a valid host :[1::+1:1]"));
@@ -649,7 +647,6 @@ class HostTest {
     }
 
     @Test
-    @Disabled()
     void parsingARegisteredNameThatIsAlmostAnIpV4AddressExceptForAPlusCharacterDoesNotMakeAnIpV4Address() {
         assertThat(registeredName("+2.0.0.1"), not(equalTo(ipV4Address(octet(2), octet(0), octet(0), octet(1)))));
     }
