@@ -89,7 +89,7 @@ public abstract class Host {
      * @return a {@code Host} representing the given {@code String} as a registered name.
      */
     public static Host registeredName(final String registeredName) {
-        return IpV4Address.parses(registeredName).flatMap(AugmentedOptional::<Host>of) // TODO Wha?!
+        return IpV4Address.parses(registeredName).flatMap(AugmentedOptional::<Host>of) // https://tools.ietf.org/html/rfc3986#section-3.2.2 "If host matches the rule for IPv4address, then it should be considered an IPv4 address literal and not a reg-name."
                 .orElseGet(() -> new RegisteredName(registeredName));
     }
 
