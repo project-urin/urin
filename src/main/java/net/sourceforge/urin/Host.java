@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.String.join;
 import static java.util.Arrays.asList;
 import static java.util.Locale.ENGLISH;
 import static java.util.Objects.requireNonNull;
@@ -159,73 +160,34 @@ public abstract class Host {
         };
     }
 
-//    private static String ipV6String(final ElidableAsStringable... elidableAsStringables) { // TODO confirm this is a valid replacement
-//        int maximumStreakLength = 0;
-//        int maximumStreakEnd = 0;
-//        for (int i = 0, streakLengthToHere = 0; i < elidableAsStringables.length; i++) {
-//            ElidableAsStringable elidableAsStringable = elidableAsStringables[i];
-//            final int streakLengthHere = elidableAsStringable.isElidable() ? streakLengthToHere + 1 : 0;
-//            streakLengthToHere = streakLengthHere;
-//            if (streakLengthHere > maximumStreakLength) {
-//                maximumStreakLength = streakLengthHere;
-//                maximumStreakEnd = i;
-//            }
-//        }
-//        int maximumStreakStartIndex = (maximumStreakEnd - maximumStreakLength) + 1;
-//
-//        StringBuilder result = new StringBuilder("[");
-//        for (int i = 0; i < elidableAsStringables.length; i++) {
-//            if (maximumStreakLength < 2 || !(i >= maximumStreakStartIndex && i < (maximumStreakStartIndex + maximumStreakLength))) {
-//                if (i > 0) {
-//                    result.append(':');
-//                }
-//                result.append(elidableAsStringables[i].asString());
-//            } else {
-//                if (i == maximumStreakStartIndex) {
-//                    result.append(':');
-//                }
-//            }
-//        }
-//        return result
-//                .append(']')
-//                .toString();
-//    }
-// TODO just get the hexadectets in and return a collection of Strings... the caller can join them etc.
-
-    private static String ipV6String(final ElidableAsStringable... elidableAsStringables) {
-        int[] streakLength = new int[elidableAsStringables.length];
-        for (int i = 0; i < elidableAsStringables.length; i++) {
-            streakLength[i] = elidableAsStringables[i].isElidable()
-                    ? (i == 0 ? 0 : streakLength[i - 1]) + 1
-                    : 0;
-        }
-        int maximumStreakStartIndex = 0;
+    private static String ipV6String(final ElidableAsStringable... elidableAsStringables) { // TODO confirm this is a valid replacement
         int maximumStreakLength = 0;
-        for (int i = 0; i < elidableAsStringables.length; i++) {
-            if (streakLength[i] > maximumStreakLength) {
-                maximumStreakLength = streakLength[i];
-                maximumStreakStartIndex = i - (maximumStreakLength - 1);
+        int maximumStreakEnd = 0;
+        for (int i = 0, streakLengthToHere = 0; i < elidableAsStringables.length; i++) {
+            ElidableAsStringable elidableAsStringable = elidableAsStringables[i];
+            streakLengthToHere = elidableAsStringable.isElidable() ? streakLengthToHere + 1 : 0;
+            if (streakLengthToHere > maximumStreakLength) {
+                maximumStreakLength = streakLengthToHere;
+                maximumStreakEnd = i;
             }
         }
 
-        StringBuilder result = new StringBuilder()
-                .append('[');
+        List<String> result = new ArrayList<>(elidableAsStringables.length);
         for (int i = 0; i < elidableAsStringables.length; i++) {
-            if (maximumStreakLength < 2 || !(i >= maximumStreakStartIndex && i < (maximumStreakStartIndex + maximumStreakLength))) {
-                if (i > 0) {
-                    result.append(':');
-                }
-                result.append(elidableAsStringables[i].asString());
-            } else {
-                if (i == maximumStreakStartIndex) {
-                    result.append(':');
-                }
+            ElidableAsStringable elidableAsStringable = elidableAsStringables[i];
+            if (maximumStreakLength <= 1 || i <= maximumStreakEnd - maximumStreakLength || i > maximumStreakEnd) {
+                result.add(elidableAsStringable.asString());
+            } else if (i == 0 || i == maximumStreakEnd) {
+                result.add("");
             }
         }
-        return result
-                .append(']')
-                .toString();
+        if (maximumStreakEnd == elidableAsStringables.length - 1) {
+            result.add("");
+        }
+
+        return "[" + join(":", result) + "]";
     }
+// TODO just get the hexadectets in and return a collection of Strings... the caller can join them etc.
 
     static Host parse(final String hostString) throws ParseException {
         return AugmentedOptional.<Host>empty("Not a valid host :" + hostString)

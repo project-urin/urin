@@ -22,6 +22,7 @@
     <rule ref="category/java/bestpractices.xml">
         <exclude name="AbstractClassWithoutAbstractMethod"/>
         <exclude name="AvoidReassigningLoopVariables"/> <!-- configured later -->
+        <exclude name="ForLoopVariableCount"/> <!-- configured later -->
         <exclude name="JUnitAssertionsShouldIncludeMessage"/>
         <exclude name="JUnitTestContainsTooManyAsserts"/>
         <exclude name="JUnitTestsShouldIncludeAssert"/>
@@ -29,6 +30,11 @@
     <rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables">
         <properties>
             <property name="forReassign" value="allow"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/bestpractices.xml/ForLoopVariableCount">
+        <properties>
+            <property name="maximumVariables" value="2"/>
         </properties>
     </rule>
 
