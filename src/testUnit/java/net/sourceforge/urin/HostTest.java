@@ -422,6 +422,57 @@ class HostTest {
     }
 
     @Test
+    void ipV6AddressWithTrailingIpV4AddressAsStringElidesSequenceOfZerosAtStart() {
+        Hexadectet firstHexadectet = ZERO;
+        Hexadectet secondHexadectet = ZERO;
+        Hexadectet thirdHexadectet = ZERO;
+        Hexadectet fourthHexadectet = aNonZeroHexadectet();
+        Hexadectet fifthHexadectet = aNonZeroHexadectet();
+        Hexadectet sixthHexadectet = aNonZeroHexadectet();
+        Octet firstOctet = anOctet();
+        Octet secondOctet = anOctet();
+        Octet thirdOctet = anOctet();
+        Octet fourthOctet = anOctet();
+        assertThat(
+                ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet).asString(),
+                equalTo("[::" + fourthHexadectet.asString() + ":" + fifthHexadectet.asString() + ":" + sixthHexadectet.asString() + ":" + firstOctet.asString() + "." + secondOctet.asString() + "." + thirdOctet.asString() + "." + fourthOctet.asString() + "]"));
+    }
+
+    @Test
+    void ipV6AddressWithTrailingIpV4AddressAsStringElidesSequenceOfZerosAtEnd() {
+        Hexadectet firstHexadectet = aNonZeroHexadectet();
+        Hexadectet secondHexadectet = aNonZeroHexadectet();
+        Hexadectet thirdHexadectet = aNonZeroHexadectet();
+        Hexadectet fourthHexadectet = aNonZeroHexadectet();
+        Hexadectet fifthHexadectet = ZERO;
+        Hexadectet sixthHexadectet = ZERO;
+        Octet firstOctet = anOctet();
+        Octet secondOctet = anOctet();
+        Octet thirdOctet = anOctet();
+        Octet fourthOctet = anOctet();
+        assertThat(
+                ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet).asString(),
+                equalTo("[" + firstHexadectet.asString() + ":" + secondHexadectet.asString() + ":" + thirdHexadectet.asString() + ":" + fourthHexadectet.asString() + "::" + firstOctet.asString() + "." + secondOctet.asString() + "." + thirdOctet.asString() + "." + fourthOctet.asString() + "]"));
+    }
+
+    @Test
+    void ipV6AddressWithTrailingIpV4AddressAsStringElidesSequenceOfAllZeros() {
+        Hexadectet firstHexadectet = ZERO;
+        Hexadectet secondHexadectet = ZERO;
+        Hexadectet thirdHexadectet = ZERO;
+        Hexadectet fourthHexadectet = ZERO;
+        Hexadectet fifthHexadectet = ZERO;
+        Hexadectet sixthHexadectet = ZERO;
+        Octet firstOctet = anOctet();
+        Octet secondOctet = anOctet();
+        Octet thirdOctet = anOctet();
+        Octet fourthOctet = anOctet();
+        assertThat(
+                ipV6Address(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, firstOctet, secondOctet, thirdOctet, fourthOctet).asString(),
+                equalTo("[::" + firstOctet.asString() + "." + secondOctet.asString() + "." + thirdOctet.asString() + "." + fourthOctet.asString() + "]"));
+    }
+
+    @Test
     void ipV6AddressWithTrailingIpV4AddressElidesFirstLongestSequenceOfZeros() {
         Hexadectet firstHexadectet = aNonZeroHexadectet();
         Hexadectet secondHexadectet = ZERO;

@@ -10,17 +10,14 @@
 
 package net.sourceforge.urin;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.lang.String.join;
 import static java.util.Arrays.asList;
 import static java.util.Locale.ENGLISH;
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.joining;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static net.sourceforge.urin.Hexadectet.ZERO;
 import static net.sourceforge.urin.Hexadectet.hexadectet;
@@ -144,50 +141,47 @@ public abstract class Host {
         return IpVFutureAddress.makeIpVFutureAddress(version, address).orElseThrow(IllegalArgumentException::new);
     }
 
-    private static ElidableAsStringable asElidableAsStringable(final Hexadectet hexadectet) {
-        return new ElidableAsStringable() {
+    private static final class Elidable {
+        private final String content;
+        private final boolean isElided;
 
-            @Override
-            public String asString() {
-                return hexadectet.asString();
+        static Elidable elided() {
+            return new Elidable("", true);
+        }
 
-            }
+        static Elidable nonElided(final String content) {
+            return new Elidable(content, false);
+        }
 
-            @Override
-            public boolean isElidable() {
-                return hexadectet.isElidable();
-            }
-        };
+        Elidable(final String content, final boolean isElided) {
+            this.content = content;
+            this.isElided = isElided;
+        }
     }
 
-    private static String ipV6String(final ElidableAsStringable... elidableAsStringables) {
+    private static Deque<Elidable> elide(final Hexadectet... hexadectets) {
         int maximumStreakLength = 0;
         int maximumStreakEnd = 0;
-        for (int i = 0, streakLengthToHere = 0; i < elidableAsStringables.length; i++) {
-            ElidableAsStringable elidableAsStringable = elidableAsStringables[i];
-            streakLengthToHere = elidableAsStringable.isElidable() ? streakLengthToHere + 1 : 0;
+        for (int i = 0, streakLengthToHere = 0; i < hexadectets.length; i++) {
+            Hexadectet hexadectet = hexadectets[i];
+            streakLengthToHere = hexadectet.isElidable() ? streakLengthToHere + 1 : 0;
             if (streakLengthToHere > maximumStreakLength) {
                 maximumStreakLength = streakLengthToHere;
                 maximumStreakEnd = i;
             }
         }
 
-        List<String> result = new ArrayList<>(elidableAsStringables.length);
-        for (int i = 0; i < elidableAsStringables.length; i++) {
-            ElidableAsStringable elidableAsStringable = elidableAsStringables[i];
+        Deque<Elidable> result = new LinkedList<>();
+        for (int i = 0; i < hexadectets.length; i++) {
+            Hexadectet hexadectet = hexadectets[i];
             if (maximumStreakLength <= 1 || i <= maximumStreakEnd - maximumStreakLength || i > maximumStreakEnd) {
-                result.add(elidableAsStringable.asString());
+                result.add(Elidable.nonElided(hexadectet.asString()));
             } else if (i == 0 || i == maximumStreakEnd) {
-                result.add("");
+                result.add(Elidable.elided());
             }
         }
-        if (maximumStreakEnd == elidableAsStringables.length - 1) {
-            result.add("");
-        }
-
-        return "[" + join(":", result) + "]";
+        return result;
     }
-// TODO just get the hexadectets in and return a collection of Strings... the caller can join them etc.
 
     static Host parse(final String hostString) throws ParseException {
         return AugmentedOptional.<Host>empty("Not a valid host :" + hostString)
@@ -197,12 +191,6 @@ public abstract class Host {
                 .or(() -> IpVFutureAddress.parses(hostString))
                 .or(() -> RegisteredName.parses(hostString))
                 .orElseThrow(ParseException::new);
-    }
-
-    private interface ElidableAsStringable {
-        String asString();
-
-        boolean isElidable();
     }
 
     private static final class RegisteredName extends Host {
@@ -351,16 +339,8 @@ public abstract class Host {
 
         @Override
         String asString() {
-            return ipV6String(
-                    asElidableAsStringable(firstHexadectet),
-                    asElidableAsStringable(secondHexadectet),
-                    asElidableAsStringable(thirdHexadectet),
-                    asElidableAsStringable(fourthHexadectet),
-                    asElidableAsStringable(fifthHexadectet),
-                    asElidableAsStringable(sixthHexadectet),
-                    asElidableAsStringable(seventhHexadectet),
-                    asElidableAsStringable(eighthHexadectet)
-            );
+            final Deque<Elidable> elided = Host.elide(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet);
+            return "[" + elided.stream().map(elidable -> elidable.content).collect(joining(":")) + (elided.getLast().isElided ? ":" : "") + "]";
         }
 
         @Override
@@ -471,25 +451,8 @@ public abstract class Host {
 
         @Override
         String asString() {
-            return ipV6String(
-                    asElidableAsStringable(firstHexadectet),
-                    asElidableAsStringable(secondHexadectet),
-                    asElidableAsStringable(thirdHexadectet),
-                    asElidableAsStringable(fourthHexadectet),
-                    asElidableAsStringable(fifthHexadectet),
-                    asElidableAsStringable(sixthHexadectet),
-                    new ElidableAsStringable() {
-                        @Override
-                        public String asString() {
-                            return ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString();
-                        }
-
-                        @Override
-                        public boolean isElidable() {
-                            return false;
-                        }
-                    }
-            );
+            final Deque<Elidable> elided = Host.elide(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet);
+            return "[" + elided.stream().map(elidable -> elidable.content).collect(joining(":")) + ":" + ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString() + "]";
         }
 
         @Override
