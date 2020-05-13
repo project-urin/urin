@@ -160,7 +160,7 @@ public abstract class Host {
         };
     }
 
-    private static String ipV6String(final ElidableAsStringable... elidableAsStringables) { // TODO confirm this is a valid replacement
+    private static String ipV6String(final ElidableAsStringable... elidableAsStringables) {
         int maximumStreakLength = 0;
         int maximumStreakEnd = 0;
         for (int i = 0, streakLengthToHere = 0; i < elidableAsStringables.length; i++) {
