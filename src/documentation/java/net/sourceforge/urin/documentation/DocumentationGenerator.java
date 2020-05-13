@@ -23,11 +23,14 @@ import static net.sourceforge.urin.documentation.DownloadsPage.downloadsPage;
 import static net.sourceforge.urin.documentation.IndexPage.indexPage;
 import static net.sourceforge.urin.documentation.SupportPage.supportPage;
 
-public class DocumentationGenerator {
+public final class DocumentationGenerator {
 
     public static final CompactXmlFormatter XML_FORMATTER = new CompactXmlFormatter();
 
-    public static void main(final String... args) throws Exception {
+    private DocumentationGenerator() {
+    }
+
+    public static void main(final String... args) throws IOException, XmlWriteException {
         final File destination = new File(args[0]);
         final String version = versionString();
 

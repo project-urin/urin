@@ -39,7 +39,7 @@ final class DocumentationPage {
     private DocumentationPage() {
     }
 
-    @SuppressWarnings({"StaticMethodOnlyUsedInOneClass"})
+    @SuppressWarnings({"StaticMethodOnlyUsedInOneClass", "PMD.ExcessiveMethodLength"})
     static HtmlTag documentationPage(final String version) {
         return aUrinPage(
                 h2Tag(xhtmlText("Documentation")),

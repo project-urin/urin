@@ -43,6 +43,9 @@ final class UrinPage {
     static final Host W3_WWW = registeredName("www.w3.org");
     static final AnchorTag RFC_3986 = anchorTag(xhtmlText("RFC 3986")).withHref(href(http(registeredName("tools.ietf.org"), path("html", "rfc3986"))));
 
+    private UrinPage() {
+    }
+
     public static HtmlTag aUrinPage(final BlockElement<DoesNotContainFormTag>... body) {
         final Href projectSiteHref = href(http(SOURCEFORGE, path("projects", "urin")));
         return htmlTag(
