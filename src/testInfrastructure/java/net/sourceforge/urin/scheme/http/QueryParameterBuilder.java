@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -14,12 +14,15 @@ import net.sourceforge.urin.RandomSupplierSwitcher;
 
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 
-public class QueryParameterBuilder {
+public final class QueryParameterBuilder {
 
     private static final RandomSupplierSwitcher<HttpQuery.QueryParameter> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             QueryParameterBuilder::aNameOnlyQueryParameter,
             QueryParameterBuilder::aNameAndValueQueryParameter
     );
+
+    private QueryParameterBuilder() {
+    }
 
     public static HttpQuery.QueryParameter aNameAndValueQueryParameter() {
         return HttpQuery.queryParameter(aString(), aString());

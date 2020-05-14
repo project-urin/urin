@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,14 +10,19 @@
 
 package net.sourceforge.urin;
 
-import static net.sourceforge.urin.CharacterSets.*;
+import static net.sourceforge.urin.CharacterSets.HEX_DIGIT;
+import static net.sourceforge.urin.CharacterSets.SUB_DELIMS;
+import static net.sourceforge.urin.CharacterSets.UNRESERVED;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
-import static net.sourceforge.urin.Host.*;
+import static net.sourceforge.urin.Host.ipV4Address;
+import static net.sourceforge.urin.Host.ipV6Address;
+import static net.sourceforge.urin.Host.ipVFutureAddress;
+import static net.sourceforge.urin.Host.registeredName;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
 import static org.apache.commons.lang3.RandomStringUtils.random;
 
-public class HostBuilder {
+public final class HostBuilder {
 
     private static final RandomSupplierSwitcher<Host> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             HostBuilder::aRegisteredName,
@@ -26,6 +31,9 @@ public class HostBuilder {
             HostBuilder::anIpV6AddressWithTrailingIpV4Address,
             HostBuilder::anIpVFutureAddress
     );
+
+    private HostBuilder() {
+    }
 
     public static Host aHost() {
         return RANDOM_SUPPLIER_SWITCHER.get();

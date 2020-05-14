@@ -16,7 +16,7 @@ import org.hamcrest.Matchers;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toList;
 
-public class MoreMatchers {
+public final class MoreMatchers {
     private MoreMatchers() {
         // deliberately empty
     }

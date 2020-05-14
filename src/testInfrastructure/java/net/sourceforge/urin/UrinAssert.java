@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -16,7 +16,10 @@ import java.net.URISyntaxException;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class UrinAssert {
+public final class UrinAssert {
+
+    private UrinAssert() {
+    }
 
     public static void assertAsStringAndParse(final Scheme scheme, final String stringRepresentation, final Urin urinRepresentation) throws ParseException {
         assertThat(urinRepresentation.asString(), equalTo(stringRepresentation));

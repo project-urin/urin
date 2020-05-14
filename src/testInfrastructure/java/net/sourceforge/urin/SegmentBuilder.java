@@ -18,7 +18,7 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.PercentEncodingPartial.percentEncodingDelimitedValue;
 import static net.sourceforge.urin.Segment.segment;
 
-public class SegmentBuilder {
+public final class SegmentBuilder {
 
     private static final Random RANDOM = new Random();
 
@@ -32,6 +32,9 @@ public class SegmentBuilder {
             SegmentBuilder::aNonDotSegment,
             SegmentBuilder::aNonStringSegment
     );
+
+    private SegmentBuilder() {
+    }
 
     public static Segment<String> aNonDotSegment() {
         return segment(aString());

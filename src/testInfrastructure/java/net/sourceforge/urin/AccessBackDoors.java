@@ -10,7 +10,7 @@
 
 package net.sourceforge.urin;
 
-public class AccessBackDoors {
+public final class AccessBackDoors {
 
     private AccessBackDoors() {
     }

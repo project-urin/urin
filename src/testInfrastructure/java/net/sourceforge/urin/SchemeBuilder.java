@@ -17,13 +17,15 @@ import static net.sourceforge.urin.Scheme.scheme;
 import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
-public class SchemeBuilder {
+public final class SchemeBuilder {
 
     private static final RandomSupplierSwitcher<Scheme<String, Query<String>, Fragment<String>>> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             SchemeBuilder::aSchemeWithNoDefaultPort,
             SchemeBuilder::aSchemeWithDefaultPort
     );
 
+    private SchemeBuilder() {
+    }
 
     public static Scheme<String, Query<String>, Fragment<String>> aScheme() {
         return RANDOM_SUPPLIER_SWITCHER.get();

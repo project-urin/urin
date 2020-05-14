@@ -19,7 +19,10 @@ import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HostBuilder.anIpV4Address;
 import static net.sourceforge.urin.scheme.http.Http.HTTP;
 
-public class QueryMatcher {
+public final class QueryMatcher {
+    private QueryMatcher() {
+    }
+
     public static Matcher<HttpQuery> convertsToQueryString(final Matcher<String> expected) {
         return new TypeSafeDiagnosingMatcher<HttpQuery>() {
             @Override

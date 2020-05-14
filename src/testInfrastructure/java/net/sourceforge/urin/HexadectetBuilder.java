@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -14,9 +14,12 @@ import java.util.Random;
 
 import static net.sourceforge.urin.Hexadectet.hexadectet;
 
-public class HexadectetBuilder {
+public final class HexadectetBuilder {
 
     private static final Random RANDOM = new Random();
+
+    private HexadectetBuilder() {
+    }
 
     static Hexadectet aNonZeroHexadectet() {
         return hexadectet(RANDOM.nextInt(0xFFFF) + 1);

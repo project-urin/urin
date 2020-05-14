@@ -15,9 +15,12 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
-public class AbsolutePathBuilder {
+public final class AbsolutePathBuilder {
 
     private static final Random RANDOM = new Random();
+
+    private AbsolutePathBuilder() {
+    }
 
     public static AbsolutePath<String> anAbsolutePath() {
         final int segmentCount = RANDOM.nextInt(5);

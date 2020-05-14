@@ -18,7 +18,7 @@ import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.SegmentBuilder.aNonTypedSegment;
 
-public class PathBuilder {
+public final class PathBuilder {
 
     private static final RandomSupplierSwitcher<Path<String>> RANDOM_POLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             PathBuilder::anAbsolutePath,
@@ -30,6 +30,9 @@ public class PathBuilder {
             PathBuilder::anUnpollutedRootlessPath
     );
     private static final Random RANDOM = new Random();
+
+    private PathBuilder() {
+    }
 
     public static AbsolutePath<String> anUnpollutedAbsolutePath() {
         final int numberOfSegments = RANDOM.nextInt(4) + 1;

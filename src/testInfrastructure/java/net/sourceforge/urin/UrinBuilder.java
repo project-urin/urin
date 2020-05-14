@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -12,11 +12,14 @@ package net.sourceforge.urin;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
-import static net.sourceforge.urin.PathBuilder.*;
+import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
+import static net.sourceforge.urin.PathBuilder.anUnpollutedAbsolutePath;
+import static net.sourceforge.urin.PathBuilder.anUnpollutedPath;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 
-public class UrinBuilder {
+public final class UrinBuilder {
 
     private static final RandomSupplierSwitcher<Urin<String, Query<String>, Fragment<String>>> RANDOM_UNPOLLUTED_URIN_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             () -> aScheme().urin(),
@@ -55,6 +58,9 @@ public class UrinBuilder {
             () -> aScheme().urin(anAuthority(), aQuery(), aFragment()),
             () -> aScheme().urin(anAuthority(), anAbsolutePath(), aQuery(), aFragment())
     );
+
+    private UrinBuilder() {
+    }
 
     public static Urin<String, Query<String>, Fragment<String>> aUrin() {
         return RANDOM_POLLUTED_URIN_SUPPLIER_SWITCHER.get();

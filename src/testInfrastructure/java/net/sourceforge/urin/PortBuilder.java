@@ -13,9 +13,12 @@ package net.sourceforge.urin;
 import static net.sourceforge.urin.Port.port;
 import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
-public class PortBuilder {
+public final class PortBuilder {
     public static Port aPort() {
         return port(randomNumeric(5));
+    }
+
+    private PortBuilder() {
     }
 
     public static Port aPortDifferentTo(final Port port) {

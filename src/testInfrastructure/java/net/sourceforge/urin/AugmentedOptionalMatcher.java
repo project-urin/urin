@@ -18,6 +18,10 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import static org.hamcrest.Matchers.anything;
 
 final class AugmentedOptionalMatcher {
+
+    private AugmentedOptionalMatcher() {
+    }
+
     private static final class UnpopulatedException extends Exception {
         UnpopulatedException(final String message) {
             super(message);

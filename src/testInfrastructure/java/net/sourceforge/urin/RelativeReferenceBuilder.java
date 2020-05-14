@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -16,7 +16,7 @@ import static net.sourceforge.urin.PathBuilder.anUnpollutedAbsolutePath;
 import static net.sourceforge.urin.PathBuilder.anUnpollutedPath;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 
-public class RelativeReferenceBuilder {
+public final class RelativeReferenceBuilder {
 
     private static final RandomSupplierSwitcher<RelativeReference<String, Query<String>, Fragment<String>>> RANDOM_UNPOLLUTED_RELATIVE_REFERENCE_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             () -> SchemeBuilder.aScheme().relativeReference(),
@@ -36,6 +36,9 @@ public class RelativeReferenceBuilder {
             () -> SchemeBuilder.aScheme().relativeReference(anAuthority(), anUnpollutedAbsolutePath(), aQuery()),
             () -> SchemeBuilder.aScheme().relativeReference(anAuthority(), anUnpollutedAbsolutePath(), aQuery(), aFragment())
     );
+
+    private RelativeReferenceBuilder() {
+    }
 
     public static RelativeReference<String, Query<String>, Fragment<String>> anUnpollutedRelativeReference() {
         return RANDOM_UNPOLLUTED_RELATIVE_REFERENCE_SUPPLIER_SWITCHER.get();
