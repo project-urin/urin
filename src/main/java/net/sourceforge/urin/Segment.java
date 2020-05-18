@@ -10,6 +10,10 @@
 
 package net.sourceforge.urin;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 import static net.sourceforge.urin.CharacterSetMembershipFunction.P_CHAR;
 import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.percentEncodingString;
 import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.specifiedValueEncoding;
@@ -58,6 +62,11 @@ public abstract class Segment<ENCODES> {
             }
 
             @Override
+            List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
+                return singletonList(next);
+            }
+
+            @Override
             String asString() {
                 return ".";
             }
@@ -98,6 +107,11 @@ public abstract class Segment<ENCODES> {
             @Override
             public ENCODES value() {
                 throw new UnsupportedOperationException("Attempt to get value of .. segment");
+            }
+
+            @Override
+            List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
+                return asList(this, next);
             }
 
             @Override
@@ -144,6 +158,15 @@ public abstract class Segment<ENCODES> {
             }
 
             @Override
+            List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
+                if (dotDot().equals(next)) {
+                    return singletonList(dot());
+                } else {
+                    return asList(this, next);
+                }
+            }
+
+            @Override
             String asString() {
                 return "";
             }
@@ -171,7 +194,7 @@ public abstract class Segment<ENCODES> {
         };
     }
 
-    private static final class ValueSegment<ENCODES> extends Segment<ENCODES> {
+    private static final class ValueSegment<ENCODES> extends Segment<ENCODES> { // TODO could this extend empty?  Or a common superclass?  They share an implementation of incorporate
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
         private ValueSegment(final ENCODES value, final PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
@@ -187,6 +210,15 @@ public abstract class Segment<ENCODES> {
         @Override
         public ENCODES value() {
             return delegate.value;
+        }
+
+        @Override
+        List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
+            if (dotDot().equals(next)) {
+                return singletonList(dot());
+            } else {
+                return asList(this, next);
+            }
         }
 
         @Override
@@ -249,7 +281,7 @@ public abstract class Segment<ENCODES> {
      */
     public static <T> Segment<T> segment(final T segment, final PercentEncodingPartial<T, String> percentEncodingPartial) {
         final ValueSegment<T> result = new ValueSegment<>(segment, percentEncodingPartial);
-        return result.isEmpty() ? Segment.empty() : result;
+        return result.isEmpty() ? Segment.empty() : result; // TODO I think this is unhelpful except for a trailing segment as e.g. .//b/c is hard to get values from
     }
 
     final boolean containsColon() {
@@ -283,7 +315,7 @@ public abstract class Segment<ENCODES> {
 
     /**
      * Gets the (non-encoded) value of this segment, if it is a type that has a value, or throws {@code UnsupportedOperationException} otherwise.
-     *
+     * <p>
      * Dot segments (. and ..) and the empty segment do not have values, and will throw {@code UnsupportedOperationException}.
      * This can be tested by equality with the objects returned by {@link #dot()}, {@link #dotDot()}, and {@link #empty()} methods, or by calling {@code hasValue()}.
      *
@@ -291,4 +323,6 @@ public abstract class Segment<ENCODES> {
      * @throws UnsupportedOperationException if this is a segment that does not represent a value.
      */
     public abstract ENCODES value();
+
+    abstract List<Segment<ENCODES>> incorporate(Segment<ENCODES> next);
 }

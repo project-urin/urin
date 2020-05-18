@@ -19,6 +19,8 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_CONTAINS_COLON;
 import static net.sourceforge.urin.PathBuilder.aRootlessPath;
+import static net.sourceforge.urin.Segment.dot;
+import static net.sourceforge.urin.Segment.dotDot;
 import static net.sourceforge.urin.Segment.empty;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
@@ -111,7 +113,7 @@ class RootlessPathTest {
 
     @Test
     void removesDotSegments() {
-        final Path<String> actual = RootlessPath.rootlessPath(segment("a"), segment("b"), segment("c"), Segment.dot(), Segment.dotDot(), Segment.dotDot(), segment("g"));
+        final Path<String> actual = RootlessPath.rootlessPath(segment("a"), segment("b"), segment("c"), dot(), dotDot(), dotDot(), segment("g"));
         assertThat(actual, equalTo(RootlessPath.rootlessPath(segment("a"), segment("g"))));
     }
 
@@ -171,4 +173,112 @@ class RootlessPathTest {
         assertThat(rootlessPath.segments(), contains(segmentOne, segmentTwo));
     }
 
+    @Test
+    void normalisesDotSlashDot() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(dot(), dot());
+        assertThat(rootlessPath.segments(), contains(dot()));
+    }
+
+    @Test
+    void normalisesDotSlashDotDot() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(dot(), dotDot());
+        assertThat(rootlessPath.segments(), contains(dotDot()));
+    }
+
+    @Test
+    void normalisesDotSlashEmpty() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(dot(), empty());
+        assertThat(rootlessPath.segments(), contains(empty())); // TODO this renders as ./ ...which is the same as ., so it ought to be normalised to .
+    }
+
+    @Test
+    void normalisesDotSlashValue() {
+        final Segment<String> valueSegment = aNonDotSegment();
+        Path<String> rootlessPath = RootlessPath.rootlessPath(dot(), valueSegment);
+        assertThat(rootlessPath.segments(), contains(valueSegment));
+    }
+
+    @Test
+    void normalisesDotDotSlashDot() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(dotDot(), dot());
+        assertThat(rootlessPath.segments(), contains(dotDot(), empty()));
+    }
+
+    @Test
+    void normalisesDotDotSlashDotDot() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(dotDot(), dotDot());
+        assertThat(rootlessPath.segments(), contains(dotDot(), dotDot()));
+    }
+
+    @Test
+    void normalisesDotDotSlashEmpty() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(dotDot(), empty());
+        assertThat(rootlessPath.segments(), contains(dotDot(), empty()));
+    }
+
+    @Test
+    void normalisesDotDotSlashValue() {
+        final Segment<String> valueSegment = aNonDotSegment();
+        Path<String> rootlessPath = RootlessPath.rootlessPath(dotDot(), valueSegment);
+        assertThat(rootlessPath.segments(), contains(dotDot(), valueSegment));
+    }
+
+    @Test
+    void normalisesEmptySlashDot() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(empty(), dot());
+        assertThat(rootlessPath.segments(), contains(empty(), empty()));
+    }
+
+    @Test
+    void normalisesEmptySlashDotSlashDot() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(empty(), dot(), dot());
+        assertThat(rootlessPath.segments(), contains(empty(), empty()));
+    }
+
+    @Test
+    void normalisesEmptySlashDotDot() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(empty(), dotDot());
+        assertThat(rootlessPath.segments(), contains(dot()));
+    }
+
+    @Test
+    void normalisesEmptySlashEmpty() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(empty(), empty());
+        assertThat(rootlessPath.segments(), contains(empty(), empty()));
+    }
+
+    @Test
+    void normalisesEmptySlashValue() {
+        final Segment<String> valueSegment = aNonDotSegment();
+        Path<String> rootlessPath = RootlessPath.rootlessPath(empty(), valueSegment);
+        assertThat(rootlessPath.segments(), contains(empty(), valueSegment));
+    }
+
+    @Test
+    void normalisesValueSlashDot() {
+        final Segment<String> valueSegment = aNonDotSegment();
+        Path<String> rootlessPath = RootlessPath.rootlessPath(valueSegment, dot());
+        assertThat(rootlessPath.segments(), contains(valueSegment, empty()));
+    }
+
+    @Test
+    void normalisesValueSlashDotDot() {
+        Path<String> rootlessPath = RootlessPath.rootlessPath(aNonDotSegment(), dotDot());
+        assertThat(rootlessPath.segments(), contains(dot()));
+    }
+
+    @Test
+    void normalisesValueSlashEmpty() {
+        final Segment<String> valueSegment = aNonDotSegment();
+        Path<String> rootlessPath = RootlessPath.rootlessPath(valueSegment, empty());
+        assertThat(rootlessPath.segments(), contains(valueSegment, empty()));
+    }
+
+    @Test
+    void normalisesValueSlashValue() {
+        final Segment<String> firstValueSegment = aNonDotSegment();
+        final Segment<String> secondValueSegment = aNonDotSegment();
+        Path<String> rootlessPath = RootlessPath.rootlessPath(firstValueSegment, secondValueSegment);
+        assertThat(rootlessPath.segments(), contains(firstValueSegment, secondValueSegment));
+    }
 }

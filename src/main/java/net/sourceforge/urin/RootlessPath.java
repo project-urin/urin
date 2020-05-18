@@ -10,56 +10,19 @@
 
 package net.sourceforge.urin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-import static java.util.Objects.requireNonNull;
 import static net.sourceforge.urin.PathHelper.appendSegmentsTo;
-import static net.sourceforge.urin.Segment.dot;
-import static net.sourceforge.urin.Segment.dotDot;
 
 final class RootlessPath<T> extends Path<T> {
 
     private final Collection<Segment<T>> segments;
 
     RootlessPath(final Iterable<Segment<T>> segments) {
-        LinkedList<Segment<T>> newSegments = new LinkedList<>();
-        Iterator<Segment<T>> segmentIterator = segments.iterator();
-        while (segmentIterator.hasNext()) {
-            Segment<T> segment = requireNonNull(segmentIterator.next(), "Segment cannot be null");
-            if (!dot().equals(segment)) {
-                if (dotDot().equals(segment) && !newSegments.isEmpty() && !dotDot().equals(newSegments.getLast())) {
-                    Segment<T> removedSegment = newSegments.removeLast();
-                    if (dot().equals(removedSegment)) {
-                        if (!newSegments.isEmpty() && !dotDot().equals(newSegments.getLast())) {
-                            newSegments.removeLast();
-                            if (!segmentIterator.hasNext()) {
-                                newSegments.add(Segment.empty());
-                            }
-                        } else {
-                            newSegments.add(dotDot());
-                        }
-                    } else {
-                        if (!segmentIterator.hasNext()) {
-                            newSegments.add(Segment.empty());
-                        }
-                    }
-                } else {
-                    if (!newSegments.isEmpty() && dot().equals(newSegments.getLast())) {
-                        newSegments.removeLast();
-                    }
-                    newSegments.add(segment.isEmpty() ? Segment.empty() : segment);
-                }
-            } else {
-                if (newSegments.isEmpty()) {
-                    newSegments.add(dot());
-                } else {
-                    if (!segmentIterator.hasNext()) {
-                        newSegments.add(Segment.empty());
-                    }
-                }
-            }
-        }
-        this.segments = newSegments;
+        this.segments = normaliseRootless(segments);
     }
 
     @Override

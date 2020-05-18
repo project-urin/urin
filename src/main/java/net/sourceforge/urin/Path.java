@@ -11,10 +11,14 @@
 package net.sourceforge.urin;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
+import static net.sourceforge.urin.Segment.dot;
+import static net.sourceforge.urin.Segment.empty;
 import static net.sourceforge.urin.Segment.segment;
 
 /**
@@ -151,6 +155,26 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
             }
             return path(result);
         }
+    }
+
+    static <T> Deque<Segment<T>> normaliseRootless(final Iterable<Segment<T>> segments) {
+        Deque<Segment<T>> normalisedSegments = new LinkedList<>();
+        for (Segment<T> next : segments) {
+            if (normalisedSegments.isEmpty()) {
+                normalisedSegments.add(next);
+            } else {
+                Segment<T> current = normalisedSegments.removeLast();
+                if (dot().equals(current) && !normalisedSegments.isEmpty()) {
+                    current = normalisedSegments.removeLast();
+                }
+                normalisedSegments.addAll(current.incorporate(next));
+            }
+        }
+        if (normalisedSegments.size() > 1 && dot().equals(normalisedSegments.getLast())) {
+            normalisedSegments.removeLast();
+            normalisedSegments.add(empty());
+        }
+        return normalisedSegments;
     }
 
     Path() {

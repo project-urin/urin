@@ -12,14 +12,14 @@ package net.sourceforge.urin;
 
 import java.util.*;
 
-import static java.util.Objects.requireNonNull;
+import static java.util.Collections.emptyList;
 import static net.sourceforge.urin.PathHelper.appendSegmentsTo;
 import static net.sourceforge.urin.Segment.dot;
 import static net.sourceforge.urin.Segment.dotDot;
 
 /**
  * A path that begins with a '/' - typically representing a path relative to root.
- *
+ * <p>
  * To create instances, see {@link Path}.
  */
 public final class AbsolutePath<T> extends Path<T> {
@@ -27,30 +27,12 @@ public final class AbsolutePath<T> extends Path<T> {
     private final Collection<Segment<T>> segments;
 
     AbsolutePath(final Iterable<Segment<T>> segments) {
-        LinkedList<Segment<T>> newSegments = new LinkedList<>();
-        Iterator<Segment<T>> segmentIterator = segments.iterator();
-        while (segmentIterator.hasNext()) {
-            Segment<T> segment = requireNonNull(segmentIterator.next(), "Segment cannot be null");
-            if (!dot().equals(segment)) {
-                if (dotDot().equals(segment)) {
-                    if (!newSegments.isEmpty()) {
-                        newSegments.removeLast();
-                        if (!segmentIterator.hasNext()) {
-                            newSegments.add(Segment.empty());
-                        }
-                    }
-                } else {
-                    newSegments.add(segment.isEmpty() ? Segment.empty() : segment);
-                }
-            } else {
-                if (!segmentIterator.hasNext()) {
-                    newSegments.add(Segment.empty());
-                }
-            }
+        Deque<Segment<T>> normalisedSegments = normaliseRootless(segments);
+        while (!normalisedSegments.isEmpty() && (dot().equals(normalisedSegments.getFirst()) || dotDot().equals(normalisedSegments.getFirst()))) {
+            normalisedSegments.removeFirst();
         }
-        this.segments = newSegments.size() == 1 && newSegments.getFirst().isEmpty() ? new LinkedList<>() : newSegments;
+        this.segments = normalisedSegments.size() == 1 && normalisedSegments.getFirst().isEmpty() ? emptyList() : normalisedSegments;
     }
-
 
     @Override
     boolean firstPartIsSuppliedButIsEmpty() {
