@@ -416,7 +416,7 @@ public abstract class Host {
         private final Octet thirdOctet;
         private final Octet fourthOctet;
 
-        public IpV6AddressWithTrailingIpV4Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
+        IpV6AddressWithTrailingIpV4Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
             this.firstHexadectet = requireNonNull(firstHexadectet, "Cannot instantiate Host with null firstHexadectet");
             this.secondHexadectet = requireNonNull(secondHexadectet, "Cannot instantiate Host with null secondHexadectet");
             this.thirdHexadectet = requireNonNull(thirdHexadectet, "Cannot instantiate Host with null thirdHexadectet");

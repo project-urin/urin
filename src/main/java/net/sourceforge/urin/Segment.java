@@ -253,7 +253,7 @@ public abstract class Segment<ENCODES> {
     }
 
     private static final class SegmentEncodingUnaryValue<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
-        public SegmentEncodingUnaryValue(final ENCODES value, final PercentEncodingPartial.PercentEncoding<ENCODES> percentEncoding) {
+        SegmentEncodingUnaryValue(final ENCODES value, final PercentEncodingPartial.PercentEncoding<ENCODES> percentEncoding) {
             super(value, percentEncoding);
         }
     }

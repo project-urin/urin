@@ -119,4 +119,23 @@
         <exclude name="DataflowAnomalyAnalysis"/>
         <exclude name="MissingSerialVersionUID"/>
     </rule>
+
+    <!--    <rule ref="category/java/documentation.xml">-->
+    <!--        <exclude name="CommentRequired"/>  &lt;!&ndash; configured later &ndash;&gt;-->
+    <!--        <exclude name="CommentSize"/>-->
+    <!--        <exclude name="UncommentedEmptyConstructor"/>-->
+    <!--    </rule>-->
+    <!--    <rule ref="category/java/documentation.xml/CommentRequired">-->
+    <!--        <properties>-->
+    <!--            <property name="methodWithOverrideCommentRequirement" value="Ignored" />-->
+    <!--            <property name="accessorCommentRequirement" value="Ignored" />-->
+    <!--            <property name="headerCommentRequirement" value="Ignored" />-->
+    <!--            <property name="fieldCommentRequirement" value="Ignored" />-->
+    <!--            <property name="publicMethodCommentRequirement" value="Required" />-->
+    <!--            <property name="protectedMethodCommentRequirement" value="Required" />-->
+    <!--            <property name="enumCommentRequirement" value="Ignored" />-->
+    <!--            <property name="serialVersionUIDCommentRequired" value="Ignored" />-->
+    <!--            <property name="serialPersistentFieldsCommentRequired" value="Ignored" />-->
+    <!--        </properties>-->
+    <!--    </rule>-->
 </ruleset>

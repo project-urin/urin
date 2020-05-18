@@ -112,7 +112,7 @@ public abstract class Authority {
     private static class AuthorityWithHost extends Authority {
         private final Host host;
 
-        public AuthorityWithHost(final Host host) {
+        AuthorityWithHost(final Host host) {
             this.host = requireNonNull(host, "Cannot instantiate Authority with null host");
         }
 
@@ -245,7 +245,7 @@ public abstract class Authority {
         private final Host host;
         private final Port port;
 
-        public AuthorityWithUserInfoAndHostAndPort(final UserInfo userInfo, final Host host, final Port port) {
+        AuthorityWithUserInfoAndHostAndPort(final UserInfo userInfo, final Host host, final Port port) {
             this.userInfo = requireNonNull(userInfo, "Cannot instantiate Authority with null userInfo");
             this.host = requireNonNull(host, "Cannot instantiate Authority with null host");
             this.port = requireNonNull(port, "Cannot instantiate Authority with null port");
