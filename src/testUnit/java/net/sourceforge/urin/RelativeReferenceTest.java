@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2020 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -22,9 +22,13 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 import static net.sourceforge.urin.Path.rootlessPath;
-import static net.sourceforge.urin.PathBuilder.*;
+import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
+import static net.sourceforge.urin.PathBuilder.anUnpollutedAbsolutePath;
+import static net.sourceforge.urin.PathBuilder.anUnpollutedPath;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
+import static net.sourceforge.urin.Segment.dot;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.SegmentBuilder.aSegment;
@@ -42,7 +46,7 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithEmptyPathAuthorityIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference();
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference();
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -54,14 +58,14 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithEmptyPathQueryIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference();
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference();
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
     void aRelativeReferenceWithEmptyPathFragmentIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference();
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference();
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -92,7 +96,7 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithEmptyPathWithQueryAuthorityIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference(aQuery());
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(aQuery());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -114,7 +118,7 @@ class RelativeReferenceTest {
     @Test
     void aRelativeReferenceWithEmptyPathWithQueryFragmentIsCorrect() {
         Query<String> query = aQuery();
-        final RelativeReference relativeReference = aScheme().relativeReference(query);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(query);
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -162,7 +166,7 @@ class RelativeReferenceTest {
     @Test
     void aRelativeReferenceWithEmptyPathWithFragmentAuthorityIsCorrect() {
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(fragment);
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
@@ -177,7 +181,7 @@ class RelativeReferenceTest {
     @Test
     void aRelativeReferenceWithEmptyPathWithFragmentQueryIsCorrect() {
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(fragment);
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -235,7 +239,7 @@ class RelativeReferenceTest {
     void aRelativeReferenceWithEmptyPathWithQueryAndFragmentAuthorityIsCorrect() {
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(query, fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(query, fragment);
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
@@ -323,7 +327,7 @@ class RelativeReferenceTest {
     @Test
     void aRelativeReferenceWithPathAuthorityIsCorrect() {
         Path<String> path = aPath();
-        final RelativeReference relativeReference = aScheme().relativeReference(path);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
@@ -338,7 +342,7 @@ class RelativeReferenceTest {
     @Test
     void aRelativeReferenceWithPathQueryIsCorrect() {
         Path<String> path = aPath();
-        final RelativeReference relativeReference = aScheme().relativeReference(path);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -346,7 +350,7 @@ class RelativeReferenceTest {
     @Test
     void aRelativeReferenceWithPathFragmentIsCorrect() {
         Path<String> path = aPath();
-        final RelativeReference relativeReference = aScheme().relativeReference(path);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -427,7 +431,7 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithPathAndQueryAuthorityIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference(aPath(), aQuery());
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(aPath(), aQuery());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
@@ -453,7 +457,7 @@ class RelativeReferenceTest {
     void aRelativeReferenceWithPathAndQueryFragmentIsCorrect() {
         Path<String> path = aPath();
         Query<String> query = aQuery();
-        final RelativeReference relativeReference = aScheme().relativeReference(path, query);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(path, query);
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -548,7 +552,7 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithPathAndFragmentAuthorityIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference(aPath(), aFragment());
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(aPath(), aFragment());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -564,7 +568,7 @@ class RelativeReferenceTest {
     void aRelativeReferenceWithPathAndFragmentQueryIsCorrect() {
         Path<String> path = aPath();
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(path, fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(path, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -669,7 +673,7 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithPathAndQueryAndFragmentAuthorityIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference(aPath(), aQuery(), aFragment());
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(aPath(), aQuery(), aFragment());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
@@ -836,7 +840,7 @@ class RelativeReferenceTest {
 
     @Test
     void aSimpleAbsolutePathAuthorityIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference(aPath());
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(aPath());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
 
@@ -851,7 +855,7 @@ class RelativeReferenceTest {
     @Test
     void aSimpleAbsolutePathQueryIsCorrect() {
         Path<String> path = aPath();
-        final RelativeReference relativeReference = aScheme().relativeReference(path);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -859,7 +863,7 @@ class RelativeReferenceTest {
     @Test
     void aSimpleAbsolutePathFragmentIsCorrect() {
         Path<String> path = aPath();
-        final RelativeReference relativeReference = aScheme().relativeReference(path);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(path);
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -896,7 +900,7 @@ class RelativeReferenceTest {
     void aSimpleRootlessPathPrependsAColonInFirstSegmentWithDotSlash() {
         Segment<String> firstSegment = segment(aStringIncluding(':'));
         Segment<String> secondSegment = aSegment();
-        assertThat(aScheme().relativeReference(rootlessPath(firstSegment, secondSegment)), equalTo(aScheme().relativeReference(rootlessPath(Segment.dot(), firstSegment, secondSegment))));
+        assertThat(aScheme().relativeReference(rootlessPath(firstSegment, secondSegment)), equalTo(aScheme().relativeReference(rootlessPath(dot(), firstSegment, secondSegment))));
     }
 
     @Test
@@ -918,7 +922,7 @@ class RelativeReferenceTest {
 
     @Test
     void aSimpleRootlessPathAuthorityIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference(aPath());
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(aPath());
         assertThat(relativeReference.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -931,14 +935,14 @@ class RelativeReferenceTest {
 
     @Test
     void aSimpleRootlessPathQueryIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference(aPath());
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(aPath());
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
 
     @Test
     void aSimpleRootlessPathFragmentIsCorrect() {
-        final RelativeReference relativeReference = aScheme().relativeReference(aPath());
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(aPath());
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -1018,7 +1022,7 @@ class RelativeReferenceTest {
     @Test
     void aRelativeReferenceWithAuthorityAndEmptyPathAuthorityIsCorrect() {
         Authority authority = anAuthority();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority);
         assertThat(relativeReference.hasAuthority(), equalTo(true));
         assertThat(relativeReference.authority(), equalTo(authority));
     }
@@ -1032,7 +1036,7 @@ class RelativeReferenceTest {
     @Test
     void aRelativeReferenceWithAuthorityAndEmptyPathQueryIsCorrect() {
         Authority authority = anAuthority();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority);
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -1040,7 +1044,7 @@ class RelativeReferenceTest {
     @Test
     void aRelativeReferenceWithAuthorityAndEmptyPathFragmentIsCorrect() {
         Authority authority = anAuthority();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority);
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -1125,7 +1129,7 @@ class RelativeReferenceTest {
     void aRelativeReferenceWithAuthorityAndQueryAuthorityIsCorrect() {
         Authority authority = anAuthority();
         Query<String> query = aQuery();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, query);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, query);
         assertThat(relativeReference.hasAuthority(), equalTo(true));
         assertThat(relativeReference.authority(), equalTo(authority));
     }
@@ -1150,7 +1154,7 @@ class RelativeReferenceTest {
     void aRelativeReferenceWithAuthorityAndQueryFragmentIsCorrect() {
         Authority authority = anAuthority();
         Query<String> query = aQuery();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, query);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, query);
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -1246,7 +1250,7 @@ class RelativeReferenceTest {
     void aRelativeReferenceWithAuthorityAndFragmentAuthorityIsCorrect() {
         Authority authority = anAuthority();
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, fragment);
         assertThat(relativeReference.hasAuthority(), equalTo(true));
         assertThat(relativeReference.authority(), equalTo(authority));
 
@@ -1263,7 +1267,7 @@ class RelativeReferenceTest {
     void aRelativeReferenceWithAuthorityAndFragmentQueryIsCorrect() {
         Authority authority = anAuthority();
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -1380,7 +1384,7 @@ class RelativeReferenceTest {
         Authority authority = anAuthority();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, query, fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, query, fragment);
         assertThat(relativeReference.hasAuthority(), equalTo(true));
         assertThat(relativeReference.authority(), equalTo(authority));
     }
@@ -1523,7 +1527,7 @@ class RelativeReferenceTest {
     void aRelativeReferenceWithAuthorityAndPathQueryIsCorrect() {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, absolutePath);
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -1532,7 +1536,7 @@ class RelativeReferenceTest {
     void aRelativeReferenceWithAuthorityAndPathFragmentIsCorrect() {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, absolutePath);
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -1591,7 +1595,7 @@ class RelativeReferenceTest {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
         Query<String> query = aQuery();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath, query);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, absolutePath, query);
         assertThat(relativeReference.hasAuthority(), equalTo(true));
         assertThat(relativeReference.authority(), equalTo(authority));
     }
@@ -1619,7 +1623,7 @@ class RelativeReferenceTest {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
         Query<String> query = aQuery();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath, query);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, absolutePath, query);
         assertThat(relativeReference.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -1675,7 +1679,7 @@ class RelativeReferenceTest {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath, fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, absolutePath, fragment);
         assertThat(relativeReference.hasAuthority(), equalTo(true));
         assertThat(relativeReference.authority(), equalTo(authority));
     }
@@ -1693,7 +1697,7 @@ class RelativeReferenceTest {
         Authority authority = anAuthority();
         AbsolutePath<String> absolutePath = anAbsolutePath();
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath, fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, absolutePath, fragment);
         assertThat(relativeReference.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, relativeReference::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -1762,7 +1766,7 @@ class RelativeReferenceTest {
         AbsolutePath<String> absolutePath = anAbsolutePath();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        final RelativeReference relativeReference = aScheme().relativeReference(authority, absolutePath, query, fragment);
+        final RelativeReference<?, ?, ?> relativeReference = aScheme().relativeReference(authority, absolutePath, query, fragment);
         assertThat(relativeReference.hasAuthority(), equalTo(true));
         assertThat(relativeReference.authority(), equalTo(authority));
     }
