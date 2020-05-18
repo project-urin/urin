@@ -85,7 +85,7 @@ class RootlessPathTest {
 
     @Test
     void correctlyIdentifiesFirstPartAsBeingSuppliedButEmpty() {
-        assertThat(RootlessPath.rootlessPath(empty()).firstPartIsSuppliedButIsEmpty(), equalTo(true));
+        assertThat(RootlessPath.rootlessPath(empty(), aNonDotSegment()).firstPartIsSuppliedButIsEmpty(), equalTo(true));
     }
 
     @Test
@@ -188,7 +188,7 @@ class RootlessPathTest {
     @Test
     void normalisesDotSlashEmpty() {
         Path<String> rootlessPath = RootlessPath.rootlessPath(dot(), empty());
-        assertThat(rootlessPath.segments(), contains(empty())); // TODO this renders as ./ ...which is the same as ., so it ought to be normalised to .
+        assertThat(rootlessPath.segments(), contains(empty()));
     }
 
     @Test

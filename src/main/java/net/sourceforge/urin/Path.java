@@ -157,7 +157,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
         }
     }
 
-    static <T> Deque<Segment<T>> normaliseRootless(final Iterable<Segment<T>> segments) {
+    static <T> Deque<Segment<T>> normaliseRootless(final Iterable<Segment<T>> segments) { // TODO consider whether we should normalise by effect, e.g. the relative references . and ./ are equivalent, as are .. and ../ (we'd call the latter of each "empty")
         Deque<Segment<T>> normalisedSegments = new LinkedList<>();
         for (Segment<T> next : segments) {
             if (normalisedSegments.isEmpty()) {
