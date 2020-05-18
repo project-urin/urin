@@ -14,7 +14,12 @@ import net.sourceforge.writexml.CompactXmlFormatter;
 import net.sourceforge.writexml.XmlWriteException;
 import net.sourceforge.xazzle.xhtml.HtmlTag;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -42,7 +47,7 @@ public final class DocumentationGenerator {
 
     private static String versionString() throws IOException {
         Properties properties = new Properties();
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream("gradle.properties"), UTF_8)) {
+        try (Reader reader = Files.newBufferedReader(Paths.get("gradle.properties"), UTF_8)) {
             properties.load(reader);
         }
         return properties.getProperty("majorVersion") + "." + properties.getProperty("minorVersion");
@@ -50,7 +55,7 @@ public final class DocumentationGenerator {
 
     private static void writePage(final HtmlTag urinPage, final File destination, final String fileName) throws IOException, XmlWriteException {
         final File file = new File(destination, fileName);
-        try (Writer fileWriter = new OutputStreamWriter(new FileOutputStream(file), UTF_8)) {
+        try (Writer fileWriter = Files.newBufferedWriter(file.toPath(), UTF_8)) {
             XML_FORMATTER.write(urinPage.asDocument(), fileWriter);
         }
     }

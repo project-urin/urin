@@ -140,4 +140,9 @@
     </rule>
 
     <rule ref="category/java/multithreading.xml"/>
+
+    <rule ref="category/java/performance.xml">
+        <exclude name="SimplifyStartsWith"/>
+        <exclude name="AvoidInstantiatingObjectsInLoops"/>
+    </rule>
 </ruleset>
