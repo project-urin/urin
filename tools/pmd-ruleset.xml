@@ -145,4 +145,6 @@
         <exclude name="SimplifyStartsWith"/>
         <exclude name="AvoidInstantiatingObjectsInLoops"/>
     </rule>
+
+    <rule ref="category/java/security.xml"/>
 </ruleset>
