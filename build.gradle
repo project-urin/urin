@@ -47,7 +47,7 @@ check.dependsOn testUnit
 check.dependsOn testIntegration
 
 dependencies {
-    testInfrastructureImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
+    testInfrastructureImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
     testInfrastructureImplementation group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
 
     testUnitImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
