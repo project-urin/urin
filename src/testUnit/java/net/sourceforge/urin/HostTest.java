@@ -640,6 +640,12 @@ class HostTest {
     }
 
     @Test
+    void parsingAnIpVFutureAddressWithTrailingKruftThrowsParseException() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[vABCDE.foo]oops"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[vABCDE.foo]oops"));
+    }
+
+    @Test
     void ipVFutureRejectsInvalidCharacterAInVersion() {
         final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("g", aValidIpVFutureAddress()));
         assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [g]"));
