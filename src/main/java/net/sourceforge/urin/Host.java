@@ -245,6 +245,7 @@ public abstract class Host {
         /**
          * @deprecated this was inadvertently public
          */
+        @Deprecated
         public static boolean isValid(final String hostString) { // TODO delete this
             return PERCENT_ENCODER.isMember(hostString);
         }
