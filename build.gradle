@@ -60,6 +60,8 @@ dependencies {
     documentationImplementation sourceSets.main.output
     documentationImplementation group: 'net.sourceforge.writexml', name: 'writexml', version: '1.1'
     documentationImplementation group: 'net.sourceforge.xazzle', name: 'xazzle', version: '0.39'
+
+    spotbugs group: 'com.github.spotbugs', name: 'spotbugs', version: '4.2.0'
 }
 
 group = 'net.sourceforge.urin'
