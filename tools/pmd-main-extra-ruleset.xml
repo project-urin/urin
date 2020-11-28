@@ -21,4 +21,24 @@
 
     <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
     <rule ref="category/java/codestyle.xml/LinguisticNaming"/>
+
+    <rule ref="category/java/documentation.xml">
+        <exclude name="CommentRequired"/>  <!-- [not] configured later -->
+        <exclude name="CommentSize"/>
+        <exclude name="UncommentedEmptyConstructor"/>
+    </rule>
+    <!--    <rule ref="category/java/documentation.xml/CommentRequired">-->
+    <!--        <properties>-->
+    <!--            <property name="methodWithOverrideCommentRequirement" value="Ignored" />-->
+    <!--            <property name="accessorCommentRequirement" value="Ignored" />-->
+    <!--            <property name="classCommentRequirement" value="Ignored" /> &lt;!&ndash; Maybe one day they'll make it so you can say 'public only' here &ndash;&gt;-->
+    <!--            <property name="fieldCommentRequirement" value="Ignored" />-->
+    <!--            <property name="publicMethodCommentRequirement" value="Ignored" /> &lt;!&ndash; TODO this probably ought to be turned on &ndash;&gt;-->
+    <!--            <property name="protectedMethodCommentRequirement" value="Ignored" /> &lt;!&ndash; TODO this probably ought to be turned on &ndash;&gt;-->
+    <!--            <property name="enumCommentRequirement" value="Ignored" />-->
+    <!--            <property name="serialVersionUIDCommentRequired" value="Ignored" />-->
+    <!--            <property name="serialPersistentFieldsCommentRequired" value="Ignored" />-->
+    <!--        </properties>-->
+    <!--    </rule>-->
+
 </ruleset>
