@@ -97,6 +97,7 @@
     <rule ref="category/java/design.xml/CyclomaticComplexity">
         <properties>
             <property name="methodReportLevel" value="11"/>
+            <property name="classReportLevel" value="250"/>
         </properties>
     </rule>
     <rule ref="category/java/design.xml/ExcessiveParameterList">
