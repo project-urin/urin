@@ -15,6 +15,11 @@ package net.sourceforge.urin;
  */
 public final class ParseException extends Exception {
 
+    /**
+     * Constructs a new {@code ParseException} with the specified message.
+     *
+     * @param message the detail message
+     */
     public ParseException(final String message) {
         super(message);
     }

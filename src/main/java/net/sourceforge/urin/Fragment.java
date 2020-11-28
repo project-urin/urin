@@ -48,6 +48,11 @@ public class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         return new Fragment<>(fragment, PERCENT_ENCODING);
     }
 
+    /**
+     * Factory method for {@code MakingDecoder}s of {@code String} {@code Fragment}s
+     *
+     * @return a {@code MakingDecoder} of {@code String} {@code Fragment}s
+     */
     public static MakingDecoder<Fragment<String>, String, String> stringFragmentMaker() {
         return new MakingDecoder<Fragment<String>, String, String>(PercentEncodingPartial.noOp()) {
             @Override

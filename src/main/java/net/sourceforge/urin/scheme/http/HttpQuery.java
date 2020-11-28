@@ -35,6 +35,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                                     '=',
                                     PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+'))))));
 
+    /**
+     * Factory method for {@code MakingDecoder}s of {@code HttpQuery}s
+     *
+     * @return a {@code MakingDecoder} of {@code String} {@code HttpQuery}s
+     */
     public static MakingDecoder<HttpQuery, Iterable<QueryParameter>, String> httpQueryMakingDecoder() {
         return new MakingDecoder<HttpQuery, Iterable<QueryParameter>, String>(HTTP_QUERY_PERCENT_ENCODING_PARTIAL) {
             @Override

@@ -14,7 +14,7 @@ package net.sourceforge.urin;
  * A parser of encoded URI components.
  *
  * @param <NON_ENCODED>   the class of the decoded objects produced.
- * @param <FACTORY_INPUT> the of decoded objects this class uses to construct the final output.
+ * @param <FACTORY_INPUT> the class of decoded objects this class uses to construct the final output.
  * @param <ENCODED>       the class of the encoded objects parsed.
  */
 public abstract class MakingDecoder<NON_ENCODED, FACTORY_INPUT, ENCODED> {

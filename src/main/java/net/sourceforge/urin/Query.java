@@ -48,6 +48,11 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
         return new Query<>(query, PERCENT_ENCODING);
     }
 
+    /**
+     * Factory method for {@code MakingDecoder}s of {@code String} {@code Query}s
+     *
+     * @return a {@code MakingDecoder} of {@code String} {@code Query}s
+     */
     public static MakingDecoder<Query<String>, String, String> stringQueryMaker() {
         return new MakingDecoder<Query<String>, String, String>(PercentEncodingPartial.noOp()) {
             @Override
