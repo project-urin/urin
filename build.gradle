@@ -47,10 +47,10 @@ check.dependsOn testUnit
 check.dependsOn testIntegration
 
 dependencies {
-    testInfrastructureImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+    testInfrastructureImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
     testInfrastructureImplementation group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
 
-    testUnitImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.11'
+    testUnitImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
     testImplementation group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version :'5.7.0'
