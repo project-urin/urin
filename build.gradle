@@ -26,7 +26,7 @@ plugins {
     id 'io.codearte.nexus-staging' version '0.30.0'
     id 'de.marcphilipp.nexus-publish' version '0.4.0'
     id 'com.gitlab.svg2ico' version '0.14'
-    id 'org.unbroken-dome.test-sets' version '3.0.1'
+    id 'org.unbroken-dome.test-sets' version '4.0.0'
 }
 
 repositories {
