@@ -161,7 +161,7 @@ task buildDocumentation(type: JavaExec, dependsOn: documentationDirectory) {
 task documentationJar(type: Tar, dependsOn: [buildDocumentation, ico]) {
     from "${project.buildDir}/documentation"
     from 'docs'
-    baseName 'documentation'
+    archiveBaseName.set('documentation')
     compression = Compression.GZIP
 }
 
