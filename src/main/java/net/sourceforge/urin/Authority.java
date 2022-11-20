@@ -107,7 +107,7 @@ public abstract class Authority {
         }
     }
 
-    abstract Authority removePort(final Port port);
+    abstract Authority removePort(Port port);
 
     private static class AuthorityWithHost extends Authority {
         private final Host host;

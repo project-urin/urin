@@ -182,15 +182,15 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
 
     abstract boolean firstPartIsSuppliedButIsEmpty();
 
-    abstract String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria);
+    abstract String asString(PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria);
 
     abstract boolean isEmpty();
 
     abstract boolean firstPartIsSuppliedButContainsColon();
 
-    abstract Path<T> resolveRelativeTo(final Path<T> basePath);
+    abstract Path<T> resolveRelativeTo(Path<T> basePath);
 
-    abstract Path<T> replaceLastSegmentWith(final Iterable<Segment<T>> segments);
+    abstract Path<T> replaceLastSegmentWith(Iterable<Segment<T>> segments);
 
     /**
      * Indicates whether this path is absolute (begins with '/') or not.
@@ -233,6 +233,6 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
             }
         };
 
-        abstract boolean matches(final Path<?> path);
+        abstract boolean matches(Path<?> path);
     }
 }

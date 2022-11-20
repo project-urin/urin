@@ -30,7 +30,7 @@ public abstract class Urin<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fra
     }
 
     @Override
-    public abstract Urin<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path);
+    public abstract Urin<SEGMENT, QUERY, FRAGMENT> withPath(AbsolutePath<SEGMENT> path);
 
     /**
      * Resolves the given {@code UrinReference} relative to this.
@@ -39,7 +39,7 @@ public abstract class Urin<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fra
      * @return the {@code Urin} resulting from resolving the give {@code UrinReference} relative to this.
      * @see <a href="http://tools.ietf.org/html/rfc3986#section-5">RFC 3986 - Reference Resolution</a>
      */
-    public abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final UrinReference<SEGMENT, QUERY, FRAGMENT> urinReference);
+    public abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(UrinReference<SEGMENT, QUERY, FRAGMENT> urinReference);
 
     @Override
     Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path) {

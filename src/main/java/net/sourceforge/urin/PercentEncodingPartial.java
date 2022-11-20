@@ -111,7 +111,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
 
         public abstract ENCODES decode(String encoded) throws ParseException;
 
-        public abstract PercentEncoding<ENCODES> additionallyEncoding(final char additionallyEncodedCharacter);
+        public abstract PercentEncoding<ENCODES> additionallyEncoding(char additionallyEncodedCharacter);
 
         private static final class PercentEncodingString extends PercentEncoding<String> {
             private final PercentEncoder percentEncoder;

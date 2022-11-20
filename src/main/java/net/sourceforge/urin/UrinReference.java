@@ -118,17 +118,17 @@ public abstract class UrinReference<SEGMENT, QUERY extends Query<?>, FRAGMENT ex
      */
     public abstract Authority authority();
 
-    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path);
+    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(Scheme<SEGMENT, QUERY, FRAGMENT> scheme, Path<SEGMENT> path);
 
-    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Authority authority, final Path<SEGMENT> path);
+    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(Scheme<SEGMENT, QUERY, FRAGMENT> scheme, Authority authority, Path<SEGMENT> path);
 
-    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path, final QUERY query);
+    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(Scheme<SEGMENT, QUERY, FRAGMENT> scheme, Path<SEGMENT> path, QUERY query);
 
-    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Authority authority, final Path<SEGMENT> path, final QUERY query);
+    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(Scheme<SEGMENT, QUERY, FRAGMENT> scheme, Authority authority, Path<SEGMENT> path, QUERY query);
 
-    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Path<SEGMENT> path, final QUERY query, final FRAGMENT fragment);
+    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(Scheme<SEGMENT, QUERY, FRAGMENT> scheme, Path<SEGMENT> path, QUERY query, FRAGMENT fragment);
 
-    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final Authority authority, final Path<SEGMENT> path, final QUERY query, final FRAGMENT fragment);
+    abstract Urin<SEGMENT, QUERY, FRAGMENT> resolve(Scheme<SEGMENT, QUERY, FRAGMENT> scheme, Authority authority, Path<SEGMENT> path, QUERY query, FRAGMENT fragment);
 
     @Override
     public final String toString() {

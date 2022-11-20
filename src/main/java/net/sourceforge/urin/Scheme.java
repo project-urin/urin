@@ -114,7 +114,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
     abstract String asString();
 
-    abstract Authority normalise(final Authority authority);
+    abstract Authority normalise(Authority authority);
 
     abstract Scheme<SEGMENT, QUERY, FRAGMENT> removeDefaultPort();
 

@@ -27,5 +27,5 @@ public abstract class RelativeReference<SEGMENT, QUERY extends Query<?>, FRAGMEN
     }
 
     @Override
-    public abstract RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(final AbsolutePath<SEGMENT> path);
+    public abstract RelativeReference<SEGMENT, QUERY, FRAGMENT> withPath(AbsolutePath<SEGMENT> path);
 }
