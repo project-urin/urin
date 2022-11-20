@@ -109,6 +109,8 @@ public abstract class Authority {
 
     abstract Authority removePort(Port port);
 
+    public abstract Host host();
+
     private static class AuthorityWithHost extends Authority {
         private final Host host;
 
@@ -124,6 +126,11 @@ public abstract class Authority {
         @Override
         Authority removePort(final Port port) {
             return this;
+        }
+
+        @Override
+        public Host host() {
+            return host;
         }
 
         @Override
@@ -165,6 +172,11 @@ public abstract class Authority {
         @Override
         Authority removePort(final Port port) {
             return this;
+        }
+
+        @Override
+        public Host host() {
+            return host;
         }
 
         @Override
@@ -215,6 +227,11 @@ public abstract class Authority {
         }
 
         @Override
+        public Host host() {
+            return host;
+        }
+
+        @Override
         public boolean equals(final Object object) {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
@@ -259,6 +276,11 @@ public abstract class Authority {
         @Override
         Authority removePort(final Port port) {
             return this.port.equals(port) ? authority(userInfo, host) : this;
+        }
+
+        @Override
+        public Host host() {
+            return host;
         }
 
         @Override

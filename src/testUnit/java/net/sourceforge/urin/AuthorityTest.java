@@ -47,6 +47,12 @@ class AuthorityTest {
     }
 
     @Test
+    void anAuthorityWithNoUserInfoOrPortReturnsHost() {
+        final Host host = aHost();
+        assertThat(authority(host).host(), equalTo(host));
+    }
+
+    @Test
     void anAuthorityWithNoUserInfoOrPortToStringIsCorrect() {
         Host host = aHost();
         assertThat(authority(host).toString(), equalTo("Authority{host=" + host + "}"));
@@ -76,6 +82,12 @@ class AuthorityTest {
     @Test
     void anAuthorityWithNoPortIsNotEqualToAnotherWithTheADifferentHostAndUserInfo() {
         assertThat(authority(aUserInfo(), aHost()), not(equalTo(authority(aUserInfo(), aHost()))));
+    }
+
+    @Test
+    void anAuthorityWithNoPortReturnsHost() {
+        final Host host = aHost();
+        assertThat(authority(aUserInfo(), host).host(), equalTo(host));
     }
 
     @Test
@@ -109,6 +121,12 @@ class AuthorityTest {
     @Test
     void anAuthorityWithNoUserInfoIsNotEqualToAnotherWithTheADifferentHostAndPort() {
         assertThat(authority(aHost(), aPort()), not(equalTo(authority(aHost(), aPort()))));
+    }
+
+    @Test
+    void anAuthorityWithNoUserInfoReturnsHost() {
+        final Host host = aHost();
+        assertThat(authority(host, aPort()).host(), equalTo(host));
     }
 
     @Test
@@ -146,6 +164,12 @@ class AuthorityTest {
     @Test
     void anAuthorityWithAllOptionsSpecifiedIsNotEqualToAnotherWithTheADifferentHostUserInfoAndPort() {
         assertThat(authority(aUserInfo(), aHost(), aPort()), not(equalTo(authority(aUserInfo(), aHost(), aPort()))));
+    }
+
+    @Test
+    void anAuthorityWithAllOptionsSpecifiedReturnsHost() {
+        final Host host = aHost();
+        assertThat(authority(aUserInfo(), host, aPort()).host(), equalTo(host));
     }
 
     @Test
