@@ -50,9 +50,10 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     /**
      * Factory method for creating empty rootless {@code Path}s.
      *
+     * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return an empty {@code Path}.
      */
-    public static <T> Path<T> rootlessPath() {
+    public static <ENCODES> Path<ENCODES> rootlessPath() {
         return rootlessPath(emptyList());
     }
 
@@ -60,10 +61,11 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * Factory method for creating rootless {@code Path}s from {@code Segment}s.
      *
      * @param segments {@code Segment}s that will be represented by this {@code Path}.
+     * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return a {@code Path} representing the given {@code Segment}s.
      */
     @SafeVarargs
-    public static <T> Path<T> rootlessPath(final Segment<T>... segments) {
+    public static <ENCODES> Path<ENCODES> rootlessPath(final Segment<ENCODES>... segments) {
         return rootlessPath(asList(segments));
     }
 
@@ -71,9 +73,10 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * Factory method for creating rootless {@code Path}s from an {@code Iterable} of {@code Segment}s.
      *
      * @param segments {@code Iterable} of {@code Segment}s that will be represented by this {@code Path}.
+     * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return a {@code Path} representing the given {@code Segment}s.
      */
-    public static <T> Path<T> rootlessPath(final Iterable<Segment<T>> segments) {
+    public static <ENCODES> Path<ENCODES> rootlessPath(final Iterable<Segment<ENCODES>> segments) {
         if (segments.iterator().hasNext()) {
             return new RootlessPath<>(segments);
         } else {
@@ -100,9 +103,10 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     /**
      * Factory method for creating an empty {@code AbsolutePath}.
      *
+     * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return an empty {@code AbsolutePath}.
      */
-    public static <T> AbsolutePath<T> path() {
+    public static <ENCODES> AbsolutePath<ENCODES> path() {
         return path(emptyList());
     }
 
@@ -110,10 +114,11 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * Factory method for creating {@code AbsolutePath}s from {@code Segment}s.
      *
      * @param segments {@code Segment}s that will be represented by this {@code AbsolutePath}.
+     * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
     @SafeVarargs
-    public static <T> AbsolutePath<T> path(final Segment<T>... segments) {
+    public static <ENCODES> AbsolutePath<ENCODES> path(final Segment<ENCODES>... segments) {
         return path(asList(segments));
     }
 
@@ -121,9 +126,10 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
      * Factory method for creating {@code AbsolutePath}s from an {@code Iterable} of {@code Segment}s.
      *
      * @param segments {@code Iterable} of {@code Segment}s that will be represented by this {@code AbsolutePath}.
+     * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
-    public static <T> AbsolutePath<T> path(final Iterable<Segment<T>> segments) {
+    public static <ENCODES> AbsolutePath<ENCODES> path(final Iterable<Segment<ENCODES>> segments) {
         return new AbsolutePath<>(segments);
     }
 

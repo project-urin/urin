@@ -47,7 +47,10 @@ public abstract class Segment<ENCODES> {
     };
 
     /**
-     * The segment ".", referring to the current location in the path name hierarchy,
+     * The segment ".", referring to the current location in the path name hierarchy.
+     *
+     * @param <ENCODES> The type of value represented by the segment - {@code String} in the general case.
+     * @return The segment ".", referring to the current location in the path name hierarchy
      */
     public static <ENCODES> Segment<ENCODES> dot() {
         return new Segment<ENCODES>() {
@@ -95,7 +98,10 @@ public abstract class Segment<ENCODES> {
     }
 
     /**
-     * The segment "..", referring to the parent location in the path name hierarchy,
+     * The segment "..", referring to the parent location in the path name hierarchy.
+     *
+     * @param <ENCODES> The type of value represented by the segment - {@code String} in the general case.
+     * @return The segment "..", referring to the current location in the path name hierarchy
      */
     public static <ENCODES> Segment<ENCODES> dotDot() {
         return new Segment<ENCODES>() {
@@ -144,6 +150,9 @@ public abstract class Segment<ENCODES> {
 
     /**
      * An empty segment - one that is encoded as "" in a URI.
+     *
+     * @param <ENCODES> The type of value represented by the segment - {@code String} in the general case.
+     * @return The empty segment - one that is encoded as "" in a URI
      */
     public static <ENCODES> Segment<ENCODES> empty() {
         return new Segment<ENCODES>() {
