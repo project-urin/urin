@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2023 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -161,7 +161,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
 
             @Override
             public Iterable<T> decode(final String encoded) throws ParseException {
-                final String[] components = encoded.split(quote(Character.toString(delimiter)));
+                final String[] components = encoded.split(quote(Character.toString(delimiter)), -1);
                 final List<T> result = new ArrayList<>(components.length);
                 for (String component : components) {
                     result.add(percentEncoding.decode(component));

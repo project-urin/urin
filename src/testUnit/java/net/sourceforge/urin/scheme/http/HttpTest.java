@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2023 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -674,5 +674,25 @@ class HttpTest {
     @Test
     void handlesDecodingOfPercentEncodedPlusInHttpQueryParameters() throws Exception {
         assertThat(HTTP.parseUrin("http://somewhere?name=value%2Bwith%2Bplus").query(), equalTo(queryParameters(queryParameter("name", "value+with+plus"))));
+    }
+
+    @Test
+    void canParseEmptyStringQueryParameters() throws Exception {
+        assertThat(HTTP.parseUrin("http://somewhere?name=").query(), equalTo(queryParameters(queryParameter("name", ""))));
+    }
+
+    @Test
+    void canParseValuelessQueryParameter() throws Exception {
+        assertThat(HTTP.parseUrin("http://somewhere?name").query(), equalTo(queryParameters(queryParameter("name"))));
+    }
+
+    @Test
+    void canParseNamelessQueryParameter() throws Exception {
+        assertThat(HTTP.parseUrin("http://somewhere?=foo").query(), equalTo(queryParameters(queryParameter("", "foo"))));
+    }
+
+    @Test
+    void canParseNamelessValuelessQueryParameter() throws Exception {
+        assertThat(HTTP.parseUrin("http://somewhere?=").query(), equalTo(queryParameters(queryParameter("", ""))));
     }
 }
