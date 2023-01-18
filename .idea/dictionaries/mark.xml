@@ -6,6 +6,7 @@
       <w>codestyle</w>
       <w>dataflow</w>
       <w>elidable</w>
+      <w>encodable</w>
       <w>errorprone</w>
       <w>ffff</w>
       <w>hexadectet</w>

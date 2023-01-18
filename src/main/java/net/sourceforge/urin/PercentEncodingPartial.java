@@ -32,6 +32,20 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
         };
     }
 
+    public static <T> PercentEncodingPartial<T, T> additionallyEncoding(final Iterable<Character> characters, final PercentEncodingPartial<T, T> childPercentEncodingPartial) {
+        characters.forEach(character -> requireNonNull(character, "Cannot additionally encode null Character"));
+        return childPercentEncodingPartial.chain(new PercentEncodingPartial<T, T>() {
+            @Override
+            public PercentEncoding<T> apply(final PercentEncoding<T> childPercentEncoding) {
+                PercentEncoding<T> result = childPercentEncoding;
+                for (char character : characters) {
+                    result = result.additionallyEncoding(character);
+                }
+                return result;
+            }
+        });
+    }
+
     public static <T, V> PercentEncodingPartial<Iterable<T>, V> percentEncodingDelimitedValue(final char delimiter, final PercentEncodingPartial<T, V> childPercentEncodingPartial) {
         return childPercentEncodingPartial.chain(new PercentEncodingPartial<Iterable<T>, T>() {
             @Override

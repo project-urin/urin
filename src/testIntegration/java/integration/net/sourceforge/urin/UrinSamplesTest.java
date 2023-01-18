@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2023 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -20,12 +20,17 @@ import static net.sourceforge.urin.AccessBackDoors.asString;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Path.path;
+import static net.sourceforge.urin.PercentEncodingPartial.additionallyEncoding;
+import static net.sourceforge.urin.PercentEncodingPartial.noOp;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.segment;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAndParse;
 import static net.sourceforge.urin.UrinAssert.assertAsStringAsUriAndParse;
+import static net.sourceforge.urin.scheme.http.Https.HTTPS;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 class UrinSamplesTest {
     @Test
@@ -119,5 +124,11 @@ class UrinSamplesTest {
         private MyFragment(final Iterable<String> value, final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
             super(value, percentEncodingPartial);
         }
+    }
+
+    @Test
+    void canMakeAUriThatFollowsAwsSignatureV4Rules() {
+        final PercentEncodingPartial<String, String> awsPercentEncodingPartial = additionallyEncoding(asList('!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=', ':', '@'), noOp());
+        assertThat(HTTPS.relativeReference(path(segment("$", awsPercentEncodingPartial))).asString(), equalTo("/%24"));
     }
 }
