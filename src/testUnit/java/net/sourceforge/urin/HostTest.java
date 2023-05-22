@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2023 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -15,20 +15,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Random;
 
 import static java.util.Locale.US;
-import static net.sourceforge.urin.CharacterSets.DIGIT;
-import static net.sourceforge.urin.CharacterSets.HEX_DIGIT;
-import static net.sourceforge.urin.CharacterSets.LOWER_CASE_ALPHA;
-import static net.sourceforge.urin.CharacterSets.SUB_DELIMS;
-import static net.sourceforge.urin.CharacterSets.UPPER_CASE_ALPHA;
+import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.Hexadectet.ZERO;
+import static net.sourceforge.urin.Hexadectet.hexadectet;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.HexadectetBuilder.aNonZeroHexadectet;
 import static net.sourceforge.urin.Host.*;
-import static net.sourceforge.urin.HostBuilder.aRegisteredName;
-import static net.sourceforge.urin.HostBuilder.anIpV4Address;
-import static net.sourceforge.urin.HostBuilder.anIpV6Address;
-import static net.sourceforge.urin.HostBuilder.anIpV6AddressWithTrailingIpV4Address;
-import static net.sourceforge.urin.HostBuilder.anIpVFutureAddress;
+import static net.sourceforge.urin.HostBuilder.*;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
@@ -314,6 +307,29 @@ class HostTest {
     }
 
     @Test
+    void parsesAnIpV6LoopbackAddress() throws Exception {
+        assertThat(parse("[::1]"), equalTo(LOOPBACK_ADDRESS_IP_V6));
+    }
+
+    @Test
+    void parsesAnIpV6UnspecifiedAddress() throws Exception {
+        assertThat(parse("[::]"), equalTo(UNSPECIFIED_ADDRESS_IP_V6));
+    }
+
+    @Test
+    void parsesRfc3515SampleIpV6Addresses() throws Exception {
+        assertThat(parse("[1080::8:800:200C:417A]"), equalTo(ipV6Address(hexadectet(0x1080), ZERO, ZERO, ZERO, hexadectet(0x8), hexadectet(0x800), hexadectet(0x200C), hexadectet(0x417A))));
+        assertThat(parse("[FF01::101]"), equalTo(ipV6Address(hexadectet(0xFF01), ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0x101))));
+        assertThat(parse("[0:0:0:0:0:0:13.1.68.3]"), equalTo(ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, octet(13), octet(1), octet(68), octet(3))));
+        assertThat(parse("[0:0:0:0:0:FFFF:129.144.52.38]"), equalTo(ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0xFFFF), octet(129), octet(144), octet(52), octet(38))));
+        assertThat(parse("[::13.1.68.3]"), equalTo(ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, octet(13), octet(1), octet(68), octet(3))));
+        assertThat(parse("[::FFFF:129.144.52.38]"), equalTo(ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(0xFFFF), octet(129), octet(144), octet(52), octet(38))));
+        assertThat(parse("[12AB:0000:0000:CD30:0000:0000:0000:0000]"), equalTo(ipV6Address(hexadectet(0x12AB), ZERO, ZERO, hexadectet(0xCD30), ZERO, ZERO, ZERO, ZERO)));
+        assertThat(parse("[12AB::CD30:0:0:0:0]"), equalTo(ipV6Address(hexadectet(0x12AB), ZERO, ZERO, hexadectet(0xCD30), ZERO, ZERO, ZERO, ZERO)));
+        assertThat(parse("[12AB:0:0:CD30::]"), equalTo(ipV6Address(hexadectet(0x12AB), ZERO, ZERO, hexadectet(0xCD30), ZERO, ZERO, ZERO, ZERO)));
+    }
+
+    @Test
     void parsesAnIpV6AddressWithElidedParts() throws Exception {
         Host host = ipV6Address(
                 aHexadectet(),
@@ -326,6 +342,18 @@ class HostTest {
                 aHexadectet()
         );
         assertThat(parse(host.asString()), equalTo(host));
+    }
+
+    @Test
+    void parsingAnEmptyIpV6AddressThrowsParseException() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[]"));
+    }
+
+    @Test
+    void parsingASingleColonThrowsParseException() {
+        final ParseException parseException = assertThrows(ParseException.class, () -> parse("[:]"));
+        assertThat(parseException.getMessage(), equalTo("Not a valid host :[:]"));
     }
 
     @Test
@@ -740,6 +768,11 @@ class HostTest {
     @Test
     void loopbackIpV6AddressIsExpectedString() {
         assertThat(LOOPBACK_ADDRESS_IP_V6.asString(), equalTo("[::1]"));
+    }
+
+    @Test
+    void unspecifiedIpV6AddressIsExpectedString() {
+        assertThat(UNSPECIFIED_ADDRESS_IP_V6.asString(), equalTo("[::]"));
     }
 
     @Test

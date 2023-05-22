@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2023 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -14,7 +14,6 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.Arrays.asList;
 import static java.util.Locale.ENGLISH;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
@@ -52,6 +51,8 @@ public abstract class Host {
      * The loopback address in IP v6 format, in other words ::1
      */
     public static final Host LOOPBACK_ADDRESS_IP_V6 = ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, hexadectet(1));
+
+    public static final Host UNSPECIFIED_ADDRESS_IP_V6 = ipV6Address(ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO);
 
     private static final CharacterSetMembershipFunction ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION = or(
             ALPHA_LOWERCASE,
@@ -391,8 +392,8 @@ public abstract class Host {
             if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
                 return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
             }
-            String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":");
-            return parseElidableHexadectets(hostString, asList(elidableHexadectetStrings), 8).flatMap(hexadectets ->
+            String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":", -1);
+            return parseElidableHexadectets(hostString, elidableHexadectetStrings, 8, 0).flatMap(hexadectets ->
                     hexadectets.get(0).flatMap(first ->
                             hexadectets.get(1).flatMap(second ->
                                     hexadectets.get(2).flatMap(third ->
@@ -434,11 +435,11 @@ public abstract class Host {
             if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
                 return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
             }
-            ArrayDeque<String> elidableHexadectetStrings = new ArrayDeque<>(asList(hostString.substring(1, hostString.length() - 1).split(":")));
-            AugmentedOptional<IpV4Address> ipV4AddressPart = elidableHexadectetStrings.isEmpty()
+            final String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":", -1);
+            final AugmentedOptional<IpV4Address> ipV4AddressPart = elidableHexadectetStrings.length == 0
                     ? AugmentedOptional.empty("Invalid IP v6 String [" + hostString + "]: no trailing IP v4 address.")
-                    : IpV4Address.parses(elidableHexadectetStrings.removeLast());
-            return parseElidableHexadectets(hostString, elidableHexadectetStrings, 6).flatMap(hexadectets ->
+                    : IpV4Address.parses(elidableHexadectetStrings[elidableHexadectetStrings.length - 1]);
+            return parseElidableHexadectets(hostString, elidableHexadectetStrings, 6, 1).flatMap(hexadectets ->
                     ipV4AddressPart.flatMap(ipV4Address ->
                             hexadectets.get(0).flatMap(first ->
                                     hexadectets.get(1).flatMap(second ->
@@ -506,16 +507,36 @@ public abstract class Host {
         }
     }
 
-    private static AugmentedOptional<List<AugmentedOptional<Hexadectet>>> parseElidableHexadectets(final String hostString, final Collection<String> elidableHexadectetStrings, final int requiredLength) {
+    private static AugmentedOptional<List<AugmentedOptional<Hexadectet>>> parseElidableHexadectets(final String hostString, final String[] elidableHexadectetStrings, final int requiredLength, final int inputEndOffset) {
+        if (elidableHexadectetStrings.length < 3) {
+            return AugmentedOptional.empty("Invalid host string [" + hostString + "]");
+        }
+        final int startOffset;
+        if ("".equals(elidableHexadectetStrings[0]) && "".equals(elidableHexadectetStrings[1])) {
+            startOffset = 1;
+        } else {
+            startOffset = 0;
+        }
+        final int endOffset;
+        if (inputEndOffset == 0) {
+            if ("".equals(elidableHexadectetStrings[elidableHexadectetStrings.length - 1]) && "".equals(elidableHexadectetStrings[elidableHexadectetStrings.length - 2])) {
+                endOffset = inputEndOffset + 1;
+            } else {
+                endOffset = inputEndOffset;
+            }
+        } else {
+            endOffset = inputEndOffset;
+        }
         List<AugmentedOptional<Hexadectet>> hexadectets = new ArrayList<>(requiredLength);
         boolean gotElidedPart = false;
-        for (String hexadectetString : elidableHexadectetStrings) {
+        for (int i = startOffset; i < (elidableHexadectetStrings.length - endOffset); i++) {
+            String hexadectetString = elidableHexadectetStrings[i];
             if (hexadectetString.isEmpty()) {
                 if (gotElidedPart) {
                     return AugmentedOptional.empty("Invalid IP v6 String [" + hostString + "]: more than one elided part");
                 }
                 gotElidedPart = true;
-                final int elidedTotal = requiredLength - elidableHexadectetStrings.size();
+                final int elidedTotal = requiredLength - (elidableHexadectetStrings.length - (startOffset + endOffset));
                 for (int elided = 0; elided <= elidedTotal; elided++) {
                     hexadectets.add(AugmentedOptional.of(ZERO));
                 }
