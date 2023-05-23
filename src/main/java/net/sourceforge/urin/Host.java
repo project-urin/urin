@@ -392,8 +392,9 @@ public abstract class Host {
             if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
                 return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
             }
-            String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":", -1);
-            return parseElidableHexadectets(hostString, elidableHexadectetStrings, 8, 0).flatMap(hexadectets ->
+            final String expandedIpV6Address = expandElision(hostString.substring(1, hostString.length() - 1));
+            String[] hexadectetStrings = expandedIpV6Address.split(":", -1);
+            return parseHexadectets(hostString, hexadectetStrings, 8).flatMap(hexadectets ->
                     hexadectets.get(0).flatMap(first ->
                             hexadectets.get(1).flatMap(second ->
                                     hexadectets.get(2).flatMap(third ->
@@ -403,6 +404,36 @@ public abstract class Host {
                                                                     hexadectets.get(6).flatMap(seventh ->
                                                                             hexadectets.get(7).flatMap(eighth ->
                                                                                     AugmentedOptional.of(new IpV6Address(first, second, third, fourth, fifth, sixth, seventh, eighth)))))))))));
+        }
+
+        static String expandElision(final String ipV6String) {
+            if (!ipV6String.contains("::")) {
+                return ipV6String;
+            } else if ("::".equals(ipV6String)) {
+                return "0:0:0:0:0:0:0:0";
+            } else {
+                final long colonCount = countColons(ipV6String);
+                if (ipV6String.startsWith("::")) {
+                    final StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < 9 - colonCount; i++) {
+                        stringBuilder.append("0:");
+                    }
+                    return ipV6String.replaceFirst("::", stringBuilder.toString()); // TODO dump in the string builder at the end
+                } else if (ipV6String.endsWith("::")) {
+                    final StringBuilder stringBuilder = new StringBuilder(ipV6String.substring(0, ipV6String.length() - 2));
+                    for (int i = 0; i < 9 - colonCount; i++) {
+                        stringBuilder.append(":0");
+                    }
+                    return stringBuilder.toString();
+                } else {
+                    final StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < 8 - colonCount; i++) {
+                        stringBuilder.append(":0");
+                    }
+                    stringBuilder.append(':');
+                    return ipV6String.replaceFirst("::", stringBuilder.toString());
+                }
+            }
         }
     }
 
@@ -435,11 +466,16 @@ public abstract class Host {
             if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
                 return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
             }
-            final String[] elidableHexadectetStrings = hostString.substring(1, hostString.length() - 1).split(":", -1);
+            final String ipV6Address = hostString.substring(1, hostString.length() - 1);
+            final String[] elidableHexadectetStrings = ipV6Address.split(":", -1);
             final AugmentedOptional<IpV4Address> ipV4AddressPart = elidableHexadectetStrings.length == 0
                     ? AugmentedOptional.empty("Invalid IP v6 String [" + hostString + "]: no trailing IP v4 address.")
                     : IpV4Address.parses(elidableHexadectetStrings[elidableHexadectetStrings.length - 1]);
-            return parseElidableHexadectets(hostString, elidableHexadectetStrings, 6, 1).flatMap(hexadectets ->
+            final String ipV6AddressPart = ipV6Address.substring(0, ipV6Address.lastIndexOf(':') + 1);
+            final String expandedIpv6AddressPart = expandElision(ipV6AddressPart); // TODO expand elision on whole address (might be able to share method with full IPv6 address...
+
+            final String[] hexadectetStrings = expandedIpv6AddressPart.split(":", -1);
+            return parseHexadectets(hostString, Arrays.copyOf(hexadectetStrings, hexadectetStrings.length - 1), 6).flatMap(hexadectets ->
                     ipV4AddressPart.flatMap(ipV4Address ->
                             hexadectets.get(0).flatMap(first ->
                                     hexadectets.get(1).flatMap(second ->
@@ -449,6 +485,30 @@ public abstract class Host {
                                                                     hexadectets.get(5).flatMap(sixth ->
                                                                             AugmentedOptional.of(new IpV6AddressWithTrailingIpV4Address(first, second, third, fourth, fifth, sixth, ipV4Address.firstOctet, ipV4Address.secondOctet, ipV4Address.thirdOctet, ipV4Address.fourthOctet))
                                                                     ))))))));
+        }
+
+        static String expandElision(final String ipV6String) {
+            if (!ipV6String.contains("::")) {
+                return ipV6String;
+            } else if ("::".equals(ipV6String)) {
+                return "0:0:0:0:0:0:";
+            } else {
+                final long colonCount = countColons(ipV6String);
+                if (ipV6String.startsWith("::")) {
+                    final StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < 8 - colonCount; i++) {
+                        stringBuilder.append("0:");
+                    }
+                    return ipV6String.replaceFirst("::", stringBuilder.toString()); // TODO dump in the string builder at the end
+                } else {
+                    final StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < 7 - colonCount; i++) {
+                        stringBuilder.append(":0");
+                    }
+                    stringBuilder.append(':');
+                    return ipV6String.replaceFirst("::", stringBuilder.toString());
+                }
+            }
         }
 
         @Override
@@ -507,42 +567,20 @@ public abstract class Host {
         }
     }
 
-    private static AugmentedOptional<List<AugmentedOptional<Hexadectet>>> parseElidableHexadectets(final String hostString, final String[] elidableHexadectetStrings, final int requiredLength, final int inputEndOffset) {
-        if (elidableHexadectetStrings.length < 3) {
-            return AugmentedOptional.empty("Invalid host string [" + hostString + "]");
-        }
-        final int startOffset;
-        if ("".equals(elidableHexadectetStrings[0]) && "".equals(elidableHexadectetStrings[1])) {
-            startOffset = 1;
-        } else {
-            startOffset = 0;
-        }
-        final int endOffset;
-        if (inputEndOffset == 0) {
-            if ("".equals(elidableHexadectetStrings[elidableHexadectetStrings.length - 1]) && "".equals(elidableHexadectetStrings[elidableHexadectetStrings.length - 2])) {
-                endOffset = inputEndOffset + 1;
-            } else {
-                endOffset = inputEndOffset;
+    private static int countColons(final String string) {
+        int count = 0;
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) == ':') {
+                count++;
             }
-        } else {
-            endOffset = inputEndOffset;
         }
+        return count;
+    }
+
+    private static AugmentedOptional<List<AugmentedOptional<Hexadectet>>> parseHexadectets(final String hostString, final String[] hexadectetStrings, final int requiredLength) {
         List<AugmentedOptional<Hexadectet>> hexadectets = new ArrayList<>(requiredLength);
-        boolean gotElidedPart = false;
-        for (int i = startOffset; i < (elidableHexadectetStrings.length - endOffset); i++) {
-            String hexadectetString = elidableHexadectetStrings[i];
-            if (hexadectetString.isEmpty()) {
-                if (gotElidedPart) {
-                    return AugmentedOptional.empty("Invalid IP v6 String [" + hostString + "]: more than one elided part");
-                }
-                gotElidedPart = true;
-                final int elidedTotal = requiredLength - (elidableHexadectetStrings.length - (startOffset + endOffset));
-                for (int elided = 0; elided <= elidedTotal; elided++) {
-                    hexadectets.add(AugmentedOptional.of(ZERO));
-                }
-            } else {
-                hexadectets.add(Hexadectet.parses(hexadectetString));
-            }
+        for (String hexadectetString : hexadectetStrings) {
+            hexadectets.add(Hexadectet.parses(hexadectetString));
         }
         if (hexadectets.size() != requiredLength) {
             return AugmentedOptional.empty("Invalid host string [" + hostString + "]");
