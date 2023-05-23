@@ -489,8 +489,6 @@ public abstract class Host {
         static String expandElision(final String ipV6String) {
             if (!ipV6String.contains("::")) {
                 return ipV6String;
-            } else if ("::".equals(ipV6String)) {
-                return "0:0:0:0:0:0:";
             } else {
                 final long colonCount = countColons(ipV6String);
                 if (ipV6String.startsWith("::")) {
