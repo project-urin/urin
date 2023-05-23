@@ -547,7 +547,7 @@ public abstract class Host {
             for (int i = 0; i < (requiredLength + 1) - colonCount; i++) {
                 stringBuilder.append("0:");
             }
-            return ipV6String.replaceFirst("::", stringBuilder.toString()); // TODO dump in the string builder at the end
+            return ipV6String.replaceFirst("::", stringBuilder.toString());
         } else if (ipV6String.endsWith("::")) {
             final StringBuilder stringBuilder = new StringBuilder(ipV6String.substring(0, ipV6String.length() - 2));
             for (int i = 0; i < (requiredLength + 1) - colonCount; i++) {
