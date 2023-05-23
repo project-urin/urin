@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.Arrays.copyOf;
 import static java.util.Locale.ENGLISH;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.joining;
@@ -467,15 +468,13 @@ public abstract class Host {
                 return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
             }
             final String ipV6Address = hostString.substring(1, hostString.length() - 1);
-            final String[] elidableHexadectetStrings = ipV6Address.split(":", -1);
-            final AugmentedOptional<IpV4Address> ipV4AddressPart = elidableHexadectetStrings.length == 0
+            final String expandedIpV6Address = expandElision(ipV6Address);
+            final String[] hexadectetStrings = expandedIpV6Address.split(":", -1);
+            final AugmentedOptional<IpV4Address> ipV4AddressPart = hexadectetStrings.length == 0
                     ? AugmentedOptional.empty("Invalid IP v6 String [" + hostString + "]: no trailing IP v4 address.")
-                    : IpV4Address.parses(elidableHexadectetStrings[elidableHexadectetStrings.length - 1]);
-            final String ipV6AddressPart = ipV6Address.substring(0, ipV6Address.lastIndexOf(':') + 1);
-            final String expandedIpv6AddressPart = expandElision(ipV6AddressPart); // TODO expand elision on whole address (might be able to share method with full IPv6 address...
+                    : IpV4Address.parses(hexadectetStrings[hexadectetStrings.length - 1]);
 
-            final String[] hexadectetStrings = expandedIpv6AddressPart.split(":", -1);
-            return parseHexadectets(hostString, Arrays.copyOf(hexadectetStrings, hexadectetStrings.length - 1), 6).flatMap(hexadectets ->
+            return parseHexadectets(hostString, copyOf(hexadectetStrings, hexadectetStrings.length - 1), 6).flatMap(hexadectets ->
                     ipV4AddressPart.flatMap(ipV4Address ->
                             hexadectets.get(0).flatMap(first ->
                                     hexadectets.get(1).flatMap(second ->
