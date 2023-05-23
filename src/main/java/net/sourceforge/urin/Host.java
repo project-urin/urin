@@ -407,33 +407,13 @@ public abstract class Host {
                                                                                     AugmentedOptional.of(new IpV6Address(first, second, third, fourth, fifth, sixth, seventh, eighth)))))))))));
         }
 
-        static String expandElision(final String ipV6String) {
+        private static String expandElision(final String ipV6String) {
             if (!ipV6String.contains("::")) {
                 return ipV6String;
             } else if ("::".equals(ipV6String)) {
                 return "0:0:0:0:0:0:0:0";
             } else {
-                final long colonCount = countColons(ipV6String);
-                if (ipV6String.startsWith("::")) {
-                    final StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < 9 - colonCount; i++) {
-                        stringBuilder.append("0:");
-                    }
-                    return ipV6String.replaceFirst("::", stringBuilder.toString()); // TODO dump in the string builder at the end
-                } else if (ipV6String.endsWith("::")) {
-                    final StringBuilder stringBuilder = new StringBuilder(ipV6String.substring(0, ipV6String.length() - 2));
-                    for (int i = 0; i < 9 - colonCount; i++) {
-                        stringBuilder.append(":0");
-                    }
-                    return stringBuilder.toString();
-                } else {
-                    final StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < 8 - colonCount; i++) {
-                        stringBuilder.append(":0");
-                    }
-                    stringBuilder.append(':');
-                    return ipV6String.replaceFirst("::", stringBuilder.toString());
-                }
+                return expandElision(ipV6String, 8);
             }
         }
     }
@@ -490,21 +470,7 @@ public abstract class Host {
             if (!ipV6String.contains("::")) {
                 return ipV6String;
             } else {
-                final long colonCount = countColons(ipV6String);
-                if (ipV6String.startsWith("::")) {
-                    final StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < 8 - colonCount; i++) {
-                        stringBuilder.append("0:");
-                    }
-                    return ipV6String.replaceFirst("::", stringBuilder.toString()); // TODO dump in the string builder at the end
-                } else {
-                    final StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < 7 - colonCount; i++) {
-                        stringBuilder.append(":0");
-                    }
-                    stringBuilder.append(':');
-                    return ipV6String.replaceFirst("::", stringBuilder.toString());
-                }
+                return expandElision(ipV6String, 7);
             }
         }
 
@@ -572,6 +538,30 @@ public abstract class Host {
             }
         }
         return count;
+    }
+
+    static String expandElision(final String ipV6String, final int requiredLength) {
+        final long colonCount = countColons(ipV6String);
+        if (ipV6String.startsWith("::")) {
+            final StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < (requiredLength + 1) - colonCount; i++) {
+                stringBuilder.append("0:");
+            }
+            return ipV6String.replaceFirst("::", stringBuilder.toString()); // TODO dump in the string builder at the end
+        } else if (ipV6String.endsWith("::")) {
+            final StringBuilder stringBuilder = new StringBuilder(ipV6String.substring(0, ipV6String.length() - 2));
+            for (int i = 0; i < (requiredLength + 1) - colonCount; i++) {
+                stringBuilder.append(":0");
+            }
+            return stringBuilder.toString();
+        } else {
+            final StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < requiredLength - colonCount; i++) {
+                stringBuilder.append(":0");
+            }
+            stringBuilder.append(':');
+            return ipV6String.replaceFirst("::", stringBuilder.toString());
+        }
     }
 
     private static AugmentedOptional<List<AugmentedOptional<Hexadectet>>> parseHexadectets(final String hostString, final String[] hexadectetStrings, final int requiredLength) {
