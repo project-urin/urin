@@ -24,10 +24,9 @@ plugins {
     id 'maven-publish'
     id 'org.javamodularity.moduleplugin' version '1.8.12'
     id 'pmd'
-    id 'com.github.spotbugs' version '5.0.13'
-    id 'org.hidetake.ssh' version '2.10.1'
-    id 'io.codearte.nexus-staging' version '0.30.0'
-    id 'de.marcphilipp.nexus-publish' version '0.4.0'
+    id 'com.github.spotbugs' version '5.0.14'
+    id 'org.hidetake.ssh' version '2.11.2'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.3.0'
     id 'com.gitlab.svg2ico' version '0.14'
     id 'org.unbroken-dome.test-sets' version '4.0.0'
 }
@@ -35,6 +34,8 @@ plugins {
 repositories {
     mavenCentral()
 }
+
+final def documentationDirectory = new File(project.buildDir, 'documentation')
 
 sourceSets {
     documentation
@@ -46,8 +47,9 @@ testSets {
     testIntegration {imports libraries.testInfrastructure }
 }
 
-check.dependsOn testUnit
-check.dependsOn testIntegration
+tasks.named('check') {
+    dependsOn(testIntegration)
+}
 
 dependencies {
     testInfrastructureImplementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
@@ -74,39 +76,36 @@ description = 'Urin is an open source URI generator and parser written in Java.'
 
 modularity.mixedJavaRelease 8
 
-tasks.withType(Test) {
-    useJUnitPlatform()
-}
-
-task compileTinyJava(type: JavaCompile) {
+tasks.register('compileTinyJava', JavaCompile) {
     source sourceSets.main.allSource
     classpath = sourceSets.main.compileClasspath
     destinationDirectory.set(file("${project.buildDir}/tiny-classes/main"))
     options.compilerArgs = ['-g:none']
 }
 
-task myJavadoc(type: Javadoc) {
+tasks.register('myJavadoc', Javadoc) {
     source = sourceSets.main.allJava
     title = "Urin version ${version}"
 }
 
-task javadocJar(type: Jar) {
+tasks.register('javadocJar', Jar) {
     archiveClassifier.set 'javadoc'
     from myJavadoc
 }
 
-task tinyJar(type: Jar, dependsOn: compileTinyJava) {
+tasks.register('tinyJar', Jar) {
+    dependsOn compileTinyJava
     archiveClassifier.set 'tiny'
     from file("${project.buildDir}/tiny-classes/main")
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE) // because org.javamodularity.moduleplugin half-applies to this: it tries to add module-info.class it compiled separately in addition to the one compiled by the compileTinyJar task.
 }
 
-task sourcesJar(type: Jar) {
+tasks.register('sourcesJar', Jar) {
     archiveClassifier.set 'sources'
     from sourceSets.main.allSource
 }
 
-task combinedJar(type: Jar) {
+tasks.register('combinedJar', Jar) {
     archiveClassifier.set 'combined'
     from sourceSets.main.allSource
     from sourceSets.main.output
@@ -127,14 +126,8 @@ artifacts {
     archives javadocJar, sourcesJar
 }
 
-task documentationDirectory {
-    doLast {
-        mkdir("${project.buildDir}/documentation")
-    }
-}
-
-task ico(type: Svg2IcoTask, dependsOn: documentationDirectory) {
-    destination = file("${project.buildDir}/documentation/favicon.ico")
+tasks.register('ico', Svg2IcoTask) {
+    destination = new File(documentationDirectory, 'favicon.ico')
     input {
         source = file('resources/favicon.svg')
         width = 32
@@ -142,28 +135,24 @@ task ico(type: Svg2IcoTask, dependsOn: documentationDirectory) {
     }
 }
 
-task iconsDirectory {
-    doLast {
-        mkdir("${project.buildDir}/icons")
-    }
-}
-
-task png(type: Svg2PngTask, dependsOn: iconsDirectory) {
+tasks.register('png', Svg2PngTask) {
     source = file('resources/favicon.svg')
     destination = file("${project.buildDir}/icons/favicon.png")
-    width = 48
-    height = 48
+    width = 128
+    height = 128
 }
 
 
-task buildDocumentation(type: JavaExec, dependsOn: documentationDirectory) {
-    mainClass.set('net.sourceforge.urin.documentation.DocumentationGenerator')
-    args("${project.buildDir}/documentation")
+tasks.register('buildDocumentation', JavaExec) {
+    outputs.dir(documentationDirectory)
+    mainClass = 'documentation.DocumentationGenerator'
+    args(documentationDirectory.toString())
     classpath = sourceSets.documentation.runtimeClasspath
 }
 
-task documentationJar(type: Tar, dependsOn: [buildDocumentation, ico]) {
-    from "${project.buildDir}/documentation"
+tasks.register('documentationJar', Tar) {
+    dependsOn buildDocumentation, ico
+    from documentationDirectory
     from 'docs'
     archiveBaseName.set('documentation')
     compression = Compression.GZIP
@@ -184,7 +173,8 @@ remotes {
     }
 }
 
-task copyToSourceforge(dependsOn: [jar, documentationJar, javadocJar, combinedJar, tinyJar]) {
+tasks.register('copyToSourceforge') {
+    dependsOn jar, documentationJar, javadocJar, combinedJar, tinyJar
     doLast {
         ssh.runInOrder {
             session(remotes.sourceforgeShell) {
@@ -257,25 +247,27 @@ signing {
 
 nexusPublishing {
     repositories {
-        sonatype()
+        sonatype {
+            // stagingProfileId = '12462889504a1e'
+            username = project.findProperty('ossrhUser')
+            password = project.findProperty('ossrhPassword')
+        }
     }
 }
 
-nexusStaging {
-    username = ossrhUser
-    password = ossrhPassword
-}
-
-task performRelease(dependsOn: [clean, build, publishToSonatype, copyToSourceforge, png, closeRepository, releaseRepository, updateSourceforgeDefaultDownload]) {
+tasks.register('performRelease') {
+    dependsOn clean, build, publishToSonatype, copyToSourceforge, png, closeAndReleaseStagingRepository, updateSourceforgeDefaultDownload
     doLast {
         println 'Release complete :)'
     }
 }
 
-task buildAndDeployCleanVersion(dependsOn: [clean, performRelease]) {
+tasks.register('buildAndDeployCleanVersion') {
+    dependsOn clean, performRelease
 }
 
-task incrementVersionNumber(dependsOn: buildAndDeployCleanVersion) {
+tasks.register('incrementVersionNumber') {
+    dependsOn buildAndDeployCleanVersion
     doLast {
         ant.propertyfile(file: file('gradle.properties')) {
             entry(key: 'minorVersion', type: 'int', operation: '+', value: 1)
@@ -283,10 +275,8 @@ task incrementVersionNumber(dependsOn: buildAndDeployCleanVersion) {
     }
 }
 
-task deploy(dependsOn: incrementVersionNumber) {}
+tasks.register('deploy') {
+    dependsOn incrementVersionNumber
+}
 
-build.mustRunAfter clean
-publishToSonatype.mustRunAfter build
-closeRepository.mustRunAfter publishToSonatype
-releaseRepository.mustRunAfter closeRepository
 updateSourceforgeDefaultDownload.mustRunAfter copyToSourceforge
