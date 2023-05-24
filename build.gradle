@@ -145,7 +145,7 @@ tasks.register('png', Svg2PngTask) {
 
 tasks.register('buildDocumentation', JavaExec) {
     outputs.dir(documentationDirectory)
-    mainClass = 'documentation.DocumentationGenerator'
+    mainClass = 'net.sourceforge.urin.documentation.DocumentationGenerator'
     args(documentationDirectory.toString())
     classpath = sourceSets.documentation.runtimeClasspath
 }
