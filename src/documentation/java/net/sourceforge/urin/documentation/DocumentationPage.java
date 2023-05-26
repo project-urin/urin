@@ -112,8 +112,8 @@ final class DocumentationPage {
                 unorderedListTag(
                         listItemTag(xhtmlText("The path component is created using the "), codeSnippet("rootlessPath"), xhtmlText(" method, to create a path without a leading '"),
                                 codeSnippet("/"), xhtmlText("' character.")),
-                        listItemTag(xhtmlText("The \""), codeSnippet(".."), xhtmlText("\" part of the output was generated using the "), codeSnippet("DOT_DOT"),
-                                xhtmlText(" constant.  This is because we're using \""), codeSnippet(".."), xhtmlText("\" with the special meaning 'parent'.")),
+                        listItemTag(xhtmlText("The \""), codeSnippet(".."), xhtmlText("\" part of the output was generated using the "), codeSnippet("dotDot()"),
+                                xhtmlText(" method.  This is because \""), codeSnippet(".."), xhtmlText("\" is being used with the special meaning 'parent'.")),
                         listItemTag(xhtmlText("The scheme name doesn't appear in the output, but the scheme is important because schemes can define modifications to the encoding of other components."))
                 ),
                 h3Tag(xhtmlText("Producing HTTP and HTTPS URIs and relative references")),
