@@ -203,13 +203,13 @@ final class DocumentationPage {
                 h4Tag(xhtmlText("Zero-length first path segment in relative references")),
                 paragraphTag(
                         xhtmlText("URI path segments can encode any Unicode string including the empty string.  " +
-                                "A full URI, example is "), codeSnippet(zeroLengthFirstPathSegmentUri()), xhtmlText(".  A relative reference " +
-                                "where the first segment is empty cannot be represented as e.g. "), codeSnippet(schemelessRelativeReferenceExample()),
+                                "A an example of a full URI that has empty string as the first segment is "), codeSnippet(zeroLengthFirstPathSegmentUri()), xhtmlText(".  A relative reference " +
+                                "where the first segment is the empty string cannot be represented as e.g. "), codeSnippet(schemelessRelativeReferenceExample()),
                         xhtmlText(" because RFC 3986 specifies that the leading "), codeSnippet("//"), xhtmlText(" indicates this should be interpreted as a relative reference to the authority "),
                         codeSnippet("foo"), xhtmlText(" (i.e. if "), codeSnippet(schemelessRelativeReferenceExample()), xhtmlText(" is resolved against "),
                         codeSnippet(baseExampleDotComUrin()), xhtmlText(", the result is "), codeSnippet(schemelessRelativeReferenceResolveAgainstBaseExampleDotComUrin()),
-                        xhtmlText(").  For this reason, Urin uses an apparently denormalised form of relative reference where the first segment is the empty string, e.g. "),
-                        codeSnippet(zeroLengthFirstPathSegmentRelativeReferenceExample()), xhtmlText(".")
+                        xhtmlText(").  A relative reference where the first segment is the empty string can be written by taking advantage of the dot segment, e.g. "),
+                        codeSnippet(zeroLengthFirstPathSegmentRelativeReferenceExample()), xhtmlText(".  Urin automatically uses this technique where required.")
                 )
         );
     }
