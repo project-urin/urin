@@ -200,7 +200,7 @@ final class DocumentationPage {
                         xhtmlText("Urin is designed to be able to parse and to generate every valid RFC 3986 URI.  There are two types of unusual " +
                                 "URIs to take note of:")
                 ),
-                h4Tag(xhtmlText("Zero-length first path segments in relative references")),
+                h4Tag(xhtmlText("Zero-length first path segment in relative references")),
                 paragraphTag(
                         xhtmlText("URI path segments can encode any Unicode string including the empty string.  " +
                                 "A full URI, example is "), codeSnippet(zeroLengthFirstPathSegmentUri()), xhtmlText(".  A relative reference " +
