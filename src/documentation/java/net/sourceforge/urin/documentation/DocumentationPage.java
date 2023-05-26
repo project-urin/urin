@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2023 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -35,6 +35,13 @@ import static net.sourceforge.urin.scheme.http.HttpQuery.queryParameters;
 import static net.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DocumentationPage {
+
+    private static final Urin<String, HttpQuery, Fragment<String>> baseExampleDotComUrin = HTTP.urin(
+            authority(registeredName("example.com"))
+    );
+    private static final RelativeReference<String, HttpQuery, Fragment<String>> schemelessRelativeReferenceExample = HTTP.relativeReference(
+            authority(registeredName("foo"))
+    );
 
     private DocumentationPage() {
     }
@@ -187,6 +194,22 @@ final class DocumentationPage {
                 paragraphTag(
                         xhtmlText("This is achieved by extending the "), simpleNameOf(Query.class), xhtmlText(" class.  " +
                         "The source code for "), simpleNameOf(HttpQuery.class), xhtmlText(" has an example of this in action.")
+                ),
+                h3Tag(xhtmlText("Unusual URIs")),
+                paragraphTag(
+                        xhtmlText("Urin is designed to be able to parse and to generate every valid RFC 3986 URI.  There are two types of unusual " +
+                                "URIs to take note of:")
+                ),
+                h4Tag(xhtmlText("Zero-length first path segments in relative references")),
+                paragraphTag(
+                        xhtmlText("URI path segments can encode any Unicode string including the empty string.  " +
+                                "A full URI, example is "), codeSnippet(zeroLengthFirstPathSegmentUri()), xhtmlText(".  A relative reference " +
+                                "where the first segment is empty cannot be represented as e.g. "), codeSnippet(schemelessRelativeReferenceExample()),
+                        xhtmlText(" because RFC 3986 specifies that the leading "), codeSnippet("//"), xhtmlText(" indicates this should be interpreted as a relative reference to the authority "),
+                        codeSnippet("foo"), xhtmlText(" (i.e. if "), codeSnippet(schemelessRelativeReferenceExample()), xhtmlText(" is resolved against "),
+                        codeSnippet(baseExampleDotComUrin()), xhtmlText(", the result is "), codeSnippet(schemelessRelativeReferenceResolveAgainstBaseExampleDotComUrin()),
+                        xhtmlText(").  For this reason, Urin uses an apparently denormalised form of relative reference where the first segment is the empty string, e.g. "),
+                        codeSnippet(zeroLengthFirstPathSegmentRelativeReferenceExample()), xhtmlText(".")
                 )
         );
     }
@@ -263,6 +286,33 @@ final class DocumentationPage {
                                 rootlessPath(Segment.<String>dotDot(), segment("child-2")),
                                 queryParameters(queryParameter("extra-query"))
                         )
+                ).asString();
+    }
+
+    private static String zeroLengthFirstPathSegmentUri() {
+        return
+                HTTP.urin(
+                        authority(registeredName("example.com")),
+                        path(segment(""), segment("foo"))
+                ).asString();
+    }
+
+    private static String schemelessRelativeReferenceExample() {
+        return schemelessRelativeReferenceExample.asString();
+    }
+
+    private static String baseExampleDotComUrin() {
+        return baseExampleDotComUrin.asString();
+    }
+
+    private static String schemelessRelativeReferenceResolveAgainstBaseExampleDotComUrin() {
+        return baseExampleDotComUrin.resolve(schemelessRelativeReferenceExample).asString();
+    }
+
+    private static String zeroLengthFirstPathSegmentRelativeReferenceExample() {
+        return
+                HTTP.relativeReference(
+                        path(segment(""), segment("foo"))
                 ).asString();
     }
 }
