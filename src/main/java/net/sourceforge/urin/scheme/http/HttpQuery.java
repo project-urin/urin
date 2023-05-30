@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2023 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -17,8 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static java.util.Collections.unmodifiableList;
+import static java.util.Collections.*;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -34,6 +33,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                             percentEncodedQueryParameter(PercentEncodingPartial.percentEncodingDelimitedValue(
                                     '=',
                                     PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+'))))));
+    private static final QueryParameter VALUELESS_EMPTY_NAMED_QUERY_PARAMETER = queryParameter("");
 
     /**
      * Factory method for {@code MakingDecoder}s of {@code HttpQuery}s
@@ -50,7 +50,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
     }
 
     private HttpQuery(final Iterable<QueryParameter> queryParameters) {
-        super(unmodifiableList(requireNonNullElements(queryParameters)), HTTP_QUERY_PERCENT_ENCODING_PARTIAL);
+        super(unmodifiableList(convertSingleElementListOfValuelessQueryParameterNamedEmptyStringToEmptyList(requireNonNullElements(queryParameters))), HTTP_QUERY_PERCENT_ENCODING_PARTIAL);
     }
 
     private static List<QueryParameter> requireNonNullElements(final Iterable<QueryParameter> queryParameters) {
@@ -59,6 +59,10 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
             result.add(requireNonNull(queryParameter, "Cannot instantiate QueryParameters with null queryParameter"));
         }
         return result;
+    }
+
+    private static List<QueryParameter> convertSingleElementListOfValuelessQueryParameterNamedEmptyStringToEmptyList(final List<QueryParameter> queryParameters) {
+        return queryParameters.size() == 1 && VALUELESS_EMPTY_NAMED_QUERY_PARAMETER.equals(queryParameters.get(0)) ? emptyList() : queryParameters;
     }
 
     private static <T> PercentEncodingPartial<Iterable<QueryParameter>, T> encodeQueryParameters(final PercentEncodingPartial<Iterable<Iterable<QueryParameter>>, T> childPercentEncodingPartial) {

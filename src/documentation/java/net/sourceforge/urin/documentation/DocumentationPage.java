@@ -220,7 +220,9 @@ final class DocumentationPage {
                         "and \""), codeSnippet("foo"), xhtmlText("\".  It is (implicitly) not possible to write URIs with a single valueless query parameter named empty string " +
                         "because they would be indistinguishable from URIs with zero query parameters, so, for example "), codeSnippet(zeroParametersExample()), xhtmlText(" might " +
                         "erroneously be interpreted as having a single valueless query parameter named \"\", but in fact has a query consisting of zero query parameters.")
-                )
+                ),
+                paragraphTag(xhtmlText("Recognising this, Urin normalises "), codeSnippet("queryParameters(queryParameter(\"\"))"), xhtmlText(" to "), codeSnippet("queryParameters()"),
+                        xhtmlText(" to make comparison of Urin objects consistent with their URI representation."))
         );
     }
 
