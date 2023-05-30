@@ -48,7 +48,7 @@ testSets {
 }
 
 tasks.named('check') {
-    dependsOn(testIntegration)
+    dependsOn(testUnit, testIntegration)
 }
 
 dependencies {
@@ -75,6 +75,10 @@ version = "${majorVersion}.${minorVersion}"
 description = 'Urin is an open source URI generator and parser written in Java.'
 
 modularity.mixedJavaRelease 8
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform()
+}
 
 tasks.register('compileTinyJava', JavaCompile) {
     source sourceSets.main.allSource
