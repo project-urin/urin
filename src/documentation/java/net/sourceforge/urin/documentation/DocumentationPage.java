@@ -36,10 +36,10 @@ import static net.sourceforge.xazzle.xhtml.Tags.*;
 
 final class DocumentationPage {
 
-    private static final Urin<String, HttpQuery, Fragment<String>> baseExampleDotComUrin = HTTP.urin(
+    private static final Urin<String, HttpQuery, Fragment<String>> BASE_EXAMPLE_DOT_COM_URIN = HTTP.urin(
             authority(registeredName("example.com"))
     );
-    private static final RelativeReference<String, HttpQuery, Fragment<String>> schemelessRelativeReferenceExample = HTTP.relativeReference(
+    private static final RelativeReference<String, HttpQuery, Fragment<String>> SCHEMELESS_RELATIVE_REFERENCE_EXAMPLE = HTTP.relativeReference(
             authority(registeredName("foo"))
     );
 
@@ -211,6 +211,16 @@ final class DocumentationPage {
                         xhtmlText(").  A relative reference where the first segment is the empty string can be written by taking advantage of the dot segment, e.g. "),
                         codeSnippet(zeroLengthFirstPathSegmentRelativeReferenceExample()), xhtmlText(".  Urin automatically uses this technique where required.")
                 )
+                ,
+                h4Tag(xhtmlText("First query parameter with zero length name and no value in HTTP(S) URIs")),
+                paragraphTag(xhtmlText("The optional query part of HTTP(S) URIs is composed of zero or more query parameter names, each with an optional value. " +
+                        "The parameter name (and for that matter, the parameter value), can encode any Unicode string, including the empty string, so, for example, " +
+                        "the URI "), codeSnippet(zeroLengthParameterNameUnambiguousExample()), xhtmlText(" has two valueless parameters named \"\" [the empty string, from between " +
+                        "the "), codeSnippet("?"), xhtmlText(" and the "), codeSnippet("&"), xhtmlText("], " +
+                        "and \""), codeSnippet("foo"), xhtmlText("\".  It is (implicitly) not possible to write URIs with a single valueless query parameter named empty string " +
+                        "because they would be indistinguishable from URIs with zero query parameters, so, for example "), codeSnippet(zeroParametersExample()), xhtmlText(" might " +
+                        "erroneously be interpreted as having a single valueless query parameter named \"\", but in fact has a query consisting of zero query parameters.")
+                )
         );
     }
 
@@ -298,15 +308,15 @@ final class DocumentationPage {
     }
 
     private static String schemelessRelativeReferenceExample() {
-        return schemelessRelativeReferenceExample.asString();
+        return SCHEMELESS_RELATIVE_REFERENCE_EXAMPLE.asString();
     }
 
     private static String baseExampleDotComUrin() {
-        return baseExampleDotComUrin.asString();
+        return BASE_EXAMPLE_DOT_COM_URIN.asString();
     }
 
     private static String schemelessRelativeReferenceResolveAgainstBaseExampleDotComUrin() {
-        return baseExampleDotComUrin.resolve(schemelessRelativeReferenceExample).asString();
+        return BASE_EXAMPLE_DOT_COM_URIN.resolve(SCHEMELESS_RELATIVE_REFERENCE_EXAMPLE).asString();
     }
 
     private static String zeroLengthFirstPathSegmentRelativeReferenceExample() {
@@ -314,5 +324,13 @@ final class DocumentationPage {
                 HTTP.relativeReference(
                         path(segment(""), segment("foo"))
                 ).asString();
+    }
+
+    private static String zeroLengthParameterNameUnambiguousExample() {
+        return HTTP.urin(authority(registeredName("example.com")), queryParameters(queryParameter(""), queryParameter("foo"))).asString();
+    }
+
+    private static String zeroParametersExample() {
+        return HTTP.urin(authority(registeredName("example.com")), queryParameters()).asString();
     }
 }
