@@ -203,7 +203,7 @@ final class DocumentationPage {
                 h4Tag(xhtmlText("Zero-length first path segment in relative references")),
                 paragraphTag(
                         xhtmlText("URI path segments can encode any Unicode string including the empty string.  " +
-                                "A an example of a full URI that has empty string as the first segment is "), codeSnippet(zeroLengthFirstPathSegmentUri()), xhtmlText(".  A relative reference " +
+                                "An example of a full URI that has empty string as the first segment is "), codeSnippet(zeroLengthFirstPathSegmentUri()), xhtmlText(".  A relative reference " +
                                 "where the first segment is the empty string cannot be represented as e.g. "), codeSnippet(schemelessRelativeReferenceExample()),
                         xhtmlText(" because RFC 3986 specifies that the leading "), codeSnippet("//"), xhtmlText(" indicates this should be interpreted as a relative reference to the authority "),
                         codeSnippet("foo"), xhtmlText(" (i.e. if "), codeSnippet(schemelessRelativeReferenceExample()), xhtmlText(" is resolved against "),
