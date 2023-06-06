@@ -212,7 +212,7 @@ final class DocumentationPage {
                         codeSnippet(zeroLengthFirstPathSegmentRelativeReferenceExample()), xhtmlText(".  Urin automatically uses this technique where required.")
                 )
                 ,
-                h4Tag(xhtmlText("First query parameter with zero length name and no value in HTTP(S) URIs")),
+                h4Tag(xhtmlText("First query parameter with zero-length name and no value in HTTP(S) URIs")),
                 paragraphTag(xhtmlText("The optional query part of HTTP(S) URIs is composed of zero or more query parameter names, each with an optional value. " +
                         "The parameter name (and for that matter, the parameter value), can encode any Unicode string, including the empty string, so, for example, " +
                         "the URI "), codeSnippet(zeroLengthParameterNameUnambiguousExample()), xhtmlText(" has two valueless parameters named \"\" [the empty string, from between " +
