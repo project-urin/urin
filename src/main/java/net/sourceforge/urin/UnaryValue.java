@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -24,7 +24,7 @@ abstract class UnaryValue<T> {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
 
-        UnaryValue<?> that = (UnaryValue<?>) object;
+        final UnaryValue<?> that = (UnaryValue<?>) object;
         return value.equals(that.value);
     }
 

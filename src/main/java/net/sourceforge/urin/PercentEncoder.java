@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -38,8 +38,8 @@ final class PercentEncoder {
     }
 
     String encode(final String notEncoded) {
-        StringBuilder result = new StringBuilder();
-        for (byte character : notEncoded.getBytes(UTF_8)) {
+        final StringBuilder result = new StringBuilder();
+        for (final byte character : notEncoded.getBytes(UTF_8)) {
             if (nonPercentEncodedCharacterSet.isMember((char) character)) {
                 result.append((char) character);
             } else {
@@ -70,11 +70,11 @@ final class PercentEncoder {
     }
 
     String decode(final String encoded) throws ParseException {
-        StringBuilder result = new StringBuilder();
-        byte[] buffer = new byte[4];
-        char[] candidateChars = encoded.toCharArray();
+        final StringBuilder result = new StringBuilder();
+        final byte[] buffer = new byte[4];
+        final char[] candidateChars = encoded.toCharArray();
         for (int i = 0; i < candidateChars.length; i++) {
-            char candidateChar = candidateChars[i];
+            final char candidateChar = candidateChars[i];
             if ('%' == candidateChar) {
                 buffer[0] = getByte(candidateChars, i);
                 final int byteCount = getByteCount(buffer[0]);

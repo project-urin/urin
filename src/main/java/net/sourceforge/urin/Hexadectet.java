@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -39,7 +39,7 @@ public final class Hexadectet extends UnaryValue<Integer> {
 
     private static AugmentedOptional<Hexadectet> makeHexadectet(final int hexadectet) {
         if (hexadectet < 0x0 || hexadectet > 0xFFFF) {
-            String absoluteHexValue = Integer.toHexString(Math.abs(hexadectet));
+            final String absoluteHexValue = Integer.toHexString(Math.abs(hexadectet));
             return AugmentedOptional.empty("Argument must be in the range 0x0-0xFFFF but was [" + (hexadectet >= 0 ? "" : "-") + "0x" + absoluteHexValue + "]");
         }
         return AugmentedOptional.of(new Hexadectet(hexadectet));

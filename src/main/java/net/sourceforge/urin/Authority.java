@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -83,7 +83,7 @@ public abstract class Authority {
      * @throws ParseException if the given {@code String} is not a valid authority.
      */
     public static Authority parse(final String authority) throws ParseException {
-        Matcher matcher = AUTHORITY_PATTERN.matcher(authority);
+        final Matcher matcher = AUTHORITY_PATTERN.matcher(authority);
         if (!matcher.matches()) {
             throw new ParseException("[" + authority + "] is not a valid authority");
         }
@@ -98,7 +98,7 @@ public abstract class Authority {
                 return authority(host, Port.parse(port));
             }
         } else {
-            UserInfo userInfo = UserInfo.parse(userInfoString);
+            final UserInfo userInfo = UserInfo.parse(userInfoString);
             if (port == null) {
                 return authority(userInfo, host);
             } else {
@@ -138,7 +138,7 @@ public abstract class Authority {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            AuthorityWithHost that = (AuthorityWithHost) object;
+            final AuthorityWithHost that = (AuthorityWithHost) object;
             return host.equals(that.host);
         }
 
@@ -184,7 +184,7 @@ public abstract class Authority {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            AuthorityWithUserInfoAndHost that = (AuthorityWithUserInfoAndHost) object;
+            final AuthorityWithUserInfoAndHost that = (AuthorityWithUserInfoAndHost) object;
 
             return host.equals(that.host)
                     && userInfo.equals(that.userInfo);
@@ -236,7 +236,7 @@ public abstract class Authority {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            AuthorityWithHostAndPort that = (AuthorityWithHostAndPort) object;
+            final AuthorityWithHostAndPort that = (AuthorityWithHostAndPort) object;
             return host.equals(that.host)
                     && port.equals(that.port);
         }
@@ -288,7 +288,7 @@ public abstract class Authority {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            AuthorityWithUserInfoAndHostAndPort that = (AuthorityWithUserInfoAndHostAndPort) object;
+            final AuthorityWithUserInfoAndHostAndPort that = (AuthorityWithUserInfoAndHostAndPort) object;
             return host.equals(that.host)
                     && port.equals(that.port)
                     && userInfo.equals(that.userInfo);

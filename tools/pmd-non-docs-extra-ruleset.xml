@@ -19,7 +19,7 @@
         Extra rules that apply to all classes except the docs source set
     </description>
 
-<!--    <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" /> TODO this should be turned back on -->
+    <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal" />
     <rule ref="category/java/errorprone.xml/EmptyCatchBlock" />
 
 </ruleset>

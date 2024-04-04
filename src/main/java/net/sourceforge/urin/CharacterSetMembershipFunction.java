@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -158,7 +158,7 @@ abstract class CharacterSetMembershipFunction {
             @Override
             boolean isMember(final char character) {
                 boolean result = head.isMember(character);
-                Iterator<CharacterSetMembershipFunction> characterSetMembershipFunctionIterator = asList(tail).iterator();
+                final Iterator<CharacterSetMembershipFunction> characterSetMembershipFunctionIterator = asList(tail).iterator();
                 while (characterSetMembershipFunctionIterator.hasNext() && !result) {
                     result = characterSetMembershipFunctionIterator.next().isMember(character);
                 }
@@ -167,10 +167,10 @@ abstract class CharacterSetMembershipFunction {
 
             @Override
             String describe() {
-                StringBuilder result = new StringBuilder(head.describe());
-                Iterator<CharacterSetMembershipFunction> characterSetMembershipFunctionIterator = asList(tail).iterator();
+                final StringBuilder result = new StringBuilder(head.describe());
+                final Iterator<CharacterSetMembershipFunction> characterSetMembershipFunctionIterator = asList(tail).iterator();
                 while (characterSetMembershipFunctionIterator.hasNext()) {
-                    String description = characterSetMembershipFunctionIterator.next().describe();
+                    final String description = characterSetMembershipFunctionIterator.next().describe();
                     result.append(", ");
                     if (!characterSetMembershipFunctionIterator.hasNext()) {
                         result.append("or ");
@@ -201,7 +201,7 @@ abstract class CharacterSetMembershipFunction {
 
     boolean areMembers(final String string) {
         boolean result = true;
-        for (char character : string.toCharArray()) {
+        for (final char character : string.toCharArray()) {
             result = result && isMember(character);
         }
         return result;

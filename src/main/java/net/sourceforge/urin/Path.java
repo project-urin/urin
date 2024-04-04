@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -41,7 +41,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     public static Path<String> rootlessPath(final String firstSegment, final String... segments) {
         final List<Segment<String>> segmentList = new ArrayList<>(segments.length + 1);
         segmentList.add(segment(firstSegment));
-        for (String segment : segments) {
+        for (final String segment : segments) {
             segmentList.add(segment(segment));
         }
         return rootlessPath(segmentList);
@@ -94,7 +94,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     public static AbsolutePath<String> path(final String firstSegment, final String... segments) {
         final List<Segment<String>> segmentList = new ArrayList<>(segments.length + 1);
         segmentList.add(segment(firstSegment));
-        for (String segment : segments) {
+        for (final String segment : segments) {
             segmentList.add(segment(segment));
         }
         return path(segmentList);
@@ -139,7 +139,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
         } else {
             final String[] segmentStrings = rawPath.split("/");
             final List<Segment<SEGMENT>> result = new ArrayList<>(segmentStrings.length);
-            for (String segmentString : segmentStrings) {
+            for (final String segmentString : segmentStrings) {
                 result.add(Segment.parse(segmentString, segmentMakingDecoder));
             }
             return rootlessPath(result);
@@ -153,7 +153,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
             final String[] segmentStrings = rawPath.split("/", -1);
             final List<Segment<SEGMENT>> result = new ArrayList<>(segmentStrings.length - 1);
             boolean isFirst = true;
-            for (String segmentString : segmentStrings) {
+            for (final String segmentString : segmentStrings) {
                 if (!isFirst) {
                     result.add(Segment.parse(segmentString, segmentMakingDecoder));
                 }
@@ -164,8 +164,8 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     }
 
     static <T> Deque<Segment<T>> normaliseRootless(final Iterable<Segment<T>> segments) { // TODO consider whether we should normalise by effect, e.g. the relative references . and ./ are equivalent, as are .. and ../ (we'd call the latter of each "empty")
-        Deque<Segment<T>> normalisedSegments = new LinkedList<>();
-        for (Segment<T> next : segments) {
+        final Deque<Segment<T>> normalisedSegments = new LinkedList<>();
+        for (final Segment<T> next : segments) {
             if (normalisedSegments.isEmpty()) {
                 normalisedSegments.add(next);
             } else {

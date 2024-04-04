@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -55,7 +55,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
     private static List<QueryParameter> requireNonNullElements(final Iterable<QueryParameter> queryParameters) {
         final List<QueryParameter> result = new ArrayList<>();
-        for (QueryParameter queryParameter : queryParameters) {
+        for (final QueryParameter queryParameter : queryParameters) {
             result.add(requireNonNull(queryParameter, "Cannot instantiate QueryParameters with null queryParameter"));
         }
         return result;
@@ -70,7 +70,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
             @Override
             public Iterable<Iterable<QueryParameter>> encode(final Iterable<QueryParameter> queryParameters) {
                 final List<Iterable<QueryParameter>> result = new ArrayList<>();
-                for (QueryParameter queryParameter : queryParameters) {
+                for (final QueryParameter queryParameter : queryParameters) {
                     result.add(singletonList(queryParameter));
                 }
                 return result;
@@ -79,8 +79,8 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
             @Override
             public Iterable<QueryParameter> decode(final Iterable<Iterable<QueryParameter>> iterables) {
                 final List<QueryParameter> result = new ArrayList<>();
-                for (Iterable<QueryParameter> queryParameters : iterables) {
-                    for (QueryParameter queryParameter : queryParameters) {
+                for (final Iterable<QueryParameter> queryParameters : iterables) {
+                    for (final QueryParameter queryParameter : queryParameters) {
                         result.add(queryParameter);
                     }
                 }
@@ -98,7 +98,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
             @Override
             public QueryParameter decode(final Iterable<String> strings) throws ParseException {
-                Iterator<String> iterator = strings.iterator();
+                final Iterator<String> iterator = strings.iterator();
                 if (!iterator.hasNext()) {
                     throw new ParseException("Invalid query parameter String [" + strings + "]");
                 }
@@ -240,7 +240,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            NameAndValueQueryParameter that = (NameAndValueQueryParameter) object;
+            final NameAndValueQueryParameter that = (NameAndValueQueryParameter) object;
 
             return name.equals(that.name) && value.equals(that.value);
         }
@@ -290,7 +290,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            NameOnlyQueryParameter that = (NameOnlyQueryParameter) object;
+            final NameOnlyQueryParameter that = (NameOnlyQueryParameter) object;
 
             return name.equals(that.name);
 

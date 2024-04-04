@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -22,15 +22,15 @@ final class PathHelper {
     }
 
     static <T> Iterable<Segment<T>> appendSegmentsTo(final Collection<Segment<T>> baseSegments, final Iterable<Segment<T>> appendedSegments) {
-        List<Segment<T>> result = new ArrayList<>();
-        Iterator<Segment<T>> baseSegmentsIterator = baseSegments.iterator();
+        final List<Segment<T>> result = new ArrayList<>();
+        final Iterator<Segment<T>> baseSegmentsIterator = baseSegments.iterator();
         while (baseSegmentsIterator.hasNext()) {
-            Segment<T> baseSegment = baseSegmentsIterator.next();
+            final Segment<T> baseSegment = baseSegmentsIterator.next();
             if (baseSegmentsIterator.hasNext()) {
                 result.add(baseSegment);
             }
         }
-        for (Segment<T> segment : appendedSegments) {
+        for (final Segment<T> segment : appendedSegments) {
             result.add(segment);
         }
         return result;

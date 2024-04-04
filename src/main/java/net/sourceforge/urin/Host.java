@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -165,7 +165,7 @@ public abstract class Host {
         int maximumStreakLength = 0;
         int maximumStreakEnd = 0;
         for (int i = 0, streakLengthToHere = 0; i < hexadectets.length; i++) {
-            Hexadectet hexadectet = hexadectets[i];
+            final Hexadectet hexadectet = hexadectets[i];
             streakLengthToHere = hexadectet.isElidable() ? streakLengthToHere + 1 : 0;
             if (streakLengthToHere > maximumStreakLength) {
                 maximumStreakLength = streakLengthToHere;
@@ -173,9 +173,9 @@ public abstract class Host {
             }
         }
 
-        Deque<Elidable> result = new LinkedList<>();
+        final Deque<Elidable> result = new LinkedList<>();
         for (int i = 0; i < hexadectets.length; i++) {
-            Hexadectet hexadectet = hexadectets[i];
+            final Hexadectet hexadectet = hexadectets[i];
             if (maximumStreakLength <= 1 || i <= maximumStreakEnd - maximumStreakLength || i > maximumStreakEnd) {
                 result.add(Elidable.nonElided(hexadectet.asString()));
             } else if (i == 0 || i == maximumStreakEnd) {
@@ -217,7 +217,7 @@ public abstract class Host {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            RegisteredName that = (RegisteredName) object;
+            final RegisteredName that = (RegisteredName) object;
             return registeredName.equals(that.registeredName);
         }
 
@@ -279,7 +279,7 @@ public abstract class Host {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            IpV4Address that = (IpV4Address) object;
+            final IpV4Address that = (IpV4Address) object;
             return firstOctet.equals(that.firstOctet)
                     && thirdOctet.equals(that.thirdOctet)
                     && secondOctet.equals(that.secondOctet)
@@ -306,7 +306,7 @@ public abstract class Host {
         }
 
         static AugmentedOptional<IpV4Address> parses(final String hostString) {
-            String[] split = hostString.split("\\.");
+            final String[] split = hostString.split("\\.");
             if (split.length != 4) {
                 return AugmentedOptional.empty("Invalid Host String [" + hostString + "]");
             }
@@ -351,7 +351,7 @@ public abstract class Host {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            IpV6Address that = (IpV6Address) object;
+            final IpV6Address that = (IpV6Address) object;
             return firstHexadectet.equals(that.firstHexadectet)
                     && secondHexadectet.equals(that.secondHexadectet)
                     && thirdHexadectet.equals(that.thirdHexadectet)
@@ -394,7 +394,7 @@ public abstract class Host {
                 return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
             }
             final String expandedIpV6Address = expandElision(hostString.substring(1, hostString.length() - 1));
-            String[] hexadectetStrings = expandedIpV6Address.split(":", -1);
+            final String[] hexadectetStrings = expandedIpV6Address.split(":", -1);
             return parseHexadectets(hostString, hexadectetStrings, 8).flatMap(hexadectets ->
                     hexadectets.get(0).flatMap(first ->
                             hexadectets.get(1).flatMap(second ->
@@ -485,7 +485,7 @@ public abstract class Host {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            IpV6AddressWithTrailingIpV4Address that = (IpV6AddressWithTrailingIpV4Address) object;
+            final IpV6AddressWithTrailingIpV4Address that = (IpV6AddressWithTrailingIpV4Address) object;
             return firstHexadectet.equals(that.firstHexadectet)
                     && secondHexadectet.equals(that.secondHexadectet)
                     && thirdHexadectet.equals(that.thirdHexadectet)
@@ -565,8 +565,8 @@ public abstract class Host {
     }
 
     private static AugmentedOptional<List<AugmentedOptional<Hexadectet>>> parseHexadectets(final String hostString, final String[] hexadectetStrings, final int requiredLength) {
-        List<AugmentedOptional<Hexadectet>> hexadectets = new ArrayList<>(requiredLength);
-        for (String hexadectetString : hexadectetStrings) {
+        final List<AugmentedOptional<Hexadectet>> hexadectets = new ArrayList<>(requiredLength);
+        for (final String hexadectetString : hexadectetStrings) {
             hexadectets.add(Hexadectet.parses(hexadectetString));
         }
         if (hexadectets.size() != requiredLength) {
@@ -607,7 +607,7 @@ public abstract class Host {
         }
 
         static AugmentedOptional<IpVFutureAddress> parses(final String hostString) {
-            Matcher matcher = IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN.matcher(hostString);
+            final Matcher matcher = IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN.matcher(hostString);
             if (matcher.matches()
                     && CharacterSetMembershipFunction.HEX_DIGIT.areMembers(matcher.group(1))
                     && ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION.areMembers(matcher.group(2))) {
@@ -627,7 +627,7 @@ public abstract class Host {
             if (this == object) return true;
             if (object == null || getClass() != object.getClass()) return false;
 
-            IpVFutureAddress that = (IpVFutureAddress) object;
+            final IpVFutureAddress that = (IpVFutureAddress) object;
 
             return address.equals(that.address)
                     && version.equals(that.version);

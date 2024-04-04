@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -57,11 +57,11 @@ final class RootlessPath<T> extends Path<T> {
 
     @Override
     String asString(final PrefixWithDotSegmentCriteria prefixWithDotSegmentCriteria) {
-        StringBuilder result = new StringBuilder();
+        final StringBuilder result = new StringBuilder();
         if (prefixWithDotSegmentCriteria.matches(this)) {
             result.append("./");
         }
-        Iterator<Segment<T>> segmentIterator = segments.iterator();
+        final Iterator<Segment<T>> segmentIterator = segments.iterator();
         while (segmentIterator.hasNext()) {
             result.append(segmentIterator.next().asString());
             if (segmentIterator.hasNext()) {
@@ -76,7 +76,7 @@ final class RootlessPath<T> extends Path<T> {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
 
-        RootlessPath<?> rootlessPath = (RootlessPath<?>) object;
+        final RootlessPath<?> rootlessPath = (RootlessPath<?>) object;
         return segments.equals(rootlessPath.segments);
     }
 
