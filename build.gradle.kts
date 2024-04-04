@@ -220,20 +220,8 @@ tasks {
         ruleSets = emptyList()
     }
 
-    spotbugsMain {
-//        excludeFilter = file("tools/spotbugs-main-filter.xml")
-    }
-
     named<com.github.spotbugs.snom.SpotBugsTask>("spotbugsDocs") {
-//        excludeFilter = file("tools/spotbugs-docs-filter.xml")
-    }
-
-    spotbugsTest {
-//        excludeFilter = file("tools/spotbugs-test-filter.xml")
-    }
-
-    spotbugsTestFixtures {
-//        excludeFilter = file("tools/spotbugs-testFixtures-filter.xml")
+        excludeFilter = file("tools/spotbugs-docs-filter.xml")
     }
 
     val release by registering {

@@ -1,0 +1,201 @@
+= Urin
+:favicon:
+:source-highlighter: rouge
+:icons: font
+// :toc: left
+:toclevels: 1
+:description: Urin is a replacement for Java's URI and URL classes.  It implements RFC 3986.  It is free to download and use in your project.
+:source-roots: {docfile}/../java
+
+Urin is a URI generator and parser for Java. It is written to make the dynamic generation of correct URIs easier than with Java's built-in URI and URL classes, and to provide support for the current URI standard, https://tools.ietf.org/html/rfc3986[RFC 3986].  Urin has no dependencies.  It's licensed under the http://www.apache.org/licenses/LICENSE-2.0[Apache 2 License].
+
+== Downloads
+
+Urin is published on https://central.sonatype.com/artifact/net.sourceforge.urin/urin[Maven Central].
+
+[tabs]
+====
+Gradle (Kotlin)::
++
+--
+[source,kotlin,subs="+attributes"]
+----
+dependencies {
+    implementation(group = "net.sourceforge.urin", name = "urin", version = "{revnumber}")
+}
+----
+--
+
+Gradle (Groovy)::
++
+--
+[source,groovy,subs="+attributes"]
+----
+dependencies {
+    implemenation group: 'net.sourceforge.urin', name: 'urin', version: '{revnumber}'
+}
+----
+--
+
+Maven::
++
+--
+[source,xml,subs="+attributes"]
+----
+<dependency>
+    <groupId>net.sourceforge.urin</groupId>
+    <artifactId>urin</artifactId>
+    <version>{revnumber}</version>
+</dependency>
+----
+--
+====
+
+== Quick start
+
+An HTTPS URI is generated as follows:
+
+[source,java]
+----
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generateAnHttpsUri,indent=0]
+----
+
+The `uri` variable contains `"http://www.example.com/music/AC%2FDC/Back%20in%20Black"`. Note that the `/` character in `AC/DC` has been encoded as `%2F`, and that the space characters in `Back in Black` have been encoded as `%20`.
+
+The registered name and path could be any Strings we choose; the library will encode them appropriately to the part of the URI where they appear.
+
+To parse the URI we just generated:
+
+[source,java]
+----
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=parseAnHttpsUri,indent=0]
+----
+
+The `segments` variable contains three `Segment` objects, with the values `"music"`, `"AC/DC"`, and `"Back in Black"`.
+
+== Usage
+
+=== Model of URIs and relative references in Urin
+The model of URIs and relative references in Urin reflects that defined in http://tools.ietf.org/html/rfc3986[RFC 3986]. The RFC defines two top level structures:
+
+- URI - for example http://www.example.com/index
+- Relative reference - sometimes loosely called a relative URI; for example link:/index.html[]
+
+These are modelled in Urin as `Urin` and `RelativeReference` respectively. These classes provide factory methods that allow any valid URI or relative reference to be generated.
+
+=== Producing URIs and relative references
+
+Producing a URI is simply a case of calling the relevant factory method on an instance of the `Scheme` class, for example:
+
+[source,java]
+----
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generateAnFtpUri,indent=0]
+----
+
+The `uri` variable contains ``{empty}
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generatedFtpUri]
+``.
+
+It is also possible to generate an instance of `java.net.URI`, like so:
+
+[source,java]
+----
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generateAMailtoUri,indent=0]
+----
+
+This produces ``{empty}
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generatedMailtoUri]
+``. Note, however, that `java.net.URI` implements the obsoleted https://tools.ietf.org/html/rfc2396[RFC 2396], meaning there are certain valid URIs which can be produced using Urin, but which can't be represented by `java.net.URI`.
+
+Generating a relative reference follows the same pattern, for example:
+
+[source,java]
+----
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generateAnRsyncRelativeReference,indent=0]
+----
+
+This returns a String containing ``{empty}
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generatedRsyncRelativeReference]
+``.  It is possible to retrieve this as a `java.net.URI` in the same way as for a `net.sourceforge.urin.Urin`, by calling the `asUri()` method. Of note in this example:
+
+- The path component is created using the `rootlessPath` method, to create a path without a leading `/` character.
+- The `..` part of the output was generated using the `dotDot()` method. This is because `..` is being used with the special meaning 'parent', so it shouldn't be escaped.
+- The scheme name doesn't appear in the output, but the scheme is important because schemes can define modifications to the encoding of other components.
+
+=== Producing HTTP and HTTPS URIs and relative references
+
+Urin provides specific support for generating HTTP and HTTPS URIs for convenience, and to implement the additional rules and encoding HTTP(S) uses. These are implemented in the `Http` and `Https` classes. For example:
+
+[source,java]
+----
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generateAFullFeaturedHttpUri,indent=0]
+----
+
+The `uri` variable contains ``{empty}
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generatedFullFeaturedHttpUri]
+``. Notice a number of HTTP specific features:
+
+- The port has been elided because port 80 is the default for HTTP
+- HTTP query parameter separators have been inserted in the query component
+- Spaces in the query component have been encoded as `+`, rather than `%20`
+
+An equivalent set of methods for generating HTTPS URIs exist on the Https class.
+
+=== Parsing
+
+The `Scheme` class implements `parseUrinReference`, `parseUrin`, and `parseRelativeReference` methods to produce an instances of their respective types from a `String`. For example, we can parse the URI `ldap://[2001:db8::7]/c=GB?objectClass?one` as follows:
+
+[source,java]
+----
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=parseAnLdapUri,indent=0]
+----
+
+`ParseException` would be thrown if the String wasn't a valid URI.
+
+=== Normalisation
+RFC 3986 specifies a number of https://datatracker.ietf.org/doc/html/rfc3986#section-6[methods of URI normalisation] which are applied by Urin, such as the handling of unnecessary encoding and non-preferred case, and the handling of `.` and `..` segments. For example:
+
+[source,java]
+----
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=parseANonNormalisedUrin,indent=0]
+----
+
+The `uri` variable contains ``{empty}
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=normalisedUri]
+`` as a result of normalisation rules having been applied.
+
+=== Resolution
+Relative references can be turned into URIs by resolving them, relative to a context URI. In Urin, this is achieved using the resolve method on `Urin`, for example:
+
+[source,java]
+----
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=resolveARelativeReference,indent=0]
+----
+This returns the String ``{empty}
+include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=resolvedRelativeReference]
+``.
+
+=== Implementing scheme-specific rules
+
+Urin also provides a mechanism for schemes with extra rules to be implemented, as demonstrated in the `Http` class, which handles the non-default encoding of the space character, and the encoding of parameters in the query component of the HTTP scheme.
+
+This is achieved by extending the `Query` class. The source code for `HttpQuery` has an example of this in action.
+
+=== Unusual URIs
+Urin is designed to be able to parse and to generate every valid RFC 3986 URI.  There are two types of unusual URIs to take note of:
+
+==== Zero-length first path segment in relative references
+URI path segments can encode any Unicode string including the empty string. An example of a full URI that has empty string as the first segment is `http://example.com//foo`. A relative reference where the first segment is the empty string cannot be represented as e.g. `//foo` because RFC 3986 specifies that the leading `//` indicates this should be interpreted as a relative reference to the authority `foo` (i.e. if `//foo` is resolved against `http://example.com`, the result is `http://foo`).  A relative reference where the first segment is the empty string can, however, be written by taking advantage of the dot segment, e.g. `/.//foo`. Urin automatically uses this technique where required.
+
+==== First query parameter with zero-length name and no value in HTTP(S) URIs
+The optional query part of HTTP(S) URIs is composed of zero or more query parameter names, each with an optional value. The parameter name (and for that matter, the parameter value), can encode any Unicode string, including the empty string, so, for example, the URI `http://example.com?&foo` has two valueless parameters named `""` [the empty string, from between the `?` and the `&`], and `"foo"`. It is (implicitly) not possible to write URIs with a single valueless query parameter named empty string because they would be indistinguishable from URIs with zero query parameters, so, for example `link:http://example.com?[]` might erroneously be interpreted as having a single valueless query parameter named `""`, but in fact has a query consisting of zero query parameters.
+
+Recognising this, Urin normalises `queryParameters(queryParameter(""))` to `queryParameters()` to make comparison of Urin objects consistent with their URI representation.
+
+=== Further details
+
+// suppress inspection "AsciiDocLinkResolve"
+In-depth details of the API are available in the link:javadoc/[online javadoc].
+The project is hosted on https://sourceforge.net/projects/urin[SourceForge].
+
+image::https://sflogo.sourceforge.net/sflogo.php?group_id=245339&type=13["Get Urin at SourceForge.net. Fast,secure and Free Open Source software downloads",align="center",link=https://sourceforge.net/projects/urin]

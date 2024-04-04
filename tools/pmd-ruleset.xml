@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
-  ~ Copyright 2023 Mark Slater
+  ~ Copyright 2024 Mark Slater
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
   ~
@@ -49,7 +49,7 @@
         <exclude name="DefaultPackage"/>
         <exclude name="GenericsNaming"/>
         <exclude name="LinguisticNaming"/>
-        <exclude name="LocalVariableCouldBeFinal"/>
+        <exclude name="LocalVariableCouldBeFinal"/> <!-- Don't want this on for docs; switched back on for all other source sets -->
         <exclude name="LongVariable"/> <!-- configured later -->
         <exclude name="OnlyOneReturn"/>
         <exclude name="ShortClassName"/> <!-- configured later -->
@@ -114,6 +114,7 @@
 
     <rule ref="category/java/errorprone.xml">
         <exclude name="AvoidDuplicateLiterals"/>
+        <exclude name="EmptyCatchBlock"/> <!-- Don't want this on for docs; switched back on for all other source sets -->
         <exclude name="AvoidFieldNameMatchingTypeName"/>
         <exclude name="AvoidFieldNameMatchingMethodName"/>
         <exclude name="AvoidLiteralsInIfCondition"/>
