@@ -24,7 +24,7 @@ plugins {
     `java-test-fixtures`
     `jvm-test-suite`
     id("com.github.spotbugs") version "6.0.9"
-    id("io.github.gradle-nexus.publish-plugin") version "1.3.0"
+    id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("com.gitlab.svg2ico") version "1.4"
     id("org.asciidoctor.jvm.convert") version "4.0.2"
     id("org.asciidoctor.jvm.gems") version "4.0.2"
@@ -229,15 +229,15 @@ tasks {
         dependsOn(
             clean,
             build,
-            "publishToSonatype",
-            closeAndReleaseStagingRepository,
+            publish,
+            closeAndReleaseStagingRepositories,
             sourceforgeRelease,
             incrementVersionNumber
         )
     }
 
     incrementVersionNumber {
-        mustRunAfter(closeAndReleaseStagingRepository, sourceforgeRelease)
+        mustRunAfter(closeAndReleaseStagingRepositories, sourceforgeRelease)
     }
 }
 
