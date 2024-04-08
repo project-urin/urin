@@ -52,11 +52,7 @@ class ExamplesTest {
                 Path.path("rfc", "rfc1808.txt")
         ).asString();
         // end::generateAnFtpUri[]
-        final String expected =
-                // tag::generatedFtpUri[]
-                "ftp://ftp.is.co.za/rfc/rfc1808.txt"
-                // end::generatedFtpUri[]
-                ;
+        final String expected = "ftp://ftp.is.co.za/rfc/rfc1808.txt";
         assertEquals(expected, uri);
     }
 
@@ -67,11 +63,7 @@ class ExamplesTest {
                 Path.rootlessPath("John.Doe@example.com")
         ).asUri();
         // end::generateAMailtoUri[]
-        final URI expected = new URI(
-                // tag::generatedMailtoUri[]
-                "mailto:John.Doe@example.com"
-                // end::generatedMailtoUri[]
-        );
+        final URI expected = new URI("mailto:John.Doe@example.com");
         assertEquals(expected, uri);
     }
 
@@ -83,11 +75,7 @@ class ExamplesTest {
                 Query.query("some-query")
         ).asString();
         // end::generateAnRsyncRelativeReference[]
-        final String expected =
-                // tag::generatedRsyncRelativeReference[]
-                "../sibling?some-query"
-                // end::generatedRsyncRelativeReference[]
-        ;
+        final String expected = "../sibling?some-query";
         assertEquals(expected, uri);
     }
 
@@ -105,11 +93,7 @@ class ExamplesTest {
                 Fragment.fragment("verse 2")
         ).asString();
         // end::generateAFullFeaturedHttpUri[]
-        final String expected =
-                // tag::generatedFullFeaturedHttpUri[]
-                "http://www.example.com/music/AC%2FDC/Back%20in%20Black?track=Hells+Bells&version=Radio+edit#verse%202"
-                // end::generatedFullFeaturedHttpUri[]
-        ;
+        final String expected = "http://www.example.com/music/AC%2FDC/Back%20in%20Black?track=Hells+Bells&version=Radio+edit#verse%202";
         assertEquals(expected, uri);
     }
 
@@ -130,11 +114,7 @@ class ExamplesTest {
         // tag::parseANonNormalisedUrin[]
         String uri = Http.parseHttpUrin("HTTP://www.example.com/.././some%20pat%68").asString();
         // end::parseANonNormalisedUrin[]
-        final String expected =
-                // tag::normalisedUri[]
-                "http://www.example.com/some%20path"
-                // end::normalisedUri[]
-                ;
+        final String expected = "http://www.example.com/some%20path";
         assertEquals(expected, uri);
     }
 
@@ -153,11 +133,7 @@ class ExamplesTest {
                 relativeReference
         ).asString();
         // end::resolveARelativeReference[]
-        final String expected =
-                // tag::resolvedRelativeReference[]
-                "http://www.example.com/child-2?extra-query"
-                // end::resolvedRelativeReference[]
-                ;
+        final String expected = "http://www.example.com/child-2?extra-query";
         assertEquals(expected, uri);
     }
 }

@@ -92,9 +92,7 @@ Producing a URI is simply a case of calling the relevant factory method on an in
 include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generateAnFtpUri,indent=0]
 ----
 
-The `uri` variable contains ``{empty}
-include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generatedFtpUri]
-``.
+The `uri` variable contains `"ftp://ftp.is.co.za/rfc/rfc1808.txt"`.
 
 It is also possible to generate an instance of `java.net.URI`, like so:
 
@@ -103,9 +101,7 @@ It is also possible to generate an instance of `java.net.URI`, like so:
 include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generateAMailtoUri,indent=0]
 ----
 
-This produces ``{empty}
-include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generatedMailtoUri]
-``. Note, however, that `java.net.URI` implements the obsoleted https://tools.ietf.org/html/rfc2396[RFC 2396], meaning there are certain valid URIs which can be produced using Urin, but which can't be represented by `java.net.URI`.
+This produces `"mailto:John.Doe@example.com"`. Note, however, that `java.net.URI` implements the obsoleted https://tools.ietf.org/html/rfc2396[RFC 2396], meaning there are certain valid URIs which can be produced using Urin, but which can't be represented by `java.net.URI`.
 
 Generating a relative reference follows the same pattern, for example:
 
@@ -114,9 +110,7 @@ Generating a relative reference follows the same pattern, for example:
 include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generateAnRsyncRelativeReference,indent=0]
 ----
 
-This returns a String containing ``{empty}
-include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generatedRsyncRelativeReference]
-``.  It is possible to retrieve this as a `java.net.URI` in the same way as for a `net.sourceforge.urin.Urin`, by calling the `asUri()` method. Of note in this example:
+This returns a String containing `"../sibling?some-query"`.  It is possible to retrieve this as a `java.net.URI` in the same way as for a `net.sourceforge.urin.Urin`, by calling the `asUri()` method. Of note in this example:
 
 - The path component is created using the `rootlessPath` method, to create a path without a leading `/` character.
 - The `..` part of the output was generated using the `dotDot()` method. This is because `..` is being used with the special meaning 'parent', so it shouldn't be escaped.
@@ -131,9 +125,7 @@ Urin provides specific support for generating HTTP and HTTPS URIs for convenienc
 include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generateAFullFeaturedHttpUri,indent=0]
 ----
 
-The `uri` variable contains ``{empty}
-include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=generatedFullFeaturedHttpUri]
-``. Notice a number of HTTP specific features:
+The `uri` variable contains `"http://www.example.com/music/AC%2FDC/Back%20in%20Black?track=Hells+Bells&version=Radio+edit#verse%202"`. Notice a number of HTTP specific features:
 
 - The port has been elided because port 80 is the default for HTTP
 - HTTP query parameter separators have been inserted in the query component
@@ -160,9 +152,7 @@ RFC 3986 specifies a number of https://datatracker.ietf.org/doc/html/rfc3986#sec
 include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=parseANonNormalisedUrin,indent=0]
 ----
 
-The `uri` variable contains ``{empty}
-include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=normalisedUri]
-`` as a result of normalisation rules having been applied.
+The `uri` variable contains `"http://www.example.com/some%20path"` as a result of normalisation rules having been applied.
 
 === Resolution
 Relative references can be turned into URIs by resolving them, relative to a context URI. In Urin, this is achieved using the resolve method on `Urin`, for example:
@@ -171,9 +161,7 @@ Relative references can be turned into URIs by resolving them, relative to a con
 ----
 include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=resolveARelativeReference,indent=0]
 ----
-This returns the String ``{empty}
-include::{docfile}/../../java/net/sourceforge/urin/ExamplesTest.java[tags=resolvedRelativeReference]
-``.
+This returns `"http://www.example.com/child-2?extra-query"`.
 
 === Implementing scheme-specific rules
 
