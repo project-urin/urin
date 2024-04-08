@@ -137,7 +137,7 @@ tasks {
     }
 
     val smallJar by registering(Jar::class) {
-        dependsOn(compileSmallJava)
+        dependsOn(compileSmallJava, "compileModuleInfoJava")
         archiveClassifier = "small"
         from(project.layout.buildDirectory.dir("small-classes/main"))
         duplicatesStrategy =
