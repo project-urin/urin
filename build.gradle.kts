@@ -248,6 +248,7 @@ val javadocJar by tasks.registering(Jar::class) {
 }
 
 val sourcesJar by tasks.registering(Jar::class) {
+    dependsOn("compileModuleInfoJava")
     group = "documentation"
     archiveClassifier = "sources"
     from(sourceSets["main"].allSource)
