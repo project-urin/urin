@@ -23,7 +23,7 @@ plugins {
     pmd
     `java-test-fixtures`
     `jvm-test-suite`
-    id("com.github.spotbugs") version "6.0.9"
+    id("com.github.spotbugs") version "6.0.10"
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("com.gitlab.svg2ico") version "1.4"
     id("org.asciidoctor.jvm.convert") version "4.0.2"
@@ -52,7 +52,7 @@ dependencies {
     testFixturesImplementation(group = "org.apache.commons", name = "commons-lang3", version = "3.14.0")
     testFixturesImplementation(group = "org.hamcrest", name = "hamcrest", version = "2.2")
 
-    spotbugs(group = "com.github.spotbugs", name = "spotbugs", version = "4.8.3")
+    spotbugs(group = "com.github.spotbugs", name = "spotbugs", version = "4.8.4")
 
     asciidoctorGems(group = "rubygems", name = "asciidoctor-tabs", version = "1.0.0.beta.6")
 }
