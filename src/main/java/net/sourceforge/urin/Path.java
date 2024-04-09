@@ -134,7 +134,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     }
 
     static <SEGMENT> Path<SEGMENT> parseRootlessPath(final String rawPath, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
-        if (rawPath == null || "".equals(rawPath)) {
+        if (rawPath == null || rawPath.isEmpty()) {
             return rootlessPath(emptyList());
         } else {
             final String[] segmentStrings = rawPath.split("/");
