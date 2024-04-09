@@ -24,7 +24,7 @@ public final class QueryMatcher {
     }
 
     public static Matcher<HttpQuery> convertsToQueryString(final Matcher<String> expected) {
-        return new TypeSafeDiagnosingMatcher<HttpQuery>() {
+        return new TypeSafeDiagnosingMatcher<>() {
             @Override
             protected boolean matchesSafely(final HttpQuery query, final Description description) {
                 String rawQuery = HTTP.urin(authority(anIpV4Address()), AbsolutePath.path(), query).asUri().getRawQuery();

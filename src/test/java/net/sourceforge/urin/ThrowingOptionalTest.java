@@ -122,7 +122,7 @@ class ThrowingOptionalTest {
     }
 
     private static <T> Matcher<ThrowingOptional<T>> emptyThrowingOptional() {
-        return new TypeSafeDiagnosingMatcher<ThrowingOptional<T>>() {
+        return new TypeSafeDiagnosingMatcher<>() {
             @Override
             protected boolean matchesSafely(final ThrowingOptional<T> item, final Description mismatchDescription) {
                 final Object alternative = new Object();

@@ -23,23 +23,23 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class EmptyPathTest {
     @Test
     void anEmptyPathIsEqualToAnotherEmptyPath() {
-        assertThat(new EmptyPath(), equalTo(new EmptyPath()));
-        assertThat(new EmptyPath().hashCode(), equalTo(new EmptyPath().hashCode()));
+        assertThat(new EmptyPath<>(), equalTo(new EmptyPath<>()));
+        assertThat(new EmptyPath<>().hashCode(), equalTo(new EmptyPath<>().hashCode()));
     }
 
     @Test
     void aPathToStringIsCorrect() {
-        assertThat(new EmptyPath().toString(), equalTo("EmptyPath"));
+        assertThat(new EmptyPath<>().toString(), equalTo("EmptyPath"));
     }
 
     @Test
     void correctlyIdentifiesFirstPartNotSupplied() {
-        assertThat(new EmptyPath().firstPartIsSuppliedButIsEmpty(), equalTo(false));
+        assertThat(new EmptyPath<>().firstPartIsSuppliedButIsEmpty(), equalTo(false));
     }
 
     @Test
     void resolvesEmptyPath() {
-        assertThat(new EmptyPath<String>().resolveRelativeTo(new EmptyPath<>()), equalTo(new EmptyPath()));
+        assertThat(new EmptyPath<String>().resolveRelativeTo(new EmptyPath<>()), equalTo(new EmptyPath<>()));
     }
 
     @Test
@@ -56,7 +56,7 @@ class EmptyPathTest {
 
     @Test
     void emptyPathIsNotAbsolute() {
-        assertThat(new EmptyPath().isAbsolute(), equalTo(false));
+        assertThat(new EmptyPath<>().isAbsolute(), equalTo(false));
     }
 
     @Test

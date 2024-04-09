@@ -55,16 +55,16 @@ final class PercentEncoder {
 
     private static byte getByte(final char[] source, final int startIndex) throws ParseException {
         if (source.length <= startIndex + 2 || '%' != source[startIndex]) {
-            throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]");
+            throw new ParseException("Cannot extract a percent encoded byte from [" + String.valueOf(source) + "] starting at index [" + startIndex + "]");
         } else {
             final String hexByte = new String(source, startIndex + 1, 2);
             if (!HEX_DIGIT.areMembers(hexByte)) {
-                throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]: [" + hexByte + "] is not a valid hex byte String");
+                throw new ParseException("Cannot extract a percent encoded byte from [" + String.valueOf(source) + "] starting at index [" + startIndex + "]: [" + hexByte + "] is not a valid hex byte String");
             }
             try {
                 return (byte) Integer.parseInt(hexByte, 16);
             } catch (NumberFormatException e) {
-                throw new ParseException("Cannot extract a percent encoded byte from [" + new String(source) + "] starting at index [" + startIndex + "]", e);
+                throw new ParseException("Cannot extract a percent encoded byte from [" + String.valueOf(source) + "] starting at index [" + startIndex + "]", e);
             }
         }
     }

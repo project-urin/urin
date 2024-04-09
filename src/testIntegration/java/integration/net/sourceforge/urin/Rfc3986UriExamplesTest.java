@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -10,7 +10,6 @@
 
 package integration.net.sourceforge.urin;
 
-import net.sourceforge.urin.AbsolutePath;
 import net.sourceforge.urin.Segment;
 import org.junit.jupiter.api.Test;
 
@@ -81,7 +80,7 @@ class Rfc3986UriExamplesTest {
     void telnetExample() throws Exception {
         assertAsStringAsUriAndParse(aScheme(), "telnet://192.0.2.16:80/", scheme("telnet").urin(
                 authority(ipV4Address(octet(192), octet(0), octet(2), octet(16)), port("80")),
-                AbsolutePath.path()
+                path()
         ));
     }
 
@@ -94,10 +93,10 @@ class Rfc3986UriExamplesTest {
     @Test
     void removeDotSegmentsExample1() throws Exception {
         assertThat(
-                aScheme().relativeReference(AbsolutePath.path(segment("a"), segment("b"), segment("c"), Segment.dot(), Segment.dotDot(), Segment.dotDot(), segment("g"))).asString(),
+                aScheme().relativeReference(path(segment("a"), segment("b"), segment("c"), Segment.dot(), Segment.dotDot(), Segment.dotDot(), segment("g"))).asString(),
                 equalTo("/a/g"));
         assertThat(
-                aScheme().relativeReference(AbsolutePath.path(segment("a"), segment("b"), segment("c"), Segment.dot(), Segment.dotDot(), Segment.dotDot(), segment("g"))).asUri(),
+                aScheme().relativeReference(path(segment("a"), segment("b"), segment("c"), Segment.dot(), Segment.dotDot(), Segment.dotDot(), segment("g"))).asUri(),
                 equalTo(new URI("/a/g")));
     }
 

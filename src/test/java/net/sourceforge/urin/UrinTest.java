@@ -166,7 +166,7 @@ class UrinTest {
 
     @Test
     void urinWithNoFragmentOrPathPathIsCorrect() {
-        assertThat(aScheme().urin(aQuery()).path(), equalTo(new EmptyPath()));
+        assertThat(aScheme().urin(aQuery()).path(), equalTo(new EmptyPath<>()));
     }
 
     @Test
@@ -192,7 +192,7 @@ class UrinTest {
 
     @Test
     void urinWithNoFragmentOrAuthorityOrPathPathIsCorrect() {
-        assertThat(aScheme().urin(aQuery()).path(), equalTo(new EmptyPath()));
+        assertThat(aScheme().urin(aQuery()).path(), equalTo(new EmptyPath<>()));
     }
 
     @Test
@@ -330,7 +330,7 @@ class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(authority, fragment).path(), equalTo(new EmptyPath()));
+        assertThat(scheme.urin(authority, fragment).path(), equalTo(new EmptyPath<>()));
     }
 
     @Test
@@ -346,7 +346,7 @@ class UrinTest {
     void urinWithNoAuthorityNoPathNoQueryPathIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(fragment).path(), equalTo(new EmptyPath()));
+        assertThat(scheme.urin(fragment).path(), equalTo(new EmptyPath<>()));
     }
 
     @Test
@@ -474,7 +474,7 @@ class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         final Urin urin = scheme.urin(authority);
-        assertThat(urin.path(), equalTo(new EmptyPath()));
+        assertThat(urin.path(), equalTo(new EmptyPath<>()));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 
@@ -521,7 +521,7 @@ class UrinTest {
     void urinWithNoAuthorityNoPathNoQueryAndNoFragmentPathIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         final Urin urin = scheme.urin();
-        assertThat(urin.path(), equalTo(new EmptyPath()));
+        assertThat(urin.path(), equalTo(new EmptyPath<>()));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
 

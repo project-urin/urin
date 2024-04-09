@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -78,7 +78,7 @@ abstract class AugmentedOptional<T> {
         @Override
         AugmentedOptional<T> or(final Supplier<AugmentedOptional<? extends T>> alternateOptionalSupplier) {
             @SuppressWarnings("unchecked") final AugmentedOptional<T> result = (AugmentedOptional<T>) alternateOptionalSupplier.get();
-            return requireNonNull(result).flatMap(value -> AugmentedOptional.of(AugmentedOptional.of(value))).orElseGet(() -> this);
+            return requireNonNull(result).flatMap(value -> of(of(value))).orElseGet(() -> this);
         }
 
         @Override
@@ -93,7 +93,7 @@ abstract class AugmentedOptional<T> {
 
         @Override
         <U> AugmentedOptional<U> flatMap(final Function<T, ? extends AugmentedOptional<? extends U>> mapper) {
-            return AugmentedOptional.empty(reason);
+            return empty(reason);
         }
 
     }

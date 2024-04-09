@@ -33,7 +33,7 @@ final class AugmentedOptionalMatcher {
     }
 
     static <T> Matcher<AugmentedOptional<T>> populated(final Matcher<? super T> populatedValueMatcher) {
-        return new TypeSafeDiagnosingMatcher<AugmentedOptional<T>>() {
+        return new TypeSafeDiagnosingMatcher<>() {
             @Override
             protected boolean matchesSafely(final AugmentedOptional<T> item, final Description mismatchDescription) {
                 try {
@@ -62,7 +62,7 @@ final class AugmentedOptionalMatcher {
     }
 
     static <T> Matcher<AugmentedOptional<T>> unpopulated(final Matcher<String> reasonMatcher) {
-        return new TypeSafeDiagnosingMatcher<AugmentedOptional<T>>() {
+        return new TypeSafeDiagnosingMatcher<>() {
             @Override
             protected boolean matchesSafely(final AugmentedOptional<T> item, final Description mismatchDescription) {
                 try {
