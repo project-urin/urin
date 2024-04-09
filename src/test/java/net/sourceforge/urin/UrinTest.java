@@ -49,7 +49,7 @@ class UrinTest {
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(authority, path, query, fragment);
+        final var urin = scheme.urin(authority, path, query, fragment);
         assertThat(urin.hasAuthority(), equalTo(true));
         assertThat(urin.authority(), equalTo(authority));
     }
@@ -61,7 +61,7 @@ class UrinTest {
         AbsolutePath<String> path = anAbsolutePath();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(authority, path, query, fragment).path(), equalTo((Path) path));
+        assertThat(scheme.urin(authority, path, query, fragment).path(), equalTo(path));
     }
 
     @Test
@@ -81,7 +81,7 @@ class UrinTest {
         Path<String> path = aPath();
         Query<String> query = aQuery();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(path, query, fragment);
+        final var urin = scheme.urin(path, query, fragment);
         assertThat(urin.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -146,7 +146,7 @@ class UrinTest {
     void urinWithNoFragmentAuthorityIsCorrect() {
         AbsolutePath<String> path = anAbsolutePath();
         final Authority authority = anAuthority();
-        final Urin urin = aScheme().urin(authority, path, aQuery());
+        final var urin = aScheme().urin(authority, path, aQuery());
         assertThat(urin.hasAuthority(), equalTo(true));
         assertThat(urin.authority(), equalTo(authority));
     }
@@ -154,12 +154,12 @@ class UrinTest {
     @Test
     void urinWithNoFragmentPathIsCorrect() {
         AbsolutePath<String> path = anAbsolutePath();
-        assertThat(aScheme().urin(anAuthority(), path, aQuery()).path(), equalTo((Path) path));
+        assertThat(aScheme().urin(anAuthority(), path, aQuery()).path(), equalTo(path));
     }
 
     @Test
     void urinWithNoFragmentOrPathAuthorityIsCorrect() {
-        final Urin urin = aScheme().urin(aQuery());
+        final var urin = aScheme().urin(aQuery());
         assertThat(urin.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -172,7 +172,7 @@ class UrinTest {
     @Test
     void urinWithNoFragmentOrAuthorityAuthorityIsCorrect() {
         Path<String> path = aPath();
-        final Urin urin = aScheme().urin(path, aQuery());
+        final var urin = aScheme().urin(path, aQuery());
         assertThat(urin.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -185,7 +185,7 @@ class UrinTest {
 
     @Test
     void urinWithNoFragmentOrAuthorityOrPathAuthorityIsCorrect() {
-        final Urin urin = aScheme().urin(aQuery());
+        final var urin = aScheme().urin(aQuery());
         assertThat(urin.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -198,7 +198,7 @@ class UrinTest {
     @Test
     void urinWithNoFragmentOrAuthorityQueryIsCorrect() {
         Query<String> query = aQuery();
-        final Urin<String, Query<String>, Fragment<String>> urin = aScheme().urin(aPath(), query);
+        final var urin = aScheme().urin(aPath(), query);
         assertThat(urin.hasQuery(), equalTo(true));
         assertThat(urin.query(), equalTo(query));
     }
@@ -206,7 +206,7 @@ class UrinTest {
     @Test
     void urinWithNoFragmentOrPathQueryIsCorrect() {
         Query<String> query = aQuery();
-        final Urin<String, Query<String>, Fragment<String>> urin = aScheme().urin(anAuthority(), query);
+        final var urin = aScheme().urin(anAuthority(), query);
         assertThat(urin.hasQuery(), equalTo(true));
         assertThat(urin.query(), equalTo(query));
     }
@@ -214,7 +214,7 @@ class UrinTest {
     @Test
     void urinWithNoFragmentOrAuthorityOrPathQueryIsCorrect() {
         Query<String> query = aQuery();
-        final Urin<String, Query<String>, Fragment<String>> urin = aScheme().urin(query);
+        final var urin = aScheme().urin(query);
         assertThat(urin.hasQuery(), equalTo(true));
         assertThat(urin.query(), equalTo(query));
     }
@@ -222,7 +222,7 @@ class UrinTest {
     @Test
     void urinWithNoFragmentQueryIsCorrect() {
         Query<String> query = aQuery();
-        final Urin<String, Query<String>, Fragment<String>> urin = aScheme().urin(anAuthority(), anAbsolutePath(), query);
+        final var urin = aScheme().urin(anAuthority(), anAbsolutePath(), query);
         assertThat(urin.hasQuery(), equalTo(true));
         assertThat(urin.query(), equalTo(query));
     }
@@ -231,7 +231,7 @@ class UrinTest {
     void urinWithNoFragmentFragmentIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
-        final Urin urin = scheme.urin(anAuthority(), anAbsolutePath(), query);
+        final var urin = scheme.urin(anAuthority(), anAbsolutePath(), query);
         assertThat(urin.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -240,7 +240,7 @@ class UrinTest {
     void urinWithNoFragmentOrAuthorityFragmentIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
-        final Urin urin = scheme.urin(aPath(), query);
+        final var urin = scheme.urin(aPath(), query);
         assertThat(urin.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -249,7 +249,7 @@ class UrinTest {
     void urinWithNoFragmentOrPathFragmentIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
-        final Urin urin = scheme.urin(anAuthority(), query);
+        final var urin = scheme.urin(anAuthority(), query);
         assertThat(urin.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -258,7 +258,7 @@ class UrinTest {
     void urinWithNoFragmentOrAuthorityOrPathFragmentIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Query<String> query = aQuery();
-        final Urin urin = scheme.urin(query);
+        final var urin = scheme.urin(query);
         assertThat(urin.hasFragment(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -283,7 +283,7 @@ class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(authority, path, fragment);
+        final var urin = scheme.urin(authority, path, fragment);
         assertThat(urin.hasAuthority(), equalTo(true));
         assertThat(urin.authority(), equalTo(authority));
     }
@@ -294,7 +294,7 @@ class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Fragment<String> fragment = aFragment();
-        assertThat(scheme.urin(authority, path, fragment).path(), equalTo((Path) path));
+        assertThat(scheme.urin(authority, path, fragment).path(), equalTo(path));
     }
 
     @Test
@@ -302,7 +302,7 @@ class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(path, fragment);
+        final var urin = scheme.urin(path, fragment);
         assertThat(urin.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -320,7 +320,7 @@ class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(authority, fragment);
+        final var urin = scheme.urin(authority, fragment);
         assertThat(urin.hasAuthority(), equalTo(true));
         assertThat(urin.authority(), equalTo(authority));
     }
@@ -337,7 +337,7 @@ class UrinTest {
     void urinWithNoAuthorityNoPathNoQueryAuthorityIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(fragment);
+        final var urin = scheme.urin(fragment);
         assertThat(urin.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -355,7 +355,7 @@ class UrinTest {
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(authority, path, fragment);
+        final var urin = scheme.urin(authority, path, fragment);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -365,7 +365,7 @@ class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(path, fragment);
+        final var urin = scheme.urin(path, fragment);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -375,7 +375,7 @@ class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(authority, fragment);
+        final var urin = scheme.urin(authority, fragment);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -384,7 +384,7 @@ class UrinTest {
     void urinWithNoAuthorityNoPathNoQueryQueryIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Fragment<String> fragment = aFragment();
-        final Urin urin = scheme.urin(fragment);
+        final var urin = scheme.urin(fragment);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -438,7 +438,7 @@ class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        final Urin urin = scheme.urin(authority, path);
+        final var urin = scheme.urin(authority, path);
         assertThat(urin.hasAuthority(), equalTo(true));
         assertThat(urin.authority(), equalTo(authority));
     }
@@ -448,7 +448,7 @@ class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        final Urin urin = scheme.urin(authority, path);
+        final var urin = scheme.urin(authority, path);
         assertThat(urin.path(), equalTo(path));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -464,7 +464,7 @@ class UrinTest {
     void urinWithNoPathNoQueryAndNoFragmentAuthorityIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        final Urin urin = scheme.urin(authority);
+        final var urin = scheme.urin(authority);
         assertThat(urin.hasAuthority(), equalTo(true));
         assertThat(urin.authority(), equalTo(authority));
     }
@@ -473,7 +473,7 @@ class UrinTest {
     void urinWithNoPathNoQueryAndNoFragmentPathIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        final Urin urin = scheme.urin(authority);
+        final var urin = scheme.urin(authority);
         assertThat(urin.path(), equalTo(new EmptyPath<>()));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -489,7 +489,7 @@ class UrinTest {
     void urinWithNoAuthorityNoQueryAndNoFragmentAuthorityIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
-        final Urin<String, Query<String>, Fragment<String>> urin = scheme.urin(path);
+        final var urin = scheme.urin(path);
         assertThat(urin.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -498,7 +498,7 @@ class UrinTest {
     void urinWithNoAuthorityNoQueryAndNoFragmentPathIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
-        final Urin<String, Query<String>, Fragment<String>> urin = scheme.urin(path);
+        final var urin = scheme.urin(path);
         assertThat(urin.path(), equalTo(path));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -512,7 +512,7 @@ class UrinTest {
     @Test
     void urinWithNoAuthorityNoPathNoQueryAndNoFragmentAuthorityIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        final Urin urin = scheme.urin();
+        final var urin = scheme.urin();
         assertThat(urin.hasAuthority(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::authority, "Attempt to get authority from a UrinReference that does not have one.");
     }
@@ -520,7 +520,7 @@ class UrinTest {
     @Test
     void urinWithNoAuthorityNoPathNoQueryAndNoFragmentPathIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        final Urin urin = scheme.urin();
+        final var urin = scheme.urin();
         assertThat(urin.path(), equalTo(new EmptyPath<>()));
         assertThrows(UnsupportedOperationException.class, urin::fragment, "Attempt to get fragment from a UrinReference that does not have one.");
     }
@@ -530,7 +530,7 @@ class UrinTest {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
         AbsolutePath<String> path = anAbsolutePath();
-        final Urin urin = scheme.urin(authority, path);
+        final var urin = scheme.urin(authority, path);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -539,7 +539,7 @@ class UrinTest {
     void urinWithNoAuthorityNoQueryAndNoFragmentQueryIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Path<String> path = aPath();
-        final Urin urin = scheme.urin(path);
+        final var urin = scheme.urin(path);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -548,7 +548,7 @@ class UrinTest {
     void urinWithNoPathNoQueryAndNoFragmentQueryIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         Authority authority = anAuthority();
-        final Urin urin = scheme.urin(authority);
+        final var urin = scheme.urin(authority);
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -556,7 +556,7 @@ class UrinTest {
     @Test
     void urinWithNoAuthorityNoPathNoQueryAndNoFragmentQueryIsCorrect() {
         Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
-        final Urin urin = scheme.urin();
+        final var urin = scheme.urin();
         assertThat(urin.hasQuery(), equalTo(false));
         assertThrows(UnsupportedOperationException.class, urin::query, "Attempt to get query from a UrinReference that does not have one.");
     }
@@ -648,6 +648,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrNoFragmentOrAuthority() {
         assertThrows(NullPointerException.class, () -> {
             Path<String> path = null;
@@ -684,6 +685,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrNoFragmentOrPath() {
         assertThrows(NullPointerException.class, () -> {
             Authority authority = null;
@@ -723,6 +725,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrNoFragment() {
         assertThrows(NullPointerException.class, () -> {
             Authority authority = null;
@@ -763,6 +766,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrAuthorityOrPath() {
         assertThrows(NullPointerException.class, () -> {
             Fragment<String> fragment = null;
@@ -802,6 +806,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrAuthority() {
         assertThrows(NullPointerException.class, () -> {
             Path<String> path = null;
@@ -845,6 +850,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrPath() {
         assertThrows(NullPointerException.class, () -> {
             Authority authority = null;
@@ -891,6 +897,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQuery() {
         assertThrows(NullPointerException.class, () -> {
             Authority authority = null;
@@ -935,6 +942,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoFragmentOrAuthorityOrPath() {
         assertThrows(NullPointerException.class, () -> {
             Query<String> query = null;
@@ -974,6 +982,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoFragmentOrAuthority() {
         assertThrows(NullPointerException.class, () -> {
             Path<String> path = null;
@@ -1017,6 +1026,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoFragmentOrPath() {
         assertThrows(NullPointerException.class, () -> {
             Authority authority = null;
@@ -1063,6 +1073,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoFragment() {
         assertThrows(NullPointerException.class, () -> {
             Authority authority = null;
@@ -1110,6 +1121,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoAuthorityOrPath() {
         assertThrows(NullPointerException.class, () -> {
             Query<String> query = null;
@@ -1156,6 +1168,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoAuthority() {
         assertThrows(NullPointerException.class, () -> {
             Path<String> path = null;
@@ -1206,6 +1219,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoPath() {
         assertThrows(NullPointerException.class, () -> {
             Authority authority = null;
@@ -1259,6 +1273,7 @@ class UrinTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithAllParts() {
         assertThrows(NullPointerException.class, () -> {
             Authority authority = null;
@@ -1390,7 +1405,7 @@ class UrinTest {
 
     @Test
     void resolvesAUrinToItself() {
-        Urin<String, Query<String>, Fragment<String>> urinReference = aUrin();
+        final var urinReference = aUrin();
         assertThat(aUrin().resolve(urinReference), equalTo(urinReference));
     }
 
