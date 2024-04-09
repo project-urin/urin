@@ -67,7 +67,6 @@ testing {
                 implementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
                 implementation("org.hamcrest:hamcrest:2.2")
                 implementation("org.apache.commons:commons-lang3:3.12.0")
-                runtimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
             }
         }
 
