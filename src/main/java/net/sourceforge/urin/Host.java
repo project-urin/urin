@@ -342,7 +342,7 @@ public abstract class Host {
 
         @Override
         String asString() {
-            final Deque<Elidable> elided = Host.elide(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet);
+            final Deque<Elidable> elided = elide(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet, seventhHexadectet, eighthHexadectet);
             return "[" + elided.stream().map(elidable -> elidable.content).collect(joining(":")) + (elided.getLast().isElided ? ":" : "") + "]";
         }
 
@@ -476,7 +476,7 @@ public abstract class Host {
 
         @Override
         String asString() {
-            final Deque<Elidable> elided = Host.elide(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet);
+            final Deque<Elidable> elided = elide(firstHexadectet, secondHexadectet, thirdHexadectet, fourthHexadectet, fifthHexadectet, sixthHexadectet);
             return "[" + elided.stream().map(elidable -> elidable.content).collect(joining(":")) + ":" + ipV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet).asString() + "]";
         }
 
@@ -544,13 +544,13 @@ public abstract class Host {
         final long colonCount = countColons(ipV6String);
         if (ipV6String.startsWith("::")) {
             final StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < (requiredLength + 1) - colonCount; i++) {
+            for (int i = 0; i <= requiredLength - colonCount; i++) {
                 stringBuilder.append("0:");
             }
             return ipV6String.replaceFirst("::", stringBuilder.toString());
         } else if (ipV6String.endsWith("::")) {
             final StringBuilder stringBuilder = new StringBuilder(ipV6String.substring(0, ipV6String.length() - 2));
-            for (int i = 0; i < (requiredLength + 1) - colonCount; i++) {
+            for (int i = 0; i <= requiredLength - colonCount; i++) {
                 stringBuilder.append(":0");
             }
             return stringBuilder.toString();
@@ -609,7 +609,7 @@ public abstract class Host {
         static AugmentedOptional<IpVFutureAddress> parses(final String hostString) {
             final Matcher matcher = IP_V_FUTURE_ADDRESS_REFERENCE_PATTERN.matcher(hostString);
             if (matcher.matches()
-                    && CharacterSetMembershipFunction.HEX_DIGIT.areMembers(matcher.group(1))
+                    && HEX_DIGIT.areMembers(matcher.group(1))
                     && ADDRESS_CHARACTER_SET_MEMBERSHIP_FUNCTION.areMembers(matcher.group(2))) {
                 return makeIpVFutureAddress(matcher.group(1), matcher.group(2));
             } else {

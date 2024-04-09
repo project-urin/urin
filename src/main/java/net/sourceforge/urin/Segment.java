@@ -290,7 +290,7 @@ public abstract class Segment<ENCODES> {
      */
     public static <T> Segment<T> segment(final T segment, final PercentEncodingPartial<T, String> percentEncodingPartial) {
         final ValueSegment<T> result = new ValueSegment<>(segment, percentEncodingPartial);
-        return result.isEmpty() ? Segment.empty() : result; // TODO I think this is unhelpful except for a trailing segment as e.g. .//b/c is hard to get values from
+        return result.isEmpty() ? empty() : result; // TODO I think this is unhelpful except for a trailing segment as e.g. .//b/c is hard to get values from
     }
 
     final boolean containsColon() {

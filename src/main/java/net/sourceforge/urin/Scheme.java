@@ -39,6 +39,7 @@ import static net.sourceforge.urin.Query.stringQueryMaker;
  * @param <FRAGMENT> The type of {@code Fragment} used by this scheme.
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.1">RFC 3986 - Scheme</a>
  */
+@SuppressWarnings("PMD.CouplingBetweenObjects")
 public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> {
 
     private static final Pattern RELATIVE_REFERENCE_PATTERN = Pattern.compile("^((//([^/?#]*))?([^?#]*))(\\?([^#]*))?(#(.*))?");
