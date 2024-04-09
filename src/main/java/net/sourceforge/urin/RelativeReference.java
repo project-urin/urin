@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -12,7 +12,7 @@ package net.sourceforge.urin;
 
 /**
  * A relative reference.
- *
+ * <p>
  * A relative reference has a mandatory relative part component, that is made up of an optional authority, and a
  * mandatory path, and optional query and fragment parts.  The mandatory path may implicitly be the empty path.
  *

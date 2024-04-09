@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -36,7 +36,7 @@ public abstract class UrinReference<SEGMENT, QUERY extends Query<?>, FRAGMENT ex
 
     /**
      * Generates a {@code URI} representation of this URI reference.
-     *
+     * <p>
      * Note that this class represents URI references as defined in the current RFC 3986, but Java's {@code URI} class
      * represents URI references as defined in the obsolete RFC 2396.  RFC 3986 extends the definition of URI
      * references, so this class can represent URI references that cannot be represented by Java's {@code URI} class.
@@ -74,7 +74,7 @@ public abstract class UrinReference<SEGMENT, QUERY extends Query<?>, FRAGMENT ex
 
     /**
      * Gets the {@code Fragment} component of this {@code UrinReference}, if it has one, or throws {@code UnsupportedOperationException} otherwise.
-     *
+     * <p>
      * The existence of a {@code Fragment} component can be tested by calling {@code hasFragment()}.
      *
      * @return the {@code Fragment} component of this {@code UrinReference}.
@@ -92,7 +92,7 @@ public abstract class UrinReference<SEGMENT, QUERY extends Query<?>, FRAGMENT ex
 
     /**
      * Gets the {@code Query} component of this {@code UrinReference}, if it has one, or throws {@code UnsupportedOperationException} otherwise.
-     *
+     * <p>
      * The existence of a {@code Query} component can be tested by calling {@code hasQuery()}.
      *
      * @return the {@code Query} component of this {@code UrinReference}.
@@ -110,7 +110,7 @@ public abstract class UrinReference<SEGMENT, QUERY extends Query<?>, FRAGMENT ex
 
     /**
      * Gets the {@code Authority} component of this {@code UrinReference}, if it has one, or throws {@code UnsupportedOperationException} otherwise.
-     *
+     * <p>
      * The existence of an {@code Authority} component can be tested by calling {@code hasAuthority()}.
      *
      * @return the {@code Authority} component of this {@code UrinReference}.
