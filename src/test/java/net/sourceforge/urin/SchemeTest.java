@@ -208,7 +208,7 @@ class SchemeTest {
     void aSchemeWithPortToStringIsCorrect() {
         String schemeName = aValidSchemeName();
         Port port = aPort();
-        assertThat(scheme(schemeName, port).toString(), equalTo("Scheme{name='" + schemeName.toLowerCase(ENGLISH) + "', defaultPort=" + port.toString() + "}"));
+        assertThat(scheme(schemeName, port).toString(), equalTo("Scheme{name='" + schemeName.toLowerCase(ENGLISH) + "', defaultPort=" + port + "}"));
     }
 
     @Test
