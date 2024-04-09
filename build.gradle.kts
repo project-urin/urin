@@ -99,7 +99,7 @@ modularity {
 }
 
 pmd {
-    toolVersion = "6.51.0"
+    toolVersion = "7.0.0"
     ruleSetFiles = files("tools/pmd-ruleset.xml")
     ruleSets = emptyList()
 }
