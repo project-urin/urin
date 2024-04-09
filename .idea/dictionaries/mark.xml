@@ -2,12 +2,15 @@
   <dictionary name="mark">
     <words>
       <w>abcde</w>
+      <w>abcdefghijklmnopqrstuvwxyz</w>
       <w>bestpractices</w>
       <w>codestyle</w>
       <w>dataflow</w>
+      <w>delims</w>
       <w>elidable</w>
       <w>encodable</w>
       <w>errorprone</w>
+      <w>fabcdef</w>
       <w>ffff</w>
       <w>hexadectet</w>
       <w>hexadectets</w>
