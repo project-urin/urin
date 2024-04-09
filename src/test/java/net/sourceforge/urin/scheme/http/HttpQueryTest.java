@@ -10,7 +10,6 @@
 
 package net.sourceforge.urin.scheme.http;
 
-import net.sourceforge.urin.Query;
 import org.junit.jupiter.api.Test;
 
 import static java.util.Arrays.asList;
@@ -26,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class HttpQueryTest {
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullQueryParameter() {
         assertThrows(NullPointerException.class, () -> {
             HttpQuery.QueryParameter queryParameter = null;
@@ -38,7 +38,7 @@ class HttpQueryTest {
         HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
         HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         HttpQuery.QueryParameter[] queryParameters = {firstQueryParameter, secondQueryParameter};
-        Query query = queryParameters(queryParameters);
+        var query = queryParameters(queryParameters);
         queryParameters[0] = aQueryParameter();
         assertThat(query, equalTo(queryParameters(firstQueryParameter, secondQueryParameter)));
 

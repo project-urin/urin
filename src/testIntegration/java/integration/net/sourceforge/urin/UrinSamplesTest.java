@@ -35,7 +35,7 @@ import static org.hamcrest.Matchers.equalTo;
 class UrinSamplesTest {
     @Test
     void canMakeAUrinWithEmptyPath() throws Exception {
-        Scheme<?, ?, ?> scheme = aScheme();
+        var scheme = aScheme();
         Authority authority = anAuthority();
         assertAsStringAndParse(aScheme(), asString(scheme) + "://" + asString(authority), scheme.urin(authority));
     }

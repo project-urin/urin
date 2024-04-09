@@ -21,12 +21,12 @@ public final class UrinAssert {
     private UrinAssert() {
     }
 
-    public static void assertAsStringAndParse(final Scheme scheme, final String stringRepresentation, final Urin urinRepresentation) throws ParseException {
+    public static <SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> void assertAsStringAndParse(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final String stringRepresentation, final Urin<SEGMENT, QUERY, FRAGMENT> urinRepresentation) throws ParseException {
         assertThat(urinRepresentation.asString(), equalTo(stringRepresentation));
         assertThat(scheme.parseUrin(stringRepresentation), equalTo(urinRepresentation));
     }
 
-    public static void assertAsStringAsUriAndParse(final Scheme scheme, final String stringRepresentation, final Urin urinRepresentation) throws URISyntaxException, ParseException {
+    public static <SEGMENT, QUERY extends Query<?>, FRAGMENT extends Fragment<?>> void assertAsStringAsUriAndParse(final Scheme<SEGMENT, QUERY, FRAGMENT> scheme, final String stringRepresentation, final Urin<SEGMENT, QUERY, FRAGMENT> urinRepresentation) throws URISyntaxException, ParseException {
         assertAsStringAndParse(scheme, stringRepresentation, urinRepresentation);
         assertThat(urinRepresentation.asUri(), equalTo(new URI(stringRepresentation)));
         assertThat(scheme.parseUrin(new URI(stringRepresentation)), equalTo(urinRepresentation));
