@@ -28,6 +28,7 @@ class PercentEncoderTest {
     private static final PercentEncoder NON_UNRESERVED_PERCENT_ENCODER = new PercentEncoder(UNRESERVED);
 
     @Test
+    @SuppressWarnings("UnnecessaryUnicodeEscape")
     void canEncodeRfc3986Examples() {
         assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("A"), equalTo("A"));
         assertThat(NON_UNRESERVED_PERCENT_ENCODER.encode("\u00C0"), equalTo("%C3%80"));
