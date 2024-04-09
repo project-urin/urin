@@ -149,6 +149,7 @@ class RelativeReferenceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithQuery() {
         assertThrows(NullPointerException.class, () -> {
             Query<String> query = null;
@@ -220,6 +221,7 @@ class RelativeReferenceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithFragment() {
         assertThrows(NullPointerException.class, () -> {
             Fragment<String> fragment = null;
@@ -306,6 +308,7 @@ class RelativeReferenceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForARelativeReferenceWithEmptyPathWithQueryAndFragment() {
         assertThrows(NullPointerException.class, () -> {
             Query<String> query = null;
@@ -819,6 +822,7 @@ class RelativeReferenceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForASimplePath() {
         assertThrows(NullPointerException.class, () -> {
             Path<String> path = null;
@@ -1435,6 +1439,7 @@ class RelativeReferenceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndQueryAndFragment() {
         assertThrows(NullPointerException.class, () -> aScheme().relativeReference((Authority) null, aQuery(), aFragment()), "Null authority should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
@@ -1557,6 +1562,7 @@ class RelativeReferenceTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForRelativeReferenceWithAuthorityAndPath() {
         assertThrows(NullPointerException.class, () -> {
             Authority authority = null;

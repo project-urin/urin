@@ -62,10 +62,7 @@ class PercentEncodingTest {
 
     @Test
     void rejectsNullInFactoryForPercentEncodableDelimitedValue() {
-        assertThrows(NullPointerException.class, () -> {
-            final PercentEncodingPartial.PercentEncoding<Object> percentEncoding = null;
-            PercentEncodingPartial.PercentEncoding.percentEncodingDelimitedValue(aChar(), percentEncoding);
-        }, "Null value should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> PercentEncodingPartial.PercentEncoding.percentEncodingDelimitedValue(aChar(), null), "Null value should throw NullPointerException in factory");
     }
 
     @Test
