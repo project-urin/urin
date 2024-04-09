@@ -12,6 +12,7 @@
       <w>errorprone</w>
       <w>fabcdef</w>
       <w>ffff</w>
+      <w>foojay</w>
       <w>hexadectet</w>
       <w>hexadectets</w>
       <w>javamodularity</w>
@@ -22,7 +23,9 @@
       <w>stringable</w>
       <w>stringables</w>
       <w>subencoded</w>
+      <w>unencoded</w>
       <w>urin</w>
+      <w>vabcde</w>
     </words>
   </dictionary>
 </component>
