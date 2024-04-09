@@ -21,8 +21,8 @@ import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.specif
 /**
  * A segment of a URI's path.
  * <p>
- * Note that the special segments "." and ".." are obtained via the factory methods {@link #dot()} and {@link #dotDot()}
- * respectively.  Passing "." or ".." as an argument to the factory method {@link #segment(String)} is not equivalent,
+ * Note that the special segments "{@code .}" and "{@code ..}" are obtained via the factory methods {@link #dot()} and {@link #dotDot()}
+ * respectively.  Passing "{@code .}" or "{@code ..}" as an argument to the factory method {@link #segment(String)} is not equivalent,
  * as the argument to this method is a literal string, i.e. subject to encoding where necessary.
  * <p>
  * Immutable and thread safe.
@@ -47,10 +47,10 @@ public abstract class Segment<ENCODES> {
     };
 
     /**
-     * The segment ".", referring to the current location in the path name hierarchy.
+     * The segment "{@code .}", referring to the current location in the path name hierarchy.
      *
      * @param <ENCODES> The type of value represented by the segment - {@code String} in the general case.
-     * @return The segment ".", referring to the current location in the path name hierarchy
+     * @return The segment "{@code .}", referring to the current location in the path name hierarchy
      */
     public static <ENCODES> Segment<ENCODES> dot() {
         return new Segment<ENCODES>() {
@@ -98,10 +98,10 @@ public abstract class Segment<ENCODES> {
     }
 
     /**
-     * The segment "..", referring to the parent location in the path name hierarchy.
+     * The segment "{@code ..}", referring to the parent location in the path name hierarchy.
      *
      * @param <ENCODES> The type of value represented by the segment - {@code String} in the general case.
-     * @return The segment "..", referring to the current location in the path name hierarchy
+     * @return The segment "{@code ..}", referring to the current location in the path name hierarchy
      */
     public static <ENCODES> Segment<ENCODES> dotDot() {
         return new Segment<ENCODES>() {
@@ -316,7 +316,7 @@ public abstract class Segment<ENCODES> {
 
     /**
      * Returns true if {@code value()} can be called on this {@code Segment}.  This method
-     * returns false for empty, . and .. segments.
+     * returns false for empty, {@code .} and {@code ..} segments.
      *
      * @return true if {@code value()} can be called on this {@code Segment}.
      */
@@ -325,7 +325,7 @@ public abstract class Segment<ENCODES> {
     /**
      * Gets the (non-encoded) value of this segment, if it is a type that has a value, or throws {@code UnsupportedOperationException} otherwise.
      * <p>
-     * Dot segments (. and ..) and the empty segment do not have values, and will throw {@code UnsupportedOperationException}.
+     * Dot segments ({@code .} and {@code ..}) and the empty segment do not have values, and will throw {@code UnsupportedOperationException}.
      * This can be tested by equality with the objects returned by {@link #dot()}, {@link #dotDot()}, and {@link #empty()} methods, or by calling {@code hasValue()}.
      *
      * @return the (non-encoded) value of this segment.
