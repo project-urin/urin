@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.AbsolutePathBuilder.anAbsolutePath;
 import static net.sourceforge.urin.Authority.authority;
+import static net.sourceforge.urin.AuthorityBuilder.aJavaUriCompatibleAuthority;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.HostBuilder.aHost;
@@ -649,15 +650,33 @@ class HttpTest {
     }
 
     @Test
+    void roundTrippedHttpUrisViaStaticAreEqual() throws Exception {
+        Urin<?, ?, ?> httpUrin = http(aJavaUriCompatibleAuthority(), anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(parseHttpUrin(httpUrin.asUri()), equalTo(httpUrin));
+    }
+
+    @Test
     void roundTrippedRelativeReferencesViaStaticAreEqual() throws Exception {
         RelativeReference<String, HttpQuery, Fragment<String>> httpRelativeReference = HTTP.relativeReference(anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
         assertThat(parseHttpRelativeReference(httpRelativeReference.asString()), equalTo(httpRelativeReference));
     }
 
     @Test
+    void roundTrippedRelativeReferenceUrisViaStaticAreEqual() throws Exception {
+        RelativeReference<String, HttpQuery, Fragment<String>> httpRelativeReference = HTTP.relativeReference(anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(parseHttpRelativeReference(httpRelativeReference.asUri()), equalTo(httpRelativeReference));
+    }
+
+    @Test
     void roundTrippedUrinReferencesViaStaticAreEqual() throws Exception {
         UrinReference<String, HttpQuery, Fragment<String>> httpRelativeReference = HTTP.relativeReference(anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
         assertThat(parseHttpUrinReference(httpRelativeReference.asString()), equalTo(httpRelativeReference));
+    }
+
+    @Test
+    void roundTrippedUrinReferenceUrisViaStaticAreEqual() throws Exception {
+        UrinReference<String, HttpQuery, Fragment<String>> httpRelativeReference = HTTP.relativeReference(anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
+        assertThat(parseHttpUrinReference(httpRelativeReference.asUri()), equalTo(httpRelativeReference));
     }
 
     @Test

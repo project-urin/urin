@@ -24,7 +24,7 @@ import static org.apache.commons.lang3.RandomStringUtils.random;
 
 public final class HostBuilder {
 
-    private static final RandomSupplierSwitcher<Host> RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+    private static final RandomSupplierSwitcher<Host> RANDOM_HOST_SUPPLIER = new RandomSupplierSwitcher<>(
             HostBuilder::aRegisteredName,
             HostBuilder::anIpV4Address,
             HostBuilder::anIpV6Address,
@@ -32,11 +32,22 @@ public final class HostBuilder {
             HostBuilder::anIpVFutureAddress
     );
 
+    private static final RandomSupplierSwitcher<Host> RANDOM_JAVA_URI_COMPATIBLE_HOST_SUPPLIER = new RandomSupplierSwitcher<>(
+            HostBuilder::aRegisteredName,
+            HostBuilder::anIpV4Address,
+            HostBuilder::anIpV6Address,
+            HostBuilder::anIpV6AddressWithTrailingIpV4Address
+    );
+
     private HostBuilder() {
     }
 
     public static Host aHost() {
-        return RANDOM_SUPPLIER_SWITCHER.get();
+        return RANDOM_HOST_SUPPLIER.get();
+    }
+
+    public static Host aJavaUriCompatibleHost() {
+        return RANDOM_JAVA_URI_COMPATIBLE_HOST_SUPPLIER.get();
     }
 
     public static Host aRegisteredName() {

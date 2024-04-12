@@ -12,6 +12,7 @@ package net.sourceforge.urin;
 
 import static net.sourceforge.urin.Authority.authority;
 import static net.sourceforge.urin.HostBuilder.aHost;
+import static net.sourceforge.urin.HostBuilder.aJavaUriCompatibleHost;
 
 public final class AuthorityBuilder {
     private AuthorityBuilder() {
@@ -19,5 +20,9 @@ public final class AuthorityBuilder {
 
     public static Authority anAuthority() {
         return authority(aHost());
+    }
+
+    public static Authority aJavaUriCompatibleAuthority() {
+        return authority(aJavaUriCompatibleHost());
     }
 }
