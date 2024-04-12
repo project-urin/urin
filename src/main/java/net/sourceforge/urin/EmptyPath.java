@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Mark Slater
+ * Copyright 2024 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -77,6 +77,7 @@ final class EmptyPath<T> extends Path<T> {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public Iterator<Segment<T>> iterator() {
         return Collections.emptyIterator();
     }

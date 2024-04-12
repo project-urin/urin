@@ -159,6 +159,7 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public Iterator<HttpQuery.QueryParameter> iterator() {
         return value().iterator();
     }

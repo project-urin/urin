@@ -96,6 +96,7 @@ final class RootlessPath<T> extends Path<T> {
     }
 
     @Override
+    @SuppressWarnings("NullableProblems")
     public Iterator<Segment<T>> iterator() {
         return segments.iterator();
     }
