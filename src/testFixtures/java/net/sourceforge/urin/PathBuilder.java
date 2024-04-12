@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
-import static net.sourceforge.urin.SegmentBuilder.aNonTypedSegment;
+import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 
 public final class PathBuilder {
 
@@ -30,6 +30,20 @@ public final class PathBuilder {
             PathBuilder::anUnpollutedRootlessPath
     );
     private static final Random RANDOM = new Random();
+    private static final RandomSupplierSwitcher<AbsolutePath<String>> ABSOLUTE_PATH_RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+            () -> path(aNonDotSegment()), // TODO wha?!
+            () -> path(aNonDotSegment(), aNonDotSegment()),
+            () -> path(aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
+            () -> path(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
+            () -> path(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment())
+    );
+    private static final RandomSupplierSwitcher<Path<String>> PATH_RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+            () -> rootlessPath(aNonDotSegment()),
+            () -> rootlessPath(aNonDotSegment(), aNonDotSegment()),
+            () -> rootlessPath(aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
+            () -> rootlessPath(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
+            () -> rootlessPath(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment())
+    );
 
     private PathBuilder() {
     }
@@ -39,28 +53,8 @@ public final class PathBuilder {
         return path(Stream.generate(SegmentBuilder::aNonDotSegment).limit(numberOfSegments).collect(toList()));
     }
 
-    @SuppressWarnings("unchecked")
     public static AbsolutePath<String> anAbsolutePath() {
-        final int numberOfSegments = RANDOM.nextInt(4) + 1;
-        final AbsolutePath<String> result;
-        switch (numberOfSegments) {
-            case 1:
-                result = Path.<String>path(aNonTypedSegment());
-                break;
-            case 2:
-                result = Path.<String>path(aNonTypedSegment(), aNonTypedSegment());
-                break;
-            case 3:
-                result = Path.<String>path(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
-                break;
-            case 4:
-                result = Path.<String>path(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
-                break;
-            default:
-                result = Path.<String>path(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
-                break;
-        }
-        return result;
+        return ABSOLUTE_PATH_RANDOM_SUPPLIER_SWITCHER.get();
     }
 
     public static Path<String> anUnpollutedRootlessPath() {
@@ -68,28 +62,8 @@ public final class PathBuilder {
         return rootlessPath(Stream.generate(SegmentBuilder::aNonDotSegment).limit(numberOfSegments).collect(toList()));
     }
 
-    @SuppressWarnings("unchecked")
     public static Path<String> aRootlessPath() {
-        final int numberOfSegments = RANDOM.nextInt(4) + 1;
-        final Path<String> result;
-        switch (numberOfSegments) {
-            case 1:
-                result = Path.<String>rootlessPath(aNonTypedSegment());
-                break;
-            case 2:
-                result = Path.<String>rootlessPath(aNonTypedSegment(), aNonTypedSegment());
-                break;
-            case 3:
-                result = Path.<String>rootlessPath(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
-                break;
-            case 4:
-                result = Path.<String>rootlessPath(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
-                break;
-            default:
-                result = Path.<String>rootlessPath(aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment(), aNonTypedSegment());
-                break;
-        }
-        return result;
+        return PATH_RANDOM_SUPPLIER_SWITCHER.get();
     }
 
     public static Path<String> aPath() {

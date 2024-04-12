@@ -10,27 +10,15 @@
 
 package net.sourceforge.urin;
 
-import java.util.Random;
-import java.util.stream.Stream;
-
-import static java.util.stream.Collectors.toList;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
-import static net.sourceforge.urin.PercentEncodingPartial.percentEncodingDelimitedValue;
 import static net.sourceforge.urin.Segment.segment;
 
 public final class SegmentBuilder {
-
-    private static final Random RANDOM = new Random();
 
     private static final RandomSupplierSwitcher<Segment<String>> RANDOM_STRING_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             SegmentBuilder::aNonDotSegment,
             Segment::dot,
             Segment::dotDot
-    );
-
-    private static final RandomSupplierSwitcher<Segment<?>> RANDOM_SEGMENT_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            SegmentBuilder::aNonDotSegment,
-            SegmentBuilder::aNonStringSegment
     );
 
     private SegmentBuilder() {
@@ -44,12 +32,4 @@ public final class SegmentBuilder {
         return RANDOM_STRING_SEGMENT_SUPPLIER_SWITCHER.get();
     }
 
-    public static Segment<Iterable<String>> aNonStringSegment() {
-        final int numberOfElements = RANDOM.nextInt(4) + 1;
-        return segment(Stream.generate(MoreRandomStringUtils::aString).limit(numberOfElements).collect(toList()), percentEncodingDelimitedValue('!'));
-    }
-
-    public static Segment aNonTypedSegment() {
-        return RANDOM_SEGMENT_SUPPLIER_SWITCHER.get();
-    }
 }
