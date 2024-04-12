@@ -12,10 +12,7 @@ package net.sourceforge.urin;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
-
-import static org.hamcrest.Matchers.anything;
 
 final class AugmentedOptionalMatcher {
 
@@ -26,10 +23,6 @@ final class AugmentedOptionalMatcher {
         UnpopulatedException(final String message) {
             super(message);
         }
-    }
-
-    static <T> Matcher<AugmentedOptional<T>> populated() {
-        return populated(anything());
     }
 
     static <T> Matcher<AugmentedOptional<T>> populated(final Matcher<? super T> populatedValueMatcher) {
@@ -55,10 +48,6 @@ final class AugmentedOptionalMatcher {
                 description.appendText("A populated AugmentedOptional with populated value ").appendDescriptionOf(populatedValueMatcher);
             }
         };
-    }
-
-    static <T> Matcher<AugmentedOptional<T>> unpopulated() {
-        return unpopulated(Matchers.any(String.class));
     }
 
     static <T> Matcher<AugmentedOptional<T>> unpopulated(final Matcher<String> reasonMatcher) {
