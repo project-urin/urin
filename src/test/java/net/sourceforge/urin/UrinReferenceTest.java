@@ -14,6 +14,10 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 
+import static net.sourceforge.urin.FragmentBuilder.aFragment;
+import static net.sourceforge.urin.PathBuilder.aPath;
+import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
+import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.RelativeReferenceBuilder.anUnpollutedRelativeReference;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.UrinBuilder.anUnpollutedUrin;
@@ -39,6 +43,24 @@ class UrinReferenceTest {
     void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
         RelativeReference<String, Query<String>, Fragment<String>> relativeReference = anUnpollutedRelativeReference();
         assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo(relativeReference));
+    }
+
+    @Test
+    void canSetPathOnARelativeReference() throws Exception {
+        final var scheme = aScheme();
+        final Query<String> query = aQuery();
+        final Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> updatedPath = anAbsolutePath();
+        assertThat(scheme.parseUrinReference(scheme.relativeReference(aPath(), query, fragment).asString()).withPath(updatedPath), equalTo(scheme.relativeReference(updatedPath, query, fragment)));
+    }
+
+    @Test
+    void canSetPathOnAUri() throws Exception {
+        final var scheme = aScheme();
+        final Query<String> query = aQuery();
+        final Fragment<String> fragment = aFragment();
+        final AbsolutePath<String> updatedPath = anAbsolutePath();
+        assertThat(scheme.parseUrin(scheme.urin(aPath(), query, fragment).asString()).withPath(updatedPath), equalTo(scheme.urin(updatedPath, query, fragment)));
     }
 
     @Test
