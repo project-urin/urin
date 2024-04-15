@@ -66,7 +66,15 @@ public final class HostBuilder {
         return ipV6Address(aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), aHexadectet(), anOctet(), anOctet(), anOctet(), anOctet());
     }
 
+    public static String anIpVFutureAddressComponentString() {
+        return random(5, UNRESERVED + SUB_DELIMS + ":");
+    }
+
+    public static String anIpVFutureVersionString() {
+        return random(5, HEX_DIGIT);
+    }
+
     public static Host anIpVFutureAddress() {
-        return ipVFutureAddress(random(5, HEX_DIGIT), random(5, UNRESERVED + SUB_DELIMS + ":"));
+        return ipVFutureAddress(anIpVFutureVersionString(), anIpVFutureAddressComponentString());
     }
 }

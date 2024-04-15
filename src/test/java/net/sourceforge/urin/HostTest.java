@@ -612,13 +612,13 @@ class HostTest {
 
     @Test
     void ipVFutureRejectsEmptyVersion() {
-        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("", aValidIpVFutureAddress()));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("", anIpVFutureAddressComponentString()));
         assertThat(illegalArgumentException.getMessage(), equalTo("Version must contain at least one character"));
     }
 
     @Test
     void ipVFutureRejectsNullVersion() {
-        assertThrows(NullPointerException.class, () -> ipVFutureAddress(null, aValidIpVFutureAddress()), "Null value should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipVFutureAddress(null, anIpVFutureAddressComponentString()), "Null value should throw NullPointerException in factory");
     }
 
     @Test
@@ -675,48 +675,48 @@ class HostTest {
 
     @Test
     void ipVFutureRejectsInvalidCharacterAInVersion() {
-        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("g", aValidIpVFutureAddress()));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("g", anIpVFutureAddressComponentString()));
         assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [g]"));
     }
 
     @Test
     void ipVFutureRejectsInvalidCharacterForwardsSlashInVersion() {
-        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("/", aValidIpVFutureAddress()));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("/", anIpVFutureAddressComponentString()));
         assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [/]"));
     }
 
     @Test
     void ipVFutureRejectsInvalidCharacterColonInVersion() {
-        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(":", aValidIpVFutureAddress()));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(":", anIpVFutureAddressComponentString()));
         assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [:]"));
     }
 
     @Test
     void ipVFutureRejectsInvalidCharacterAtInVersion() {
-        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("@", aValidIpVFutureAddress()));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("@", anIpVFutureAddressComponentString()));
         assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [@]"));
     }
 
     @Test
     void ipVFutureRejectsInvalidCharacterGInVersion() {
-        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("G", aValidIpVFutureAddress()));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress("G", anIpVFutureAddressComponentString()));
         assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be 0-9, A-F, or a-f in version [G]"));
     }
 
     @Test
     void ipVFutureRejectsEmptyAddress() {
-        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(aValidIpVFutureVersion(), ""));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(anIpVFutureVersionString(), ""));
         assertThat(illegalArgumentException.getMessage(), equalTo("Address must contain at least one character"));
     }
 
     @Test
     void ipVFutureRejectsNullAddress() {
-        assertThrows(NullPointerException.class, () -> ipVFutureAddress(aValidIpVFutureVersion(), null), "Null value should throw NullPointerException in factory");
+        assertThrows(NullPointerException.class, () -> ipVFutureAddress(anIpVFutureVersionString(), null), "Null value should throw NullPointerException in factory");
     }
 
     @Test
     void ipVFutureRejectsInvalidCharactersInAddress() {
-        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(aValidIpVFutureVersion(), "/"));
+        final IllegalArgumentException illegalArgumentException = assertThrows(IllegalArgumentException.class, () -> ipVFutureAddress(anIpVFutureVersionString(), "/"));
         assertThat(illegalArgumentException.getMessage(), equalTo("Character 1 must be a-z, A-Z, 0-9, -, ., _, ~, !, $, &, ', (, ), *, +, ,, ;, =, or : in address [/]"));
     }
 
@@ -784,14 +784,6 @@ class HostTest {
     @Test
     void parsingARegisteredNameThatIsAlmostAnIpV4AddressExceptForAPlusCharacterDoesNotMakeAnIpV4Address() {
         assertThat(registeredName("+2.0.0.1"), not(equalTo(ipV4Address(octet(2), octet(0), octet(0), octet(1)))));
-    }
-
-    private static String aValidIpVFutureAddress() {
-        return LOWER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
-    }
-
-    private static String aValidIpVFutureVersion() {
-        return HEX_DIGIT;
     }
 
 }
