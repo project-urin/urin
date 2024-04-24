@@ -135,8 +135,11 @@ public abstract class Authority {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final AuthorityWithHost that = (AuthorityWithHost) object;
             return host.equals(that.host);
@@ -181,8 +184,11 @@ public abstract class Authority {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final AuthorityWithUserInfoAndHost that = (AuthorityWithUserInfoAndHost) object;
 
@@ -233,8 +239,11 @@ public abstract class Authority {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final AuthorityWithHostAndPort that = (AuthorityWithHostAndPort) object;
             return host.equals(that.host)
@@ -285,8 +294,11 @@ public abstract class Authority {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final AuthorityWithUserInfoAndHostAndPort that = (AuthorityWithUserInfoAndHostAndPort) object;
             return host.equals(that.host)

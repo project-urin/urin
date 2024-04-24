@@ -104,13 +104,13 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                 }
                 final QueryParameter result;
                 final String name = iterator.next();
-                if (!iterator.hasNext()) {
-                    result = queryParameter(name);
-                } else {
+                if (iterator.hasNext()) {
                     result = queryParameter(name, iterator.next());
                     if (iterator.hasNext()) {
                         throw new ParseException("Invalid query parameter - expected maximum of two elements in [" + strings + "]");
                     }
+                } else {
+                    result = queryParameter(name);
                 }
                 return result;
             }
@@ -238,8 +238,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final NameAndValueQueryParameter that = (NameAndValueQueryParameter) object;
 
@@ -288,8 +291,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final NameOnlyQueryParameter that = (NameOnlyQueryParameter) object;
 

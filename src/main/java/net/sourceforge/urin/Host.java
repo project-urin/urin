@@ -164,7 +164,8 @@ public abstract class Host {
     private static Deque<Elidable> elide(final Hexadectet... hexadectets) {
         int maximumStreakLength = 0;
         int maximumStreakEnd = 0;
-        for (int i = 0, streakLengthToHere = 0; i < hexadectets.length; i++) {
+        int streakLengthToHere = 0;
+        for (int i = 0; i < hexadectets.length; i++) {
             final Hexadectet hexadectet = hexadectets[i];
             streakLengthToHere = hexadectet.isElidable() ? streakLengthToHere + 1 : 0;
             if (streakLengthToHere > maximumStreakLength) {
@@ -214,8 +215,11 @@ public abstract class Host {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final RegisteredName that = (RegisteredName) object;
             return registeredName.equals(that.registeredName);
@@ -276,8 +280,11 @@ public abstract class Host {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final IpV4Address that = (IpV4Address) object;
             return firstOctet.equals(that.firstOctet)
@@ -348,8 +355,11 @@ public abstract class Host {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final IpV6Address that = (IpV6Address) object;
             return firstHexadectet.equals(that.firstHexadectet)
@@ -467,10 +477,10 @@ public abstract class Host {
         }
 
         static String expandElision(final String ipV6String) {
-            if (!ipV6String.contains("::")) {
-                return ipV6String;
-            } else {
+            if (ipV6String.contains("::")) {
                 return expandElision(ipV6String, 7);
+            } else {
+                return ipV6String;
             }
         }
 
@@ -482,8 +492,11 @@ public abstract class Host {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final IpV6AddressWithTrailingIpV4Address that = (IpV6AddressWithTrailingIpV4Address) object;
             return firstHexadectet.equals(that.firstHexadectet)
@@ -624,8 +637,11 @@ public abstract class Host {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final IpVFutureAddress that = (IpVFutureAddress) object;
 

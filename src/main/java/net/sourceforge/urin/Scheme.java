@@ -323,7 +323,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
                                         .map(q -> fragment.map(f -> relativeReference(a, q, f)).orElseGet(() -> relativeReference(a, q)))
                                         .orElseGet(() -> fragment.map(f -> relativeReference(a, f)).orElseGet(() -> relativeReference(a)))))
                 .orElseGet(() ->
-                        pathString.map(ps -> !ps.startsWith("/") ? Path.parseRootlessPath(ps, segmentMakingDecoder) : Path.parsePath(ps, segmentMakingDecoder))
+                        pathString.map(ps -> ps.startsWith("/") ? Path.parsePath(ps, segmentMakingDecoder) : Path.parseRootlessPath(ps, segmentMakingDecoder))
                                 .map(p -> query
                                         .map(q -> fragment.map(f -> relativeReference(p, q, f)).orElseGet(() -> relativeReference(p, q)))
                                         .orElseGet(() -> fragment.map(f -> relativeReference(p, f)).orElseGet(() -> relativeReference(p))))
@@ -567,7 +567,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
                                         )
                                 ))
                 .orElseGet(() -> {
-                    final Path<SEGMENT> path = !pathString.startsWith("/") ? Path.parseRootlessPath(pathString, segmentMakingDecoder) : Path.parsePath(pathString, segmentMakingDecoder);
+                    final Path<SEGMENT> path = pathString.startsWith("/") ? Path.parsePath(pathString, segmentMakingDecoder) : Path.parseRootlessPath(pathString, segmentMakingDecoder);
                     return query
                             .map(q -> fragment
                                     .map(f -> scheme.urin(path, q, f))
@@ -657,8 +657,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final GenericScheme<?, ?, ?> that = (GenericScheme<?, ?, ?>) object;
 
@@ -778,8 +781,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final RelativeReferenceNoAuthority<?, ?, ?> that = (RelativeReferenceNoAuthority<?, ?, ?>) object;
             return path.equals(that.path);
@@ -877,8 +883,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final RelativeReferenceWithAuthority<?, ?, ?> that = (RelativeReferenceWithAuthority<?, ?, ?>) object;
             return authority.equals(that.authority)
@@ -987,8 +996,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final RelativeReferenceNoAuthorityWithQuery<?, ?, ?> that = (RelativeReferenceNoAuthorityWithQuery<?, ?, ?>) object;
 
@@ -1106,8 +1118,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final RelativeReferenceNoAuthorityWithFragment<?, ?, ?> that = (RelativeReferenceNoAuthorityWithFragment<?, ?, ?>) object;
 
@@ -1181,8 +1196,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final RelativeReferenceNoAuthorityWithQueryAndFragment<?, ?, ?> that = (RelativeReferenceNoAuthorityWithQueryAndFragment<?, ?, ?>) object;
 
@@ -1316,8 +1334,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final RelativeReferenceWithAuthorityAndQuery<?, ?, ?> that = (RelativeReferenceWithAuthorityAndQuery<?, ?, ?>) object;
 
@@ -1421,8 +1442,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final RelativeReferenceWithAuthorityAndFragment<?, ?, ?> that = (RelativeReferenceWithAuthorityAndFragment<?, ?, ?>) object;
 
@@ -1528,8 +1552,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final RelativeReferenceWithAuthorityAndQueryAndFragment<?, ?, ?> that = (RelativeReferenceWithAuthorityAndQueryAndFragment<?, ?, ?>) object;
 
@@ -1611,8 +1638,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final UrinWithPathAndQueryAndFragment<?, ?, ?> that = (UrinWithPathAndQueryAndFragment<?, ?, ?>) object;
             return fragment.equals(that.fragment)
@@ -1698,8 +1728,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final UrinWithAuthorityAndPathAndQueryAndFragment<?, ?, ?> that = (UrinWithAuthorityAndPathAndQueryAndFragment<?, ?, ?>) object;
 
@@ -1781,8 +1814,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final UrinWithPathAndQuery<?, ?, ?> that = (UrinWithPathAndQuery<?, ?, ?>) object;
             return path.equals(that.path)
@@ -1864,8 +1900,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final UrinWithAuthorityAndPathAndQuery<?, ?, ?> that = (UrinWithAuthorityAndPathAndQuery<?, ?, ?>) object;
 
@@ -1948,8 +1987,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final UrinWithAuthorityAndPathAndFragment<?, ?, ?> that = (UrinWithAuthorityAndPathAndFragment<?, ?, ?>) object;
 
@@ -2030,8 +2072,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final UrinWithPathAndFragment<?, ?, ?> that = (UrinWithPathAndFragment<?, ?, ?>) object;
 
@@ -2109,8 +2154,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final UrinWithPath<?, ?, ?> that = (UrinWithPath<?, ?, ?>) object;
 
@@ -2189,8 +2237,11 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final UrinWithAuthorityAndPath<?, ?, ?> that = (UrinWithAuthorityAndPath<?, ?, ?>) object;
 

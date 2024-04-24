@@ -21,7 +21,6 @@
 
     <rule ref="category/java/codestyle.xml/LocalVariableCouldBeFinal"/> <!-- This rule was turned off for the code samples -->
     <rule ref="category/java/codestyle.xml/MethodArgumentCouldBeFinal"/> <!-- This rule was turned off for the code samples -->
-    <rule ref="category/java/codestyle.xml/AtLeastOneConstructor"/>
     <rule ref="category/java/codestyle.xml/LinguisticNaming"/>
 
     <rule ref="category/java/documentation.xml">

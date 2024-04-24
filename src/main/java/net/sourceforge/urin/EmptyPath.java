@@ -18,9 +18,6 @@ import static java.util.Collections.emptyList;
 
 final class EmptyPath<T> extends Path<T> {
 
-    EmptyPath() {
-    }
-
     @Override
     boolean firstPartIsSuppliedButIsEmpty() {
         return false;

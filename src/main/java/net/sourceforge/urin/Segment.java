@@ -242,8 +242,11 @@ public abstract class Segment<ENCODES> {
 
         @Override
         public boolean equals(final Object object) {
-            if (this == object) return true;
-            if (object == null || getClass() != object.getClass()) return false;
+            if (this == object) {
+                return true;
+            } else if (object == null || getClass() != object.getClass()) {
+                return false;
+            }
 
             final ValueSegment<?> that = (ValueSegment<?>) object;
             return delegate.equals(that.delegate);

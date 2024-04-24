@@ -65,8 +65,11 @@ public class SchemeWithDefaultPort<SEGMENT, QUERY extends Query<?>, FRAGMENT ext
 
     @Override
     public boolean equals(final Object object) {
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
+        if (this == object) {
+            return true;
+        } else if (object == null || getClass() != object.getClass()) {
+            return false;
+        }
 
         final SchemeWithDefaultPort<?, ?, ?> that = (SchemeWithDefaultPort<?, ?, ?>) object;
 

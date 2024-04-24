@@ -23,7 +23,6 @@
         <exclude name="AbstractClassWithoutAbstractMethod"/>
         <exclude name="AvoidReassigningLoopVariables"/> <!-- configured later -->
         <exclude name="AvoidUsingHardCodedIP"/>
-        <exclude name="ForLoopVariableCount"/> <!-- configured later -->
         <exclude name="JUnitAssertionsShouldIncludeMessage"/>
         <exclude name="JUnitTestContainsTooManyAsserts"/>
         <exclude name="JUnitTestsShouldIncludeAssert"/>
@@ -33,32 +32,27 @@
             <property name="forReassign" value="allow"/>
         </properties>
     </rule>
-    <rule ref="category/java/bestpractices.xml/ForLoopVariableCount">
-        <properties>
-            <property name="maximumVariables" value="2"/>
-        </properties>
-    </rule>
 
     <rule ref="category/java/codestyle.xml">
         <exclude name="AtLeastOneConstructor"/>
         <exclude name="CallSuperInConstructor"/>
-        <exclude name="ClassNamingConventions"/> <!-- configured later -->
         <exclude name="CommentDefaultAccessModifier"/>
-        <exclude name="ControlStatementBraces"/> <!-- configured later -->
-        <exclude name="ConfusingTernary"/>
-        <exclude name="CommentDefaultAccessModifier"/>
+        <exclude name="ConfusingTernary"/> <!-- configured later -->
         <exclude name="GenericsNaming"/>
-        <exclude name="LinguisticNaming"/>
+        <exclude name="LinguisticNaming"/> <!-- Gives false positives for tests; switched back on for main -->
         <exclude name="LocalVariableCouldBeFinal"/> <!-- Don't want this on for docs; switched back on for all other source sets -->
         <exclude name="LongVariable"/> <!-- configured later -->
         <exclude name="OnlyOneReturn"/>
         <exclude name="ShortClassName"/> <!-- configured later -->
         <exclude name="ShortMethodName"/> <!-- configured later -->
-        <exclude name="ShortVariable"/>
         <exclude name="TooManyStaticImports"/>
-        <exclude name="UnnecessaryConstructor"/>
-        <exclude name="UseDiamondOperator"/> <!-- TODO try to get this working... maybe file a bug report -->
+        <exclude name="UseDiamondOperator"/> <!-- Broken... maybe file a bug report -->
         <exclude name="UseExplicitTypes"/>
+    </rule>
+    <rule ref="category/java/codestyle.xml/ConfusingTernary">
+        <properties>
+            <property name="ignoreElseIf" value="true" />
+        </properties>
     </rule>
     <rule ref="category/java/codestyle.xml/LongVariable">
         <properties>
@@ -75,25 +69,11 @@
             <property name="minimum" value="2"/>
         </properties>
     </rule>
-    <rule ref="category/java/codestyle.xml/ControlStatementBraces">
-        <properties>
-            <property name="checkSingleIfStmt" value="false"/>
-        </properties>
-    </rule>
-    <rule ref="category/java/codestyle.xml/ClassNamingConventions">
-        <properties>
-            <property name="utilityClassPattern" value="[A-Z][a-zA-Z0-9]*"/>
-        </properties>
-    </rule>
 
     <rule ref="category/java/design.xml">
         <exclude name="CouplingBetweenObjects"/> <!-- configured later -->
         <exclude name="CyclomaticComplexity"/> <!-- configured later -->
-        <exclude name="ExcessiveParameterList"/> <!-- configured later -->
-        <exclude name="ExcessivePublicCount"/>
         <exclude name="GodClass"/>
-        <exclude name="SignatureDeclareThrowsException"/> <!-- configured later -->
-        <exclude name="LawOfDemeter"/>
         <exclude name="LoosePackageCoupling"/>
         <exclude name="TooManyMethods"/>
     </rule>
@@ -106,16 +86,6 @@
         <properties>
             <property name="methodReportLevel" value="11"/>
             <property name="classReportLevel" value="250"/>
-        </properties>
-    </rule>
-    <rule ref="category/java/design.xml/ExcessiveParameterList">
-        <properties>
-            <property name="minimum" value="11"/>
-        </properties>
-    </rule>
-    <rule ref="category/java/design.xml/SignatureDeclareThrowsException">
-        <properties>
-            <property name="IgnoreJUnitCompletely" value="true"/>
         </properties>
     </rule>
 
