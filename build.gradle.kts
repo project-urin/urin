@@ -100,7 +100,7 @@ modularity {
 
 pmd {
     toolVersion = "7.0.0"
-    ruleSetFiles = files("tools/pmd-ruleset.xml")
+    ruleSetFiles = files("tools/pmd-ruleset.xml", "tools/pmd-non-docs-extra-ruleset.xml")
     ruleSets = emptyList()
 }
 
@@ -209,8 +209,7 @@ tasks {
     }
 
     pmdMain {
-        ruleSetFiles =
-            files("tools/pmd-ruleset.xml", "tools/pmd-non-docs-extra-ruleset.xml", "tools/pmd-main-extra-ruleset.xml")
+        ruleSetFiles = files("tools/pmd-ruleset.xml", "tools/pmd-non-docs-extra-ruleset.xml", "tools/pmd-main-extra-ruleset.xml")
         ruleSets = emptyList()
     }
 

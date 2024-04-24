@@ -33,13 +33,13 @@ class FragmentTest {
 
     @Test
     void roundTripsAString() throws Exception {
-        Fragment<String> fragment = aFragment();
+        final Fragment<String> fragment = aFragment();
         assertThat(Fragment.parseFragment(fragment.asString(), Fragment.stringFragmentMaker()), equalTo(fragment));
     }
 
     @Test
     void valueGetsTheValueCorrectly() {
-        String value = aString();
+        final String value = aString();
         assertThat(fragment(value).value(), equalTo(value));
     }
 }

@@ -135,7 +135,7 @@ class SegmentTest {
 
     @Test
     void nonDotSegmentReturnsValue() {
-        String value = aString();
+        final String value = aString();
         assertThat(Segment.segment(value).value(), equalTo(value));
     }
 }

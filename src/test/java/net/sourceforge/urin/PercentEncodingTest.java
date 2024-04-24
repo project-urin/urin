@@ -35,7 +35,7 @@ class PercentEncodingTest {
 
     @Test
     void encodesPercentEncodableStringValueCorrectly() {
-        String aString = aString();
+        final String aString = aString();
         assertThat(percentEncodingString(RESERVED_PERCENT_ENCODER).encode(aString), equalTo(RESERVED_PERCENT_ENCODER.encode(aString)));
     }
 
@@ -72,9 +72,9 @@ class PercentEncodingTest {
 
     @Test
     void encodesPercentEncodableSpecifiedValuesCorrectly() {
-        String aString = aString();
+        final String aString = aString();
         assertThat(PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(aString, percentEncodingString(ENCODE_NOTHING)).encode(aString), equalTo(ENCODE_EVERYTHING.encode(aString)));
-        PercentEncodingPartial.PercentEncoding<String> percentEncoding = percentEncodingString(ENCODE_NOTHING);
+        final PercentEncodingPartial.PercentEncoding<String> percentEncoding = percentEncodingString(ENCODE_NOTHING);
         assertThat(PercentEncodingPartial.PercentEncoding.specifiedValueEncoding(aStringDifferentTo(aString), percentEncoding).encode(aString), equalTo(percentEncoding.encode(aString)));
     }
 

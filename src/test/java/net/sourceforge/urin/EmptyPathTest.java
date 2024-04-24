@@ -44,13 +44,13 @@ class EmptyPathTest {
 
     @Test
     void resolvesAbsolutePath() {
-        Path<String> basePath = anAbsolutePath();
+        final Path<String> basePath = anAbsolutePath();
         assertThat(new EmptyPath<String>().resolveRelativeTo(basePath), equalTo(basePath));
     }
 
     @Test
     void resolvesRootlessPath() {
-        Path<String> basePath = aRootlessPath();
+        final Path<String> basePath = aRootlessPath();
         assertThat(new EmptyPath<String>().resolveRelativeTo(basePath), equalTo(basePath));
     }
 
@@ -71,7 +71,7 @@ class EmptyPathTest {
 
     @Test
     void emptyPathSegmentsDoesNotExposeMutability() {
-        EmptyPath<String> emptyPath = new EmptyPath<>();
+        final EmptyPath<String> emptyPath = new EmptyPath<>();
         assertThrows(UnsupportedOperationException.class, () -> {
             //noinspection ConstantConditions
             emptyPath.segments().add(aSegment());

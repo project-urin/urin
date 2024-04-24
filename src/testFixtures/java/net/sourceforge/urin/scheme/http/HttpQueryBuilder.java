@@ -22,8 +22,8 @@ public final class HttpQueryBuilder {
     }
 
     public static HttpQuery anHttpQuery() {
-        int numberOfParameters = RANDOM.nextInt(5);
-        HttpQuery.QueryParameter[] queryParameters = new HttpQuery.QueryParameter[numberOfParameters];
+        final int numberOfParameters = RANDOM.nextInt(5);
+        final HttpQuery.QueryParameter[] queryParameters = new HttpQuery.QueryParameter[numberOfParameters];
         for (int i = 0; i < queryParameters.length; i++) {
             queryParameters[i] = aQueryParameter();
         }

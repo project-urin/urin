@@ -29,19 +29,19 @@ class UrinReferenceTest {
 
     @Test
     void aUriAsStringParsesToAUrin() throws Exception {
-        Urin<String, Query<String>, Fragment<String>> urin = anUnpollutedUrin();
+        final Urin<String, Query<String>, Fragment<String>> urin = anUnpollutedUrin();
         assertThat(aScheme().parseUrinReference(urin.asString()), equalTo(urin));
     }
 
     @Test
     void aUriRoundTripsAsUrinReference() throws Exception {
-        URI uriReference = URI.create("http://some.where/some/thing");
+        final URI uriReference = URI.create("http://some.where/some/thing");
         assertThat(aScheme().parseUrinReference(uriReference).asUri(), equalTo(uriReference));
     }
 
     @Test
     void aRelativeReferenceAsStringParsesToARelativeReference() throws Exception {
-        RelativeReference<String, Query<String>, Fragment<String>> relativeReference = anUnpollutedRelativeReference();
+        final RelativeReference<String, Query<String>, Fragment<String>> relativeReference = anUnpollutedRelativeReference();
         assertThat(aScheme().parseUrinReference(relativeReference.asString()), equalTo(relativeReference));
     }
 
@@ -70,7 +70,7 @@ class UrinReferenceTest {
 
     @Test
     void parsingNullThrowsNullPointerException() {
-        Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
+        final Scheme<String, Query<String>, Fragment<String>> scheme = aScheme();
         assertThrows(NullPointerException.class, () -> scheme.parseUrinReference((String) null), "Null value should throw NullPointerException in parser");
     }
 

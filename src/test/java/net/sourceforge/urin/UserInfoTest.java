@@ -20,7 +20,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 class UserInfoTest {
     @Test
     void asStringReturnsValueProvidedForUnreservedCharacters() {
-        String nonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS + ":";
+        final String nonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS + ":";
         assertThat(UserInfo.userInfo(nonPercentEncodedCharacters).asString(), equalTo(nonPercentEncodedCharacters));
     }
 
@@ -31,7 +31,7 @@ class UserInfoTest {
 
     @Test
     void parsesUnreservedCharacters() throws Exception {
-        String nonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS + ":";
+        final String nonPercentEncodedCharacters = UNRESERVED + SUB_DELIMS + ":";
         assertThat(UserInfo.parse(nonPercentEncodedCharacters), equalTo(UserInfo.userInfo(nonPercentEncodedCharacters)));
     }
 

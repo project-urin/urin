@@ -42,7 +42,7 @@ class SchemeTest {
 
     @Test
     void acceptsTheFullRangeOfValidFirstCharacters() {
-        for (char character : ALPHA.toCharArray()) {
+        for (final char character : ALPHA.toCharArray()) {
             scheme(Character.toString(character));
         }
     }
@@ -149,7 +149,7 @@ class SchemeTest {
 
     @Test
     void aSchemeWithNoPortIsEqualToASchemeWithTheSameNameAndNoPort() {
-        String schemeName = aValidSchemeName();
+        final String schemeName = aValidSchemeName();
         assertThat(scheme(schemeName), equalTo(scheme(schemeName)));
         assertThat(scheme(schemeName).hashCode(), equalTo(scheme(schemeName).hashCode()));
     }
@@ -161,73 +161,73 @@ class SchemeTest {
 
     @Test
     void aSchemeWithNoPortIsNotEqualToASchemeWithTheSameNameButWithPort() {
-        String schemeName = aValidSchemeName();
+        final String schemeName = aValidSchemeName();
         assertThat(scheme(schemeName), not(equalTo(scheme(schemeName, aPort()))));
     }
 
     @Test
     void aSchemeWithNoPortAsStringIsCorrect() {
-        String schemeName = aValidSchemeName();
+        final String schemeName = aValidSchemeName();
         assertThat(scheme(schemeName).asString(), equalTo(schemeName.toLowerCase(ENGLISH)));
     }
 
     @Test
     void aSchemeWithNoPortToStringIsCorrect() {
-        String schemeName = aValidSchemeName();
+        final String schemeName = aValidSchemeName();
         assertThat(scheme(schemeName).toString(), equalTo("Scheme{name='" + schemeName.toLowerCase(ENGLISH) + "'}"));
     }
 
     @Test
     void aSchemeWithPortIsEqualToASchemeWithTheSameNameAndSamePort() {
-        String schemeName = aValidSchemeName();
-        Port port = aPort();
+        final String schemeName = aValidSchemeName();
+        final Port port = aPort();
         assertThat(scheme(schemeName, port), equalTo(scheme(schemeName, port)));
         assertThat(scheme(schemeName, port).hashCode(), equalTo(scheme(schemeName, port).hashCode()));
     }
 
     @Test
     void aSchemeWithPortIsNotEqualToASchemeWithADifferentNameAndSamePort() {
-        Port port = aPort();
+        final Port port = aPort();
         assertThat(scheme(aValidSchemeName(), port), not(equalTo(scheme(aValidSchemeName(), port))));
     }
 
     @Test
     void aSchemeWithPortIsNotEqualToASchemeWithTheSameNameAndDifferentPort() {
-        String schemeName = aValidSchemeName();
-        Port port = aPort();
+        final String schemeName = aValidSchemeName();
+        final Port port = aPort();
         assertThat(scheme(schemeName, port), not(equalTo(scheme(schemeName, aPortDifferentTo(port)))));
     }
 
     @Test
     void aSchemeWithPortAsStringIsCorrect() {
-        String schemeName = aValidSchemeName();
+        final String schemeName = aValidSchemeName();
         assertThat(scheme(schemeName, aPort()).asString(), equalTo(schemeName.toLowerCase(ENGLISH)));
     }
 
     @Test
     void aSchemeWithPortToStringIsCorrect() {
-        String schemeName = aValidSchemeName();
-        Port port = aPort();
+        final String schemeName = aValidSchemeName();
+        final Port port = aPort();
         assertThat(scheme(schemeName, port).toString(), equalTo("Scheme{name='" + schemeName.toLowerCase(ENGLISH) + "', defaultPort=" + port + "}"));
     }
 
     @Test
     void schemeWithNoPortReturnsNormalisedAuthoritiesUnmolested() {
-        Authority authority = anAuthority();
+        final Authority authority = anAuthority();
         assertThat(aSchemeWithNoDefaultPort().normalise(authority), equalTo(authority));
     }
 
     @Test
     void schemeWithDefaultPortReturnsAuthoritiesWithADifferentPortUnmolested() {
-        Port port = aPort();
-        Authority authority = authority(aHost(), aPortDifferentTo(port));
+        final Port port = aPort();
+        final Authority authority = authority(aHost(), aPortDifferentTo(port));
         assertThat(aSchemeWithDefaultPort(port).normalise(authority), equalTo(authority));
     }
 
     @Test
     void schemeWithDefaultPortReturnsAuthoritiesWithThatPortWithPortRemoved() {
-        Port port = aPort();
-        Host host = aHost();
+        final Port port = aPort();
+        final Host host = aHost();
         assertThat(aSchemeWithDefaultPort(port).normalise(authority(host, port)), equalTo(authority(host)));
     }
 
@@ -238,13 +238,13 @@ class SchemeTest {
 
     @Test
     void schemeWithNoPortReturnsItselfWhenDefaultPortRemoved() {
-        Scheme<?, ?, ?> scheme = aSchemeWithNoDefaultPort();
+        final Scheme<?, ?, ?> scheme = aSchemeWithNoDefaultPort();
         assertThat(scheme.removeDefaultPort(), equalTo(scheme));
     }
 
     @Test
     void schemeWithDefaultPortCorrectlyRemovesDefaultPort() {
-        String schemeName = aValidSchemeName();
+        final String schemeName = aValidSchemeName();
         assertThat(scheme(schemeName, aPort()).removeDefaultPort(), equalTo(scheme(schemeName)));
     }
 

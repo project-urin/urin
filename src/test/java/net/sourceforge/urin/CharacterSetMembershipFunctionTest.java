@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class CharacterSetMembershipFunctionTest {
     @Test
     void areMembersAppliesToAllCharactersInAString() {
-        String aString = aString();
+        final String aString = aString();
         assertTrue(testCharacterSetMembershipFunction(aString).areMembers(aString));
         assertFalse(testCharacterSetMembershipFunction("").areMembers(aString));
     }
@@ -34,7 +34,7 @@ class CharacterSetMembershipFunctionTest {
 
     private static CharacterSetMembershipFunction testCharacterSetMembershipFunction(final String members) {
         final Set<Character> membersSet = new HashSet<>();
-        for (char character : members.toCharArray()) {
+        for (final char character : members.toCharArray()) {
             membersSet.add(character);
         }
         return new CharacterSetMembershipFunction() {

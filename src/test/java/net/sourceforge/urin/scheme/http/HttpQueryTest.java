@@ -28,17 +28,17 @@ class HttpQueryTest {
     @SuppressWarnings("ConstantValue")
     void rejectsNullQueryParameter() {
         assertThrows(NullPointerException.class, () -> {
-            HttpQuery.QueryParameter queryParameter = null;
+            final HttpQuery.QueryParameter queryParameter = null;
             queryParameters(queryParameter);
         }, "Null name should throw NullPointerException in factory");
     }
 
     @Test
     void queryParametersUsingVarargsAreImmutable() {
-        HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
-        HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
-        HttpQuery.QueryParameter[] queryParameters = {firstQueryParameter, secondQueryParameter};
-        var query = queryParameters(queryParameters);
+        final HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter[] queryParameters = {firstQueryParameter, secondQueryParameter};
+        final var query = queryParameters(queryParameters);
         queryParameters[0] = aQueryParameter();
         assertThat(query, equalTo(queryParameters(firstQueryParameter, secondQueryParameter)));
 
@@ -46,8 +46,8 @@ class HttpQueryTest {
 
     @Test
     void queryParametersIsEqualToAnotherWithTheSameMembers() {
-        HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
-        HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         assertThat(queryParameters(firstQueryParameter, secondQueryParameter), equalTo(queryParameters(firstQueryParameter, secondQueryParameter)));
         assertThat(queryParameters(firstQueryParameter, secondQueryParameter).hashCode(), equalTo(queryParameters(firstQueryParameter, secondQueryParameter).hashCode()));
     }
@@ -59,8 +59,8 @@ class HttpQueryTest {
 
     @Test
     void queryParametersToStringIsCorrect() {
-        HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
-        HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         assertThat(queryParameters(firstQueryParameter, secondQueryParameter).toString(), equalTo("HttpQuery{value='" + asList(firstQueryParameter, secondQueryParameter) + "'}"));
     }
 
@@ -71,7 +71,7 @@ class HttpQueryTest {
 
     @Test
     void queryParameterWithNameOnlyIsEqualToAnotherWithTheSameName() {
-        String name = aString();
+        final String name = aString();
         assertThat(queryParameter(name), equalTo(queryParameter(name)));
         assertThat(queryParameter(name).hashCode(), equalTo(queryParameter(name).hashCode()));
     }
@@ -83,13 +83,13 @@ class HttpQueryTest {
 
     @Test
     void queryParameterWithNameOnlyToStringIsCorrect() {
-        String name = aString();
+        final String name = aString();
         assertThat(queryParameter(name).toString(), equalTo("QueryParameter{name='" + name + "'}"));
     }
 
     @Test
     void queryParameterWithNameOnlyNameIsCorrect() {
-        String name = aString();
+        final String name = aString();
         assertThat(queryParameter(name).name(), equalTo(name));
     }
 
@@ -111,8 +111,8 @@ class HttpQueryTest {
 
     @Test
     void queryParameterWithNameAndValueIsEqualToAnotherWithTheSameNameAndValue() {
-        String name = aString();
-        String value = aString();
+        final String name = aString();
+        final String value = aString();
         assertThat(queryParameter(name, value), equalTo(queryParameter(name, value)));
         assertThat(queryParameter(name, value).hashCode(), equalTo(queryParameter(name, value).hashCode()));
     }
@@ -124,14 +124,14 @@ class HttpQueryTest {
 
     @Test
     void queryParameterWithNameAndValueToStringIsCorrect() {
-        String name = aString();
-        String value = aString();
+        final String name = aString();
+        final String value = aString();
         assertThat(queryParameter(name, value).toString(), equalTo("QueryParameter{name='" + name + "', value='" + value + "'}"));
     }
 
     @Test
     void queryParameterWithNameAndValueNameIsCorrect() {
-        String name = aString();
+        final String name = aString();
         assertThat(queryParameter(name, aString()).name(), equalTo(name));
     }
 
@@ -142,21 +142,21 @@ class HttpQueryTest {
 
     @Test
     void queryParameterWithNameAndValueValueIsCorrect() {
-        String value = aString();
+        final String value = aString();
         assertThat(queryParameter(aString(), value).value(), equalTo(value));
     }
 
     @Test
     void queryParametersAreIterable() {
-        HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
-        HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         assertThat(queryParameters(firstQueryParameter, secondQueryParameter), contains(firstQueryParameter, secondQueryParameter));
     }
 
     @Test
     void queryParametersValueIsCorrect() {
-        HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
-        HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter firstQueryParameter = aQueryParameter();
+        final HttpQuery.QueryParameter secondQueryParameter = aQueryParameter();
         assertThat(queryParameters(firstQueryParameter, secondQueryParameter).value(), contains(firstQueryParameter, secondQueryParameter));
     }
 

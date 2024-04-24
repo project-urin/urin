@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class AuthorityTest {
     @Test
     void makesAuthorityWithNoUserInfoOrPort() {
-        Host host = aHost();
+        final Host host = aHost();
         assertThat(authority(host).asString(), equalTo(host.asString()));
     }
 
@@ -36,7 +36,7 @@ class AuthorityTest {
 
     @Test
     void anAuthorityWithNoUserInfoOrPortIsEqualToAnotherWithTheSameHost() {
-        Host host = aHost();
+        final Host host = aHost();
         assertThat(authority(host), equalTo(authority(host)));
         assertThat(authority(host).hashCode(), equalTo(authority(host).hashCode()));
     }
@@ -54,14 +54,14 @@ class AuthorityTest {
 
     @Test
     void anAuthorityWithNoUserInfoOrPortToStringIsCorrect() {
-        Host host = aHost();
+        final Host host = aHost();
         assertThat(authority(host).toString(), equalTo("Authority{host=" + host + "}"));
     }
 
     @Test
     void makesAuthorityWithNoPort() {
-        UserInfo userInfo = aUserInfo();
-        Host host = aHost();
+        final UserInfo userInfo = aUserInfo();
+        final Host host = aHost();
         assertThat(authority(userInfo, host).asString(), equalTo(userInfo.asString() + "@" + host.asString()));
     }
 
@@ -73,8 +73,8 @@ class AuthorityTest {
 
     @Test
     void anAuthorityWithNoPortIsEqualToAnotherWithTheSameHostAndUserInfo() {
-        UserInfo userInfo = aUserInfo();
-        Host host = aHost();
+        final UserInfo userInfo = aUserInfo();
+        final Host host = aHost();
         assertThat(authority(userInfo, host), equalTo(authority(userInfo, host)));
         assertThat(authority(userInfo, host).hashCode(), equalTo(authority(userInfo, host).hashCode()));
     }
@@ -92,15 +92,15 @@ class AuthorityTest {
 
     @Test
     void anAuthorityWithNoPortToStringIsCorrect() {
-        UserInfo userInfo = aUserInfo();
-        Host host = aHost();
+        final UserInfo userInfo = aUserInfo();
+        final Host host = aHost();
         assertThat(authority(userInfo, host).toString(), equalTo("Authority{userInfo=" + userInfo + ", host=" + host + "}"));
     }
 
     @Test
     void makesAuthorityWithNoUserInfo() {
-        Host host = aHost();
-        Port port = aPort();
+        final Host host = aHost();
+        final Port port = aPort();
         assertThat(authority(host, port).asString(), equalTo(host.asString() + ":" + port.asString()));
     }
 
@@ -112,8 +112,8 @@ class AuthorityTest {
 
     @Test
     void anAuthorityWithNoUserInfoIsEqualToAnotherWithTheSameHostAndPort() {
-        Host host = aHost();
-        Port port = aPort();
+        final Host host = aHost();
+        final Port port = aPort();
         assertThat(authority(host, port), equalTo(authority(host, port)));
         assertThat(authority(host, port).hashCode(), equalTo(authority(host, port).hashCode()));
     }
@@ -131,16 +131,16 @@ class AuthorityTest {
 
     @Test
     void anAuthorityWithNoUserInfoToStringIsCorrect() {
-        Host host = aHost();
-        Port port = aPort();
+        final Host host = aHost();
+        final Port port = aPort();
         assertThat(authority(host, port).toString(), equalTo("Authority{host=" + host + ", port=" + port + "}"));
     }
 
     @Test
     void makesAuthorityWithAllOptionsSpecified() {
-        UserInfo userInfo = aUserInfo();
-        Host host = aHost();
-        Port port = aPort();
+        final UserInfo userInfo = aUserInfo();
+        final Host host = aHost();
+        final Port port = aPort();
         assertThat(authority(userInfo, host, port).asString(), equalTo(userInfo.asString() + "@" + host.asString() + ":" + port.asString()));
     }
 
@@ -154,9 +154,9 @@ class AuthorityTest {
 
     @Test
     void anAuthorityWithAllOptionsSpecifiedIsEqualToAnotherWithTheSameFields() {
-        UserInfo userInfo = aUserInfo();
-        Host host = aHost();
-        Port port = aPort();
+        final UserInfo userInfo = aUserInfo();
+        final Host host = aHost();
+        final Port port = aPort();
         assertThat(authority(userInfo, host, port), equalTo(authority(userInfo, host, port)));
         assertThat(authority(userInfo, host, port).hashCode(), equalTo(authority(userInfo, host, port).hashCode()));
     }
@@ -174,37 +174,37 @@ class AuthorityTest {
 
     @Test
     void anAuthorityWithAllOptionsSpecifiedToStringIsCorrect() {
-        UserInfo userInfo = aUserInfo();
-        Host host = aHost();
-        Port port = aPort();
+        final UserInfo userInfo = aUserInfo();
+        final Host host = aHost();
+        final Port port = aPort();
         assertThat(authority(userInfo, host, port).toString(), equalTo("Authority{userInfo=" + userInfo + ", host=" + host + ", port=" + port + "}"));
     }
 
     @Test
     void parsesAuthorityWithNoUserInfoOrPort() throws Exception {
-        Host host = aHost();
+        final Host host = aHost();
         assertThat(Authority.parse(host.asString()), equalTo(authority(host)));
     }
 
     @Test
     void parsesAuthorityWithNoPort() throws Exception {
-        UserInfo userInfo = aUserInfo();
-        Host host = aHost();
+        final UserInfo userInfo = aUserInfo();
+        final Host host = aHost();
         assertThat(Authority.parse(userInfo.asString() + "@" + host.asString()), equalTo(authority(userInfo, host)));
     }
 
     @Test
     void parsesAuthorityWithNoUserInfo() throws Exception {
-        Host host = aHost();
-        Port port = aPort();
+        final Host host = aHost();
+        final Port port = aPort();
         assertThat(Authority.parse(host.asString() + ":" + port.asString()), equalTo(authority(host, port)));
     }
 
     @Test
     void parsesAuthorityWithAllOptionsSpecified() throws Exception {
-        UserInfo userInfo = aUserInfo();
-        Host host = aHost();
-        Port port = aPort();
+        final UserInfo userInfo = aUserInfo();
+        final Host host = aHost();
+        final Port port = aPort();
         assertThat(Authority.parse(userInfo.asString() + "@" + host.asString() + ":" + port.asString()), equalTo(authority(userInfo, host, port)));
     }
 
@@ -222,44 +222,44 @@ class AuthorityTest {
 
     @Test
     void authorityWithNoUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() {
-        Authority authority = authority(aHost());
+        final Authority authority = authority(aHost());
         assertThat(authority.removePort(aPort()), equalTo(authority));
     }
 
     @Test
     void authorityWithUserInfoAndNoPortIsReturnedUnmolestedFromRemovingPort() {
-        Authority authority = authority(aUserInfo(), aHost());
+        final Authority authority = authority(aUserInfo(), aHost());
         assertThat(authority.removePort(aPort()), equalTo(authority));
     }
 
     @Test
     void authorityWithPortIsReturnedUnmolestedFromRemovingDifferentPort() {
-        Port port = aPort();
-        Authority authority = authority(aHost(), port);
+        final Port port = aPort();
+        final Authority authority = authority(aHost(), port);
         assertThat(authority.removePort(aPortDifferentTo(port)), equalTo(authority));
     }
 
     @Test
     void authorityWithPortCorrectlyRemovesThatPort() {
-        Port port = aPort();
-        Host host = aHost();
-        Authority authority = authority(host, port);
+        final Port port = aPort();
+        final Host host = aHost();
+        final Authority authority = authority(host, port);
         assertThat(authority.removePort(port), equalTo(authority(host)));
     }
 
     @Test
     void authorityWithUserInfoAndPortIsReturnedUnmolestedFromRemovingDifferentPort() {
-        Port port = aPort();
-        Authority authority = authority(aUserInfo(), aHost(), port);
+        final Port port = aPort();
+        final Authority authority = authority(aUserInfo(), aHost(), port);
         assertThat(authority.removePort(aPortDifferentTo(port)), equalTo(authority));
     }
 
     @Test
     void authorityWithUserInfoAndPortCorrectlyRemovesThatPort() {
-        UserInfo userInfo = aUserInfo();
-        Host host = aHost();
-        Port port = aPort();
-        Authority authority = authority(userInfo, host, port);
+        final UserInfo userInfo = aUserInfo();
+        final Host host = aHost();
+        final Port port = aPort();
+        final Authority authority = authority(userInfo, host, port);
         assertThat(authority.removePort(port), equalTo(authority(userInfo, host)));
     }
 }

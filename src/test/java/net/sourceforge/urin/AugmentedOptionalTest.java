@@ -104,7 +104,7 @@ class AugmentedOptionalTest {
 
     @Test
     void emptyAugmentedOptionalFlatMapDoesNotCallMapper() {
-        AtomicInteger callCount = new AtomicInteger(0);
+        final AtomicInteger callCount = new AtomicInteger(0);
         AugmentedOptional.empty(aString()).flatMap(value -> {
             callCount.incrementAndGet();
             return AugmentedOptional.empty(aString());
@@ -152,7 +152,7 @@ class AugmentedOptionalTest {
 
     @Test
     void populatedAugmentedOptionalOrDoesNotCallSupplier() {
-        AtomicInteger callCount = new AtomicInteger(0);
+        final AtomicInteger callCount = new AtomicInteger(0);
         AugmentedOptional.of(new Object()).or(() -> {
             callCount.incrementAndGet();
             return AugmentedOptional.empty(aString());
@@ -168,7 +168,7 @@ class AugmentedOptionalTest {
 
     @Test
     void populatedAugmentedOptionalOrElseGetDoesNotCallSupplier() {
-        AtomicInteger callCount = new AtomicInteger(0);
+        final AtomicInteger callCount = new AtomicInteger(0);
         AugmentedOptional.of(new Object()).orElseGet(() -> {
             callCount.incrementAndGet();
             return new Object();
@@ -184,7 +184,7 @@ class AugmentedOptionalTest {
 
     @Test
     void populatedAugmentedOptionalOrElseThrowDoesNotCallMapper() throws Exception {
-        AtomicInteger callCount = new AtomicInteger(0);
+        final AtomicInteger callCount = new AtomicInteger(0);
         AugmentedOptional.of(new Object()).orElseThrow(reason -> {
             callCount.incrementAndGet();
             return new Exception(reason);

@@ -22,13 +22,13 @@ public final class MoreRandomStringUtils {
     }
 
     public static String aStringDifferentTo(final String aString) {
-        String random = aString();
+        final String random = aString();
         return random.equals(aString) ? random + random(1) : random;
     }
 
     public static String aStringIncluding(final char included) {
-        StringBuilder result = new StringBuilder();
-        int includeAt = RANDOM.nextInt(5);
+        final StringBuilder result = new StringBuilder();
+        final int includeAt = RANDOM.nextInt(5);
         for (int i = 0; i < 5; i++) {
             if (i == includeAt) {
                 result.append(included);

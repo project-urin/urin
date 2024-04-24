@@ -21,8 +21,8 @@ class MoreRandomStringUtilsTest {
 
     @Test
     void randomIncludingDoesInclude() {
-        char aChar = aChar();
-        String actual = aStringIncluding(aChar);
+        final char aChar = aChar();
+        final String actual = aStringIncluding(aChar);
         assertThat(actual, containsString(String.valueOf(aChar)));
     }
 

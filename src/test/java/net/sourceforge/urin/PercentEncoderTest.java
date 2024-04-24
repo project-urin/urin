@@ -42,7 +42,7 @@ class PercentEncoderTest {
 
     @Test
     void canEncodeAdditionalCharacters() {
-        PercentEncoder aPercentEncoder = new PercentEncoder(or(singleMemberCharacterSet('B'), singleMemberCharacterSet('C')));
+        final PercentEncoder aPercentEncoder = new PercentEncoder(or(singleMemberCharacterSet('B'), singleMemberCharacterSet('C')));
         assertThat(aPercentEncoder.encode("ABC"), equalTo("%41BC"));
         assertThat(aPercentEncoder.additionallyEncoding('B').encode("ABC"), equalTo("%41%42C"));
     }
@@ -54,7 +54,7 @@ class PercentEncoderTest {
 
     @Test
     void unencodedStringIsDecodedToItself() throws Exception {
-        String string = aString();
+        final String string = aString();
         assertThat(new PercentEncoder(ALL_CHARACTERS).decode(string), Matchers.equalTo(string));
     }
 
@@ -117,7 +117,7 @@ class PercentEncoderTest {
 
     @Test
     void encodedStringIsDecodedCorrectly() throws Exception {
-        String string = aString();
+        final String string = aString();
         assertThat(
                 new PercentEncoder(NO_CHARACTERS).decode(
                         new PercentEncoder(NO_CHARACTERS).encode(string)

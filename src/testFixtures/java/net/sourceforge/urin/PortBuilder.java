@@ -22,7 +22,7 @@ public final class PortBuilder {
     }
 
     public static Port aPortDifferentTo(final Port port) {
-        String potentialPort = randomNumeric(5);
+        final String potentialPort = randomNumeric(5);
         return port(potentialPort).equals(port) ? port(potentialPort + randomNumeric(1)) : port(potentialPort);
     }
 }
