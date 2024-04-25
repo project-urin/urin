@@ -98,6 +98,10 @@ public abstract class Host {
      * Factory method for creating IP version 4 type {@code Host}s.
      * IP version 4 {@code Host}s are made up of four {@code Octet}s.
      *
+     * @param firstOctet  the first octet
+     * @param secondOctet the second octet
+     * @param thirdOctet  the third octet
+     * @param fourthOctet the fourth octet
      * @return a {@code Host} representing the given {@code Octet}s as an IP version 4 address.
      */
     public static Host ipV4Address(final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
@@ -108,6 +112,10 @@ public abstract class Host {
      * Factory method for creating IP version 4 type {@code Host}s.
      * IP version 4 {@code Host}s are made up of four {@code Octet}s, which are created from the given {@code int}s.
      *
+     * @param firstOctet  the first octet
+     * @param secondOctet the second octet
+     * @param thirdOctet  the third octet
+     * @param fourthOctet the fourth octet
      * @return a {@code Host} representing the given {@code int}s as an IP version 4 address.
      */
     public static Host ipV4Address(final int firstOctet, final int secondOctet, final int thirdOctet, final int fourthOctet) {
@@ -117,6 +125,14 @@ public abstract class Host {
     /**
      * Factory method for creating IP version 6 type {@code Host}s with all parts specified as {@code Hexadectet}s.
      *
+     * @param firstHexadectet   the first hexadectet
+     * @param secondHexadectet  the second hexadectet
+     * @param thirdHexadectet   the third hexadectet
+     * @param fourthHexadectet  the fourth hexadectet
+     * @param fifthHexadectet   the fifth hexadectet
+     * @param sixthHexadectet   the sixth hexadectet
+     * @param seventhHexadectet the seventh hexadectet
+     * @param eighthHexadectet  the eighth hexadectet
      * @return a {@code Host} representing the given {@code Hexadectet}s as an IP version 6 address.
      */
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Hexadectet seventhHexadectet, final Hexadectet eighthHexadectet) {
@@ -126,6 +142,16 @@ public abstract class Host {
     /**
      * Factory method for creating IP version 6 type {@code Host}s with the least significant 32 bits specified as in IP version 4 address format.
      *
+     * @param firstHexadectet  the first hexadectet
+     * @param secondHexadectet the second hexadectet
+     * @param thirdHexadectet  the third hexadectet
+     * @param fourthHexadectet the fourth hexadectet
+     * @param fifthHexadectet  the fifth hexadectet
+     * @param sixthHexadectet  the sixth hexadectet
+     * @param firstOctet       the first octet
+     * @param secondOctet      the second octet
+     * @param thirdOctet       the third octet
+     * @param fourthOctet      the fourth octet
      * @return a {@code Host} representing the given {@code Hexadectet}s and {@code Octet}s as an IP version 6 address.
      */
     public static Host ipV6Address(final Hexadectet firstHexadectet, final Hexadectet secondHexadectet, final Hexadectet thirdHexadectet, final Hexadectet fourthHexadectet, final Hexadectet fifthHexadectet, final Hexadectet sixthHexadectet, final Octet firstOctet, final Octet secondOctet, final Octet thirdOctet, final Octet fourthOctet) {
