@@ -18,16 +18,16 @@ plugins {
     java
     signing
     `maven-publish`
-    id("org.javamodularity.moduleplugin") version "1.8.15"
+    alias(libs.plugins.modulePlugin)
     idea
     pmd
     `java-test-fixtures`
     `jvm-test-suite`
-    id("com.github.spotbugs") version "6.0.10"
-    id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
-    id("com.gitlab.svg2ico") version "1.4"
-    id("org.asciidoctor.jvm.convert") version "4.0.2"
-    id("org.asciidoctor.jvm.gems") version "4.0.2"
+    alias(libs.plugins.spotbugs)
+    alias(libs.plugins.nexusPublish)
+    alias(libs.plugins.svg2ico)
+    alias(libs.plugins.asciidoctorConvert)
+    alias(libs.plugins.asciidoctorGems)
 
     id("release.sourceforge")
 }
@@ -49,38 +49,37 @@ java {
 }
 
 dependencies {
-    testFixturesImplementation(group = "org.apache.commons", name = "commons-lang3", version = "3.14.0")
-    testFixturesImplementation(group = "org.hamcrest", name = "hamcrest", version = "2.2")
+    testFixturesImplementation(libs.commonsLang)
+    testFixturesImplementation(libs.hamcrest)
 
-    spotbugs(group = "com.github.spotbugs", name = "spotbugs", version = "4.8.4")
+    spotbugs(libs.spotbugs)
 
-    asciidoctorGems(group = "rubygems", name = "asciidoctor-tabs", version = "1.0.0.beta.6")
+    asciidoctorGems(libs.asciidoctorTabs)
 }
 
 testing {
     @Suppress("UnstableApiUsage")
     suites {
         val test by getting(JvmTestSuite::class) {
-            useJUnitJupiter("5.10.2")
+            useJUnitJupiter(libs.versions.junit)
             dependencies {
-                implementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
-                implementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
-                implementation("org.hamcrest:hamcrest:2.2")
-                implementation("org.apache.commons:commons-lang3:3.12.0")
+                implementation(libs.junitJupiterParams)
+                implementation(libs.hamcrest)
+                implementation(libs.commonsLang)
             }
         }
 
         register<JvmTestSuite>("testIntegration") {
-            useJUnitJupiter("5.10.2")
+            useJUnitJupiter(libs.versions.junit)
             dependencies {
                 implementation(project())
                 implementation(testFixtures(project()))
-                implementation("org.hamcrest:hamcrest:2.2")
+                implementation(libs.hamcrest)
             }
         }
 
         register<JvmTestSuite>("docs") {
-            useJUnitJupiter("5.10.2")
+            useJUnitJupiter(libs.versions.junit)
             dependencies {
                 implementation(project())
             }
