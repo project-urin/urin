@@ -265,7 +265,7 @@ publishing {
             pom {
                 name = "Urin"
                 description = project.description
-                url = "http://urin.sourceforge.net"
+                url = "https://urin.sourceforge.net"
                 scm {
                     url = "git://git.code.sf.net/p/urin/code"
                 }
