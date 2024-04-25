@@ -250,6 +250,7 @@ artifacts {
 }
 
 releasing {
+    jar = tasks.jar.get().archiveFile
     combinedJar = tasks.named<Jar>("combinedJar").get().archiveFile
     smallJar = tasks.named<Jar>("smallJar").get().archiveFile
     documentationTar = tasks.named<Tar>("documentationTar").get().archiveFile
