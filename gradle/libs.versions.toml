@@ -13,6 +13,8 @@ svg2ico = { id = "com.gitlab.svg2ico", version =  "1.4" }
 asciidoctorConvert = { id = "org.asciidoctor.jvm.convert", version.ref = "asciidoctor" }
 asciidoctorGems = { id = "org.asciidoctor.jvm.gems", version.ref = "asciidoctor" }
 
+kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version = "1.9.20" }
+
 
 [libraries]
 
@@ -23,3 +25,5 @@ hamcrest = { group = "org.hamcrest", name = "hamcrest", version = "2.2" }
 spotbugs = { group = "com.github.spotbugs", name = "spotbugs", version = "4.8.4" }
 
 asciidoctorTabs = { group = "rubygems", name = "asciidoctor-tabs", version = "1.0.0.beta.6" }
+
+maverickSynergyClient = { group = "com.sshtools", name = "maverick-synergy-client", version = "3.1.0" }

@@ -8,25 +8,10 @@
  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
  */
 
-plugins {
-    `kotlin-dsl`
-    alias(libs.plugins.kotlinJvm)
-}
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    implementation(gradleApi())
-    implementation(libs.maverickSynergyClient)
-}
-
-gradlePlugin {
-    plugins {
-        create("sourceforgeReleasePlugin") {
-            id = "release.sourceforge"
-            implementationClass = "release.SourceforgeReleasePlugin"
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
         }
     }
 }
