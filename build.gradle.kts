@@ -267,7 +267,7 @@ publishing {
                 description = project.description
                 url = "https://urin.sourceforge.net"
                 scm {
-                    url = "git://git.code.sf.net/p/urin/code"
+                    url = "https://github.com/project-urin/urin.git"
                 }
                 developers {
                     developer {
