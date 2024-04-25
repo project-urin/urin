@@ -1,7 +1,7 @@
 # Urin
 
 [![CI](https://github.com/project-urin/urin/actions/workflows/ci.yaml/badge.svg)](https://github.com/project-urin/urin/actions/workflows/ci.yaml)
-![Maven Central Version](https://img.shields.io/maven-central/v/net.sourceforge.urin/urin?label=Maven%20Central)
+[![Maven Central Version](https://img.shields.io/maven-central/v/net.sourceforge.urin/urin?label=Maven%20Central)](https://central.sonatype.com/artifact/net.sourceforge.urin/urin)
 
 Urin is a free, open source URI generator and parser written in Java.
 
