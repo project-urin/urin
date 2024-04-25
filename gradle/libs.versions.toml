@@ -26,4 +26,4 @@ spotbugs = { group = "com.github.spotbugs", name = "spotbugs", version = "4.8.4"
 
 asciidoctorTabs = { group = "rubygems", name = "asciidoctor-tabs", version = "1.0.0.beta.6" }
 
-maverickSynergyClient = { group = "com.sshtools", name = "maverick-synergy-client", version = "3.1.0" }
+maverickSynergyClient = { group = "com.sshtools", name = "maverick-synergy-client", version = "3.1.1" }
