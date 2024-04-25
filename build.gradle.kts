@@ -29,7 +29,7 @@ plugins {
     alias(libs.plugins.asciidoctorConvert)
     alias(libs.plugins.asciidoctorGems)
 
-    id("release.sourceforge")
+    id("release")
 }
 
 group = "net.sourceforge.urin"
@@ -223,18 +223,11 @@ tasks {
 
     val release by registering {
         group = "publishing"
-        dependsOn(
-            clean,
-            build,
-            publish,
-            closeAndReleaseStagingRepositories,
-            sourceforgeRelease,
-            incrementVersionNumber
-        )
+        dependsOn(clean, build, publish, closeAndReleaseStagingRepositories, sourceforgeRelease, gitHubRelease, incrementVersionNumber)
     }
 
     incrementVersionNumber {
-        mustRunAfter(closeAndReleaseStagingRepositories, sourceforgeRelease)
+        mustRunAfter(closeAndReleaseStagingRepositories, sourceforgeRelease, gitHubRelease)
     }
 }
 

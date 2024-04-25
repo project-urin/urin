@@ -20,13 +20,15 @@ repositories {
 dependencies {
     implementation(gradleApi())
     implementation(libs.maverickSynergyClient)
+    implementation(libs.argo)
+    implementation(libs.urin)
 }
 
 gradlePlugin {
     plugins {
-        create("sourceforgeReleasePlugin") {
-            id = "release.sourceforge"
-            implementationClass = "release.SourceforgeReleasePlugin"
+        create("releasePlugin") {
+            id = "release"
+            implementationClass = "release.ReleasePlugin"
         }
     }
 }
