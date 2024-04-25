@@ -33,7 +33,7 @@ plugins {
 }
 
 group = "net.sourceforge.urin"
-description = "Urin is an open source URI generator and parser written in Java."
+description = "Urin is a free, open source URI generator and parser written in Java."
 
 repositories {
     mavenCentral()
