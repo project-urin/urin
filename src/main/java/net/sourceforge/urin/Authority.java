@@ -29,8 +29,6 @@ public abstract class Authority {
     private Authority() {
     }
 
-    abstract String asString();
-
     /**
      * Factory method for creating {@code Authority}s with just a host.
      *
@@ -106,6 +104,8 @@ public abstract class Authority {
             }
         }
     }
+
+    abstract String asString();
 
     abstract Authority removePort(Port port);
 

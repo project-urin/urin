@@ -19,12 +19,6 @@ final class AugmentedOptionalMatcher {
     private AugmentedOptionalMatcher() {
     }
 
-    private static final class UnpopulatedException extends Exception {
-        UnpopulatedException(final String message) {
-            super(message);
-        }
-    }
-
     static <T> Matcher<AugmentedOptional<T>> populated(final Matcher<? super T> populatedValueMatcher) {
         return new TypeSafeDiagnosingMatcher<>() {
             @Override
@@ -73,6 +67,12 @@ final class AugmentedOptionalMatcher {
                 description.appendText("An unpopulated AugmentedOptional with reason ").appendDescriptionOf(reasonMatcher);
             }
         };
+    }
+
+    private static final class UnpopulatedException extends Exception {
+        UnpopulatedException(final String message) {
+            super(message);
+        }
     }
 
 }

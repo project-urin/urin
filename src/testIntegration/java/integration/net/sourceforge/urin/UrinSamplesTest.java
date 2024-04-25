@@ -33,6 +33,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 class UrinSamplesTest {
+    private static Segment<Iterable<String>> anIterableOfStringsSegment(final Iterable<String> strings, final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
+        return segment(strings, percentEncodingPartial);
+    }
+
     @Test
     void canMakeAUrinWithEmptyPath() throws Exception {
         final var scheme = aScheme();
@@ -104,10 +108,6 @@ class UrinSamplesTest {
         assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/.//", scheme.urin(path(emptySegment, emptySegment, Segment.dotDot())));
     }
 
-    private static Segment<Iterable<String>> anIterableOfStringsSegment(final Iterable<String> strings, final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
-        return segment(strings, percentEncodingPartial);
-    }
-
     @Test
     void canMakeAUrinWithSubencodedFragment() throws Exception {
         final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = PercentEncodingPartial.percentEncodingDelimitedValue('!');
@@ -120,15 +120,15 @@ class UrinSamplesTest {
         assertAsStringAndParse(scheme, asString(scheme) + ":#a!%21!c", scheme.urin(new MyFragment(asList("a", "!", "c"), percentEncodingPartial)));
     }
 
-    private static final class MyFragment extends Fragment<Iterable<String>> {
-        private MyFragment(final Iterable<String> value, final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
-            super(value, percentEncodingPartial);
-        }
-    }
-
     @Test
     void canMakeAUriThatFollowsAwsSignatureV4Rules() {
         final PercentEncodingPartial<String, String> awsPercentEncodingPartial = additionallyEncoding(asList('!', '$', '&', '\'', '(', ')', '*', '+', ',', ';', '=', ':', '@'), noOp());
         assertThat(HTTPS.relativeReference(path(segment("$", awsPercentEncodingPartial))).asString(), equalTo("/%24"));
+    }
+
+    private static final class MyFragment extends Fragment<Iterable<String>> {
+        private MyFragment(final Iterable<String> value, final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial) {
+            super(value, percentEncodingPartial);
+        }
     }
 }

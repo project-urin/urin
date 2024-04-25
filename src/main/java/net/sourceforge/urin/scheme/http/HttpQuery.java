@@ -35,6 +35,10 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                                     PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+'))))));
     private static final QueryParameter VALUELESS_EMPTY_NAMED_QUERY_PARAMETER = queryParameter("");
 
+    private HttpQuery(final Iterable<QueryParameter> queryParameters) {
+        super(unmodifiableList(convertSingleElementListOfValuelessQueryParameterNamedEmptyStringToEmptyList(requireNonNullElements(queryParameters))), HTTP_QUERY_PERCENT_ENCODING_PARTIAL);
+    }
+
     /**
      * Factory method for {@code MakingDecoder}s of {@code HttpQuery}s
      *
@@ -47,10 +51,6 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                 return new HttpQuery(queryParameters);
             }
         };
-    }
-
-    private HttpQuery(final Iterable<QueryParameter> queryParameters) {
-        super(unmodifiableList(convertSingleElementListOfValuelessQueryParameterNamedEmptyStringToEmptyList(requireNonNullElements(queryParameters))), HTTP_QUERY_PERCENT_ENCODING_PARTIAL);
     }
 
     private static List<QueryParameter> requireNonNullElements(final Iterable<QueryParameter> queryParameters) {

@@ -16,18 +16,11 @@ import java.util.regex.Pattern;
 
 import static java.util.Locale.ENGLISH;
 import static java.util.Objects.requireNonNull;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.ALPHA;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.ALPHA_LOWERCASE;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.ALPHA_UPPERCASE;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.DIGIT;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.or;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.singleMemberCharacterSet;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Fragment.stringFragmentMaker;
-import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
-import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY;
-import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
+import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
 import static net.sourceforge.urin.Query.stringQueryMaker;
 
 /**
@@ -98,13 +91,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
         return new SchemeWithDefaultPort<>(name.toLowerCase(ENGLISH), defaultPort, Segment.STRING_SEGMENT_MAKING_DECODER, stringQueryMaker(), stringFragmentMaker());
     }
 
-    private Scheme<SEGMENT, QUERY, FRAGMENT> parse(final String name) throws ParseException {
-        verify(name, PARSE_EXCEPTION_EXCEPTION_FACTORY);
-        return withName(name);
-    }
-
-    abstract Scheme<SEGMENT, QUERY, FRAGMENT> withName(String name);
-
     private static <T extends Exception> void verify(final String name, final ExceptionFactory<T> exceptionFactory) throws T {
         if (name.isEmpty()) {
             throw exceptionFactory.makeException("Scheme must contain at least one character");
@@ -112,6 +98,21 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
         CharacterSetMembershipFunction.verify(ALPHA, name, "scheme", 0, 1, exceptionFactory);
         CharacterSetMembershipFunction.verify(TRAILING_CHARACTER_MEMBERSHIP_FUNCTION, name, "scheme", 1, exceptionFactory);
     }
+
+    private static boolean isValidRelativeReferenceString(final String uriReferenceString) {
+        return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
+    }
+
+    private static boolean isValidUrinString(final String uriReferenceString) {
+        return URI_PATTERN.matcher(uriReferenceString).matches();
+    }
+
+    private Scheme<SEGMENT, QUERY, FRAGMENT> parse(final String name) throws ParseException {
+        verify(name, PARSE_EXCEPTION_EXCEPTION_FACTORY);
+        return withName(name);
+    }
+
+    abstract Scheme<SEGMENT, QUERY, FRAGMENT> withName(String name);
 
     abstract String asString();
 
@@ -342,10 +343,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
      */
     public final RelativeReference<SEGMENT, QUERY, FRAGMENT> parseRelativeReference(final URI uri) throws ParseException {
         return parseRelativeReference(uri.toASCIIString());
-    }
-
-    private static boolean isValidRelativeReferenceString(final String uriReferenceString) {
-        return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
     }
 
     /**
@@ -589,10 +586,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
      */
     public final Urin<SEGMENT, QUERY, FRAGMENT> parseUrin(final URI uri) throws ParseException {
         return parseUrin(uri.toASCIIString());
-    }
-
-    private static boolean isValidUrinString(final String uriReferenceString) {
-        return URI_PATTERN.matcher(uriReferenceString).matches();
     }
 
     /**

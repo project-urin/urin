@@ -18,10 +18,7 @@ import static net.sourceforge.urin.AugmentedOptionalMatcher.populated;
 import static net.sourceforge.urin.AugmentedOptionalMatcher.unpopulated;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
-import static org.hamcrest.Matchers.sameInstance;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AugmentedOptionalTest {

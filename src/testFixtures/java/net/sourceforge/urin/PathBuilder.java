@@ -20,16 +20,11 @@ import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 
 public final class PathBuilder {
 
-    private static final RandomSupplierSwitcher<Path<String>> RANDOM_POLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            PathBuilder::anAbsolutePath,
-            PathBuilder::aRootlessPath
-    );
-
+    private static final Random RANDOM = new Random();
     private static final RandomSupplierSwitcher<Path<String>> RANDOM_UNPOLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             PathBuilder::anUnpollutedAbsolutePath,
             PathBuilder::anUnpollutedRootlessPath
     );
-    private static final Random RANDOM = new Random();
     private static final RandomSupplierSwitcher<AbsolutePath<String>> ABSOLUTE_PATH_RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             () -> path(aNonDotSegment()), // TODO wha?!
             () -> path(aNonDotSegment(), aNonDotSegment()),
@@ -43,6 +38,10 @@ public final class PathBuilder {
             () -> rootlessPath(aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
             () -> rootlessPath(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
             () -> rootlessPath(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment())
+    );
+    private static final RandomSupplierSwitcher<Path<String>> RANDOM_POLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
+            PathBuilder::anAbsolutePath,
+            PathBuilder::aRootlessPath
     );
 
     private PathBuilder() {

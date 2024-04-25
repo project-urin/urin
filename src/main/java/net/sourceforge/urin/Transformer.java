@@ -31,8 +31,7 @@ public interface Transformer<NON_ENCODED, ENCODED> {
      *
      * @param rawValue the encoded URI component to decode.
      * @return an object representing the decoded URI component.
-     * @throws net.sourceforge.urin.ParseException
-     *          if the given {@code String} is not a valid URI component.
+     * @throws net.sourceforge.urin.ParseException if the given {@code String} is not a valid URI component.
      */
     NON_ENCODED decode(ENCODED rawValue) throws ParseException;
 }

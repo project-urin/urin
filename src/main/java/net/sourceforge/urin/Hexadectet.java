@@ -26,6 +26,10 @@ public final class Hexadectet extends UnaryValue<Integer> {
     public static final Hexadectet ZERO = hexadectet(0x0);
     private static final Locale NO_LOCALISATION = null;
 
+    private Hexadectet(final int hexadecimalHexadectet) {
+        super(hexadecimalHexadectet);
+    }
+
     /**
      * Factory method for creating {@code Hexadectets}.
      *
@@ -56,10 +60,6 @@ public final class Hexadectet extends UnaryValue<Integer> {
             return AugmentedOptional.empty("Invalid Hexadectet String [" + hexadectetString + "]");
         }
         return makeHexadectet(hexadectetInt);
-    }
-
-    private Hexadectet(final int hexadecimalHexadectet) {
-        super(hexadecimalHexadectet);
     }
 
     boolean isElidable() {

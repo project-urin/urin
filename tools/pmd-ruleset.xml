@@ -51,7 +51,7 @@
     </rule>
     <rule ref="category/java/codestyle.xml/ConfusingTernary">
         <properties>
-            <property name="ignoreElseIf" value="true" />
+            <property name="ignoreElseIf" value="true"/>
         </properties>
     </rule>
     <rule ref="category/java/codestyle.xml/LongVariable">
@@ -79,7 +79,7 @@
     </rule>
     <rule ref="category/java/design.xml/CouplingBetweenObjects">
         <properties>
-            <property name="threshold" value="30" />
+            <property name="threshold" value="30"/>
         </properties>
     </rule>
     <rule ref="category/java/design.xml/CyclomaticComplexity">

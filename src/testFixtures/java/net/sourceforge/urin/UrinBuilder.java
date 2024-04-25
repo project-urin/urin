@@ -12,10 +12,7 @@ package net.sourceforge.urin;
 
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
-import static net.sourceforge.urin.PathBuilder.aPath;
-import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
-import static net.sourceforge.urin.PathBuilder.anUnpollutedAbsolutePath;
-import static net.sourceforge.urin.PathBuilder.anUnpollutedPath;
+import static net.sourceforge.urin.PathBuilder.*;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 

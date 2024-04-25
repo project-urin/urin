@@ -13,11 +13,7 @@ package net.sourceforge.urin;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
-import static net.sourceforge.urin.CharacterSetMembershipFunction.ALL_CHARACTERS;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.UNRESERVED;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.or;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.singleMemberCharacterSet;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;

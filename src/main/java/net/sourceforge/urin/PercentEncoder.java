@@ -13,9 +13,7 @@ package net.sourceforge.urin;
 import java.util.Locale;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.ALL_CHARACTERS;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.HEX_DIGIT;
-import static net.sourceforge.urin.CharacterSetMembershipFunction.NO_CHARACTERS;
+import static net.sourceforge.urin.CharacterSetMembershipFunction.*;
 
 final class PercentEncoder {
     static final PercentEncoder ENCODE_NOTHING = new PercentEncoder(ALL_CHARACTERS);
@@ -31,22 +29,6 @@ final class PercentEncoder {
 
     PercentEncoder(final CharacterSetMembershipFunction nonPercentEncodedCharacterSet) {
         this.nonPercentEncodedCharacterSet = nonPercentEncodedCharacterSet;
-    }
-
-    PercentEncoder additionallyEncoding(final char additionallyEncodedCharacter) {
-        return new PercentEncoder(nonPercentEncodedCharacterSet.remove(additionallyEncodedCharacter));
-    }
-
-    String encode(final String notEncoded) {
-        final StringBuilder result = new StringBuilder();
-        for (final byte character : notEncoded.getBytes(UTF_8)) {
-            if (nonPercentEncodedCharacterSet.isMember((char) character)) {
-                result.append((char) character);
-            } else {
-                result.append(percentEncode(character));
-            }
-        }
-        return result.toString();
     }
 
     private static String percentEncode(final byte character) {
@@ -67,6 +49,38 @@ final class PercentEncoder {
                 throw new ParseException("Cannot extract a percent encoded byte from [" + String.valueOf(source) + "] starting at index [" + startIndex + "]", e);
             }
         }
+    }
+
+    private static int getByteCount(final byte firstByte) throws ParseException {
+        final int byteCount;
+        if ((firstByte & BINARY_1000_0000) == 0) {
+            byteCount = 1;
+        } else if ((firstByte & BINARY_1111_0000) == BINARY_1111_0000) {
+            byteCount = 4;
+        } else if ((firstByte & BINARY_1110_0000) == BINARY_1110_0000) {
+            byteCount = 3;
+        } else if ((firstByte & BINARY_1100_0000) == BINARY_1100_0000) {
+            byteCount = 2;
+        } else {
+            throw new ParseException("First byte of a percent encoded character must begin 0, 11, 111, or 1111, but was " + firstByte);
+        }
+        return byteCount;
+    }
+
+    PercentEncoder additionallyEncoding(final char additionallyEncodedCharacter) {
+        return new PercentEncoder(nonPercentEncodedCharacterSet.remove(additionallyEncodedCharacter));
+    }
+
+    String encode(final String notEncoded) {
+        final StringBuilder result = new StringBuilder();
+        for (final byte character : notEncoded.getBytes(UTF_8)) {
+            if (nonPercentEncodedCharacterSet.isMember((char) character)) {
+                result.append((char) character);
+            } else {
+                result.append(percentEncode(character));
+            }
+        }
+        return result.toString();
     }
 
     String decode(final String encoded) throws ParseException {
@@ -92,22 +106,6 @@ final class PercentEncoder {
             }
         }
         return result.toString();
-    }
-
-    private static int getByteCount(final byte firstByte) throws ParseException {
-        final int byteCount;
-        if ((firstByte & BINARY_1000_0000) == 0) {
-            byteCount = 1;
-        } else if ((firstByte & BINARY_1111_0000) == BINARY_1111_0000) {
-            byteCount = 4;
-        } else if ((firstByte & BINARY_1110_0000) == BINARY_1110_0000) {
-            byteCount = 3;
-        } else if ((firstByte & BINARY_1100_0000) == BINARY_1100_0000) {
-            byteCount = 2;
-        } else {
-            throw new ParseException("First byte of a percent encoded character must begin 0, 11, 111, or 1111, but was " + firstByte);
-        }
-        return byteCount;
     }
 
     boolean isMember(final String string) { // TODO delete this

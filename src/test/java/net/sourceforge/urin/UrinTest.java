@@ -651,7 +651,7 @@ class UrinTest {
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrNoFragmentOrAuthority() {
         assertThrows(NullPointerException.class, () -> {
-final             Path<String> path = null;
+            final Path<String> path = null;
             aScheme().urin(path);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -688,7 +688,7 @@ final             Path<String> path = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrNoFragmentOrPath() {
         assertThrows(NullPointerException.class, () -> {
-final             Authority authority = null;
+            final Authority authority = null;
             aScheme().urin(authority);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -728,11 +728,11 @@ final             Authority authority = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrNoFragment() {
         assertThrows(NullPointerException.class, () -> {
-final             Authority authority = null;
+            final Authority authority = null;
             aScheme().urin(authority, anAbsolutePath());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             AbsolutePath<String> path = null;
+            final AbsolutePath<String> path = null;
             aScheme().urin(anAuthority(), path);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -769,7 +769,7 @@ final             AbsolutePath<String> path = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrAuthorityOrPath() {
         assertThrows(NullPointerException.class, () -> {
-final             Fragment<String> fragment = null;
+            final Fragment<String> fragment = null;
             aScheme().urin(fragment);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -809,11 +809,11 @@ final             Fragment<String> fragment = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrAuthority() {
         assertThrows(NullPointerException.class, () -> {
-final             Path<String> path = null;
+            final Path<String> path = null;
             aScheme().urin(path, aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Fragment<String> fragment = null;
+            final Fragment<String> fragment = null;
             aScheme().urin(aPath(), fragment);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -853,11 +853,11 @@ final             Fragment<String> fragment = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQueryOrPath() {
         assertThrows(NullPointerException.class, () -> {
-final             Authority authority = null;
+            final Authority authority = null;
             aScheme().urin(authority, aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Fragment<String> fragment = null;
+            final Fragment<String> fragment = null;
             aScheme().urin(anAuthority(), fragment);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -900,15 +900,15 @@ final             Fragment<String> fragment = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoQuery() {
         assertThrows(NullPointerException.class, () -> {
-final             Authority authority = null;
+            final Authority authority = null;
             aScheme().urin(authority, anAbsolutePath(), aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             AbsolutePath<String> path = null;
+            final AbsolutePath<String> path = null;
             aScheme().urin(anAuthority(), path, aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Fragment<String> fragment = null;
+            final Fragment<String> fragment = null;
             aScheme().urin(anAuthority(), anAbsolutePath(), fragment);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -945,7 +945,7 @@ final             Fragment<String> fragment = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoFragmentOrAuthorityOrPath() {
         assertThrows(NullPointerException.class, () -> {
-final             Query<String> query = null;
+            final Query<String> query = null;
             aScheme().urin(query);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -985,11 +985,11 @@ final             Query<String> query = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoFragmentOrAuthority() {
         assertThrows(NullPointerException.class, () -> {
-final             Path<String> path = null;
+            final Path<String> path = null;
             aScheme().urin(path, aQuery());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Query<String> query = null;
+            final Query<String> query = null;
             aScheme().urin(aPath(), query);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -1029,11 +1029,11 @@ final             Query<String> query = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoFragmentOrPath() {
         assertThrows(NullPointerException.class, () -> {
-final             Authority authority = null;
+            final Authority authority = null;
             aScheme().urin(authority, aQuery());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Query<String> query = null;
+            final Query<String> query = null;
             aScheme().urin(anAuthority(), query);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -1076,15 +1076,15 @@ final             Query<String> query = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoFragment() {
         assertThrows(NullPointerException.class, () -> {
-final             Authority authority = null;
+            final Authority authority = null;
             aScheme().urin(authority, anAbsolutePath(), aQuery());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             AbsolutePath<String> path = null;
+            final AbsolutePath<String> path = null;
             aScheme().urin(anAuthority(), path, aQuery());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Query<String> query = null;
+            final Query<String> query = null;
             aScheme().urin(anAuthority(), anAbsolutePath(), query);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -1124,11 +1124,11 @@ final             Query<String> query = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoAuthorityOrPath() {
         assertThrows(NullPointerException.class, () -> {
-final             Query<String> query = null;
+            final Query<String> query = null;
             aScheme().urin(query, aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Fragment<String> fragment = null;
+            final Fragment<String> fragment = null;
             aScheme().urin(aQuery(), fragment);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -1171,15 +1171,15 @@ final             Fragment<String> fragment = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoAuthority() {
         assertThrows(NullPointerException.class, () -> {
-final             Path<String> path = null;
+            final Path<String> path = null;
             aScheme().urin(path, aQuery(), aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Query<String> query = null;
+            final Query<String> query = null;
             aScheme().urin(aPath(), query, aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Fragment<String> fragment = null;
+            final Fragment<String> fragment = null;
             aScheme().urin(aPath(), aQuery(), fragment);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -1222,15 +1222,15 @@ final             Fragment<String> fragment = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithNoPath() {
         assertThrows(NullPointerException.class, () -> {
-final             Authority authority = null;
+            final Authority authority = null;
             aScheme().urin(authority, aQuery(), aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Query<String> query = null;
+            final Query<String> query = null;
             aScheme().urin(anAuthority(), query, aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Fragment<String> fragment = null;
+            final Fragment<String> fragment = null;
             aScheme().urin(anAuthority(), aQuery(), fragment);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }
@@ -1276,19 +1276,19 @@ final             Fragment<String> fragment = null;
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForAUrinWithAllParts() {
         assertThrows(NullPointerException.class, () -> {
-final             Authority authority = null;
+            final Authority authority = null;
             aScheme().urin(authority, anAbsolutePath(), aQuery(), aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             AbsolutePath<String> path = null;
+            final AbsolutePath<String> path = null;
             aScheme().urin(anAuthority(), path, aQuery(), aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Query<String> query = null;
+            final Query<String> query = null;
             aScheme().urin(anAuthority(), anAbsolutePath(), query, aFragment());
         }, "Null hierarchicalPart should throw NullPointerException in factory");
         assertThrows(NullPointerException.class, () -> {
-final             Fragment<String> fragment = null;
+            final Fragment<String> fragment = null;
             aScheme().urin(anAuthority(), anAbsolutePath(), aQuery(), fragment);
         }, "Null hierarchicalPart should throw NullPointerException in factory");
     }

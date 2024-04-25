@@ -32,6 +32,14 @@ abstract class ThrowingOptional<T> {
 
     abstract T orElseGet(ThrowingSupplier<T> alternateSupplier) throws ParseException;
 
+    interface ThrowingFunction<FROM, TO> {
+        TO apply(FROM from) throws ParseException;
+    }
+
+    interface ThrowingSupplier<T> {
+        T get() throws ParseException;
+    }
+
     private static final class PopulatedThrowingOptional<T> extends ThrowingOptional<T> {
 
         private final T value;
@@ -76,13 +84,5 @@ abstract class ThrowingOptional<T> {
             return alternateSupplier.get();
         }
 
-    }
-
-    interface ThrowingFunction<FROM, TO> {
-        TO apply(FROM from) throws ParseException;
-    }
-
-    interface ThrowingSupplier<T> {
-        T get() throws ParseException;
     }
 }

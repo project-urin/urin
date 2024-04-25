@@ -22,10 +22,7 @@ import static net.sourceforge.urin.MoreRandomStringUtils.aStringIncluding;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.NEVER_PREFIX_WITH_DOT_SEGMENT;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.PREFIX_WITH_DOT_SEGMENT_IF_FIRST_IS_EMPTY_OR_CONTAINS_COLON;
 import static net.sourceforge.urin.Path.rootlessPath;
-import static net.sourceforge.urin.PathBuilder.aPath;
-import static net.sourceforge.urin.PathBuilder.anAbsolutePath;
-import static net.sourceforge.urin.PathBuilder.anUnpollutedAbsolutePath;
-import static net.sourceforge.urin.PathBuilder.anUnpollutedPath;
+import static net.sourceforge.urin.PathBuilder.*;
 import static net.sourceforge.urin.QueryBuilder.aQuery;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.dot;
@@ -825,7 +822,7 @@ class RelativeReferenceTest {
     @SuppressWarnings("ConstantValue")
     void rejectsNullInFactoryForASimplePath() {
         assertThrows(NullPointerException.class, () -> {
-final             Path<String> path = null;
+            final Path<String> path = null;
             aScheme().relativeReference(path);
         }, "Null first segment should throw NullPointerException in factory");
     }

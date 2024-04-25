@@ -15,6 +15,28 @@ import java.util.Iterator;
 import static java.util.Arrays.asList;
 
 abstract class CharacterSetMembershipFunction {
+    public static final CharacterSetMembershipFunction ALL_CHARACTERS = new CharacterSetMembershipFunction() {
+        @Override
+        boolean isMember(final char character) {
+            return true;
+        }
+
+        @Override
+        String describe() {
+            return "any character";
+        }
+    };
+    public static final CharacterSetMembershipFunction NO_CHARACTERS = new CharacterSetMembershipFunction() {
+        @Override
+        boolean isMember(final char character) {
+            return false;
+        }
+
+        @Override
+        String describe() {
+            return "no character";
+        }
+    };
     static final CharacterSetMembershipFunction ALPHA_UPPERCASE = new CharacterSetMembershipFunction() {
         @Override
         public boolean isMember(final char character) {
@@ -26,7 +48,6 @@ abstract class CharacterSetMembershipFunction {
             return "A-Z";
         }
     };
-
     static final CharacterSetMembershipFunction ALPHA_LOWERCASE = new CharacterSetMembershipFunction() {
         @Override
         public boolean isMember(final char character) {
@@ -38,9 +59,7 @@ abstract class CharacterSetMembershipFunction {
             return "a-z";
         }
     };
-
     static final CharacterSetMembershipFunction ALPHA = or(ALPHA_LOWERCASE, ALPHA_UPPERCASE);
-
     static final CharacterSetMembershipFunction DIGIT = new CharacterSetMembershipFunction() {
         @Override
         public boolean isMember(final char character) {
@@ -52,7 +71,6 @@ abstract class CharacterSetMembershipFunction {
             return "0-9";
         }
     };
-
     static final CharacterSetMembershipFunction HEX_DIGIT = or(
             DIGIT,
             new CharacterSetMembershipFunction() {
@@ -78,7 +96,6 @@ abstract class CharacterSetMembershipFunction {
                 }
             }
     );
-
     static final CharacterSetMembershipFunction UNRESERVED = or(
             ALPHA_LOWERCASE,
             ALPHA_UPPERCASE,
@@ -88,7 +105,6 @@ abstract class CharacterSetMembershipFunction {
             singleMemberCharacterSet('_'),
             singleMemberCharacterSet('~')
     );
-
     static final CharacterSetMembershipFunction SUB_DELIMITERS = or(
             singleMemberCharacterSet('!'),
             singleMemberCharacterSet('$'),
@@ -102,7 +118,6 @@ abstract class CharacterSetMembershipFunction {
             singleMemberCharacterSet(';'),
             singleMemberCharacterSet('=')
     );
-
     static final CharacterSetMembershipFunction P_CHAR = or(
             UNRESERVED,
             SUB_DELIMITERS,
@@ -114,30 +129,6 @@ abstract class CharacterSetMembershipFunction {
             singleMemberCharacterSet('/'),
             singleMemberCharacterSet('?')
     );
-
-    public static final CharacterSetMembershipFunction ALL_CHARACTERS = new CharacterSetMembershipFunction() {
-        @Override
-        boolean isMember(final char character) {
-            return true;
-        }
-
-        @Override
-        String describe() {
-            return "any character";
-        }
-    };
-
-    public static final CharacterSetMembershipFunction NO_CHARACTERS = new CharacterSetMembershipFunction() {
-        @Override
-        boolean isMember(final char character) {
-            return false;
-        }
-
-        @Override
-        String describe() {
-            return "no character";
-        }
-    };
 
     static CharacterSetMembershipFunction singleMemberCharacterSet(final char member) {
         return new CharacterSetMembershipFunction() {

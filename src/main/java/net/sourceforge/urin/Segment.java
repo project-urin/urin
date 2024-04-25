@@ -32,10 +32,6 @@ import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.specif
  */
 public abstract class Segment<ENCODES> {
 
-    private static final PercentEncodingPartial.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
-            specifiedValueEncoding("..",
-                    percentEncodingString(new PercentEncoder(P_CHAR))));
-
     /**
      * The {@code MakingDecoder} used by standard segments.
      */
@@ -45,6 +41,12 @@ public abstract class Segment<ENCODES> {
             return segment(value);
         }
     };
+    private static final PercentEncodingPartial.PercentEncoding<String> PERCENT_ENCODING = specifiedValueEncoding(".",
+            specifiedValueEncoding("..",
+                    percentEncodingString(new PercentEncoder(P_CHAR))));
+
+    private Segment() {
+    }
 
     /**
      * The segment "{@code .}", referring to the current location in the path name hierarchy.
@@ -203,6 +205,71 @@ public abstract class Segment<ENCODES> {
         };
     }
 
+    /**
+     * Factory method for creating {@code Segment}s.
+     *
+     * @param segment any {@code String} to represent as a {@code Segment}.
+     * @return a {@code Segment} representing the given {@code String}.
+     */
+    public static Segment<String> segment(final String segment) {
+        return segment(segment, PercentEncodingPartial.noOp());
+    }
+
+    /**
+     * Factory method for creating non-{@code String} {@code Segment}s.
+     *
+     * @param <T>                    the type of {@code Object} the {@code Segment} encodes.
+     * @param segment                any {@code Object} to represent as a {@code Segment}.
+     * @param percentEncodingPartial an encoding from {@code T} to {@code String}.
+     * @return a {@code Segment} representing the given {@code Object}.
+     */
+    public static <T> Segment<T> segment(final T segment, final PercentEncodingPartial<T, String> percentEncodingPartial) {
+        final ValueSegment<T> result = new ValueSegment<>(segment, percentEncodingPartial);
+        return result.isEmpty() ? empty() : result; // TODO I think this is unhelpful except for a trailing segment as e.g. .//b/c is hard to get values from
+    }
+
+    static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
+        switch (encodedSegment) {
+            case "":
+                return empty();
+            case ".":
+                return dot();
+            case "..":
+                return dotDot();
+            default:
+                return segmentMakingDecoder.toMaker(PERCENT_ENCODING).make(encodedSegment);
+        }
+    }
+
+    final boolean containsColon() {
+        return asString().indexOf(':') != -1;
+    }
+
+    abstract String asString();
+
+    abstract boolean isEmpty();
+
+    /**
+     * Returns true if {@code value()} can be called on this {@code Segment}.  This method
+     * returns false for empty, {@code .} and {@code ..} segments.
+     *
+     * @return true if {@code value()} can be called on this {@code Segment}.
+     */
+    public abstract boolean hasValue();
+
+    /**
+     * Gets the (non-encoded) value of this segment, if it is a type that has a value, or throws {@code UnsupportedOperationException} otherwise.
+     * <p>
+     * Dot segments ({@code .} and {@code ..}) and the empty segment do not have values, and will throw {@code UnsupportedOperationException}.
+     * This can be tested by equality with the objects returned by {@link #dot()}, {@link #dotDot()}, and {@link #empty()} methods, or by calling {@code hasValue()}.
+     *
+     * @return the (non-encoded) value of this segment.
+     * @throws UnsupportedOperationException if this is a segment that does not represent a value.
+     */
+    public abstract ENCODES value();
+
+    abstract List<Segment<ENCODES>> incorporate(Segment<ENCODES> next);
+
     private static final class ValueSegment<ENCODES> extends Segment<ENCODES> { // TODO could this extend empty?  Or a common superclass?  They share an implementation of incorporate
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
@@ -269,72 +336,4 @@ public abstract class Segment<ENCODES> {
             super(value, percentEncoding);
         }
     }
-
-    private Segment() {
-    }
-
-    /**
-     * Factory method for creating {@code Segment}s.
-     *
-     * @param segment any {@code String} to represent as a {@code Segment}.
-     * @return a {@code Segment} representing the given {@code String}.
-     */
-    public static Segment<String> segment(final String segment) {
-        return segment(segment, PercentEncodingPartial.noOp());
-    }
-
-    /**
-     * Factory method for creating non-{@code String} {@code Segment}s.
-     *
-     * @param <T>                    the type of {@code Object} the {@code Segment} encodes.
-     * @param segment                any {@code Object} to represent as a {@code Segment}.
-     * @param percentEncodingPartial an encoding from {@code T} to {@code String}.
-     * @return a {@code Segment} representing the given {@code Object}.
-     */
-    public static <T> Segment<T> segment(final T segment, final PercentEncodingPartial<T, String> percentEncodingPartial) {
-        final ValueSegment<T> result = new ValueSegment<>(segment, percentEncodingPartial);
-        return result.isEmpty() ? empty() : result; // TODO I think this is unhelpful except for a trailing segment as e.g. .//b/c is hard to get values from
-    }
-
-    final boolean containsColon() {
-        return asString().indexOf(':') != -1;
-    }
-
-    abstract String asString();
-
-    abstract boolean isEmpty();
-
-    static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
-        switch (encodedSegment) {
-            case "":
-                return empty();
-            case ".":
-                return dot();
-            case "..":
-                return dotDot();
-            default:
-                return segmentMakingDecoder.toMaker(PERCENT_ENCODING).make(encodedSegment);
-        }
-    }
-
-    /**
-     * Returns true if {@code value()} can be called on this {@code Segment}.  This method
-     * returns false for empty, {@code .} and {@code ..} segments.
-     *
-     * @return true if {@code value()} can be called on this {@code Segment}.
-     */
-    public abstract boolean hasValue();
-
-    /**
-     * Gets the (non-encoded) value of this segment, if it is a type that has a value, or throws {@code UnsupportedOperationException} otherwise.
-     * <p>
-     * Dot segments ({@code .} and {@code ..}) and the empty segment do not have values, and will throw {@code UnsupportedOperationException}.
-     * This can be tested by equality with the objects returned by {@link #dot()}, {@link #dotDot()}, and {@link #empty()} methods, or by calling {@code hasValue()}.
-     *
-     * @return the (non-encoded) value of this segment.
-     * @throws UnsupportedOperationException if this is a segment that does not represent a value.
-     */
-    public abstract ENCODES value();
-
-    abstract List<Segment<ENCODES>> incorporate(Segment<ENCODES> next);
 }

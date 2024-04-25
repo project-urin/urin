@@ -23,7 +23,7 @@ class PercentEncodingUnaryValueTest {
     void canChainApplicationsOfPercentEncodingDelimitedValue() {
         assertThat(
                 PercentEncodingPartial.percentEncodingDelimitedValue('a',
-                        PercentEncodingPartial.percentEncodingDelimitedValue('b'))
+                                PercentEncodingPartial.percentEncodingDelimitedValue('b'))
                         .apply(percentEncodingString(PercentEncoder.ENCODE_EVERYTHING))
                         .encode(
                                 asList(

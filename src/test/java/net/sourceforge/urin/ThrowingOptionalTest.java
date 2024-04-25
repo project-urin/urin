@@ -16,13 +16,33 @@ import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.nullValue;
+import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ThrowingOptionalTest {
+    private static <T> Matcher<ThrowingOptional<T>> emptyThrowingOptional() {
+        return new TypeSafeDiagnosingMatcher<>() {
+            @Override
+            protected boolean matchesSafely(final ThrowingOptional<T> item, final Description mismatchDescription) {
+                final Object alternative = new Object();
+                try {
+                    final boolean result = item.map(ignored -> new Object()).orElseGet(() -> alternative).equals(alternative);
+                    if (!result) {
+                        mismatchDescription.appendText("ThrowingOptional is populated");
+                    }
+                    return result;
+                } catch (ParseException e) {
+                    throw new IllegalStateException("Should never get here", e);
+                }
+            }
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("An empty ThrowingOptional");
+            }
+        };
+    }
+
     @Test
     void ofNullableAcceptsNull() {
         assertThat(ThrowingOptional.ofNullable(null), is(not(nullValue())));
@@ -119,28 +139,5 @@ class ThrowingOptionalTest {
             assertThat("argument to map is original value", item, equalTo(value));
             return null;
         }), is(emptyThrowingOptional()));
-    }
-
-    private static <T> Matcher<ThrowingOptional<T>> emptyThrowingOptional() {
-        return new TypeSafeDiagnosingMatcher<>() {
-            @Override
-            protected boolean matchesSafely(final ThrowingOptional<T> item, final Description mismatchDescription) {
-                final Object alternative = new Object();
-                try {
-                    final boolean result = item.map(ignored -> new Object()).orElseGet(() -> alternative).equals(alternative);
-                    if (!result) {
-                        mismatchDescription.appendText("ThrowingOptional is populated");
-                    }
-                    return result;
-                } catch (ParseException e) {
-                    throw new IllegalStateException("Should never get here", e);
-                }
-            }
-
-            @Override
-            public void describeTo(final Description description) {
-                description.appendText("An empty ThrowingOptional");
-            }
-        };
     }
 }

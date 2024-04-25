@@ -14,10 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.CharacterSets.P_CHARS;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
-import static net.sourceforge.urin.Segment.STRING_SEGMENT_MAKING_DECODER;
-import static net.sourceforge.urin.Segment.dot;
-import static net.sourceforge.urin.Segment.dotDot;
-import static net.sourceforge.urin.Segment.empty;
+import static net.sourceforge.urin.Segment.*;
 import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,22 +24,22 @@ class SegmentTest {
 
     @Test
     void asStringReturnsValueProvidedForUnreservedCharacters() {
-        assertThat(Segment.segment(P_CHARS).asString(), equalTo(P_CHARS));
+        assertThat(segment(P_CHARS).asString(), equalTo(P_CHARS));
     }
 
     @Test
     void asStringPercentEncodesNonUnreservedCharacters() {
-        assertThat(Segment.segment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
+        assertThat(segment(".#.[.]. .").asString(), equalTo(".%23.%5B.%5D.%20."));
     }
 
     @Test
     void asStringPercentEncodesDotSegment() {
-        assertThat(Segment.segment(".").asString(), equalTo("%2E"));
+        assertThat(segment(".").asString(), equalTo("%2E"));
     }
 
     @Test
     void asStringPercentEncodesDotDotSegment() {
-        assertThat(Segment.segment("..").asString(), equalTo("%2E%2E"));
+        assertThat(segment("..").asString(), equalTo("%2E%2E"));
     }
 
     @Test
@@ -62,37 +59,37 @@ class SegmentTest {
 
     @Test
     void parsesUnreservedCharacters() throws Exception {
-        assertThat(Segment.parse(P_CHARS, STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment(P_CHARS)));
+        assertThat(parse(P_CHARS, STRING_SEGMENT_MAKING_DECODER), equalTo(segment(P_CHARS)));
     }
 
     @Test
     void parsePercentDecodesNonUnreservedCharacters() throws Exception {
-        assertThat(Segment.parse(".%23.%5B.%5D.%20.", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment(".#.[.]. .")));
+        assertThat(parse(".%23.%5B.%5D.%20.", STRING_SEGMENT_MAKING_DECODER), equalTo(segment(".#.[.]. .")));
     }
 
     @Test
     void parsesPercentEncodedDotSegment() throws Exception {
-        assertThat(Segment.parse("%2E", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment(".")));
+        assertThat(parse("%2E", STRING_SEGMENT_MAKING_DECODER), equalTo(segment(".")));
     }
 
     @Test
     void parsesPercentEncodedDotDotSegment() throws Exception {
-        assertThat(Segment.parse("%2E%2E", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.segment("..")));
+        assertThat(parse("%2E%2E", STRING_SEGMENT_MAKING_DECODER), equalTo(segment("..")));
     }
 
     @Test
     void unencodedDotBecomesExplicitDotSegment() throws Exception {
-        assertThat(Segment.parse(".", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>dot()));
+        assertThat(parse(".", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>dot()));
     }
 
     @Test
     void unencodedDotDotBecomesExplicitDotDotSegment() throws Exception {
-        assertThat(Segment.parse("..", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>dotDot()));
+        assertThat(parse("..", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>dotDot()));
     }
 
     @Test
     void unencodedEmptyBecomesExplicitEmptySegment() throws Exception {
-        assertThat(Segment.parse("", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>empty()));
+        assertThat(parse("", STRING_SEGMENT_MAKING_DECODER), equalTo(Segment.<String>empty()));
     }
 
     @Test
@@ -136,6 +133,6 @@ class SegmentTest {
     @Test
     void nonDotSegmentReturnsValue() {
         final String value = aString();
-        assertThat(Segment.segment(value).value(), equalTo(value));
+        assertThat(segment(value).value(), equalTo(value));
     }
 }

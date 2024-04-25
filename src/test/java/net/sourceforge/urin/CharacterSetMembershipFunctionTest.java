@@ -20,18 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CharacterSetMembershipFunctionTest {
-    @Test
-    void areMembersAppliesToAllCharactersInAString() {
-        final String aString = aString();
-        assertTrue(testCharacterSetMembershipFunction(aString).areMembers(aString));
-        assertFalse(testCharacterSetMembershipFunction("").areMembers(aString));
-    }
-
-    @Test
-    void anEmptyStringIsAlwaysAMember() {
-        assertTrue(testCharacterSetMembershipFunction("").areMembers(""));
-    }
-
     private static CharacterSetMembershipFunction testCharacterSetMembershipFunction(final String members) {
         final Set<Character> membersSet = new HashSet<>();
         for (final char character : members.toCharArray()) {
@@ -49,5 +37,17 @@ class CharacterSetMembershipFunctionTest {
                 return "the characters [" + membersSet + "]";
             }
         };
+    }
+
+    @Test
+    void areMembersAppliesToAllCharactersInAString() {
+        final String aString = aString();
+        assertTrue(testCharacterSetMembershipFunction(aString).areMembers(aString));
+        assertFalse(testCharacterSetMembershipFunction("").areMembers(aString));
+    }
+
+    @Test
+    void anEmptyStringIsAlwaysAMember() {
+        assertTrue(testCharacterSetMembershipFunction("").areMembers(""));
     }
 }

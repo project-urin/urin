@@ -17,9 +17,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
-import static net.sourceforge.urin.Segment.dot;
-import static net.sourceforge.urin.Segment.empty;
-import static net.sourceforge.urin.Segment.segment;
+import static net.sourceforge.urin.Segment.*;
 
 /**
  * An iterable of {@code Segment}s.
@@ -30,6 +28,9 @@ import static net.sourceforge.urin.Segment.segment;
  * @see <a href="http://tools.ietf.org/html/rfc3986#section-3.3">RFC 3986 - Path</a>
  */
 public abstract class Path<T> implements Iterable<Segment<T>> {
+
+    Path() {
+    }
 
     /**
      * Factory method for creating rootless {@code Path}s from {@code String}s.
@@ -60,7 +61,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     /**
      * Factory method for creating rootless {@code Path}s from {@code Segment}s.
      *
-     * @param segments {@code Segment}s that will be represented by this {@code Path}.
+     * @param segments  {@code Segment}s that will be represented by this {@code Path}.
      * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return a {@code Path} representing the given {@code Segment}s.
      */
@@ -72,7 +73,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     /**
      * Factory method for creating rootless {@code Path}s from an {@code Iterable} of {@code Segment}s.
      *
-     * @param segments {@code Iterable} of {@code Segment}s that will be represented by this {@code Path}.
+     * @param segments  {@code Iterable} of {@code Segment}s that will be represented by this {@code Path}.
      * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return a {@code Path} representing the given {@code Segment}s.
      */
@@ -113,7 +114,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     /**
      * Factory method for creating {@code AbsolutePath}s from {@code Segment}s.
      *
-     * @param segments {@code Segment}s that will be represented by this {@code AbsolutePath}.
+     * @param segments  {@code Segment}s that will be represented by this {@code AbsolutePath}.
      * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
@@ -125,7 +126,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
     /**
      * Factory method for creating {@code AbsolutePath}s from an {@code Iterable} of {@code Segment}s.
      *
-     * @param segments {@code Iterable} of {@code Segment}s that will be represented by this {@code AbsolutePath}.
+     * @param segments  {@code Iterable} of {@code Segment}s that will be represented by this {@code AbsolutePath}.
      * @param <ENCODES> The type of value represented by the path segments - {@code String} in the general case.
      * @return a {@code AbsolutePath} representing the given {@code Segment}s.
      */
@@ -140,7 +141,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
             final String[] segmentStrings = rawPath.split("/");
             final List<Segment<SEGMENT>> result = new ArrayList<>(segmentStrings.length);
             for (final String segmentString : segmentStrings) {
-                result.add(Segment.parse(segmentString, segmentMakingDecoder));
+                result.add(parse(segmentString, segmentMakingDecoder));
             }
             return rootlessPath(result);
         }
@@ -155,7 +156,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
             boolean isFirst = true;
             for (final String segmentString : segmentStrings) {
                 if (!isFirst) {
-                    result.add(Segment.parse(segmentString, segmentMakingDecoder));
+                    result.add(parse(segmentString, segmentMakingDecoder));
                 }
                 isFirst = false;
             }
@@ -181,9 +182,6 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
             normalisedSegments.add(empty());
         }
         return normalisedSegments;
-    }
-
-    Path() {
     }
 
     abstract boolean firstPartIsSuppliedButIsEmpty();

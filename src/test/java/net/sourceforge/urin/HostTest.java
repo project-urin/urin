@@ -37,6 +37,14 @@ class HostTest {
     private static final String IP_V_FUTURE_ADDRESS_CHARACTERS = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS + ":";
     private static final Random RANDOM = new Random();
 
+    private static String anIpVFutureAddressVersion() {
+        return random(5, HEX_DIGIT);
+    }
+
+    private static String anIpVFutureAddressAddress() {
+        return random(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
+    }
+
     @Test
     void registeredNameAsStringReturnsValueProvidedForUnreservedCharacters() {
         final String nonPercentEncodedCharacters = LOWER_CASE_ALPHA + UPPER_CASE_ALPHA + DIGIT + "-._~" + SUB_DELIMS;
@@ -731,14 +739,6 @@ class HostTest {
     @Test
     void ipVFutureAddressWithDifferingValuesAreNotEqual() {
         assertThat(ipVFutureAddress(anIpVFutureAddressVersion(), anIpVFutureAddressAddress()), not(equalTo(ipVFutureAddress(anIpVFutureAddressVersion(), anIpVFutureAddressAddress()))));
-    }
-
-    private static String anIpVFutureAddressVersion() {
-        return random(5, HEX_DIGIT);
-    }
-
-    private static String anIpVFutureAddressAddress() {
-        return random(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
     }
 
     @Test

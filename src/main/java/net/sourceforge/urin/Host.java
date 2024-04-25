@@ -10,7 +10,10 @@
 
 package net.sourceforge.urin;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,8 +83,6 @@ public abstract class Host {
     private Host() {
     }
 
-    abstract String asString();
-
     /**
      * Factory method for creating registered name type {@code Host}s.
      *
@@ -143,24 +144,6 @@ public abstract class Host {
         return IpVFutureAddress.makeIpVFutureAddress(version, address).orElseThrow(IllegalArgumentException::new);
     }
 
-    private static final class Elidable {
-        private final String content;
-        private final boolean isElided;
-
-        static Elidable elided() {
-            return new Elidable("", true);
-        }
-
-        static Elidable nonElided(final String content) {
-            return new Elidable(content, false);
-        }
-
-        Elidable(final String content, final boolean isElided) {
-            this.content = content;
-            this.isElided = isElided;
-        }
-    }
-
     private static Deque<Elidable> elide(final Hexadectet... hexadectets) {
         int maximumStreakLength = 0;
         int maximumStreakEnd = 0;
@@ -196,6 +179,71 @@ public abstract class Host {
                 .orElseThrow(ParseException::new);
     }
 
+    private static int countColons(final String string) {
+        int count = 0;
+        for (int i = 0; i < string.length(); i++) {
+            if (string.charAt(i) == ':') {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    static String expandElision(final String ipV6String, final int requiredLength) {
+        final long colonCount = countColons(ipV6String);
+        if (ipV6String.startsWith("::")) {
+            final StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i <= requiredLength - colonCount; i++) {
+                stringBuilder.append("0:");
+            }
+            return ipV6String.replaceFirst("::", stringBuilder.toString());
+        } else if (ipV6String.endsWith("::")) {
+            final StringBuilder stringBuilder = new StringBuilder(ipV6String.substring(0, ipV6String.length() - 2));
+            for (int i = 0; i <= requiredLength - colonCount; i++) {
+                stringBuilder.append(":0");
+            }
+            return stringBuilder.toString();
+        } else {
+            final StringBuilder stringBuilder = new StringBuilder();
+            for (int i = 0; i < requiredLength - colonCount; i++) {
+                stringBuilder.append(":0");
+            }
+            stringBuilder.append(':');
+            return ipV6String.replaceFirst("::", stringBuilder.toString());
+        }
+    }
+
+    private static AugmentedOptional<List<AugmentedOptional<Hexadectet>>> parseHexadectets(final String hostString, final String[] hexadectetStrings, final int requiredLength) {
+        final List<AugmentedOptional<Hexadectet>> hexadectets = new ArrayList<>(requiredLength);
+        for (final String hexadectetString : hexadectetStrings) {
+            hexadectets.add(Hexadectet.parses(hexadectetString));
+        }
+        if (hexadectets.size() != requiredLength) {
+            return AugmentedOptional.empty("Invalid host string [" + hostString + "]");
+        }
+        return AugmentedOptional.of(hexadectets);
+    }
+
+    abstract String asString();
+
+    private static final class Elidable {
+        private final String content;
+        private final boolean isElided;
+
+        Elidable(final String content, final boolean isElided) {
+            this.content = content;
+            this.isElided = isElided;
+        }
+
+        static Elidable elided() {
+            return new Elidable("", true);
+        }
+
+        static Elidable nonElided(final String content) {
+            return new Elidable(content, false);
+        }
+    }
+
     private static final class RegisteredName extends Host {
         private static final CharacterSetMembershipFunction REGISTERED_NAME_CHARACTER_SET = or(
                 UNRESERVED,
@@ -206,6 +254,24 @@ public abstract class Host {
 
         RegisteredName(final String registeredName) { // TODO determine whether empty String is a valid registered name
             this.registeredName = registeredName.toLowerCase(ENGLISH); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
+        }
+
+        static AugmentedOptional<RegisteredName> parses(final String hostString) {
+            final String decode;
+            try {
+                decode = PERCENT_ENCODER.decode(hostString);
+            } catch (ParseException e) {
+                return AugmentedOptional.empty("Not a valid registered name; invalid percent encoding in:" + hostString + " - " + e.getMessage());
+            }
+            return AugmentedOptional.of(new RegisteredName(decode));
+        }
+
+        /**
+         * @deprecated this was inadvertently public
+         */
+        @Deprecated
+        public static boolean isValid(final String hostString) { // TODO delete this
+            return PERCENT_ENCODER.isMember(hostString);
         }
 
         @Override
@@ -237,24 +303,6 @@ public abstract class Host {
                     '}';
 
         }
-
-        static AugmentedOptional<RegisteredName> parses(final String hostString) {
-            final String decode;
-            try {
-                decode = PERCENT_ENCODER.decode(hostString);
-            } catch (ParseException e) {
-                return AugmentedOptional.empty("Not a valid registered name; invalid percent encoding in:" + hostString + " - " + e.getMessage());
-            }
-            return AugmentedOptional.of(new RegisteredName(decode));
-        }
-
-        /**
-         * @deprecated this was inadvertently public
-         */
-        @Deprecated
-        public static boolean isValid(final String hostString) { // TODO delete this
-            return PERCENT_ENCODER.isMember(hostString);
-        }
     }
 
     private static final class IpV4Address extends Host {
@@ -268,6 +316,19 @@ public abstract class Host {
             this.secondOctet = requireNonNull(secondOctet, "Cannot instantiate Host with null secondOctet");
             this.thirdOctet = requireNonNull(thirdOctet, "Cannot instantiate Host with null thirdOctet");
             this.fourthOctet = requireNonNull(fourthOctet, "Cannot instantiate Host with null fourthOctet");
+        }
+
+        static AugmentedOptional<IpV4Address> parses(final String hostString) {
+            final String[] split = hostString.split("\\.");
+            if (split.length != 4) {
+                return AugmentedOptional.empty("Invalid Host String [" + hostString + "]");
+            }
+            return Octet.parses(split[0]).flatMap(
+                    firstOctet -> Octet.parses(split[1]).flatMap(
+                            secondOctet -> Octet.parses(split[2]).flatMap(
+                                    thirdOctet -> Octet.parses(split[3]).flatMap(
+                                            fourthOctet -> AugmentedOptional.of(new IpV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet))
+                                    ))));
         }
 
         @Override
@@ -311,19 +372,6 @@ public abstract class Host {
                     ", fourthOctet=" + fourthOctet +
                     '}';
         }
-
-        static AugmentedOptional<IpV4Address> parses(final String hostString) {
-            final String[] split = hostString.split("\\.");
-            if (split.length != 4) {
-                return AugmentedOptional.empty("Invalid Host String [" + hostString + "]");
-            }
-            return Octet.parses(split[0]).flatMap(
-                    firstOctet -> Octet.parses(split[1]).flatMap(
-                            secondOctet -> Octet.parses(split[2]).flatMap(
-                                    thirdOctet -> Octet.parses(split[3]).flatMap(
-                                            fourthOctet -> AugmentedOptional.of(new IpV4Address(firstOctet, secondOctet, thirdOctet, fourthOctet))
-                                    ))));
-        }
     }
 
     private static final class IpV6Address extends Host {
@@ -345,6 +393,34 @@ public abstract class Host {
             this.sixthHexadectet = requireNonNull(sixthHexadectet, "Cannot instantiate Host with null sixthHexadectet");
             this.seventhHexadectet = requireNonNull(seventhHexadectet, "Cannot instantiate Host with null seventhHexadectet");
             this.eighthHexadectet = requireNonNull(eighthHexadectet, "Cannot instantiate Host with null eighthHexadectet");
+        }
+
+        static AugmentedOptional<IpV6Address> parses(final String hostString) {
+            if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
+                return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
+            }
+            final String expandedIpV6Address = expandElision(hostString.substring(1, hostString.length() - 1));
+            final String[] hexadectetStrings = expandedIpV6Address.split(":", -1);
+            return parseHexadectets(hostString, hexadectetStrings, 8).flatMap(hexadectets ->
+                    hexadectets.get(0).flatMap(first ->
+                            hexadectets.get(1).flatMap(second ->
+                                    hexadectets.get(2).flatMap(third ->
+                                            hexadectets.get(3).flatMap(fourth ->
+                                                    hexadectets.get(4).flatMap(fifth ->
+                                                            hexadectets.get(5).flatMap(sixth ->
+                                                                    hexadectets.get(6).flatMap(seventh ->
+                                                                            hexadectets.get(7).flatMap(eighth ->
+                                                                                    AugmentedOptional.of(new IpV6Address(first, second, third, fourth, fifth, sixth, seventh, eighth)))))))))));
+        }
+
+        private static String expandElision(final String ipV6String) {
+            if (!ipV6String.contains("::")) {
+                return ipV6String;
+            } else if ("::".equals(ipV6String)) {
+                return "0:0:0:0:0:0:0:0";
+            } else {
+                return expandElision(ipV6String, 8);
+            }
         }
 
         @Override
@@ -397,34 +473,6 @@ public abstract class Host {
                     ", seventhHexadectet=" + seventhHexadectet +
                     ", eighthHexadectet=" + eighthHexadectet +
                     '}';
-        }
-
-        static AugmentedOptional<IpV6Address> parses(final String hostString) {
-            if (!(hostString.startsWith("[") && hostString.endsWith("]"))) {
-                return AugmentedOptional.empty("Invalid IP V6 Address, must start with [ and end with ] :" + hostString);
-            }
-            final String expandedIpV6Address = expandElision(hostString.substring(1, hostString.length() - 1));
-            final String[] hexadectetStrings = expandedIpV6Address.split(":", -1);
-            return parseHexadectets(hostString, hexadectetStrings, 8).flatMap(hexadectets ->
-                    hexadectets.get(0).flatMap(first ->
-                            hexadectets.get(1).flatMap(second ->
-                                    hexadectets.get(2).flatMap(third ->
-                                            hexadectets.get(3).flatMap(fourth ->
-                                                    hexadectets.get(4).flatMap(fifth ->
-                                                            hexadectets.get(5).flatMap(sixth ->
-                                                                    hexadectets.get(6).flatMap(seventh ->
-                                                                            hexadectets.get(7).flatMap(eighth ->
-                                                                                    AugmentedOptional.of(new IpV6Address(first, second, third, fourth, fifth, sixth, seventh, eighth)))))))))));
-        }
-
-        private static String expandElision(final String ipV6String) {
-            if (!ipV6String.contains("::")) {
-                return ipV6String;
-            } else if ("::".equals(ipV6String)) {
-                return "0:0:0:0:0:0:0:0";
-            } else {
-                return expandElision(ipV6String, 8);
-            }
         }
     }
 
@@ -541,51 +589,6 @@ public abstract class Host {
                     ", fourthOctet=" + fourthOctet +
                     '}';
         }
-    }
-
-    private static int countColons(final String string) {
-        int count = 0;
-        for (int i = 0; i < string.length(); i++) {
-            if (string.charAt(i) == ':') {
-                count++;
-            }
-        }
-        return count;
-    }
-
-    static String expandElision(final String ipV6String, final int requiredLength) {
-        final long colonCount = countColons(ipV6String);
-        if (ipV6String.startsWith("::")) {
-            final StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i <= requiredLength - colonCount; i++) {
-                stringBuilder.append("0:");
-            }
-            return ipV6String.replaceFirst("::", stringBuilder.toString());
-        } else if (ipV6String.endsWith("::")) {
-            final StringBuilder stringBuilder = new StringBuilder(ipV6String.substring(0, ipV6String.length() - 2));
-            for (int i = 0; i <= requiredLength - colonCount; i++) {
-                stringBuilder.append(":0");
-            }
-            return stringBuilder.toString();
-        } else {
-            final StringBuilder stringBuilder = new StringBuilder();
-            for (int i = 0; i < requiredLength - colonCount; i++) {
-                stringBuilder.append(":0");
-            }
-            stringBuilder.append(':');
-            return ipV6String.replaceFirst("::", stringBuilder.toString());
-        }
-    }
-
-    private static AugmentedOptional<List<AugmentedOptional<Hexadectet>>> parseHexadectets(final String hostString, final String[] hexadectetStrings, final int requiredLength) {
-        final List<AugmentedOptional<Hexadectet>> hexadectets = new ArrayList<>(requiredLength);
-        for (final String hexadectetString : hexadectetStrings) {
-            hexadectets.add(Hexadectet.parses(hexadectetString));
-        }
-        if (hexadectets.size() != requiredLength) {
-            return AugmentedOptional.empty("Invalid host string [" + hostString + "]");
-        }
-        return AugmentedOptional.of(hexadectets);
     }
 
     private static final class IpVFutureAddress extends Host {
