@@ -24,32 +24,36 @@ import static org.hamcrest.Matchers.equalTo;
 
 class MailtoSchemeTest {
 
-    private static final MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String> SEGMENT_MAKING_DECODER = new MakingDecoder<>(percentEncodingDelimitedValue(',')) {
-        @Override
-        protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
-            return segment(strings, percentEncodingDelimitedValue(','));
+    private static final class Mailto extends SchemeWithDefaultPort<Iterable<String>, Query<?>, Fragment<?>> {
+        private static final MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String> SEGMENT_MAKING_DECODER = new MakingDecoder<>(percentEncodingDelimitedValue(',')) {
+            @Override
+            protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
+                return segment(strings, percentEncodingDelimitedValue(','));
+            }
+        };
+        private static final MakingDecoder<Query<?>, String, String> QUERY_MAKING_DECODER = new MakingDecoder<>(PercentEncodingPartial.noOp()) {
+            @Override
+            protected Query<String> makeOne(final String s) {
+                return query(s);
+            }
+        };
+        private static final MakingDecoder<Fragment<?>, String, String> FRAGMENT_MAKING_DECODER = new MakingDecoder<>(PercentEncodingPartial.noOp()) {
+            @Override
+            protected Fragment<String> makeOne(final String s) {
+                return fragment(s);
+            }
+        };
+
+        public Mailto() {
+            super("mailto", Port.port(25), SEGMENT_MAKING_DECODER, QUERY_MAKING_DECODER, FRAGMENT_MAKING_DECODER);
         }
-    };
-    private static final MakingDecoder<Query<?>, String, String> QUERY_MAKING_DECODER = new MakingDecoder<>(PercentEncodingPartial.noOp()) {
-        @Override
-        protected Query<String> makeOne(final String s) {
-            return query(s);
-        }
-    };
-    private static final MakingDecoder<Fragment<?>, String, String> FRAGMENT_MAKING_DECODER = new MakingDecoder<>(PercentEncodingPartial.noOp()) {
-        @Override
-        protected Fragment<String> makeOne(final String s) {
-            return fragment(s);
-        }
-    };
-    private static final SchemeWithDefaultPort<Iterable<String>, Query<?>, Fragment<?>> MAILTO = new SchemeWithDefaultPort<>("mailto", Port.port(25), SEGMENT_MAKING_DECODER, QUERY_MAKING_DECODER, FRAGMENT_MAKING_DECODER) {
-    };
+    }
 
 
     @Test
     void canCreateAMailtoUri() throws ParseException {
-        assertThat(MAILTO.urin(rootlessPath(segment(asList("mark@example.com", "elvis@example.com"), percentEncodingDelimitedValue(',')))).asString(), equalTo("mailto:mark@example.com,elvis@example.com"));
-        final Urin<Iterable<String>, Query<?>, Fragment<?>> actual = MAILTO.parseUrin("mailto:mark@example.com,elvis@example.com");
-        assertThat(actual, equalTo(MAILTO.urin(rootlessPath(segment(asList("mark@example.com", "elvis@example.com"), percentEncodingDelimitedValue(','))))));
+        assertThat(new Mailto().urin(rootlessPath(segment(asList("mark@example.com", "elvis@example.com"), percentEncodingDelimitedValue(',')))).asString(), equalTo("mailto:mark@example.com,elvis@example.com"));
+        final Urin<Iterable<String>, Query<?>, Fragment<?>> actual = new Mailto().parseUrin("mailto:mark@example.com,elvis@example.com");
+        assertThat(actual, equalTo(new Mailto().urin(rootlessPath(segment(asList("mark@example.com", "elvis@example.com"), percentEncodingDelimitedValue(','))))));
     }
 }
