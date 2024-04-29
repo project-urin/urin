@@ -11,11 +11,15 @@
 package integration.net.sourceforge.urin;
 
 import net.sourceforge.urin.*;
+import net.sourceforge.urin.Scheme.GenericScheme;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Path.rootlessPath;
+import static net.sourceforge.urin.PercentEncodingPartial.noOp;
 import static net.sourceforge.urin.PercentEncodingPartial.percentEncodingDelimitedValue;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.Segment.segment;
@@ -24,36 +28,41 @@ import static org.hamcrest.Matchers.equalTo;
 
 class MailtoSchemeTest {
 
-    private static final class Mailto extends SchemeWithDefaultPort<Iterable<String>, Query<?>, Fragment<?>> {
-        private static final MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String> SEGMENT_MAKING_DECODER = new MakingDecoder<>(percentEncodingDelimitedValue(',')) {
+    @Test
+    void canCreateAMailtoUri() throws ParseException {
+        assertThat(Mailto.urin(asList("mark@example.com", "elvis@example.com")).asString(), equalTo("mailto:mark@example.com,elvis@example.com"));
+        final Urin<Iterable<String>, Query<?>, Fragment<?>> actual = Mailto.parseMailto("mailto:mark@example.com,elvis@example.com");
+        assertThat(actual, equalTo(Mailto.urin(asList("mark@example.com", "elvis@example.com"))));
+    }
+
+    private static final class Mailto {
+        private static final PercentEncodingPartial<Iterable<String>, String> ADDRESS_PERCENT_ENCODING_PARTIAL = percentEncodingDelimitedValue(',');
+        private static final MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String> SEGMENT_MAKING_DECODER = new MakingDecoder<>(ADDRESS_PERCENT_ENCODING_PARTIAL) {
             @Override
             protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
-                return segment(strings, percentEncodingDelimitedValue(','));
+                return segment(strings, ADDRESS_PERCENT_ENCODING_PARTIAL);
             }
         };
-        private static final MakingDecoder<Query<?>, String, String> QUERY_MAKING_DECODER = new MakingDecoder<>(PercentEncodingPartial.noOp()) {
+        private static final MakingDecoder<Query<?>, String, String> QUERY_MAKING_DECODER = new MakingDecoder<>(noOp()) {
             @Override
             protected Query<String> makeOne(final String s) {
                 return query(s);
             }
         };
-        private static final MakingDecoder<Fragment<?>, String, String> FRAGMENT_MAKING_DECODER = new MakingDecoder<>(PercentEncodingPartial.noOp()) {
+        private static final MakingDecoder<Fragment<?>, String, String> FRAGMENT_MAKING_DECODER = new MakingDecoder<>(noOp()) {
             @Override
             protected Fragment<String> makeOne(final String s) {
                 return fragment(s);
             }
         };
+        private static final Scheme<Iterable<String>, Query<?>, Fragment<?>> SCHEME = new GenericScheme<>("mailto", SEGMENT_MAKING_DECODER, QUERY_MAKING_DECODER, FRAGMENT_MAKING_DECODER);
 
-        public Mailto() {
-            super("mailto", Port.port(25), SEGMENT_MAKING_DECODER, QUERY_MAKING_DECODER, FRAGMENT_MAKING_DECODER);
+        static Urin<Iterable<String>, Query<?>, Fragment<?>> parseMailto(final String uri) throws ParseException {
+            return SCHEME.parseUrin(uri);
         }
-    }
 
-
-    @Test
-    void canCreateAMailtoUri() throws ParseException {
-        assertThat(new Mailto().urin(rootlessPath(segment(asList("mark@example.com", "elvis@example.com"), percentEncodingDelimitedValue(',')))).asString(), equalTo("mailto:mark@example.com,elvis@example.com"));
-        final Urin<Iterable<String>, Query<?>, Fragment<?>> actual = new Mailto().parseUrin("mailto:mark@example.com,elvis@example.com");
-        assertThat(actual, equalTo(new Mailto().urin(rootlessPath(segment(asList("mark@example.com", "elvis@example.com"), percentEncodingDelimitedValue(','))))));
+        static Urin<Iterable<String>, Query<?>, Fragment<?>> urin(final List<String> addresses) {
+            return SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL)));
+        }
     }
 }
