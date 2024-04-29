@@ -30,8 +30,9 @@ class MailtoSchemeTest {
 
     @Test
     void canCreateAMailtoUri() throws ParseException {
-        assertThat(Mailto.urin(asList("mark@example.com", "elvis@example.com")).asString(), equalTo("mailto:mark@example.com,elvis@example.com"));
-        assertThat(Mailto.parseMailto("mailto:mark@example.com,elvis@example.com"), equalTo(Mailto.urin(asList("mark@example.com", "elvis@example.com"))));
+        assertThat(Mailto.mailto(asList("mark@example.com", "elvis@example.com")).asString(), equalTo("mailto:mark@example.com,elvis@example.com"));
+        assertThat(Mailto.parse("mailto:mark@example.com,elvis@example.com"), equalTo(Mailto.mailto(asList("mark@example.com", "elvis@example.com"))));
+        assertThat(Mailto.parse("mailto:mark@example.com,elvis@example.com").addresses(), equalTo(asList("mark@example.com", "elvis@example.com")));
     }
 
     private static final class Mailto {
@@ -44,24 +45,55 @@ class MailtoSchemeTest {
         };
         private static final MakingDecoder<Query<?>, String, String> QUERY_MAKING_DECODER = new MakingDecoder<>(noOp()) {
             @Override
-            protected Query<String> makeOne(final String s) {
-                return query(s);
+            protected Query<String> makeOne(final String value) {
+                return query(value);
             }
         };
         private static final MakingDecoder<Fragment<?>, String, String> FRAGMENT_MAKING_DECODER = new MakingDecoder<>(noOp()) {
             @Override
-            protected Fragment<String> makeOne(final String s) {
-                return fragment(s);
+            protected Fragment<String> makeOne(final String value) {
+                return fragment(value);
             }
         };
         private static final Scheme<Iterable<String>, Query<?>, Fragment<?>> SCHEME = new GenericScheme<>("mailto", SEGMENT_MAKING_DECODER, QUERY_MAKING_DECODER, FRAGMENT_MAKING_DECODER);
 
-        static Urin<Iterable<String>, Query<?>, Fragment<?>> parseMailto(final String uri) throws ParseException {
-            return SCHEME.parseUrin(uri);
+        private final Urin<Iterable<String>, Query<?>, Fragment<?>> urin;
+
+        private Mailto(final Urin<Iterable<String>, Query<?>, Fragment<?>> urin) {
+            this.urin = urin;
         }
 
-        static Urin<Iterable<String>, Query<?>, Fragment<?>> urin(final List<String> addresses) {
-            return SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL)));
+        static Mailto parse(final String uri) throws ParseException {
+            return new Mailto(SCHEME.parseUrin(uri));
+        }
+
+        static Mailto mailto(final List<String> addresses) {
+            return new Mailto(SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL))));
+        }
+
+        Iterable<String> addresses() {
+            return urin.path().segments().get(0).value();
+        }
+
+        String asString() {
+            return urin.asString();
+        }
+
+        @Override
+        public boolean equals(final Object that) {
+            if (this == that) {
+                return true;
+            } else if (that == null || getClass() != that.getClass()) {
+                return false;
+            }
+
+            final Mailto mailto = (Mailto) that;
+            return urin.equals(mailto.urin);
+        }
+
+        @Override
+        public int hashCode() {
+            return urin.hashCode();
         }
     }
 }
