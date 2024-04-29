@@ -31,8 +31,7 @@ class MailtoSchemeTest {
     @Test
     void canCreateAMailtoUri() throws ParseException {
         assertThat(Mailto.urin(asList("mark@example.com", "elvis@example.com")).asString(), equalTo("mailto:mark@example.com,elvis@example.com"));
-        final Urin<Iterable<String>, Query<?>, Fragment<?>> actual = Mailto.parseMailto("mailto:mark@example.com,elvis@example.com");
-        assertThat(actual, equalTo(Mailto.urin(asList("mark@example.com", "elvis@example.com"))));
+        assertThat(Mailto.parseMailto("mailto:mark@example.com,elvis@example.com"), equalTo(Mailto.urin(asList("mark@example.com", "elvis@example.com"))));
     }
 
     private static final class Mailto {
