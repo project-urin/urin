@@ -277,7 +277,8 @@ class MailtoSchemeTest {
                     entry("mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E", Mailto.mailto(List.of("list@example.org")).withInReplyTo("<3469A91.D10AF4C@example.com>")),
                     entry("mailto:majordomo@example.com?body=subscribe%20bamboo-l", Mailto.mailto(List.of("majordomo@example.com")).withBody("subscribe bamboo-l")),
                     entry("mailto:joe@example.com?cc=bob@example.com&body=hello", Mailto.mailto(List.of("joe@example.com")).withCc("bob@example.com").withBody("hello")),
-                    entry("mailto:gorby%25kremvax@example.com", Mailto.mailto(List.of("gorby%kremvax@example.com")))
+                    entry("mailto:gorby%25kremvax@example.com", Mailto.mailto(List.of("gorby%kremvax@example.com"))),
+                    entry("mailto:unlikely%3Faddress@example.com", Mailto.mailto(List.of("unlikely?address@example.com")))
             ).map(entry -> Arguments.arguments(entry.getKey(), entry.getValue()));
         }
     }
