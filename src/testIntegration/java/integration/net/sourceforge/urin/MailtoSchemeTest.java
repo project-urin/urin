@@ -31,6 +31,58 @@ import static org.hamcrest.Matchers.equalTo;
 
 class MailtoSchemeTest {
 
+    private static <T> PercentEncodingPartial<Iterable<QueryParameter>, T> encodeQueryParameters(final PercentEncodingPartial<Iterable<Iterable<QueryParameter>>, T> childPercentEncodingPartial) {
+        return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<>() {
+            @Override
+            public Iterable<Iterable<QueryParameter>> encode(final Iterable<QueryParameter> queryParameters) {
+                final List<Iterable<QueryParameter>> result = new ArrayList<>();
+                for (final QueryParameter queryParameter : queryParameters) {
+                    result.add(singletonList(queryParameter));
+                }
+                return result;
+            }
+
+            @Override
+            public Iterable<QueryParameter> decode(final Iterable<Iterable<QueryParameter>> iterables) {
+                final List<QueryParameter> result = new ArrayList<>();
+                for (final Iterable<QueryParameter> queryParameters : iterables) {
+                    for (final QueryParameter queryParameter : queryParameters) {
+                        result.add(queryParameter);
+                    }
+                }
+                return result;
+            }
+        });
+    }
+
+    private static <T> PercentEncodingPartial<QueryParameter, T> percentEncodedQueryParameter(final PercentEncodingPartial<Iterable<String>, T> childPercentEncodingPartial) {
+        return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<>() {
+            @Override
+            public Iterable<String> encode(final QueryParameter queryParameter) {
+                return queryParameter.encoded();
+            }
+
+            @Override
+            public QueryParameter decode(final Iterable<String> strings) throws ParseException {
+                final Iterator<String> iterator = strings.iterator();
+                if (!iterator.hasNext()) {
+                    throw new ParseException("Invalid query parameter String [" + strings + "]");
+                }
+                final QueryParameter result;
+                final String name = iterator.next();
+                if (iterator.hasNext()) {
+                    result = new QueryParameter(name, iterator.next());
+                    if (iterator.hasNext()) {
+                        throw new ParseException("Invalid query parameter - expected exactly two elements in [" + strings + "]");
+                    }
+                } else {
+                    throw new ParseException("Invalid query parameter - expected exactly two elements in [" + strings + "]");
+                }
+                return result;
+            }
+        });
+    }
+
     @Test
     void canRoundTripAMailtoUri() throws ParseException {
         assertThat(Mailto.mailto(asList("mark@example.com", "elvis@example.com")).asString(), equalTo("mailto:mark@example.com,elvis@example.com"));
@@ -47,25 +99,27 @@ class MailtoSchemeTest {
 
     private static final class Mailto {
         private static final PercentEncodingPartial<Iterable<String>, String> ADDRESS_PERCENT_ENCODING_PARTIAL = percentEncodingDelimitedValue(',');
-        private static final MakingDecoder<Segment<Iterable<String>>, Iterable<String>, String> SEGMENT_MAKING_DECODER = new MakingDecoder<>(ADDRESS_PERCENT_ENCODING_PARTIAL) {
-            @Override
-            protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
-                return segment(strings, ADDRESS_PERCENT_ENCODING_PARTIAL);
-            }
-        };
-        private static final MakingDecoder<MailtoQuery, Iterable<QueryParameter>, String> QUERY_MAKING_DECODER = new MakingDecoder<>(MailtoQuery.MAILTO_QUERY_PERCENT_ENCODING_PARTIAL) {
-            @Override
-            protected MailtoQuery makeOne(final Iterable<QueryParameter> queryParameters) {
-                return new MailtoQuery(queryParameters);
-            }
-        };
-        private static final MakingDecoder<Fragment<?>, String, String> FRAGMENT_MAKING_DECODER = new MakingDecoder<>(noOp()) {
-            @Override
-            protected Fragment<String> makeOne(final String value) {
-                return fragment(value);
-            }
-        };
-        private static final Scheme<Iterable<String>, MailtoQuery, Fragment<?>> SCHEME = new GenericScheme<>("mailto", SEGMENT_MAKING_DECODER, QUERY_MAKING_DECODER, FRAGMENT_MAKING_DECODER);
+        private static final Scheme<Iterable<String>, MailtoQuery, Fragment<?>> SCHEME = new GenericScheme<>(
+                "mailto",
+                new MakingDecoder<>(ADDRESS_PERCENT_ENCODING_PARTIAL) {
+                    @Override
+                    protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
+                        return segment(strings, ADDRESS_PERCENT_ENCODING_PARTIAL);
+                    }
+                },
+                new MakingDecoder<>(MailtoQuery.MAILTO_QUERY_PERCENT_ENCODING_PARTIAL) {
+                    @Override
+                    protected MailtoQuery makeOne(final Iterable<QueryParameter> queryParameters) {
+                        return new MailtoQuery(queryParameters);
+                    }
+                },
+                new MakingDecoder<>(noOp()) {
+                    @Override
+                    protected Fragment<String> makeOne(final String value) {
+                        return fragment(value);
+                    }
+                }
+        );
 
         private final Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin;
 
@@ -124,58 +178,6 @@ class MailtoSchemeTest {
         MailtoQuery(final Iterable<QueryParameter> queryParameters) {
             super(queryParameters, MAILTO_QUERY_PERCENT_ENCODING_PARTIAL);
         }
-    }
-
-    private static <T> PercentEncodingPartial<Iterable<QueryParameter>, T> encodeQueryParameters(final PercentEncodingPartial<Iterable<Iterable<QueryParameter>>, T> childPercentEncodingPartial) {
-        return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<>() {
-            @Override
-            public Iterable<Iterable<QueryParameter>> encode(final Iterable<QueryParameter> queryParameters) {
-                final List<Iterable<QueryParameter>> result = new ArrayList<>();
-                for (final QueryParameter queryParameter : queryParameters) {
-                    result.add(singletonList(queryParameter));
-                }
-                return result;
-            }
-
-            @Override
-            public Iterable<QueryParameter> decode(final Iterable<Iterable<QueryParameter>> iterables) {
-                final List<QueryParameter> result = new ArrayList<>();
-                for (final Iterable<QueryParameter> queryParameters : iterables) {
-                    for (final QueryParameter queryParameter : queryParameters) {
-                        result.add(queryParameter);
-                    }
-                }
-                return result;
-            }
-        });
-    }
-
-    private static <T> PercentEncodingPartial<QueryParameter, T> percentEncodedQueryParameter(final PercentEncodingPartial<Iterable<String>, T> childPercentEncodingPartial) {
-        return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<>() {
-            @Override
-            public Iterable<String> encode(final QueryParameter queryParameter) {
-                return queryParameter.encoded();
-            }
-
-            @Override
-            public QueryParameter decode(final Iterable<String> strings) throws ParseException {
-                final Iterator<String> iterator = strings.iterator();
-                if (!iterator.hasNext()) {
-                    throw new ParseException("Invalid query parameter String [" + strings + "]");
-                }
-                final QueryParameter result;
-                final String name = iterator.next();
-                if (iterator.hasNext()) {
-                    result = new QueryParameter(name, iterator.next());
-                    if (iterator.hasNext()) {
-                        throw new ParseException("Invalid query parameter - expected exactly two elements in [" + strings + "]");
-                    }
-                } else {
-                    throw new ParseException("Invalid query parameter - expected exactly two elements in [" + strings + "]");
-                }
-                return result;
-            }
-        });
     }
 
     private static final class QueryParameter {
