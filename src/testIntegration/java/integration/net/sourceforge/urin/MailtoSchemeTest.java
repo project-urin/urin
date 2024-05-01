@@ -109,6 +109,14 @@ class MailtoSchemeTest {
         assertThat("can parse " + stringRepresentation, Mailto.parse(stringRepresentation), equalTo(mailtoRepresentation));
     }
 
+    @Test
+    void rfc6068ErratumDemonstration() throws ParseException {
+        final Mailto roundTrippedMailto = Mailto.parse(Mailto.mailto(List.of("Mike&family@example.org")).withSubject("Use of &").withBody("Should be fine in addr-spec").asString());
+        assertThat(roundTrippedMailto.addresses, equalTo(List.of("Mike&family@example.org")));
+        assertThat(roundTrippedMailto.subject, equalTo(Optional.of("Use of &")));
+        assertThat(roundTrippedMailto.body, equalTo(Optional.of("Should be fine in addr-spec")));
+    }
+
     private static final class Mailto {
         private static final PercentEncodingPartial<Iterable<String>, String> ADDRESS_PERCENT_ENCODING_PARTIAL = percentEncodingDelimitedValue(',');
         private static final Scheme<Iterable<String>, MailtoQuery, Fragment<?>> SCHEME = new GenericScheme<>(
@@ -279,6 +287,7 @@ class MailtoSchemeTest {
                     entry("mailto:joe@example.com?cc=bob@example.com&body=hello", Mailto.mailto(List.of("joe@example.com")).withCc("bob@example.com").withBody("hello")),
                     entry("mailto:gorby%25kremvax@example.com", Mailto.mailto(List.of("gorby%kremvax@example.com"))),
                     entry("mailto:unlikely%3Faddress@example.com", Mailto.mailto(List.of("unlikely?address@example.com")))
+//                    , entry("mailto:Mike%26family@example.org", Mailto.mailto(List.of("Mike&family@example.org"))) // TODO see https://www.rfc-editor.org/errata/eid7919
             ).map(entry -> Arguments.arguments(entry.getKey(), entry.getValue()));
         }
     }
