@@ -171,16 +171,6 @@ class MailtoSchemeTest {
             return new Mailto(new ArrayList<>(addresses), Optional.empty(), Optional.empty(), Optional.empty(), Optional.empty());
         }
 
-        private Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin() {
-            final List<QueryParameter> queryParameters = Stream.concat(Stream.concat(Stream.concat(
-                                    cc.stream().map(subject -> new QueryParameter("cc", subject)),
-                                    subject.stream().map(subject -> new QueryParameter("subject", subject))),
-                            body.stream().map(body -> new QueryParameter("body", body))),
-                    inReplyTo.stream().map(body -> new QueryParameter("In-Reply-To", body))
-            ).collect(toList());
-            return queryParameters.isEmpty() ? SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL))) : SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL)), new MailtoQuery(queryParameters));
-        }
-
         Mailto withSubject(final String subject) {
             return new Mailto(addresses, Optional.of(subject), body, inReplyTo, cc);
         }
@@ -202,7 +192,13 @@ class MailtoSchemeTest {
         }
 
         String asString() {
-            return urin().asString();
+            final List<QueryParameter> queryParameters = Stream.concat(Stream.concat(Stream.concat(
+                                    cc.stream().map(subject1 -> new QueryParameter("cc", subject1)),
+                                    subject.stream().map(subject1 -> new QueryParameter("subject", subject1))),
+                            body.stream().map(body1 -> new QueryParameter("body", body1))),
+                    inReplyTo.stream().map(body1 -> new QueryParameter("In-Reply-To", body1))
+            ).collect(toList());
+            return (queryParameters.isEmpty() ? SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL))) : SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL)), new MailtoQuery(queryParameters))).asString();
         }
 
         @Override
