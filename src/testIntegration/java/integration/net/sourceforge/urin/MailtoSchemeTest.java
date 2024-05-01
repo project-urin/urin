@@ -192,11 +192,11 @@ class MailtoSchemeTest {
             return new Mailto(addresses, subject, Optional.of(body), inReplyTo, cc);
         }
 
-        Mailto withInReplyTo(final String messageId) {
+        Mailto withInReplyTo(@SuppressWarnings("SameParameterValue") final String messageId) {
             return new Mailto(addresses, subject, body, Optional.of(messageId), cc);
         }
 
-        Mailto withCc(final String cc) {
+        Mailto withCc(@SuppressWarnings("SameParameterValue") final String cc) {
             return new Mailto(addresses, subject, body, inReplyTo, Optional.of(cc));
         }
 
