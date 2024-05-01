@@ -138,37 +138,49 @@ class MailtoSchemeTest {
         private final Optional<String> subject;
         @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
         private final Optional<String> body;
+        @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+        private final Optional<String> inReplyTo;
 
         @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-        private Mailto(final Collection<String> addresses, final Optional<String> subject, final Optional<String> body) {
+        private Mailto(final Collection<String> addresses, final Optional<String> subject, final Optional<String> body, final Optional<String> inReplyTo) {
             this.addresses = addresses;
             this.subject = subject;
             this.body = body;
+            this.inReplyTo = inReplyTo;
         }
 
         static Mailto parse(final String uri) throws ParseException {
             final Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin = SCHEME.parseUrin(uri);
             return new Mailto(
                     stream(urin.path().segments().get(0).value().spliterator(), false).collect(toList()),
-                    urin.hasQuery() ? stream(urin.query().value().spliterator(), false).filter(queryParameter -> "subject".equals(queryParameter.name)).findFirst().map(subject -> subject.value) : Optional.empty(),
-                    urin.hasQuery() ? stream(urin.query().value().spliterator(), false).filter(queryParameter -> "body".equals(queryParameter.name)).findFirst().map(subject -> subject.value) : Optional.empty());
+                    urin.hasQuery() ? stream(urin.query().value().spliterator(), false).filter(queryParameter -> "subject".equalsIgnoreCase(queryParameter.name)).findFirst().map(subject -> subject.value) : Optional.empty(),
+                    urin.hasQuery() ? stream(urin.query().value().spliterator(), false).filter(queryParameter -> "body".equalsIgnoreCase(queryParameter.name)).findFirst().map(subject -> subject.value) : Optional.empty(),
+                    urin.hasQuery() ? stream(urin.query().value().spliterator(), false).filter(queryParameter -> "in-reply-to".equalsIgnoreCase(queryParameter.name)).findFirst().map(subject -> subject.value) : Optional.empty());
         }
 
         static Mailto mailto(final List<String> addresses) {
-            return new Mailto(new ArrayList<>(addresses), Optional.empty(), Optional.empty());
+            return new Mailto(new ArrayList<>(addresses), Optional.empty(), Optional.empty(), Optional.empty());
         }
 
         private Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin() {
-            final List<QueryParameter> queryParameters = Stream.concat(subject.stream().map(subject -> new QueryParameter("subject", subject)), body.stream().map(body -> new QueryParameter("body", body))).collect(toList());
+            final List<QueryParameter> queryParameters = Stream.concat(Stream.concat(
+                            subject.stream().map(subject -> new QueryParameter("subject", subject)),
+                            body.stream().map(body -> new QueryParameter("body", body))),
+                    inReplyTo.stream().map(body -> new QueryParameter("In-Reply-To", body))
+            ).collect(toList());
             return queryParameters.isEmpty() ? SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL))) : SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL)), new MailtoQuery(queryParameters));
         }
 
         Mailto withSubject(final String subject) {
-            return new Mailto(addresses, Optional.of(subject), Optional.empty());
+            return new Mailto(addresses, Optional.of(subject), body, inReplyTo);
         }
 
-        public Mailto withBody(final String body) {
-            return new Mailto(addresses, subject, Optional.of(body));
+        Mailto withBody(final String body) {
+            return new Mailto(addresses, subject, Optional.of(body), inReplyTo);
+        }
+
+        Mailto withInReplyTo(final String messageId) {
+            return new Mailto(addresses, subject, body, Optional.of(messageId));
         }
 
         Iterable<String> addresses() {
@@ -188,12 +200,12 @@ class MailtoSchemeTest {
             }
 
             final Mailto thatMailto = (Mailto) that;
-            return this.addresses.equals(thatMailto.addresses) && this.subject.equals(thatMailto.subject) && this.body.equals(thatMailto.body);
+            return this.addresses.equals(thatMailto.addresses) && this.subject.equals(thatMailto.subject) && this.body.equals(thatMailto.body) && this.inReplyTo.equals(thatMailto.inReplyTo);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(addresses, subject, body);
+            return Objects.hash(addresses, subject, body, inReplyTo);
         }
     }
 
@@ -251,8 +263,9 @@ class MailtoSchemeTest {
                     entry("mailto:chris@example.com", Mailto.mailto(List.of("chris@example.com"))),
                     entry("mailto:infobot@example.com?subject=current-issue", Mailto.mailto(List.of("infobot@example.com")).withSubject("current-issue")),
                     entry("mailto:infobot@example.com?body=send%20current-issue", Mailto.mailto(List.of("infobot@example.com")).withBody("send current-issue")),
-                    entry("mailto:infobot@example.com?body=send%20current-issue%0D%0Asend%20index", Mailto.mailto(List.of("infobot@example.com")).withBody("send current-issue\r\nsend index"))
-            ).map( entry -> Arguments.arguments(entry.getKey(), entry.getValue()));
+                    entry("mailto:infobot@example.com?body=send%20current-issue%0D%0Asend%20index", Mailto.mailto(List.of("infobot@example.com")).withBody("send current-issue\r\nsend index")),
+                    entry("mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E", Mailto.mailto(List.of("list@example.org")).withInReplyTo("<3469A91.D10AF4C@example.com>"))
+            ).map(entry -> Arguments.arguments(entry.getKey(), entry.getValue()));
         }
     }
 
