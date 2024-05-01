@@ -25,6 +25,8 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Map.entry;
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.StreamSupport.stream;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.PercentEncodingPartial.noOp;
@@ -131,30 +133,41 @@ class MailtoSchemeTest {
                 }
         );
 
-        private final Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin;
+        private final Collection<String> addresses;
+        private final Optional<String> subject;
 
-        private Mailto(final Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin) {
-            this.urin = urin;
+        private Mailto(final Collection<String> addresses, final Optional<String> subject) {
+            this.addresses = addresses;
+            this.subject = subject;
         }
 
         static Mailto parse(final String uri) throws ParseException {
-            return new Mailto(SCHEME.parseUrin(uri));
+            final Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin = SCHEME.parseUrin(uri);
+            return new Mailto(
+                    stream(urin.path().segments().get(0).value().spliterator(), false).collect(toList()),
+                    urin.hasQuery() ? stream(urin.query().value().spliterator(), false).filter(queryParameter -> "subject".equals(queryParameter.name)).findFirst().map(subject -> subject.value) : Optional.empty());
         }
 
         static Mailto mailto(final List<String> addresses) {
-            return new Mailto(SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL))));
+            return new Mailto(new ArrayList<>(addresses), Optional.empty());
         }
 
         static Mailto mailto(final List<String> addresses, final String subject) {
-            return new Mailto(SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL)), new MailtoQuery(List.of(new QueryParameter("subject", subject)))));
+            return new Mailto(new ArrayList<>(addresses), Optional.of(subject));
+        }
+
+        private Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin() {
+            return subject
+                    .map(subject -> SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL)), new MailtoQuery(List.of(new QueryParameter("subject", subject)))))
+                    .orElseGet(() -> SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL))));
         }
 
         Iterable<String> addresses() {
-            return urin.path().segments().get(0).value();
+            return new ArrayList<>(addresses);
         }
 
         String asString() {
-            return urin.asString();
+            return urin().asString();
         }
 
         @Override
@@ -166,12 +179,12 @@ class MailtoSchemeTest {
             }
 
             final Mailto mailto = (Mailto) that;
-            return urin.equals(mailto.urin);
+            return urin().equals(mailto.urin());  // TODO rewrite in terms of fields
         }
 
         @Override
         public int hashCode() {
-            return urin.hashCode();
+            return urin().hashCode(); // TODO rewrite in terms of fields
         }
     }
 
