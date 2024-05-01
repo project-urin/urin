@@ -188,12 +188,12 @@ class MailtoSchemeTest {
             }
 
             final Mailto thatMailto = (Mailto) that;
-            return this.addresses.equals(thatMailto.addresses) && this.subject.equals(thatMailto.subject);
+            return this.addresses.equals(thatMailto.addresses) && this.subject.equals(thatMailto.subject) && this.body.equals(thatMailto.body);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(addresses, subject);
+            return Objects.hash(addresses, subject, body);
         }
     }
 
