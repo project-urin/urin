@@ -178,13 +178,13 @@ class MailtoSchemeTest {
                 return false;
             }
 
-            final Mailto mailto = (Mailto) that;
-            return urin().equals(mailto.urin());  // TODO rewrite in terms of fields
+            final Mailto thatMailto = (Mailto) that;
+            return this.addresses.equals((thatMailto).addresses) && this.subject.equals(thatMailto.subject);
         }
 
         @Override
         public int hashCode() {
-            return urin().hashCode(); // TODO rewrite in terms of fields
+            return Objects.hash(addresses, subject);
         }
     }
 
