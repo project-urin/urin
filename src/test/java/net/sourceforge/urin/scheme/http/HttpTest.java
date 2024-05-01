@@ -660,6 +660,13 @@ class HttpTest {
     }
 
     @Test
+    void roundTrippedRelativeReferenceContainingTrailingSpaceInQueryParameterName() throws Exception {
+        final RelativeReference<String, HttpQuery, Fragment<String>> relativeReference = HTTP.relativeReference(queryParameters(queryParameter(" ")));
+        final RelativeReference<String, HttpQuery, Fragment<String>> parsed = parseHttpRelativeReference(relativeReference.asString());
+        assertThat(parsed, equalTo(relativeReference));
+    }
+
+    @Test
     void roundTrippedRelativeReferenceUrisViaStaticAreEqual() throws Exception {
         final RelativeReference<String, HttpQuery, Fragment<String>> httpRelativeReference = HTTP.relativeReference(anAbsolutePath(), queryParameters(aQueryParameter(), aQueryParameter()), aFragment());
         assertThat(parseHttpRelativeReference(httpRelativeReference.asUri()), equalTo(httpRelativeReference));

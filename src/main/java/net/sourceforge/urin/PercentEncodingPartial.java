@@ -217,7 +217,7 @@ public abstract class PercentEncodingPartial<ENCODES, CHILD_ENCODES> {
             @Override
             public String decode(final String encoded) throws ParseException {
                 final StringBuilder result = new StringBuilder();
-                final String[] split = encoded.split(quote(Character.toString(replacementCharacter)));
+                final String[] split = encoded.split(quote(Character.toString(replacementCharacter)), -1);
                 for (int i = 0; i < split.length; i++) {
                     if (i > 0) {
                         result.append(originalCharacter);
