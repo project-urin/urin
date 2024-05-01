@@ -250,7 +250,8 @@ class MailtoSchemeTest {
             return Stream.of(
                     entry("mailto:chris@example.com", Mailto.mailto(List.of("chris@example.com"))),
                     entry("mailto:infobot@example.com?subject=current-issue", Mailto.mailto(List.of("infobot@example.com")).withSubject("current-issue")),
-                    entry("mailto:infobot@example.com?body=send%20current-issue", Mailto.mailto(List.of("infobot@example.com")).withBody("send current-issue"))
+                    entry("mailto:infobot@example.com?body=send%20current-issue", Mailto.mailto(List.of("infobot@example.com")).withBody("send current-issue")),
+                    entry("mailto:infobot@example.com?body=send%20current-issue%0D%0Asend%20index", Mailto.mailto(List.of("infobot@example.com")).withBody("send current-issue\r\nsend index"))
             ).map( entry -> Arguments.arguments(entry.getKey(), entry.getValue()));
         }
     }
