@@ -264,7 +264,8 @@ class MailtoSchemeTest {
                     entry("mailto:infobot@example.com?subject=current-issue", Mailto.mailto(List.of("infobot@example.com")).withSubject("current-issue")),
                     entry("mailto:infobot@example.com?body=send%20current-issue", Mailto.mailto(List.of("infobot@example.com")).withBody("send current-issue")),
                     entry("mailto:infobot@example.com?body=send%20current-issue%0D%0Asend%20index", Mailto.mailto(List.of("infobot@example.com")).withBody("send current-issue\r\nsend index")),
-                    entry("mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E", Mailto.mailto(List.of("list@example.org")).withInReplyTo("<3469A91.D10AF4C@example.com>"))
+                    entry("mailto:list@example.org?In-Reply-To=%3C3469A91.D10AF4C@example.com%3E", Mailto.mailto(List.of("list@example.org")).withInReplyTo("<3469A91.D10AF4C@example.com>")),
+                    entry("mailto:majordomo@example.com?body=subscribe%20bamboo-l", Mailto.mailto(List.of("majordomo@example.com")).withBody("subscribe bamboo-l"))
             ).map(entry -> Arguments.arguments(entry.getKey(), entry.getValue()));
         }
     }
