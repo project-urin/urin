@@ -98,8 +98,8 @@ class MailtoSchemeTest {
 
     @Test
     void canCreateAMailtoUriWithSubject() throws ParseException {
-        assertThat(Mailto.mailto(asList("mark@example.com", "elvis@example.com"), "Hello, World!").asString(), equalTo("mailto:mark@example.com,elvis@example.com?subject=Hello,%20World!"));
-        assertThat(Mailto.parse("mailto:mark@example.com,elvis@example.com?subject=Hello,%20World!"), equalTo(Mailto.mailto(asList("mark@example.com", "elvis@example.com"), "Hello, World!")));
+        assertThat(Mailto.mailto(asList("mark@example.com", "elvis@example.com")).withSubject("Hello, World!").asString(), equalTo("mailto:mark@example.com,elvis@example.com?subject=Hello,%20World!"));
+        assertThat(Mailto.parse("mailto:mark@example.com,elvis@example.com?subject=Hello,%20World!"), equalTo(Mailto.mailto(asList("mark@example.com", "elvis@example.com")).withSubject("Hello, World!")));
     }
 
     @ParameterizedTest
@@ -134,32 +134,41 @@ class MailtoSchemeTest {
         );
 
         private final Collection<String> addresses;
+        @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
         private final Optional<String> subject;
+        @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+        private final Optional<String> body;
 
-        private Mailto(final Collection<String> addresses, final Optional<String> subject) {
+        @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+        private Mailto(final Collection<String> addresses, final Optional<String> subject, final Optional<String> body) {
             this.addresses = addresses;
             this.subject = subject;
+            this.body = body;
         }
 
         static Mailto parse(final String uri) throws ParseException {
             final Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin = SCHEME.parseUrin(uri);
             return new Mailto(
                     stream(urin.path().segments().get(0).value().spliterator(), false).collect(toList()),
-                    urin.hasQuery() ? stream(urin.query().value().spliterator(), false).filter(queryParameter -> "subject".equals(queryParameter.name)).findFirst().map(subject -> subject.value) : Optional.empty());
+                    urin.hasQuery() ? stream(urin.query().value().spliterator(), false).filter(queryParameter -> "subject".equals(queryParameter.name)).findFirst().map(subject -> subject.value) : Optional.empty(),
+                    urin.hasQuery() ? stream(urin.query().value().spliterator(), false).filter(queryParameter -> "body".equals(queryParameter.name)).findFirst().map(subject -> subject.value) : Optional.empty());
         }
 
         static Mailto mailto(final List<String> addresses) {
-            return new Mailto(new ArrayList<>(addresses), Optional.empty());
-        }
-
-        static Mailto mailto(final List<String> addresses, final String subject) {
-            return new Mailto(new ArrayList<>(addresses), Optional.of(subject));
+            return new Mailto(new ArrayList<>(addresses), Optional.empty(), Optional.empty());
         }
 
         private Urin<Iterable<String>, MailtoQuery, Fragment<?>> urin() {
-            return subject
-                    .map(subject -> SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL)), new MailtoQuery(List.of(new QueryParameter("subject", subject)))))
-                    .orElseGet(() -> SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL))));
+            final List<QueryParameter> queryParameters = Stream.concat(subject.stream().map(subject -> new QueryParameter("subject", subject)), body.stream().map(body -> new QueryParameter("body", body))).collect(toList());
+            return queryParameters.isEmpty() ? SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL))) : SCHEME.urin(rootlessPath(segment(addresses, ADDRESS_PERCENT_ENCODING_PARTIAL)), new MailtoQuery(queryParameters));
+        }
+
+        Mailto withSubject(final String subject) {
+            return new Mailto(addresses, Optional.of(subject), Optional.empty());
+        }
+
+        public Mailto withBody(final String body) {
+            return new Mailto(addresses, subject, Optional.of(body));
         }
 
         Iterable<String> addresses() {
@@ -179,7 +188,7 @@ class MailtoSchemeTest {
             }
 
             final Mailto thatMailto = (Mailto) that;
-            return this.addresses.equals((thatMailto).addresses) && this.subject.equals(thatMailto.subject);
+            return this.addresses.equals(thatMailto.addresses) && this.subject.equals(thatMailto.subject);
         }
 
         @Override
@@ -240,7 +249,8 @@ class MailtoSchemeTest {
         public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
             return Stream.of(
                     entry("mailto:chris@example.com", Mailto.mailto(List.of("chris@example.com"))),
-                    entry("mailto:infobot@example.com?subject=current-issue", Mailto.mailto(List.of("infobot@example.com"), "current-issue"))
+                    entry("mailto:infobot@example.com?subject=current-issue", Mailto.mailto(List.of("infobot@example.com")).withSubject("current-issue")),
+                    entry("mailto:infobot@example.com?body=send%20current-issue", Mailto.mailto(List.of("infobot@example.com")).withBody("send current-issue"))
             ).map( entry -> Arguments.arguments(entry.getKey(), entry.getValue()));
         }
     }
