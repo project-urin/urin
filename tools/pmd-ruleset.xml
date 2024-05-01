@@ -45,6 +45,7 @@
         <exclude name="OnlyOneReturn"/>
         <exclude name="ShortClassName"/> <!-- configured later -->
         <exclude name="ShortMethodName"/> <!-- configured later -->
+        <exclude name="ShortVariable"/> <!-- configured later -->
         <exclude name="TooManyStaticImports"/>
         <exclude name="UseDiamondOperator"/> <!-- Broken... maybe file a bug report -->
         <exclude name="UseExplicitTypes"/>
@@ -67,6 +68,11 @@
     <rule ref="category/java/codestyle.xml/ShortMethodName">
         <properties>
             <property name="minimum" value="2"/>
+        </properties>
+    </rule>
+    <rule ref="category/java/codestyle.xml/ShortVariable">
+        <properties>
+            <property name="minimum" value="2" />
         </properties>
     </rule>
 

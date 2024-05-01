@@ -23,7 +23,6 @@ import java.util.*;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
 import static java.util.Map.entry;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.StreamSupport.stream;
@@ -37,24 +36,22 @@ import static org.hamcrest.Matchers.equalTo;
 
 class MailtoSchemeTest {
 
-    private static <T> PercentEncodingPartial<Iterable<QueryParameter>, T> encodeQueryParameters(final PercentEncodingPartial<Iterable<Iterable<QueryParameter>>, T> childPercentEncodingPartial) {
+    private static <T> PercentEncodingPartial<Iterable<QueryParameter>, T> encodeQueryParameters(final PercentEncodingPartial<Iterable<QueryParameter>, T> childPercentEncodingPartial) {
         return PercentEncodingPartial.transformingPercentEncodingPartial(childPercentEncodingPartial, new Transformer<>() {
             @Override
-            public Iterable<Iterable<QueryParameter>> encode(final Iterable<QueryParameter> queryParameters) {
-                final List<Iterable<QueryParameter>> result = new ArrayList<>();
+            public Iterable<QueryParameter> encode(final Iterable<QueryParameter> queryParameters) {
+                final List<QueryParameter> result = new ArrayList<>();
                 for (final QueryParameter queryParameter : queryParameters) {
-                    result.add(singletonList(queryParameter));
+                    result.add(queryParameter);
                 }
                 return result;
             }
 
             @Override
-            public Iterable<QueryParameter> decode(final Iterable<Iterable<QueryParameter>> iterables) {
+            public Iterable<QueryParameter> decode(final Iterable<QueryParameter> queryParameters) {
                 final List<QueryParameter> result = new ArrayList<>();
-                for (final Iterable<QueryParameter> queryParameters : iterables) {
-                    for (final QueryParameter queryParameter : queryParameters) {
-                        result.add(queryParameter);
-                    }
+                for (final QueryParameter queryParameter : queryParameters) {
+                    result.add(queryParameter);
                 }
                 return result;
             }
@@ -230,10 +227,8 @@ class MailtoSchemeTest {
         private static final PercentEncodingPartial<Iterable<QueryParameter>, String> MAILTO_QUERY_PERCENT_ENCODING_PARTIAL = encodeQueryParameters(
                 percentEncodingDelimitedValue(
                         '&',
-                        percentEncodingDelimitedValue(
-                                ';', // TODO does ; actually need encoding?
                                 percentEncodedQueryParameter(percentEncodingDelimitedValue(
-                                        '=')))));
+                                        '='))));
 
 
         MailtoQuery(final Iterable<QueryParameter> queryParameters) {
