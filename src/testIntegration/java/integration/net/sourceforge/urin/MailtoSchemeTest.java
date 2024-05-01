@@ -13,14 +13,18 @@ package integration.net.sourceforge.urin;
 import net.sourceforge.urin.*;
 import net.sourceforge.urin.Scheme.GenericScheme;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.ArgumentsProvider;
+import org.junit.jupiter.params.provider.ArgumentsSource;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Stream;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
+import static java.util.Map.entry;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Path.rootlessPath;
 import static net.sourceforge.urin.PercentEncodingPartial.noOp;
@@ -93,8 +97,14 @@ class MailtoSchemeTest {
     @Test
     void canCreateAMailtoUriWithSubject() throws ParseException {
         assertThat(Mailto.mailto(asList("mark@example.com", "elvis@example.com"), "Hello, World!").asString(), equalTo("mailto:mark@example.com,elvis@example.com?subject=Hello,%20World!"));
-        final Mailto actual = Mailto.parse("mailto:mark@example.com,elvis@example.com?subject=Hello,%20World!");
-        assertThat(actual, equalTo(Mailto.mailto(asList("mark@example.com", "elvis@example.com"), "Hello, World!")));
+        assertThat(Mailto.parse("mailto:mark@example.com,elvis@example.com?subject=Hello,%20World!"), equalTo(Mailto.mailto(asList("mark@example.com", "elvis@example.com"), "Hello, World!")));
+    }
+
+    @ParameterizedTest
+    @ArgumentsSource(Rfc6068ExamplesArgumentsProvider.class)
+    void canMakeRfc6068Examples(final String stringRepresentation, final Mailto mailtoRepresentation) throws ParseException {
+        assertThat("can generate " + stringRepresentation, mailtoRepresentation.asString(), equalTo(stringRepresentation));
+        assertThat("can parse " + stringRepresentation, Mailto.parse(stringRepresentation), equalTo(mailtoRepresentation));
     }
 
     private static final class Mailto {
@@ -211,4 +221,15 @@ class MailtoSchemeTest {
             return Objects.hash(name, value);
         }
     }
+
+    static final class Rfc6068ExamplesArgumentsProvider implements ArgumentsProvider {
+        @Override
+        public Stream<? extends Arguments> provideArguments(ExtensionContext extensionContext) {
+            return Stream.of(
+                    entry("mailto:chris@example.com", Mailto.mailto(List.of("chris@example.com"))),
+                    entry("mailto:infobot@example.com?subject=current-issue", Mailto.mailto(List.of("infobot@example.com"), "current-issue"))
+            ).map( entry -> Arguments.arguments(entry.getKey(), entry.getValue()));
+        }
+    }
+
 }
