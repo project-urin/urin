@@ -72,7 +72,6 @@ class IrcSchemeTest {
                 QUERY_MAKING_DECODER,
                 FRAGMENT_MAKING_DECODER
         ) {};
-
         private final Urin<Iterable<String>, Query<?>, Fragment<?>> urin;
 
         private Irc(final Urin<Iterable<String>, Query<?>, Fragment<?>> urin) {

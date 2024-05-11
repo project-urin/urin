@@ -28,6 +28,7 @@ class LoggingAuditor(private val logger: Logger) : Auditor<GitHubHttp.AuditEvent
                 printWriter.println(auditEvent.responseBody)
             }
         }.toString())
+
         is GitHubHttp.AuditEvent.RequestFailed -> logger.debug("Failed request to ${auditEvent.uri} with exception", auditEvent.cause)
     }
 }

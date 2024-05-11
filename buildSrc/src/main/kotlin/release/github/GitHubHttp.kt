@@ -159,7 +159,7 @@ class GitHubHttp(
             VersionNumber.fromString(releaseString)
         }.maxOf { it }
     }.let {
-        when(it) {
+        when (it) {
             is Outcome.Success -> ReleaseVersionOutcome.Success(it.value)
             is Outcome.Failure -> ReleaseVersionOutcome.Failure(it.failure)
         }
@@ -172,8 +172,8 @@ class GitHubHttp(
         .timeout(firstByteTimeout.toJavaDuration())
 
     private sealed interface Outcome<T> {
-        data class Success<T>(val value: T): Outcome<T>
-        data class Failure<T>(val failure: release.github.Failure): Outcome<T>
+        data class Success<T>(val value: T) : Outcome<T>
+        data class Failure<T>(val failure: release.github.Failure) : Outcome<T>
     }
 
     data class GitHubApiAuthority(val authority: Authority) {

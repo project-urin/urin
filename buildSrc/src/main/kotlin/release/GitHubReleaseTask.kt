@@ -18,11 +18,11 @@ import org.gradle.api.tasks.TaskAction
 import release.github.Failure
 import release.github.GitHubHttp
 import release.github.GitHubHttp.GitHubApiAuthority.Companion.productionGitHubApi
-import release.github.PrivilegedGitHub.ReleaseOutcome
-import release.github.PrivilegedGitHub.UploadArtifactOutcome
 import release.github.GitHubHttp.GitHubToken
 import release.github.GitHubHttp.GitHubUploadAuthority.Companion.productionGitHubUpload
 import release.github.LoggingAuditor
+import release.github.PrivilegedGitHub.ReleaseOutcome
+import release.github.PrivilegedGitHub.UploadArtifactOutcome
 import release.github.formatFailure
 import release.pki.ReleaseTrustStore.Companion.defaultReleaseTrustStore
 import kotlin.time.Duration.Companion.seconds
@@ -44,7 +44,13 @@ abstract class GitHubReleaseTask : DefaultTask() {
             is VersionNumber.DevelopmentVersion -> throw GradleException("Cannot release development version")
             is VersionNumber.ReleaseVersion -> {
                 val gitHubToken = project.property("gitHubToken").toString()
-                val privilegedGitHub = GitHubHttp(productionGitHubApi, defaultReleaseTrustStore, LoggingAuditor(project.logger), firstByteTimeout = 30.seconds, endToEndTimeout = 30.seconds)
+                val privilegedGitHub = GitHubHttp(
+                    productionGitHubApi,
+                    defaultReleaseTrustStore,
+                    LoggingAuditor(project.logger),
+                    firstByteTimeout = 30.seconds,
+                    endToEndTimeout = 30.seconds
+                )
                     .privileged(productionGitHubUpload, GitHubToken(gitHubToken))
                 when (val releaseOutcome = privilegedGitHub.release(version)) {
                     is ReleaseOutcome.Success -> {
@@ -52,20 +58,22 @@ abstract class GitHubReleaseTask : DefaultTask() {
                             Triple(jar, "urin-${project.version}.jar", "Jar"),
                             Triple(combinedJar, "urin-with-source-${project.version}.jar", "Jar with source code included"),
                             Triple(smallJar, "urin-small-${project.version}.jar", "Jar stripped of debug information"),
-                        ).forEach {(source, targetName, label) ->
-                            when (val uploadArtifactOutcome = privilegedGitHub.uploadArtifact(releaseOutcome.releaseId, targetName, label, source.get().asFile.toPath())) {
+                        ).forEach { (source, targetName, label) ->
+                            when (val uploadArtifactOutcome =
+                                privilegedGitHub.uploadArtifact(releaseOutcome.releaseId, targetName, label, source.get().asFile.toPath())) {
                                 UploadArtifactOutcome.Success -> Unit
                                 is UploadArtifactOutcome.Failure -> throw uploadArtifactOutcome.failure.toGradleException("Uploading artifact for release $version failed")
                             }
                         }
                     }
+
                     is ReleaseOutcome.Failure -> throw releaseOutcome.failure.toGradleException("Releasing version $version failed")
                 }
             }
         }
     }
 
-    private fun Failure.toGradleException(message: String) = when(this) {
+    private fun Failure.toGradleException(message: String) = when (this) {
         is Failure.ExceptionalFailure -> GradleException("$message: ${formatFailure(this)}", this.exception)
         else -> GradleException("$message: ${formatFailure(this)}")
     }

@@ -223,8 +223,8 @@ class MailtoSchemeTest {
         private static final PercentEncodingPartial<Iterable<QueryParameter>, String> MAILTO_QUERY_PERCENT_ENCODING_PARTIAL = encodeQueryParameters(
                 percentEncodingDelimitedValue(
                         '&',
-                                percentEncodedQueryParameter(percentEncodingDelimitedValue(
-                                        '='))));
+                        percentEncodedQueryParameter(percentEncodingDelimitedValue(
+                                '='))));
 
 
         MailtoQuery(final Iterable<QueryParameter> queryParameters) {

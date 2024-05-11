@@ -21,9 +21,11 @@ sealed interface Failure {
         val responseHeaders: List<Pair<String, String>>,
         val responseBody: String
     ) : Failure
+
     sealed interface ExceptionalFailure : Failure {
         val exception: Throwable
     }
+
     data class ResponseHandlingException(
         val uri: URI,
         val responseCode: Int,
@@ -31,6 +33,7 @@ sealed interface Failure {
         val responseBody: String,
         override val exception: Throwable
     ) : ExceptionalFailure
+
     data class RequestSubmittingException(val uri: URI, override val exception: Throwable) : ExceptionalFailure
     data class ConnectTimeout(val uri: URI, val connectTimeout: Duration, override val exception: Throwable) : ExceptionalFailure
     data class FirstByteTimeout(val uri: URI, val firstByteTimeout: Duration, override val exception: Throwable) : ExceptionalFailure

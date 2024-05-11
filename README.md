@@ -5,7 +5,9 @@
 
 Urin is a free, open source URI generator and parser written in Java.
 
-Urin is written to make the dynamic generation of correct URIs easier than with Java's built-in URI and URL classes, and to provide support for the current URI standard, [RFC 3986](https://tools.ietf.org/html/rfc3986). Urin has no dependencies. It's licensed under the [Apache 2 License](https://www.apache.org/licenses/LICENSE-2.0).
+Urin is written to make the dynamic generation of correct URIs easier than with Java's built-in URI and URL classes, and to provide support for the current URI
+standard, [RFC 3986](https://tools.ietf.org/html/rfc3986). Urin has no dependencies. It's licensed under
+the [Apache 2 License](https://www.apache.org/licenses/LICENSE-2.0).
 
 ## Download
 

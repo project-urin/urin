@@ -44,14 +44,21 @@ class ReleasePlugin : Plugin<Project> {
     private fun determineVersion(target: Project) = when (val versionFromEnvironment = System.getenv("URIN_VERSION")) {
         null -> when (val outcome = GitHubHttp(productionGitHubApi, defaultReleaseTrustStore, LoggingAuditor(target.logger)).latestReleaseVersion()) {
             is Failure -> {
-                when(val failure = outcome.failure) {
-                    is ExceptionalFailure -> target.logger.warn("Defaulting to development version: getting latest GitHub release failed: " + formatFailure(failure), failure.exception)
+                when (val failure = outcome.failure) {
+                    is ExceptionalFailure -> target.logger.warn(
+                        "Defaulting to development version: getting latest GitHub release failed: " + formatFailure(
+                            failure
+                        ), failure.exception
+                    )
+
                     else -> target.logger.warn("Defaulting to development version: getting latest GitHub release failed: " + formatFailure(failure))
                 }
                 VersionNumber.DevelopmentVersion
             }
+
             is Success -> outcome.versionNumber.increment()
         }
+
         else -> VersionNumber.fromString(versionFromEnvironment)
     }
 

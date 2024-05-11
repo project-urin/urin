@@ -74,10 +74,12 @@ class GitHubHttpTest {
     private object LatestReleaseVersionTestSuite : TestSuite<ReleaseVersionOutcome>("latest release version", publicKeyInfrastructure) {
         override val executor = { gitHubHttp: GitHubHttp, _: GitHubUploadAuthority -> gitHubHttp.latestReleaseVersion() }
         override val validResponseCode = 200
+
         @Suppress("SpellCheckingInspection")
         override val sunnyDayResponse =
             """[{"url":"https://api.github.com/repos/project-urin/urin/releases/153674301","assets_url":"https://api.github.com/repos/project-urin/urin/releases/153674301/assets","upload_url":"https://uploads.github.com/repos/project-urin/urin/releases/153674301/assets{?name,label}","html_url":"https://github.com/project-urin/urin/releases/tag/4.16","id":153674301,"author":{"login":"markslater","id":642523,"node_id":"MDQ6VXNlcjY0MjUyMw==","avatar_url":"https://avatars.githubusercontent.com/u/642523?v=4","gravatar_id":"","url":"https://api.github.com/users/markslater","html_url":"https://github.com/markslater","followers_url":"https://api.github.com/users/markslater/followers","following_url":"https://api.github.com/users/markslater/following{/other_user}","gists_url":"https://api.github.com/users/markslater/gists{/gist_id}","starred_url":"https://api.github.com/users/markslater/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/markslater/subscriptions","organizations_url":"https://api.github.com/users/markslater/orgs","repos_url":"https://api.github.com/users/markslater/repos","events_url":"https://api.github.com/users/markslater/events{/privacy}","received_events_url":"https://api.github.com/users/markslater/received_events","type":"User","site_admin":false},"node_id":"RE_kwDOLzFRO84JKOI9","tag_name":"4.16","target_commitish":"main","name":null,"draft":false,"prerelease":false,"created_at":"2024-05-01T14:29:16Z","published_at":"2024-05-01T14:40:59Z","assets":[{"url":"https://api.github.com/repos/project-urin/urin/releases/assets/165352014","id":165352014,"node_id":"RA_kwDOLzFRO84J2xJO","name":"urin-4.16.jar","label":"Jar","uploader":{"login":"markslater","id":642523,"node_id":"MDQ6VXNlcjY0MjUyMw==","avatar_url":"https://avatars.githubusercontent.com/u/642523?v=4","gravatar_id":"","url":"https://api.github.com/users/markslater","html_url":"https://github.com/markslater","followers_url":"https://api.github.com/users/markslater/followers","following_url":"https://api.github.com/users/markslater/following{/other_user}","gists_url":"https://api.github.com/users/markslater/gists{/gist_id}","starred_url":"https://api.github.com/users/markslater/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/markslater/subscriptions","organizations_url":"https://api.github.com/users/markslater/orgs","repos_url":"https://api.github.com/users/markslater/repos","events_url":"https://api.github.com/users/markslater/events{/privacy}","received_events_url":"https://api.github.com/users/markslater/received_events","type":"User","site_admin":false},"content_type":"application/java-archive","state":"uploaded","size":162044,"download_count":0,"created_at":"2024-05-01T14:41:00Z","updated_at":"2024-05-01T14:41:00Z","browser_download_url":"https://github.com/project-urin/urin/releases/download/4.16/urin-4.16.jar"},{"url":"https://api.github.com/repos/project-urin/urin/releases/assets/165352018","id":165352018,"node_id":"RA_kwDOLzFRO84J2xJS","name":"urin-small-4.16.jar","label":"Jar stripped of debug information","uploader":{"login":"markslater","id":642523,"node_id":"MDQ6VXNlcjY0MjUyMw==","avatar_url":"https://avatars.githubusercontent.com/u/642523?v=4","gravatar_id":"","url":"https://api.github.com/users/markslater","html_url":"https://github.com/markslater","followers_url":"https://api.github.com/users/markslater/followers","following_url":"https://api.github.com/users/markslater/following{/other_user}","gists_url":"https://api.github.com/users/markslater/gists{/gist_id}","starred_url":"https://api.github.com/users/markslater/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/markslater/subscriptions","organizations_url":"https://api.github.com/users/markslater/orgs","repos_url":"https://api.github.com/users/markslater/repos","events_url":"https://api.github.com/users/markslater/events{/privacy}","received_events_url":"https://api.github.com/users/markslater/received_events","type":"User","site_admin":false},"content_type":"application/java-archive","state":"uploaded","size":130743,"download_count":0,"created_at":"2024-05-01T14:41:01Z","updated_at":"2024-05-01T14:41:02Z","browser_download_url":"https://github.com/project-urin/urin/releases/download/4.16/urin-small-4.16.jar"},{"url":"https://api.github.com/repos/project-urin/urin/releases/assets/165352015","id":165352015,"node_id":"RA_kwDOLzFRO84J2xJP","name":"urin-with-source-4.16.jar","label":"Jar with source code included","uploader":{"login":"markslater","id":642523,"node_id":"MDQ6VXNlcjY0MjUyMw==","avatar_url":"https://avatars.githubusercontent.com/u/642523?v=4","gravatar_id":"","url":"https://api.github.com/users/markslater","html_url":"https://github.com/markslater","followers_url":"https://api.github.com/users/markslater/followers","following_url":"https://api.github.com/users/markslater/following{/other_user}","gists_url":"https://api.github.com/users/markslater/gists{/gist_id}","starred_url":"https://api.github.com/users/markslater/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/markslater/subscriptions","organizations_url":"https://api.github.com/users/markslater/orgs","repos_url":"https://api.github.com/users/markslater/repos","events_url":"https://api.github.com/users/markslater/events{/privacy}","received_events_url":"https://api.github.com/users/markslater/received_events","type":"User","site_admin":false},"content_type":"application/java-archive","state":"uploaded","size":219250,"download_count":0,"created_at":"2024-05-01T14:41:00Z","updated_at":"2024-05-01T14:41:01Z","browser_download_url":"https://github.com/project-urin/urin/releases/download/4.16/urin-with-source-4.16.jar"}],"tarball_url":"https://api.github.com/repos/project-urin/urin/tarball/4.16","zipball_url":"https://api.github.com/repos/project-urin/urin/zipball/4.16","body":null}]"""
-        override val sunnyDayAssertion: (outcome: ReleaseVersionOutcome) -> Unit = { it.shouldBeInstanceOf<ReleaseVersionOutcome.Success>().versionNumber shouldBe VersionNumber.ReleaseVersion.of(4, 16) }
+        override val sunnyDayAssertion: (outcome: ReleaseVersionOutcome) -> Unit =
+            { it.shouldBeInstanceOf<ReleaseVersionOutcome.Success>().versionNumber shouldBe VersionNumber.ReleaseVersion.of(4, 16) }
         override val expectedUri: (apiAuthority: Authority, uploadAuthority: Authority) -> URI = { apiAuthority, _ ->
             https(
                 apiAuthority,
@@ -85,8 +87,10 @@ class GitHubHttpTest {
                 queryParameters(queryParameter("per_page", "1"))
             ).asUri()
         }
-        override val apiRequestBodiesAssertions: (requestBodies: List<ByteArray>) -> Unit = { requestBodies -> requestBodies.shouldBeSingleton { it shouldBe byteArrayOf() } }
-        override val failureOutcomeAssertions: (outcome: ReleaseVersionOutcome) -> Failure = { outcome -> outcome.shouldBeInstanceOf<ReleaseVersionOutcome.Failure>().failure }
+        override val apiRequestBodiesAssertions: (requestBodies: List<ByteArray>) -> Unit =
+            { requestBodies -> requestBodies.shouldBeSingleton { it shouldBe byteArrayOf() } }
+        override val failureOutcomeAssertions: (outcome: ReleaseVersionOutcome) -> Failure =
+            { outcome -> outcome.shouldBeInstanceOf<ReleaseVersionOutcome.Failure>().failure }
         override val supplementaryTests = listOf(handlesUnexpectedlyShapedJsonResponse(), handlesNonJsonResponse())
     }
 
@@ -99,6 +103,7 @@ class GitHubHttpTest {
                 .release(versionNumber)
         }
         override val validResponseCode = 201
+
         @Suppress("SpellCheckingInspection")
         override val sunnyDayResponse =
             """{"url":"https://api.github.com/repos/project-urin/urin/releases/155311213","assets_url":"https://api.github.com/repos/project-urin/urin/releases/155311213/assets","upload_url":"https://uploads.github.com/repos/project-urin/urin/releases/155311213/assets{?name,label}","html_url":"https://github.com/project-urin/urin/releases/tag/4.17","id":155311213,"author":{"login":"markslater","id":642523,"node_id":"MDQ6VXNlcjY0MjUyMw==","avatar_url":"https://avatars.githubusercontent.com/u/642523?v=4","gravatar_id":"","url":"https://api.github.com/users/markslater","html_url":"https://github.com/markslater","followers_url":"https://api.github.com/users/markslater/followers","following_url":"https://api.github.com/users/markslater/following{/other_user}","gists_url":"https://api.github.com/users/markslater/gists{/gist_id}","starred_url":"https://api.github.com/users/markslater/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/markslater/subscriptions","organizations_url":"https://api.github.com/users/markslater/orgs","repos_url":"https://api.github.com/users/markslater/repos","events_url":"https://api.github.com/users/markslater/events{/privacy}","received_events_url":"https://api.github.com/users/markslater/received_events","type":"User","site_admin":false},"node_id":"RE_kwDOLzFRO84JQdxt","tag_name":"4.17","target_commitish":"main","name":null,"draft":false,"prerelease":false,"created_at":"2024-05-10T19:18:06Z","published_at":"2024-05-10T19:28:06Z","assets":[],"tarball_url":"https://api.github.com/repos/project-urin/urin/tarball/4.17","zipball_url":"https://api.github.com/repos/project-urin/urin/zipball/4.17","body":null}"""
@@ -150,6 +155,7 @@ class GitHubHttpTest {
             }
         }
         override val validResponseCode = 201
+
         @Suppress("SpellCheckingInspection")
         override val sunnyDayResponse =
             """{"url":"https://api.github.com/repos/project-urin/urin/releases/assets/167220330","id":167220330,"node_id":"RA_kwDOLzFRO84J95Rq","name":"urin-with-source-4.17.jar","label":"Jar with source code included","uploader":{"login":"markslater","id":642523,"node_id":"MDQ6VXNlcjY0MjUyMw==","avatar_url":"https://avatars.githubusercontent.com/u/642523?v=4","gravatar_id":"","url":"https://api.github.com/users/markslater","html_url":"https://github.com/markslater","followers_url":"https://api.github.com/users/markslater/followers","following_url":"https://api.github.com/users/markslater/following{/other_user}","gists_url":"https://api.github.com/users/markslater/gists{/gist_id}","starred_url":"https://api.github.com/users/markslater/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/markslater/subscriptions","organizations_url":"https://api.github.com/users/markslater/orgs","repos_url":"https://api.github.com/users/markslater/repos","events_url":"https://api.github.com/users/markslater/events{/privacy}","received_events_url":"https://api.github.com/users/markslater/received_events","type":"User","site_admin":false},"content_type":"application/java-archive","state":"uploaded","size":219250,"download_count":0,"created_at":"2024-05-10T19:28:07Z","updated_at":"2024-05-10T19:28:08Z","browser_download_url":"https://github.com/project-urin/urin/releases/download/4.17/urin-with-source-4.17.jar"}"""
@@ -226,7 +232,10 @@ class GitHubHttpTest {
                 exchange.responseBody.use { it.write(responseBodyBytes) }
             }).use { fakeServers ->
                 val recordingAuditor = RecordingAuditor<GitHubHttp.AuditEvent>()
-                val outcome = executor(GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor), GitHubUploadAuthority(fakeServers.uploadServerAuthority))
+                val outcome = executor(
+                    GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor),
+                    GitHubUploadAuthority(fakeServers.uploadServerAuthority)
+                )
                 sunnyDayAssertion(outcome)
                 recordingAuditor.auditEvents().shouldBeSingleton().forAll { element ->
                     element.shouldBeInstanceOf<RequestCompleted>().also {
@@ -255,7 +264,10 @@ class GitHubHttpTest {
                 exchange.sendResponseHeaders(validResponseCode, responseBodyBytes.size.toLong())
                 exchange.responseBody.use { it.write(responseBodyBytes) }
             }.use { fakeServers ->
-                executor(GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, {}), GitHubUploadAuthority(fakeServers.uploadServerAuthority))
+                executor(
+                    GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, {}),
+                    GitHubUploadAuthority(fakeServers.uploadServerAuthority)
+                )
                 receivedRequestHeaders
                     .forOne { (key, value) ->
                         key shouldBeEqualIgnoringCase "x-github-api-version"
@@ -273,7 +285,7 @@ class GitHubHttpTest {
             }
         }
 
-        private fun handlesUnexpectedResponseCode() : DynamicTest = dynamicTest("handles unexpected response code") {
+        private fun handlesUnexpectedResponseCode(): DynamicTest = dynamicTest("handles unexpected response code") {
             val responseCode = 403
             val responseBody = """"you're not allowed to see this""""
             val responseBodyBytes = responseBody.toByteArray(UTF_8)
@@ -282,7 +294,10 @@ class GitHubHttpTest {
                 exchange.responseBody.use { it.write(responseBodyBytes) }
             }.use { fakeServers ->
                 val recordingAuditor = RecordingAuditor<GitHubHttp.AuditEvent>()
-                val outcome = executor(GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor), GitHubUploadAuthority(fakeServers.uploadServerAuthority))
+                val outcome = executor(
+                    GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor),
+                    GitHubUploadAuthority(fakeServers.uploadServerAuthority)
+                )
 
                 val expectedRequestUri = expectedUri(fakeServers.apiServerAuthority, fakeServers.uploadServerAuthority)
 
@@ -309,14 +324,17 @@ class GitHubHttpTest {
             }
         }
 
-        private fun handlesIoExceptionProcessingResponse() : DynamicTest = dynamicTest("handles IOException processing response") {
+        private fun handlesIoExceptionProcessingResponse(): DynamicTest = dynamicTest("handles IOException processing response") {
             val responseBody = """"something short""""
             fakeServers(publicKeyInfrastructure.keyManagers) { exchange ->
                 exchange.sendResponseHeaders(validResponseCode, 1024)
                 exchange.responseBody.use { it.write(responseBody.toByteArray(UTF_8)) }
             }.use { fakeServers ->
                 val recordingAuditor = RecordingAuditor<GitHubHttp.AuditEvent>()
-                val outcome = executor(GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor), GitHubUploadAuthority(fakeServers.uploadServerAuthority))
+                val outcome = executor(
+                    GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor),
+                    GitHubUploadAuthority(fakeServers.uploadServerAuthority)
+                )
 
                 val expectedRequestUri = expectedUri(fakeServers.apiServerAuthority, fakeServers.uploadServerAuthority)
 
@@ -333,10 +351,13 @@ class GitHubHttpTest {
             }
         }
 
-        private fun handlesUnresolvableAddress() : DynamicTest = dynamicTest("handles unresolvable address") {
+        private fun handlesUnresolvableAddress(): DynamicTest = dynamicTest("handles unresolvable address") {
             val authority = authority(registeredName("something.invalid"))
             val recordingAuditor = RecordingAuditor<GitHubHttp.AuditEvent>()
-            val outcome = executor(GitHubHttp(GitHubApiAuthority(authority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor), GitHubUploadAuthority(authority))
+            val outcome = executor(
+                GitHubHttp(GitHubApiAuthority(authority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor),
+                GitHubUploadAuthority(authority)
+            )
 
             val expectedRequestUri = expectedUri(authority, authority)
 
@@ -359,7 +380,10 @@ class GitHubHttpTest {
                 exchange.responseBody.use { it.write(responseBodyBytes) }
             }.use { fakeServers ->
                 val recordingAuditor = RecordingAuditor<GitHubHttp.AuditEvent>()
-                val outcome = executor(GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), ReleaseTrustStore(emptyList()), recordingAuditor), GitHubUploadAuthority(fakeServers.uploadServerAuthority))
+                val outcome = executor(
+                    GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), ReleaseTrustStore(emptyList()), recordingAuditor),
+                    GitHubUploadAuthority(fakeServers.uploadServerAuthority)
+                )
 
                 val expectedRequestUri = expectedUri(fakeServers.apiServerAuthority, fakeServers.uploadServerAuthority)
 
@@ -547,7 +571,10 @@ class GitHubHttpTest {
                 exchange.responseBody.use { it.write(responseBodyBytes) }
             }.use { fakeServers ->
                 val recordingAuditor = RecordingAuditor<GitHubHttp.AuditEvent>()
-                val outcome = executor(GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor), GitHubUploadAuthority(fakeServers.uploadServerAuthority))
+                val outcome = executor(
+                    GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor),
+                    GitHubUploadAuthority(fakeServers.uploadServerAuthority)
+                )
 
                 val expectedRequestUri = expectedUri(fakeServers.apiServerAuthority, fakeServers.uploadServerAuthority)
 
@@ -582,7 +609,10 @@ class GitHubHttpTest {
                 exchange.responseBody.use { it.write(responseBodyBytes) }
             }.use { fakeServers ->
                 val recordingAuditor = RecordingAuditor<GitHubHttp.AuditEvent>()
-                val outcome = executor(GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor), GitHubUploadAuthority(fakeServers.uploadServerAuthority))
+                val outcome = executor(
+                    GitHubHttp(GitHubApiAuthority(fakeServers.apiServerAuthority), publicKeyInfrastructure.releaseTrustStore, recordingAuditor),
+                    GitHubUploadAuthority(fakeServers.uploadServerAuthority)
+                )
 
                 val expectedRequestUri = expectedUri(fakeServers.apiServerAuthority, fakeServers.uploadServerAuthority)
 
@@ -630,7 +660,7 @@ class GitHubHttpTest {
 
         companion object {
             fun fakeServers(keyManagers: List<KeyManager>, httpHandler: HttpHandler) = fakeServers(keyManagers, httpHandler, httpHandler)
-            fun fakeServers(keyManagers: List<KeyManager>, apiServerHttpHandler: HttpHandler, uploadServerHttpHandler: HttpHandler) : FakeServers {
+            fun fakeServers(keyManagers: List<KeyManager>, apiServerHttpHandler: HttpHandler, uploadServerHttpHandler: HttpHandler): FakeServers {
                 val fakeApiServer = fakeHttpServer(keyManagers, apiServerHttpHandler)
                 val fakeUploadServer = fakeHttpServer(keyManagers, uploadServerHttpHandler)
                 return object : FakeServers {

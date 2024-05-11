@@ -34,7 +34,7 @@ fun <T> withTimeout(timeout: Duration, block: () -> T): T {
     try {
         val future: Future<T> = executor.submit(Callable { block() })
         val startInstant = Instant.now()
-        while(startInstant.plus(timeout.toJavaDuration()) > Instant.now() && !future.isDone) {
+        while (startInstant.plus(timeout.toJavaDuration()) > Instant.now() && !future.isDone) {
             Thread.sleep(10)
         }
         return if (future.isDone) {

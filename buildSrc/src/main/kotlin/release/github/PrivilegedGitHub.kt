@@ -20,8 +20,8 @@ interface PrivilegedGitHub {
 
     data class ReleaseId(val value: String)
     sealed interface ReleaseOutcome {
-        data class Success(val releaseId: ReleaseId): ReleaseOutcome
-        data class Failure(val failure: release.github.Failure): ReleaseOutcome
+        data class Success(val releaseId: ReleaseId) : ReleaseOutcome
+        data class Failure(val failure: release.github.Failure) : ReleaseOutcome
     }
 
     sealed interface UploadArtifactOutcome {

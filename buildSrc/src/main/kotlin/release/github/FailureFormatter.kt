@@ -25,6 +25,7 @@ fun formatFailure(failure: Failure) = when (failure) {
             printWriter.println(failure.responseBody)
         }
     }.toString()
+
     is Failure.RequestSubmittingException -> "Failed submitting request to ${failure.uri} with ${failure.exception}"
     is Failure.ResponseHandlingException -> StringWriter().also {
         PrintWriter(it).use { printWriter ->
@@ -38,6 +39,7 @@ fun formatFailure(failure: Failure) = when (failure) {
             printWriter.println(failure.responseBody)
         }
     }.toString()
+
     is Failure.ConnectTimeout -> "Request to ${failure.uri} exceeded connect timeout of ${failure.connectTimeout}"
     is Failure.FirstByteTimeout -> "Request to ${failure.uri} exceeded first byte timeout of ${failure.firstByteTimeout}"
     is Failure.EndToEndTimeout -> "Request to ${failure.uri} exceeded end to end timeout of ${failure.endToEndTimeout}"

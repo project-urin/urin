@@ -16,8 +16,8 @@ interface GitHub {
     fun latestReleaseVersion(): ReleaseVersionOutcome
 
     sealed interface ReleaseVersionOutcome {
-        data class Success(val versionNumber: VersionNumber.ReleaseVersion): ReleaseVersionOutcome
-        data class Failure(val failure: release.github.Failure): ReleaseVersionOutcome
+        data class Success(val versionNumber: VersionNumber.ReleaseVersion) : ReleaseVersionOutcome
+        data class Failure(val failure: release.github.Failure) : ReleaseVersionOutcome
     }
 
 }
