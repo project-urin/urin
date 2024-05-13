@@ -18,7 +18,6 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version = "1.9.20" }
 
 [libraries]
 
-junitJupiterParams = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit" }
 commonsLang = { group = "org.apache.commons", name = "commons-lang3", version = "3.14.0" }
 hamcrest = { group = "org.hamcrest", name = "hamcrest", version = "2.2" }
 

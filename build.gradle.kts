@@ -63,7 +63,6 @@ testing {
         val test by getting(JvmTestSuite::class) {
             useJUnitJupiter(libs.versions.junit)
             dependencies {
-                implementation(libs.junitJupiterParams)
                 implementation(libs.hamcrest)
                 implementation(libs.commonsLang)
             }
