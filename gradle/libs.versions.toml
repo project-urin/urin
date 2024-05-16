@@ -19,7 +19,7 @@ kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version = "1.9.20" }
 [libraries]
 
 commonsLang = { group = "org.apache.commons", name = "commons-lang3", version = "3.14.0" }
-hamcrest = { group = "org.hamcrest", name = "hamcrest", version = "2.2" }
+hamcrest = { group = "org.hamcrest", name = "hamcrest", version = "2.3" }
 
 spotbugs = { group = "com.github.spotbugs", name = "spotbugs", version = "4.8.5" }
 
