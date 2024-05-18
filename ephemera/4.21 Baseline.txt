@@ -1,0 +1,4 @@
+Benchmark                            Mode  Cnt          Score         Error  Units
+GeneratorBenchmark.httpUriGenerate  thrpt   25     391714.146 ±   31674.845  ops/s
+ParserBenchmark.httpUriParse        thrpt   25     225219.787 ±    2936.392  ops/s
+ResolutionBenchmark.httpUriResolve  thrpt   25  404436234.570 ± 4598004.296  ops/s
