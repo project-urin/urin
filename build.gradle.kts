@@ -23,6 +23,7 @@ plugins {
     pmd
     `java-test-fixtures`
     `jvm-test-suite`
+    alias(libs.plugins.jmh)
     alias(libs.plugins.spotbugs)
     alias(libs.plugins.nexusPublish)
     alias(libs.plugins.svg2ico)
@@ -94,6 +95,11 @@ idea {
 
 modularity {
     mixedJavaRelease(8)
+}
+
+jmh {
+//    includes = listOf("Generate")
+    includeTests = false
 }
 
 pmd {
