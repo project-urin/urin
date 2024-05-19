@@ -10,10 +10,7 @@
 
 package net.sourceforge.urin;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -183,7 +180,7 @@ public abstract class Host {
             }
         }
 
-        final Deque<Elidable> result = new LinkedList<>();
+        final Deque<Elidable> result = new ArrayDeque<>(8);
         for (int i = 0; i < hexadectets.length; i++) {
             final Hexadectet hexadectet = hexadectets[i];
             if (maximumStreakLength <= 1 || i <= maximumStreakEnd - maximumStreakLength || i > maximumStreakEnd) {
