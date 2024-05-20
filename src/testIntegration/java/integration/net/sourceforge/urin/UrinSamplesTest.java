@@ -18,6 +18,7 @@ import java.util.Collections;
 import static java.util.Arrays.asList;
 import static net.sourceforge.urin.AccessBackDoors.asString;
 import static net.sourceforge.urin.AuthorityBuilder.anAuthority;
+import static net.sourceforge.urin.Fragment.STRING_FRAGMENT_MAKING_DECODER;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.PercentEncodingPartial.additionallyEncoding;
@@ -91,7 +92,7 @@ class UrinSamplesTest {
             protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
                 return anIterableOfStringsSegment(strings, percentEncodingPartial);
             }
-        }, Query.stringQueryMaker(), Fragment.stringFragmentMaker());
+        }, Query.stringQueryMaker(), STRING_FRAGMENT_MAKING_DECODER);
         assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/a!%21!c", scheme.urin(path(anIterableOfStringsSegment(asList("a", "!", "c"), percentEncodingPartial))));
     }
 
@@ -103,7 +104,7 @@ class UrinSamplesTest {
             protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
                 return anIterableOfStringsSegment(strings, percentEncodingPartial);
             }
-        }, Query.stringQueryMaker(), Fragment.stringFragmentMaker());
+        }, Query.stringQueryMaker(), STRING_FRAGMENT_MAKING_DECODER);
         final Segment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.emptyList(), percentEncodingPartial);
         assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/.//", scheme.urin(path(emptySegment, emptySegment, Segment.dotDot())));
     }

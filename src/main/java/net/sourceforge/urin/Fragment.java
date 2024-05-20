@@ -24,6 +24,16 @@ public class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
     private static final PercentEncodingPartial.PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
+    /**
+     * The {@code MakingDecoder} used by standard fragments.
+     */
+    public static final MakingDecoder<Fragment<String>, String, String> STRING_FRAGMENT_MAKING_DECODER = new MakingDecoder<Fragment<String>, String, String>(PercentEncodingPartial.noOp()) {
+        @Override
+        protected Fragment<String> makeOne(final String value) {
+            return fragment(value);
+        }
+    };
+
     private Fragment(final ENCODES fragment, final PercentEncodingPartial.PercentEncoding<ENCODES> percentEncoding) {
         super(fragment, percentEncoding);
     }
@@ -52,14 +62,11 @@ public class Fragment<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
      * Factory method for {@code MakingDecoder}s of {@code String} {@code Fragment}s
      *
      * @return a {@code MakingDecoder} of {@code String} {@code Fragment}s
+     * @deprecated use {@link Fragment#STRING_FRAGMENT_MAKING_DECODER} instead
      */
+    @Deprecated
     public static MakingDecoder<Fragment<String>, String, String> stringFragmentMaker() {
-        return new MakingDecoder<Fragment<String>, String, String>(PercentEncodingPartial.noOp()) {
-            @Override
-            protected Fragment<String> makeOne(final String value) {
-                return fragment(value);
-            }
-        };
+        return STRING_FRAGMENT_MAKING_DECODER;
     }
 
     static <FRAGMENT extends Fragment<?>> FRAGMENT parseFragment(final String fragmentString, final MakingDecoder<FRAGMENT, ?, String> fragmentMakingDecoder) throws ParseException {

@@ -13,6 +13,7 @@ package net.sourceforge.urin;
 import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.CharacterSets.QUERY_AND_FRAGMENT_CHARACTERS;
+import static net.sourceforge.urin.Fragment.STRING_FRAGMENT_MAKING_DECODER;
 import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.FragmentBuilder.aFragment;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
@@ -34,7 +35,7 @@ class FragmentTest {
     @Test
     void roundTripsAString() throws Exception {
         final Fragment<String> fragment = aFragment();
-        assertThat(Fragment.parseFragment(fragment.asString(), Fragment.stringFragmentMaker()), equalTo(fragment));
+        assertThat(Fragment.parseFragment(fragment.asString(), STRING_FRAGMENT_MAKING_DECODER), equalTo(fragment));
     }
 
     @Test
