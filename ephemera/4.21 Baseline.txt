@@ -26,3 +26,11 @@ Benchmark                            Mode  Cnt          Score         Error  Uni
 GeneratorBenchmark.httpUriGenerate  thrpt   25     394719.692 ±    4151.763  ops/s
 ParserBenchmark.httpUriParse        thrpt   25     219380.249 ±    1991.264  ops/s
 ResolutionBenchmark.httpUriResolve  thrpt   25  389766864.359 ± 4141105.501  ops/s
+
+
+Make implementations of dot and dotDot static nested classes, rather than anonymous classes for better stack traces and better equals methods.
+
+Benchmark                            Mode  Cnt          Score         Error  Units
+GeneratorBenchmark.httpUriGenerate  thrpt   25     393147.661 ±    3841.899  ops/s
+ParserBenchmark.httpUriParse        thrpt   25     219745.883 ±    1913.069  ops/s
+ResolutionBenchmark.httpUriResolve  thrpt   25  391611859.130 ± 4007774.615  ops/s

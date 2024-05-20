@@ -56,48 +56,7 @@ public abstract class Segment<ENCODES> {
      * @return The segment "{@code .}", referring to the current location in the path name hierarchy
      */
     public static <ENCODES> Segment<ENCODES> dot() {
-        return new Segment<ENCODES>() {
-            @Override
-            public boolean hasValue() {
-                return false;
-            }
-
-            @Override
-            public ENCODES value() {
-                throw new UnsupportedOperationException("Attempt to get value of . segment");
-            }
-
-            @Override
-            List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
-                return singletonList(next);
-            }
-
-            @Override
-            String asString() {
-                return ".";
-            }
-
-            @Override
-            boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean equals(final Object object) {
-                return this == object || !(object == null || getClass() != object.getClass());
-            }
-
-            @Override
-            public int hashCode() {
-                return 37;
-            }
-
-            @Override
-            public String toString() {
-                return "Segment{.}";
-            }
-
-        };
+        return new DotSegment<>();
     }
 
     /**
@@ -107,48 +66,7 @@ public abstract class Segment<ENCODES> {
      * @return The segment "{@code ..}", referring to the current location in the path name hierarchy
      */
     public static <ENCODES> Segment<ENCODES> dotDot() {
-        return new Segment<ENCODES>() {
-            @Override
-            public boolean hasValue() {
-                return false;
-            }
-
-            @Override
-            public ENCODES value() {
-                throw new UnsupportedOperationException("Attempt to get value of .. segment");
-            }
-
-            @Override
-            List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
-                return asList(this, next);
-            }
-
-            @Override
-            String asString() {
-                return "..";
-            }
-
-            @Override
-            boolean isEmpty() {
-                return false;
-            }
-
-            @Override
-            public boolean equals(final Object object) {
-                return this == object || !(object == null || getClass() != object.getClass());
-            }
-
-            @Override
-            public int hashCode() {
-                return 17;
-            }
-
-            @Override
-            public String toString() {
-                return "Segment{..}";
-            }
-
-        };
+        return new DotDotSegment<>();
     }
 
     /**
@@ -171,7 +89,7 @@ public abstract class Segment<ENCODES> {
 
             @Override
             List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
-                if (dotDot().equals(next)) {
+                if (next instanceof DotDotSegment) {
                     return singletonList(dot());
                 } else {
                     return asList(this, next);
@@ -294,7 +212,7 @@ public abstract class Segment<ENCODES> {
 
         @Override
         List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
-            if (dotDot().equals(next)) {
+            if (next instanceof DotDotSegment) {
                 return singletonList(dot());
             } else {
                 return asList(this, next);
@@ -339,5 +257,91 @@ public abstract class Segment<ENCODES> {
         SegmentEncodingUnaryValue(final ENCODES value, final PercentEncodingPartial.PercentEncoding<ENCODES> percentEncoding) {
             super(value, percentEncoding);
         }
+    }
+
+    private static final class DotSegment<ENCODES> extends Segment<ENCODES> {
+        @Override
+        public boolean hasValue() {
+            return false;
+        }
+
+        @Override
+        public ENCODES value() {
+            throw new UnsupportedOperationException("Attempt to get value of . segment");
+        }
+
+        @Override
+        List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
+            return singletonList(next);
+        }
+
+        @Override
+        String asString() {
+            return ".";
+        }
+
+        @Override
+        boolean isEmpty() {
+            return false;
+        }
+
+        @Override
+        public boolean equals(final Object that) {
+            return this == that || !(that == null || getClass() != that.getClass());
+        }
+
+        @Override
+        public int hashCode() {
+            return 37;
+        }
+
+        @Override
+        public String toString() {
+            return "Segment{.}";
+        }
+
+    }
+
+    private static final class DotDotSegment<ENCODES> extends Segment<ENCODES> {
+        @Override
+        public boolean hasValue() {
+            return false;
+        }
+
+        @Override
+        public ENCODES value() {
+            throw new UnsupportedOperationException("Attempt to get value of .. segment");
+        }
+
+        @Override
+        List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
+            return asList(this, next);
+        }
+
+        @Override
+        String asString() {
+            return "..";
+        }
+
+        @Override
+        boolean isEmpty() {
+            return false;
+        }
+
+        @Override
+        public boolean equals(final Object object) {
+            return this == object || !(object == null || getClass() != object.getClass());
+        }
+
+        @Override
+        public int hashCode() {
+            return 17;
+        }
+
+        @Override
+        public String toString() {
+            return "Segment{..}";
+        }
+
     }
 }
