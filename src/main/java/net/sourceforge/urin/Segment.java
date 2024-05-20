@@ -32,10 +32,11 @@ import static net.sourceforge.urin.PercentEncodingPartial.PercentEncoding.specif
  */
 public abstract class Segment<ENCODES> {
 
+    private static final PercentEncodingPartial<String, String> NO_OP_PERCENT_ENCODING_PARTIAL = PercentEncodingPartial.noOp();
     /**
      * The {@code MakingDecoder} used by standard segments.
      */
-    public static final MakingDecoder<Segment<String>, String, String> STRING_SEGMENT_MAKING_DECODER = new MakingDecoder<Segment<String>, String, String>(PercentEncodingPartial.noOp()) {
+    public static final MakingDecoder<Segment<String>, String, String> STRING_SEGMENT_MAKING_DECODER = new MakingDecoder<Segment<String>, String, String>(NO_OP_PERCENT_ENCODING_PARTIAL) {
         @Override
         protected Segment<String> makeOne(final String value) {
             return segment(value);
@@ -212,7 +213,7 @@ public abstract class Segment<ENCODES> {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment<String> segment(final String segment) {
-        return segment(segment, PercentEncodingPartial.noOp());
+        return segment(segment, NO_OP_PERCENT_ENCODING_PARTIAL);
     }
 
     /**
