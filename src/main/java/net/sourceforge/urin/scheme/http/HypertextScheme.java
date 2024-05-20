@@ -15,11 +15,12 @@ import net.sourceforge.urin.*;
 import java.net.URI;
 
 import static net.sourceforge.urin.Fragment.stringFragmentMaker;
-import static net.sourceforge.urin.scheme.http.HttpQuery.httpQueryMakingDecoder;
+import static net.sourceforge.urin.Segment.STRING_SEGMENT_MAKING_DECODER;
+import static net.sourceforge.urin.scheme.http.HttpQuery.HTTP_QUERY_MAKING_DECODER;
 
 public abstract class HypertextScheme extends SchemeWithDefaultPort<String, HttpQuery, Fragment<String>> {
     HypertextScheme(final String name, final Port defaultPort) {
-        super(name, defaultPort, Segment.STRING_SEGMENT_MAKING_DECODER, httpQueryMakingDecoder(), stringFragmentMaker());
+        super(name, defaultPort, STRING_SEGMENT_MAKING_DECODER, HTTP_QUERY_MAKING_DECODER, stringFragmentMaker());
     }
 
     public static Urin<String, HttpQuery, Fragment<String>> parseHttpUrin(final URI uri) throws ParseException {

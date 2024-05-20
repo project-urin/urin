@@ -33,6 +33,17 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
                             percentEncodedQueryParameter(PercentEncodingPartial.percentEncodingDelimitedValue(
                                     '=',
                                     PercentEncodingPartial.percentEncodingSubstitutedValue(' ', '+'))))));
+
+    /**
+     * The {@code MakingDecoder} used by HTTP queries.
+     */
+    public static final MakingDecoder<HttpQuery, Iterable<QueryParameter>, String> HTTP_QUERY_MAKING_DECODER = new MakingDecoder<HttpQuery, Iterable<QueryParameter>, String>(HTTP_QUERY_PERCENT_ENCODING_PARTIAL) {
+        @Override
+        protected HttpQuery makeOne(final Iterable<QueryParameter> queryParameters) {
+            return new HttpQuery(queryParameters);
+        }
+    };
+
     private static final QueryParameter VALUELESS_EMPTY_NAMED_QUERY_PARAMETER = queryParameter("");
 
     private HttpQuery(final Iterable<QueryParameter> queryParameters) {
@@ -43,14 +54,11 @@ public final class HttpQuery extends Query<Iterable<HttpQuery.QueryParameter>> i
      * Factory method for {@code MakingDecoder}s of {@code HttpQuery}s
      *
      * @return a {@code MakingDecoder} of {@code String} {@code HttpQuery}s
+     * @deprecated use {@link HttpQuery#HTTP_QUERY_MAKING_DECODER} instead
      */
+    @Deprecated
     public static MakingDecoder<HttpQuery, Iterable<QueryParameter>, String> httpQueryMakingDecoder() {
-        return new MakingDecoder<HttpQuery, Iterable<QueryParameter>, String>(HTTP_QUERY_PERCENT_ENCODING_PARTIAL) {
-            @Override
-            protected HttpQuery makeOne(final Iterable<QueryParameter> queryParameters) {
-                return new HttpQuery(queryParameters);
-            }
-        };
+        return HTTP_QUERY_MAKING_DECODER;
     }
 
     private static List<QueryParameter> requireNonNullElements(final Iterable<QueryParameter> queryParameters) {
