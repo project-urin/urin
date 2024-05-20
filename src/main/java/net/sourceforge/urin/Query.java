@@ -24,6 +24,16 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
 
     private static final PercentEncodingPartial.PercentEncoding<String> PERCENT_ENCODING = percentEncodingString(new PercentEncoder(QUERY_AND_FRAGMENT_NON_PERCENT_ENCODED_CHARACTERS));
 
+    /**
+     * The {@code MakingDecoder} used by standard queries.
+     */
+    public static final MakingDecoder<Query<String>, String, String> STRING_QUERY_MAKING_DECODER = new MakingDecoder<Query<String>, String, String>(PercentEncodingPartial.noOp()) {
+        @Override
+        protected Query<String> makeOne(final String value) {
+            return query(value);
+        }
+    };
+
     private Query(final ENCODES value, final PercentEncodingPartial.PercentEncoding<ENCODES> percentEncoding) {
         super(value, percentEncoding);
     }
@@ -49,17 +59,14 @@ public class Query<ENCODES> extends PercentEncodingUnaryValue<ENCODES> {
     }
 
     /**
-     * Factory method for {@code MakingDecoder}s of {@code String} {@code Query}s
+     * Factory method for {@code MakingDecoder}s of {@code String} {@code Query}s.
      *
-     * @return a {@code MakingDecoder} of {@code String} {@code Query}s
+     * @return a {@code MakingDecoder} of {@code String} {@code Query}s.
+     * @deprecated use {@link Query#STRING_QUERY_MAKING_DECODER} instead.
      */
+    @Deprecated
     public static MakingDecoder<Query<String>, String, String> stringQueryMaker() {
-        return new MakingDecoder<Query<String>, String, String>(PercentEncodingPartial.noOp()) {
-            @Override
-            protected Query<String> makeOne(final String value) {
-                return query(value);
-            }
-        };
+        return STRING_QUERY_MAKING_DECODER;
     }
 
     static <QUERY extends Query<?>> QUERY parseQuery(final String queryString, final MakingDecoder<QUERY, ?, String> queryMakingDecoder) throws ParseException {

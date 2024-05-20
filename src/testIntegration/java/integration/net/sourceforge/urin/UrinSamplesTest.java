@@ -23,6 +23,7 @@ import static net.sourceforge.urin.Fragment.fragment;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.PercentEncodingPartial.additionallyEncoding;
 import static net.sourceforge.urin.PercentEncodingPartial.noOp;
+import static net.sourceforge.urin.Query.STRING_QUERY_MAKING_DECODER;
 import static net.sourceforge.urin.Query.query;
 import static net.sourceforge.urin.SchemeBuilder.aScheme;
 import static net.sourceforge.urin.Segment.segment;
@@ -92,7 +93,7 @@ class UrinSamplesTest {
             protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
                 return anIterableOfStringsSegment(strings, percentEncodingPartial);
             }
-        }, Query.stringQueryMaker(), STRING_FRAGMENT_MAKING_DECODER);
+        }, STRING_QUERY_MAKING_DECODER, STRING_FRAGMENT_MAKING_DECODER);
         assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/a!%21!c", scheme.urin(path(anIterableOfStringsSegment(asList("a", "!", "c"), percentEncodingPartial))));
     }
 
@@ -104,7 +105,7 @@ class UrinSamplesTest {
             protected Segment<Iterable<String>> makeOne(final Iterable<String> strings) {
                 return anIterableOfStringsSegment(strings, percentEncodingPartial);
             }
-        }, Query.stringQueryMaker(), STRING_FRAGMENT_MAKING_DECODER);
+        }, STRING_QUERY_MAKING_DECODER, STRING_FRAGMENT_MAKING_DECODER);
         final Segment<Iterable<String>> emptySegment = anIterableOfStringsSegment(Collections.emptyList(), percentEncodingPartial);
         assertAsStringAsUriAndParse(scheme, asString(scheme) + ":/.//", scheme.urin(path(emptySegment, emptySegment, Segment.dotDot())));
     }
@@ -112,7 +113,7 @@ class UrinSamplesTest {
     @Test
     void canMakeAUrinWithSubencodedFragment() throws Exception {
         final PercentEncodingPartial<Iterable<String>, String> percentEncodingPartial = PercentEncodingPartial.percentEncodingDelimitedValue('!');
-        final Scheme<String, Query<String>, MyFragment> scheme = new Scheme.GenericScheme<>("xyz", Segment.STRING_SEGMENT_MAKING_DECODER, Query.stringQueryMaker(), new MakingDecoder<>(percentEncodingPartial) {
+        final Scheme<String, Query<String>, MyFragment> scheme = new Scheme.GenericScheme<>("xyz", Segment.STRING_SEGMENT_MAKING_DECODER, STRING_QUERY_MAKING_DECODER, new MakingDecoder<>(percentEncodingPartial) {
             @Override
             protected MyFragment makeOne(final Iterable<String> strings) {
                 return new MyFragment(strings, percentEncodingPartial);

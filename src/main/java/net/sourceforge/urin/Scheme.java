@@ -21,7 +21,7 @@ import static net.sourceforge.urin.ExceptionFactory.ILLEGAL_ARGUMENT_EXCEPTION_E
 import static net.sourceforge.urin.ExceptionFactory.PARSE_EXCEPTION_EXCEPTION_FACTORY;
 import static net.sourceforge.urin.Fragment.STRING_FRAGMENT_MAKING_DECODER;
 import static net.sourceforge.urin.Path.PrefixWithDotSegmentCriteria.*;
-import static net.sourceforge.urin.Query.stringQueryMaker;
+import static net.sourceforge.urin.Query.STRING_QUERY_MAKING_DECODER;
 import static net.sourceforge.urin.Segment.STRING_SEGMENT_MAKING_DECODER;
 
 /**
@@ -73,7 +73,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
      */
     public static Scheme<String, Query<String>, Fragment<String>> scheme(final String name) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new GenericScheme<>(name.toLowerCase(ENGLISH), STRING_SEGMENT_MAKING_DECODER, stringQueryMaker(), STRING_FRAGMENT_MAKING_DECODER);
+        return new GenericScheme<>(name.toLowerCase(ENGLISH), STRING_SEGMENT_MAKING_DECODER, STRING_QUERY_MAKING_DECODER, STRING_FRAGMENT_MAKING_DECODER);
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
      */
     public static Scheme<String, Query<String>, Fragment<String>> scheme(final String name, final Port defaultPort) {
         verify(name, ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY);
-        return new SchemeWithDefaultPort<>(name.toLowerCase(ENGLISH), defaultPort, STRING_SEGMENT_MAKING_DECODER, stringQueryMaker(), STRING_FRAGMENT_MAKING_DECODER);
+        return new SchemeWithDefaultPort<>(name.toLowerCase(ENGLISH), defaultPort, STRING_SEGMENT_MAKING_DECODER, STRING_QUERY_MAKING_DECODER, STRING_FRAGMENT_MAKING_DECODER);
     }
 
     private static <T extends Exception> void verify(final String name, final ExceptionFactory<T> exceptionFactory) throws T {

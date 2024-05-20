@@ -13,6 +13,7 @@ package net.sourceforge.urin;
 import org.junit.jupiter.api.Test;
 
 import static net.sourceforge.urin.CharacterSets.QUERY_AND_FRAGMENT_CHARACTERS;
+import static net.sourceforge.urin.Query.STRING_QUERY_MAKING_DECODER;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -30,12 +31,12 @@ class QueryTest {
 
     @Test
     void parsesUnreservedCharacters() throws Exception {
-        assertThat(Query.parseQuery(QUERY_AND_FRAGMENT_CHARACTERS, Query.stringQueryMaker()), equalTo(Query.query(QUERY_AND_FRAGMENT_CHARACTERS)));
+        assertThat(Query.parseQuery(QUERY_AND_FRAGMENT_CHARACTERS, STRING_QUERY_MAKING_DECODER), equalTo(Query.query(QUERY_AND_FRAGMENT_CHARACTERS)));
     }
 
     @Test
     void parsesNonUnreservedCharacters() throws Exception {
-        assertThat(Query.parseQuery(".%23.%5B.%5D.%20.", Query.stringQueryMaker()), equalTo(Query.query(".#.[.]. .")));
+        assertThat(Query.parseQuery(".%23.%5B.%5D.%20.", STRING_QUERY_MAKING_DECODER), equalTo(Query.query(".#.[.]. .")));
     }
 
 }
