@@ -10,3 +10,11 @@ Benchmark                            Mode  Cnt          Score         Error  Uni
 GeneratorBenchmark.httpUriGenerate  thrpt   25     398524.056 ±    2851.420  ops/s
 ParserBenchmark.httpUriParse        thrpt   25     223763.643 ±    2419.498  ops/s
 ResolutionBenchmark.httpUriResolve  thrpt   25  397494357.750 ± 4068592.868  ops/s
+
+
+Use single instance of PercentEncoder for String segments.
+
+Benchmark                            Mode  Cnt          Score         Error  Units
+GeneratorBenchmark.httpUriGenerate  thrpt   25     397001.605 ±    2747.832  ops/s
+ParserBenchmark.httpUriParse        thrpt   25     221803.250 ±    2957.510  ops/s
+ResolutionBenchmark.httpUriResolve  thrpt   25  393965882.659 ± 5233311.180  ops/s

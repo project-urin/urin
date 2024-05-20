@@ -213,7 +213,7 @@ public abstract class Segment<ENCODES> {
      * @return a {@code Segment} representing the given {@code String}.
      */
     public static Segment<String> segment(final String segment) {
-        return segment(segment, NO_OP_PERCENT_ENCODING_PARTIAL);
+        return segment(segment, PERCENT_ENCODING);
     }
 
     /**
@@ -225,8 +225,12 @@ public abstract class Segment<ENCODES> {
      * @return a {@code Segment} representing the given {@code Object}.
      */
     public static <T> Segment<T> segment(final T segment, final PercentEncodingPartial<T, String> percentEncodingPartial) {
-        final ValueSegment<T> result = new ValueSegment<>(segment, percentEncodingPartial);
-        return result.isEmpty() ? empty() : result; // TODO I think this is unhelpful except for a trailing segment as e.g. .//b/c is hard to get values from
+        return segment(segment, percentEncodingPartial.apply(PERCENT_ENCODING));
+    }
+
+    private static <T> Segment<T> segment(final T segment, final PercentEncodingPartial.PercentEncoding<T> percentEncoding) {
+        final ValueSegment<T> result = new ValueSegment<>(segment, percentEncoding);
+        return result.isEmpty() ? empty() : result;
     }
 
     static <SEGMENT> Segment<SEGMENT> parse(final String encodedSegment, final MakingDecoder<Segment<SEGMENT>, ?, String> segmentMakingDecoder) throws ParseException {
@@ -274,9 +278,8 @@ public abstract class Segment<ENCODES> {
     private static final class ValueSegment<ENCODES> extends Segment<ENCODES> { // TODO could this extend empty?  Or a common superclass?  They share an implementation of incorporate
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
-        private ValueSegment(final ENCODES value, final PercentEncodingPartial<ENCODES, String> percentEncodingPartial) {
-            final PercentEncodingPartial.PercentEncoding<ENCODES> apply = percentEncodingPartial.apply(PERCENT_ENCODING);
-            this.delegate = new SegmentEncodingUnaryValue<>(value, apply);
+        private ValueSegment(final ENCODES value, final PercentEncodingPartial.PercentEncoding<ENCODES> percentEncoding) {
+            this.delegate = new SegmentEncodingUnaryValue<>(value, percentEncoding);
         }
 
         @Override
