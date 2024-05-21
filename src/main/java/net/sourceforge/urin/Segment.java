@@ -69,6 +69,17 @@ public abstract class Segment<ENCODES> {
         return new DotDotSegment<>();
     }
 
+    private static abstract class RegularSegment<ENCODES> extends Segment<ENCODES> {
+        @Override
+        final List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
+            if (next instanceof DotDotSegment) {
+                return singletonList(dot());
+            } else {
+                return asList(this, next);
+            }
+        }
+    }
+
     /**
      * An empty segment - one that is encoded as "" in a URI.
      *
@@ -76,7 +87,7 @@ public abstract class Segment<ENCODES> {
      * @return The empty segment - one that is encoded as "" in a URI
      */
     public static <ENCODES> Segment<ENCODES> empty() {
-        return new Segment<ENCODES>() {
+        return new RegularSegment<ENCODES>() {
             @Override
             public boolean hasValue() {
                 return false;
@@ -85,15 +96,6 @@ public abstract class Segment<ENCODES> {
             @Override
             public ENCODES value() {
                 throw new UnsupportedOperationException("Attempt to get value of empty segment");
-            }
-
-            @Override
-            List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
-                if (next instanceof DotDotSegment) {
-                    return singletonList(dot());
-                } else {
-                    return asList(this, next);
-                }
             }
 
             @Override
@@ -193,7 +195,7 @@ public abstract class Segment<ENCODES> {
 
     abstract List<Segment<ENCODES>> incorporate(Segment<ENCODES> next);
 
-    private static final class ValueSegment<ENCODES> extends Segment<ENCODES> { // TODO could this extend empty?  Or a common superclass?  They share an implementation of incorporate
+    private static final class ValueSegment<ENCODES> extends RegularSegment<ENCODES> {
         private final PercentEncodingUnaryValue<ENCODES> delegate;
 
         private ValueSegment(final ENCODES value, final PercentEncodingPartial.PercentEncoding<ENCODES> percentEncoding) {
@@ -208,15 +210,6 @@ public abstract class Segment<ENCODES> {
         @Override
         public ENCODES value() {
             return delegate.value;
-        }
-
-        @Override
-        List<Segment<ENCODES>> incorporate(final Segment<ENCODES> next) {
-            if (next instanceof DotDotSegment) {
-                return singletonList(dot());
-            } else {
-                return asList(this, next);
-            }
         }
 
         @Override
