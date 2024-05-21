@@ -95,7 +95,7 @@ public abstract class Segment<ENCODES> {
 
             @Override
             public ENCODES value() {
-                throw new UnsupportedOperationException("Attempt to get value of empty segment");
+                throw new UnsupportedOperationException("Attempt to get value of empty segment"); // This is because we need to be able to make empty segments during normalisation, where we don't know how to make an empty instance of ENCODES
             }
 
             @Override
