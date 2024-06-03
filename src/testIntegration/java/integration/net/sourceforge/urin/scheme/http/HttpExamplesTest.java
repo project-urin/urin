@@ -38,6 +38,7 @@ class HttpExamplesTest {
     }
 
     @Test
+    @SuppressWarnings("PMD.UnnecessaryVarargsArrayCreation")
     void aUrinWithEmptyVarargsHttpParametersHasEmptyQueryPart() {
         //noinspection RedundantArrayCreation
         final Urin<String, HttpQuery, Fragment<String>> uriWithEmptyParameters = http(
