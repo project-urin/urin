@@ -275,7 +275,10 @@ public abstract class Host {
         private static final PercentEncoder PERCENT_ENCODER = new PercentEncoder(REGISTERED_NAME_CHARACTER_SET);
         private final String registeredName;
 
-        RegisteredName(final String registeredName) { // TODO determine whether empty String is a valid registered name
+        RegisteredName(final String registeredName) {
+            if (registeredName.isEmpty()) {
+                System.out.println("empty");
+            }
             this.registeredName = registeredName.toLowerCase(Locale.ROOT);
         }
 
