@@ -108,14 +108,5 @@ final class PercentEncoder {
         return result.toString();
     }
 
-    boolean isMember(final String string) { // TODO delete this
-        try {
-            decode(string);
-            return true;
-        } catch (final ParseException e) {
-            return false;
-        }
-    }
-
 
 }

@@ -289,14 +289,6 @@ public abstract class Host {
             return AugmentedOptional.of(new RegisteredName(decode));
         }
 
-        /**
-         * @deprecated this was inadvertently public
-         */
-        @Deprecated
-        public static boolean isValid(final String hostString) { // TODO delete this
-            return PERCENT_ENCODER.isMember(hostString);
-        }
-
         @Override
         String asString() {
             return PERCENT_ENCODER.encode(registeredName);
