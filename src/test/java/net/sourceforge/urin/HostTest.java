@@ -57,6 +57,11 @@ class HostTest {
     }
 
     @Test
+    void registeredNameLowerCasesNonAsciiUpperCaseNames() {
+        assertThat(registeredName("ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝ").asString(), equalTo("%C3%A0%C3%A1%C3%A2%C3%A3%C3%A4%C3%A5%C3%A6%C3%A7%C3%A8%C3%A9%C3%AA%C3%AB%C3%AC%C3%AD%C3%AE%C3%AF%C3%B0%C3%B1%C3%B2%C3%B3%C3%B4%C3%B5%C3%B6%C3%B8%C3%B9%C3%BA%C3%BB%C3%BC%C3%BD"));
+    }
+
+    @Test
     void registeredNameAsStringPercentEncodesNonUnreservedCharacters() {
         assertThat(registeredName(".:.@.#.[.]. .?.").asString(), equalTo(".%3A.%40.%23.%5B.%5D.%20.%3F."));
     }

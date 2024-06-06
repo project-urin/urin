@@ -276,7 +276,7 @@ public abstract class Host {
         private final String registeredName;
 
         RegisteredName(final String registeredName) { // TODO determine whether empty String is a valid registered name
-            this.registeredName = registeredName.toLowerCase(ENGLISH); // TODO determine what 'case insensitive means in the RFC w.r.t non-English characters
+            this.registeredName = registeredName.toLowerCase(Locale.ROOT);
         }
 
         static AugmentedOptional<RegisteredName> parses(final String hostString) {
