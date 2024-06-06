@@ -276,9 +276,6 @@ public abstract class Host {
         private final String registeredName;
 
         RegisteredName(final String registeredName) {
-            if (registeredName.isEmpty()) {
-                System.out.println("empty");
-            }
             this.registeredName = registeredName.toLowerCase(Locale.ROOT);
         }
 
