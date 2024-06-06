@@ -364,7 +364,8 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithPathIsNotEqualToAnotherWithTheADifferentPath() {
-        assertThat(aScheme().relativeReference(aPath()), not(equalTo(aScheme().relativeReference(aPath()))));
+        final Path<String> path = aPath();
+        assertThat(aScheme().relativeReference(path), not(equalTo(aScheme().relativeReference(aDifferentPathTo(path)))));
     }
 
     @Test
@@ -402,7 +403,7 @@ class RelativeReferenceTest {
         final Authority baseAuthority = anAuthority();
         final AbsolutePath<String> basePath = anAbsolutePath();
         final Query<String> baseQuery = aQuery();
-        final Path<String> relativeReferencePath = aPath();
+        final Path<String> relativeReferencePath = aNonEmptyPath();
         assertThat(
                 aScheme().relativeReference(relativeReferencePath).resolve(baseScheme, baseAuthority, basePath, baseQuery),
                 equalTo(baseScheme.urin(baseAuthority, (AbsolutePath<String>) relativeReferencePath.resolveRelativeTo(basePath))));
@@ -415,7 +416,7 @@ class RelativeReferenceTest {
         final AbsolutePath<String> basePath = anAbsolutePath();
         final Query<String> baseQuery = aQuery();
         final Fragment<String> baseFragment = aFragment();
-        final Path<String> relativeReferencePath = aPath();
+        final Path<String> relativeReferencePath = aNonEmptyPath();
         assertThat(
                 aScheme().relativeReference(relativeReferencePath).resolve(baseScheme, baseAuthority, basePath, baseQuery, baseFragment),
                 equalTo(baseScheme.urin(baseAuthority, (AbsolutePath<String>) relativeReferencePath.resolveRelativeTo(basePath))));
@@ -472,8 +473,9 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithPathAndQueryIsNotEqualToAnotherWithTheADifferentPath() {
+        final Path<String> path = aPath();
         final Query<String> query = aQuery();
-        assertThat(aScheme().relativeReference(aPath(), query), not(equalTo(aScheme().relativeReference(aPath(), query))));
+        assertThat(aScheme().relativeReference(path, query), not(equalTo(aScheme().relativeReference(aDifferentPathTo(path), query))));
     }
 
     @Test
@@ -535,7 +537,7 @@ class RelativeReferenceTest {
         final AbsolutePath<String> basePath = anAbsolutePath();
         final Query<String> baseQuery = aQuery();
         final Fragment<String> baseFragment = aFragment();
-        final Path<String> relativeReferencePath = aPath();
+        final Path<String> relativeReferencePath = aNonEmptyPath();
         final Query<String> relativeReferenceQuery = aQuery();
         assertThat(
                 aScheme().relativeReference(relativeReferencePath, relativeReferenceQuery).resolve(baseScheme, baseAuthority, basePath, baseQuery, baseFragment),
@@ -592,8 +594,9 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithPathAndFragmentIsNotEqualToAnotherWithTheADifferentPath() {
+        final Path<String> path = aPath();
         final Fragment<String> fragment = aFragment();
-        assertThat(aScheme().relativeReference(aPath(), fragment), not(equalTo(aScheme().relativeReference(aPath(), fragment))));
+        assertThat(aScheme().relativeReference(path, fragment), not(equalTo(aScheme().relativeReference(aDifferentPathTo(path), fragment))));
     }
 
     @Test
@@ -641,7 +644,7 @@ class RelativeReferenceTest {
         final Authority baseAuthority = anAuthority();
         final AbsolutePath<String> basePath = anAbsolutePath();
         final Query<String> baseQuery = aQuery();
-        final Path<String> relativeReferencePath = aPath();
+        final Path<String> relativeReferencePath = aNonEmptyPath();
         final Fragment<String> relativeReferenceFragment = aFragment();
         assertThat(
                 aScheme().relativeReference(relativeReferencePath, relativeReferenceFragment).resolve(baseScheme, baseAuthority, basePath, baseQuery),
@@ -655,7 +658,7 @@ class RelativeReferenceTest {
         final AbsolutePath<String> basePath = anAbsolutePath();
         final Query<String> baseQuery = aQuery();
         final Fragment<String> baseFragment = aFragment();
-        final Path<String> relativeReferencePath = aPath();
+        final Path<String> relativeReferencePath = aNonEmptyPath();
         final Fragment<String> relativeReferenceFragment = aFragment();
         assertThat(
                 aScheme().relativeReference(relativeReferencePath, relativeReferenceFragment).resolve(baseScheme, baseAuthority, basePath, baseQuery, baseFragment),
@@ -718,9 +721,10 @@ class RelativeReferenceTest {
 
     @Test
     void aRelativeReferenceWithPathAndQueryAndFragmentIsNotEqualToAnotherWithTheADifferentPath() {
+        final Path<String> path = aPath();
         final Query<String> query = aQuery();
         final Fragment<String> fragment = aFragment();
-        assertThat(aScheme().relativeReference(aPath(), query, fragment), not(equalTo(aScheme().relativeReference(aPath(), query, fragment))));
+        assertThat(aScheme().relativeReference(path, query, fragment), not(equalTo(aScheme().relativeReference(aDifferentPathTo(path), query, fragment))));
     }
 
     @Test
@@ -836,7 +840,8 @@ class RelativeReferenceTest {
 
     @Test
     void aSimpleAbsolutePathIsNotEqualToAnotherWithTheADifferentPath() {
-        assertThat(aScheme().relativeReference(aPath()), not(equalTo(aScheme().relativeReference(aPath()))));
+        final Path<String> path = aPath();
+        assertThat(aScheme().relativeReference(path), not(equalTo(aScheme().relativeReference(aDifferentPathTo(path)))));
     }
 
     @Test
@@ -918,7 +923,8 @@ class RelativeReferenceTest {
 
     @Test
     void aSimpleRootlessPathIsNotEqualToAnotherWithTheADifferentPath() {
-        assertThat(aScheme().relativeReference(aPath()), not(equalTo(aScheme().relativeReference(aPath()))));
+        final Path<String> path = aPath();
+        assertThat(aScheme().relativeReference(path), not(equalTo(aScheme().relativeReference(aDifferentPathTo(path)))));
     }
 
     @Test
@@ -977,7 +983,7 @@ class RelativeReferenceTest {
         final Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         final Authority baseAuthority = anAuthority();
         final AbsolutePath<String> basePath = anAbsolutePath();
-        final Path<String> relativeReferencePath = aPath();
+        final Path<String> relativeReferencePath = aNonEmptyPath();
         final Query<String> baseQuery = aQuery();
         assertThat(
                 aScheme().relativeReference(relativeReferencePath).resolve(baseScheme, baseAuthority, basePath, baseQuery),
@@ -989,7 +995,7 @@ class RelativeReferenceTest {
         final Scheme<String, Query<String>, Fragment<String>> baseScheme = aScheme();
         final Authority baseAuthority = anAuthority();
         final AbsolutePath<String> basePath = anAbsolutePath();
-        final Path<String> relativeReferencePath = aPath();
+        final Path<String> relativeReferencePath = aNonEmptyPath();
         final Query<String> baseQuery = aQuery();
         final Fragment<String> baseFragment = aFragment();
         assertThat(

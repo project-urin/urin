@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 import static java.util.stream.Collectors.toList;
 import static net.sourceforge.urin.Path.path;
 import static net.sourceforge.urin.Path.rootlessPath;
-import static net.sourceforge.urin.SegmentBuilder.aNonDotSegment;
+import static net.sourceforge.urin.SegmentBuilder.aSegment;
 
 public final class PathBuilder {
 
@@ -26,18 +26,18 @@ public final class PathBuilder {
             PathBuilder::anUnpollutedRootlessPath
     );
     private static final RandomSupplierSwitcher<AbsolutePath<String>> ABSOLUTE_PATH_RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            () -> path(aNonDotSegment()), // TODO wha?!
-            () -> path(aNonDotSegment(), aNonDotSegment()),
-            () -> path(aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
-            () -> path(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
-            () -> path(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment())
+            () -> path(aSegment()),
+            () -> path(aSegment(), aSegment()),
+            () -> path(aSegment(), aSegment(), aSegment()),
+            () -> path(aSegment(), aSegment(), aSegment(), aSegment()),
+            () -> path(aSegment(), aSegment(), aSegment(), aSegment(), aSegment())
     );
     private static final RandomSupplierSwitcher<Path<String>> PATH_RANDOM_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
-            () -> rootlessPath(aNonDotSegment()),
-            () -> rootlessPath(aNonDotSegment(), aNonDotSegment()),
-            () -> rootlessPath(aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
-            () -> rootlessPath(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment()),
-            () -> rootlessPath(aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment(), aNonDotSegment())
+            () -> rootlessPath(aSegment()),
+            () -> rootlessPath(aSegment(), aSegment()),
+            () -> rootlessPath(aSegment(), aSegment(), aSegment()),
+            () -> rootlessPath(aSegment(), aSegment(), aSegment(), aSegment()),
+            () -> rootlessPath(aSegment(), aSegment(), aSegment(), aSegment(), aSegment())
     );
     private static final RandomSupplierSwitcher<Path<String>> RANDOM_POLLUTED_PATH_SUPPLIER_SWITCHER = new RandomSupplierSwitcher<>(
             PathBuilder::anAbsolutePath,
@@ -67,6 +67,22 @@ public final class PathBuilder {
 
     public static Path<String> aPath() {
         return RANDOM_POLLUTED_PATH_SUPPLIER_SWITCHER.get();
+    }
+
+    public static Path<String> aDifferentPathTo(final Path<String> that) {
+        Path<String> path;
+        do {
+            path = aPath();
+        } while (path.equals(that));
+        return path;
+    }
+
+    public static Path<String> aNonEmptyPath() {
+        Path<String> path;
+        do {
+            path = aPath();
+        } while (path.isEmpty());
+        return path;
     }
 
     public static Path<String> anUnpollutedPath() {
