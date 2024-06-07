@@ -138,7 +138,7 @@ public abstract class Path<T> implements Iterable<Segment<T>> {
         if (rawPath == null || rawPath.isEmpty()) {
             return rootlessPath(emptyList());
         } else {
-            final String[] segmentStrings = rawPath.split("/");
+            final String[] segmentStrings = rawPath.split("/", -1);
             final List<Segment<SEGMENT>> result = new ArrayList<>(segmentStrings.length);
             for (final String segmentString : segmentStrings) {
                 result.add(parse(segmentString, segmentMakingDecoder));
