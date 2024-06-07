@@ -35,9 +35,7 @@ class Rfc3986ReferenceResolutionExamplesTest {
 
     @Test
     void normalExamples() {
-        // "g:h"           =  "g:h"
-        // is g:h a valid relative reference?
-//        assertThat(BASE_URI.resolve(urin(scheme("g"), hierarchicalPart(rootlessPath("h")))).asString(), equalTo("g:h"));
+        // g:h cannot be represented as a relative reference; Urin is effectively a 'strict parser' according to RFC 3986 because it would always treat this as a URI.
         assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(segment("g")))).asString(), equalTo("http://a/b/c/g"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath(Segment.dot(), segment("g")))).asString(), equalTo("http://a/b/c/g"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath("g", ""))).asString(), equalTo("http://a/b/c/g/"));
@@ -82,6 +80,6 @@ class Rfc3986ReferenceResolutionExamplesTest {
         assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath("g"), queryParameters(queryParameter("y/../x")))).asString(), equalTo("http://a/b/c/g?y/../x"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath("g"), fragment("s/./x"))).asString(), equalTo("http://a/b/c/g#s/./x"));
         assertThat(BASE_URI.resolve(HTTP.relativeReference(rootlessPath("g"), fragment("s/../x"))).asString(), equalTo("http://a/b/c/g#s/../x"));
-//        assertThat(BASE_URI.resolve(urin(scheme("http"), hierarchicalPart(rootlessPath("g")))).asString(), equalTo("http:g"));
+        // http:g cannot be represented as a relative reference; Urin is effectively a 'strict parser' according to RFC 3986 because it would always treat this as a URI.
     }
 }
