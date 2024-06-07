@@ -24,4 +24,10 @@ public class ParserBenchmark {
         blackhole.consume(Http.parseHttpUrin("http://example.com/foo/bar/baz/qux?a=b;c#d"));
     }
 
+    @Benchmark
+    public void httpUriReferenceParse(final Blackhole blackhole) throws ParseException {
+        blackhole.consume(Http.parseHttpUrinReference("http://example.com/foo/bar/baz/qux?a=b;c#d"));
+        blackhole.consume(Http.parseHttpUrinReference("://example.com/foo/bar/baz/qux?a=b;c#d"));
+    }
+
 }

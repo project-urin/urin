@@ -100,14 +100,6 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
         CharacterSetMembershipFunction.verify(TRAILING_CHARACTER_MEMBERSHIP_FUNCTION, name, "scheme", 1, exceptionFactory);
     }
 
-    private static boolean isValidRelativeReferenceString(final String uriReferenceString) {
-        return RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString).matches();
-    }
-
-    private static boolean isValidUrinString(final String uriReferenceString) {
-        return URI_PATTERN.matcher(uriReferenceString).matches();
-    }
-
     private Scheme<SEGMENT, QUERY, FRAGMENT> parse(final String name) throws ParseException {
         verify(name, PARSE_EXCEPTION_EXCEPTION_FACTORY);
         return withName(name);
@@ -310,6 +302,10 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
             throw new ParseException("[" + relativeReferenceString + "] is not a valid relative reference");
         }
 
+        return parseRelativeReference(matcher);
+    }
+
+    private RelativeReference<SEGMENT, QUERY, FRAGMENT> parseRelativeReference(final Matcher matcher) throws ParseException {
         final ThrowingOptional<Authority> authority = ThrowingOptional.ofNullable(matcher.group(3)).map(Authority::parse);
         final ThrowingOptional<String> pathString = ThrowingOptional.ofNullable(matcher.group(4)).filter(""::equals);
         final ThrowingOptional<QUERY> query = ThrowingOptional.ofNullable(matcher.group(6)).map(qs -> Query.parseQuery(qs, queryMakingDecoder));
@@ -534,7 +530,10 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
         if (!matcher.matches()) {
             throw new ParseException("[" + uriString + "] is not a valid URI");
         }
+        return parseUrin(matcher);
+    }
 
+    private Urin<SEGMENT, QUERY, FRAGMENT> parseUrin(final Matcher matcher) throws ParseException {
         final Scheme<SEGMENT, QUERY, FRAGMENT> scheme = parse(matcher.group(2));
         final ThrowingOptional<Authority> authority = ThrowingOptional.ofNullable(matcher.group(5)).map(Authority::parse);
         final String pathString = matcher.group(6);
@@ -597,10 +596,14 @@ public abstract class Scheme<SEGMENT, QUERY extends Query<?>, FRAGMENT extends F
      * @throws ParseException if the given {@code String} is not a valid URI reference.
      */
     public final UrinReference<SEGMENT, QUERY, FRAGMENT> parseUrinReference(final String uriReferenceString) throws ParseException {
-        if (isValidUrinString(uriReferenceString)) {
-            return parseUrin(uriReferenceString);
-        } else if (isValidRelativeReferenceString(uriReferenceString)) {
-            return parseRelativeReference(uriReferenceString);
+        final Matcher uriMatcher = URI_PATTERN.matcher(uriReferenceString);
+        if (uriMatcher.matches()) {
+            return parseUrin(uriMatcher);
+        } else {
+            final Matcher relativeReferenceMatcher = RELATIVE_REFERENCE_PATTERN.matcher(uriReferenceString);
+            if (relativeReferenceMatcher.matches()) {
+                return parseRelativeReference(relativeReferenceMatcher);
+            }
         }
         throw new ParseException("Given String is neither a valid URI nor a valid relative reference [" + uriReferenceString + "].");
     }

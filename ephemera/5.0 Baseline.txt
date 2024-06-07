@@ -1,0 +1,10 @@
+Baseline
+
+Benchmark                               Mode  Cnt       Score     Error  Units
+ParserBenchmark.httpUriReferenceParse  thrpt   25  100626.859 ± 600.395  ops/s
+
+
+Reuse regex matcher between match identification and parsing.
+
+Benchmark                               Mode  Cnt       Score      Error  Units
+ParserBenchmark.httpUriReferenceParse  thrpt   25  104650.691 ± 1281.086  ops/s
