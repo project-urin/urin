@@ -8,3 +8,9 @@ Reuse regex matcher between match identification and parsing.
 
 Benchmark                               Mode  Cnt       Score      Error  Units
 ParserBenchmark.httpUriReferenceParse  thrpt   25  104650.691 ± 1281.086  ops/s
+
+
+Try making adding possessive quantifiers to parsing regexes; rejected as no faster.
+
+Benchmark                               Mode  Cnt       Score      Error  Units
+ParserBenchmark.httpUriReferenceParse  thrpt   25  103078.628 ± 1085.754  ops/s
