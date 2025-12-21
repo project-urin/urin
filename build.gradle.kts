@@ -291,9 +291,10 @@ signing {
 nexusPublishing {
     repositories {
         sonatype {
-            stagingProfileId = "7f928f40cc7cb"
-            username.set(project.findProperty("ossrhUser").toString())
-            password.set(project.findProperty("ossrhPassword").toString())
+            nexusUrl.set(uri("https://ossrh-staging-api.central.sonatype.com/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://central.sonatype.com/repository/maven-snapshots/"))
+            username.set(project.findProperty("sonatypeCentralUser").toString())
+            password.set(project.findProperty("sonatypeCentralPassword").toString())
         }
     }
 }
