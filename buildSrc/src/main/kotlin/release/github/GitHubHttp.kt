@@ -35,6 +35,7 @@ import java.nio.file.Path
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.concurrent.TimeoutException
 import kotlin.time.Duration
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaDuration
 
@@ -43,8 +44,8 @@ class GitHubHttp(
     releaseTrustStore: ReleaseTrustStore,
     private val auditor: Auditor<AuditEvent>,
     private val connectTimeout: Duration = 1.seconds,
-    private val firstByteTimeout: Duration = 2.seconds,
-    private val endToEndTimeout: Duration = 2.seconds,
+    private val firstByteTimeout: Duration = 1.minutes,
+    private val endToEndTimeout: Duration = 2.minutes,
 ) : GitHub {
 
     private val releasesPath = path("repos", "project-urin", "urin", "releases")
