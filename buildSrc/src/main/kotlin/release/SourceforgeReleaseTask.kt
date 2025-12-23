@@ -85,7 +85,7 @@ abstract class SourceforgeReleaseTask : DefaultTask() {
                     "tar --extract --verbose --file=/home/project-web/urin/documentation-${project.version}.tgz --directory=/home/project-web/urin/${project.version}",
                     "rm /home/project-web/urin/documentation-${project.version}.tgz",
                     "rm /home/project-web/urin/htdocs",
-                    "ln --symbolic /home/project-web/urin/${project.version} /home/project-web/urin/htdocs"
+                    "ln --symbolic ${project.version} /home/project-web/urin/htdocs"
                 )
             }
         } catch (e: SshExecuteRuntimeException) {
