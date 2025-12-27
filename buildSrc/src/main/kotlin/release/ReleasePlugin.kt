@@ -21,6 +21,7 @@ import release.github.LoggingAuditor
 import release.github.formatFailure
 import release.pki.ReleaseTrustStore.Companion.defaultReleaseTrustStore
 
+@Suppress("unused")
 class ReleasePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.version = determineVersion(target).also {
