@@ -146,7 +146,7 @@ class GitHubHttpTest {
         private const val RELEASE_ID = "152871162"
         private const val TARGET_NAME = "my.jar"
         private const val LABEL = "Best Jar!"
-        private val fileContents = Random.Default.nextBytes(1024)
+        private val fileContents = Random.nextBytes(1024)
         override val executor = { gitHubHttp: GitHubHttp, uploadAuthority: GitHubUploadAuthority ->
             withTemporaryFile(fileContents) { file ->
                 gitHubHttp
