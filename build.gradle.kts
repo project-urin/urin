@@ -61,7 +61,7 @@ dependencies {
 testing {
     @Suppress("UnstableApiUsage")
     suites {
-        val test by getting(JvmTestSuite::class) {
+        named<JvmTestSuite>("test") {
             useJUnitJupiter(libs.versions.junit)
             dependencies {
                 implementation(libs.hamcrest)
@@ -133,13 +133,13 @@ tasks {
         dependsOn(testing.suites["testIntegration"], testing.suites["docs"])
     }
 
-    val combinedJar by registering(Jar::class) {
+    register<Jar>("combinedJar") {
         archiveClassifier = "combined"
         from(sourceSets["main"].allSource)
         from(sourceSets["main"].output)
     }
 
-    val smallJar by registering(Jar::class) {
+    register<Jar>("smallJar") {
         dependsOn(compileSmallJava, "compileModuleInfoJava")
         archiveClassifier = "small"
         from(project.layout.buildDirectory.dir("small-classes/main"))
@@ -205,7 +205,7 @@ tasks {
         }
     }
 
-    val documentationTar by registering(Tar::class) {
+    register<Tar>("documentationTar") {
         group = "documentation"
         from(asciidoctor)
         archiveBaseName.set("documentation")
@@ -226,7 +226,7 @@ tasks {
         excludeFilter = file("tools/spotbugs-docs-filter.xml")
     }
 
-    val release by registering {
+    register("release") {
         group = "publishing"
         dependsOn(clean, build, publish, closeAndReleaseStagingRepositories, sourceforgeRelease, gitHubRelease)
     }
