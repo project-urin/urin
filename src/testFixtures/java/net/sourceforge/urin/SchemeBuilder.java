@@ -10,12 +10,12 @@
 
 package net.sourceforge.urin;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import static net.sourceforge.urin.CharacterSets.ALPHA;
 import static net.sourceforge.urin.CharacterSets.DIGIT;
 import static net.sourceforge.urin.PortBuilder.aPort;
 import static net.sourceforge.urin.Scheme.scheme;
-import static org.apache.commons.lang3.RandomStringUtils.random;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 
 public final class SchemeBuilder {
 
@@ -44,7 +44,7 @@ public final class SchemeBuilder {
     }
 
     static String aValidSchemeName() {
-        return randomAlphabetic(1) + random(4, ALPHA + DIGIT + "+" + "-" + ".");
+        return RandomStringUtils.insecure().nextAlphabetic(1) + RandomStringUtils.insecure().next(4, ALPHA + DIGIT + "+" + "-" + ".");
     }
 
 }

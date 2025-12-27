@@ -10,12 +10,13 @@
 
 package net.sourceforge.urin;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import static net.sourceforge.urin.CharacterSets.*;
 import static net.sourceforge.urin.HexadectetBuilder.aHexadectet;
 import static net.sourceforge.urin.Host.*;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
-import static org.apache.commons.lang3.RandomStringUtils.random;
 
 public final class HostBuilder {
 
@@ -62,11 +63,11 @@ public final class HostBuilder {
     }
 
     public static String anIpVFutureAddressComponentString() {
-        return random(5, UNRESERVED + SUB_DELIMS + ":");
+        return RandomStringUtils.insecure().next(5, UNRESERVED + SUB_DELIMS + ":");
     }
 
     public static String anIpVFutureVersionString() {
-        return random(5, HEX_DIGIT);
+        return RandomStringUtils.insecure().next(5, HEX_DIGIT);
     }
 
     public static Host anIpVFutureAddress() {

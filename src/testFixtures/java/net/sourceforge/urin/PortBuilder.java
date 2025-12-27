@@ -10,19 +10,20 @@
 
 package net.sourceforge.urin;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import static net.sourceforge.urin.Port.port;
-import static org.apache.commons.lang3.RandomStringUtils.randomNumeric;
 
 public final class PortBuilder {
     private PortBuilder() {
     }
 
     public static Port aPort() {
-        return port(randomNumeric(5));
+        return port(RandomStringUtils.insecure().nextNumeric(5));
     }
 
     public static Port aPortDifferentTo(final Port port) {
-        final String potentialPort = randomNumeric(5);
-        return port(potentialPort).equals(port) ? port(potentialPort + randomNumeric(1)) : port(potentialPort);
+        final String potentialPort = RandomStringUtils.insecure().nextNumeric(5);
+        return port(potentialPort).equals(port) ? port(potentialPort + RandomStringUtils.insecure().nextNumeric(1)) : port(potentialPort);
     }
 }

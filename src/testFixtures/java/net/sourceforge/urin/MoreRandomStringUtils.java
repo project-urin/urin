@@ -10,9 +10,9 @@
 
 package net.sourceforge.urin;
 
-import java.util.Random;
+import org.apache.commons.lang3.RandomStringUtils;
 
-import static org.apache.commons.lang3.RandomStringUtils.random;
+import java.util.Random;
 
 public final class MoreRandomStringUtils {
 
@@ -23,7 +23,7 @@ public final class MoreRandomStringUtils {
 
     public static String aStringDifferentTo(final String aString) {
         final String random = aString();
-        return random.equals(aString) ? random + random(1) : random;
+        return random.equals(aString) ? random + RandomStringUtils.insecure().next(1) : random;
     }
 
     public static String aStringIncluding(final char included) {
@@ -33,17 +33,17 @@ public final class MoreRandomStringUtils {
             if (i == includeAt) {
                 result.append(included);
             } else {
-                result.append(random(1));
+                result.append(RandomStringUtils.insecure().next(1));
             }
         }
         return result.toString();
     }
 
     public static char aChar() {
-        return random(1).charAt(0);
+        return RandomStringUtils.insecure().next(1).charAt(0);
     }
 
     public static String aString() {
-        return random(5);
+        return RandomStringUtils.insecure().next(5);
     }
 }
