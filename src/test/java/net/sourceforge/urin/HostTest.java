@@ -10,6 +10,7 @@
 
 package net.sourceforge.urin;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -25,7 +26,6 @@ import static net.sourceforge.urin.HostBuilder.*;
 import static net.sourceforge.urin.MoreRandomStringUtils.aString;
 import static net.sourceforge.urin.Octet.octet;
 import static net.sourceforge.urin.OctetBuilder.anOctet;
-import static org.apache.commons.lang3.RandomStringUtils.random;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,11 +38,11 @@ class HostTest {
     private static final Random RANDOM = new Random();
 
     private static String anIpVFutureAddressVersion() {
-        return random(5, HEX_DIGIT);
+        return RandomStringUtils.insecure().next(5, HEX_DIGIT);
     }
 
     private static String anIpVFutureAddressAddress() {
-        return random(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
+        return RandomStringUtils.insecure().next(5, IP_V_FUTURE_ADDRESS_CHARACTERS);
     }
 
     @Test
