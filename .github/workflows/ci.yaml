@@ -2,7 +2,7 @@ on: [ push ]
 name: CI
 jobs:
   build-and-test:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       # noinspection SpellCheckingInspection
       image: eclipse-temurin:11.0.23_9-jdk-jammy@sha256:f222d1e1d705cd9f66a6ece7ebde97c04da2fe8628cf9c8f606f77fecf0bd97d
