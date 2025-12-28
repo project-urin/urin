@@ -23,9 +23,9 @@
         <exclude name="AbstractClassWithoutAbstractMethod"/>
         <exclude name="AvoidReassigningLoopVariables"/> <!-- configured later -->
         <exclude name="AvoidUsingHardCodedIP"/>
-        <exclude name="JUnitAssertionsShouldIncludeMessage"/>
-        <exclude name="JUnitTestContainsTooManyAsserts"/>
-        <exclude name="JUnitTestsShouldIncludeAssert"/>
+        <exclude name="UnitTestAssertionsShouldIncludeMessage"/>
+        <exclude name="UnitTestContainsTooManyAsserts"/>
+        <exclude name="UnitTestShouldIncludeAssert"/>
     </rule>
     <rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables">
         <properties>
