@@ -14,6 +14,6 @@ interface ExceptionFactory<T extends Exception> {
     ExceptionFactory<IllegalArgumentException> ILLEGAL_ARGUMENT_EXCEPTION_EXCEPTION_FACTORY = IllegalArgumentException::new;
     ExceptionFactory<ParseException> PARSE_EXCEPTION_EXCEPTION_FACTORY = ParseException::new;
 
-    @SuppressWarnings("unused") // Intellij falsely reports the message parameter as unused (verified used in tests)
+    @SuppressWarnings("unused") // IntelliJ falsely reports the message parameter as unused (verified used in tests)
     T makeException(String message);
 }
