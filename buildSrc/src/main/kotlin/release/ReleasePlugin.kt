@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 Mark Slater
+ * Copyright 2026 Mark Slater
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
  *
@@ -32,7 +32,7 @@ class ReleasePlugin : Plugin<Project> {
             group = "publishing"
             combinedJar.set(extension.combinedJar)
             smallJar.set(extension.smallJar)
-            documentationTar.set(extension.documentationTar)
+            documentation.from(extension.documentation)
         }
         target.tasks.register("gitHubRelease", GitHubReleaseTask::class.java) {
             group = "publishing"
